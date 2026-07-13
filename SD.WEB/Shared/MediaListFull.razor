@@ -67,7 +67,7 @@
     [Parameter] public bool DetectRegions { get; set; }
     [Parameter] public int MinQtdItems { get; set; } = 30;
 
-    private string? GetTitle => List != null ? List.GetName() : TitleHead;
+    private string? GetTitle => List != null ? List?.GetFieldSettings().Name : TitleHead;
     public bool DisableLoadMore { get; set; }
     private int _currentPage = 1;
 
@@ -80,10 +80,10 @@
         // AppState.WishListChanged += StateHasChanged;
         // AppState.WatchedListChanged += StateHasChanged;
 
-        if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await ProcessInitialData(), cts.Token);
+        if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await LoadParameterDataAsync(), cts.Token);
     }
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadParameterDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
         await LoadItems();
@@ -95,7 +95,6 @@
         if (MediaListApi != null)
         {
             var result = await MediaListApi.GetList([], Actions, TypeSelected, StringParameters, List, 1, cts.Token);
-            // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazy-load css class)
 
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 200;

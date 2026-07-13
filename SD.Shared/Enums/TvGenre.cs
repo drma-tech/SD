@@ -2,51 +2,51 @@
 
 public enum TvGenre
 {
-    [Custom(Name = "ActionAdventure", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("ActionAdventure", ResourceType = typeof(Translations.Enum.TvGenre))]
     ActionAdventure = 10759,
 
-    [Custom(Name = "Animation", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Animation", ResourceType = typeof(Translations.Enum.TvGenre))]
     Animation = 16,
 
-    [Custom(Name = "Comedy", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Comedy", ResourceType = typeof(Translations.Enum.TvGenre))]
     Comedy = 35,
 
-    [Custom(Name = "Crime", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Crime", ResourceType = typeof(Translations.Enum.TvGenre))]
     Crime = 80,
 
-    [Custom(Name = "Documentary", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Documentary", ResourceType = typeof(Translations.Enum.TvGenre))]
     Documentary = 99,
 
-    [Custom(Name = "Drama", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Drama", ResourceType = typeof(Translations.Enum.TvGenre))]
     Drama = 18,
 
-    [Custom(Name = "Family", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Family", ResourceType = typeof(Translations.Enum.TvGenre))]
     Family = 10751,
 
-    [Custom(Name = "Kids", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Kids", ResourceType = typeof(Translations.Enum.TvGenre))]
     Kids = 10762,
 
-    [Custom(Name = "Mystery", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Mystery", ResourceType = typeof(Translations.Enum.TvGenre))]
     Mystery = 9648,
 
-    [Custom(Name = "News", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("News", ResourceType = typeof(Translations.Enum.TvGenre))]
     News = 10763,
 
-    [Custom(Name = "Reality", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Reality", ResourceType = typeof(Translations.Enum.TvGenre))]
     Reality = 10764,
 
-    [Custom(Name = "SciFiFantasy", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("SciFiFantasy", ResourceType = typeof(Translations.Enum.TvGenre))]
     SciFiFantasy = 10765,
 
-    [Custom(Name = "Soap", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Soap", ResourceType = typeof(Translations.Enum.TvGenre))]
     Soap = 10766,
 
-    [Custom(Name = "Talk", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Talk", ResourceType = typeof(Translations.Enum.TvGenre))]
     Talk = 10767,
 
-    [Custom(Name = "WarPolitics", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("WarPolitics", ResourceType = typeof(Translations.Enum.TvGenre))]
     WarPolitics = 10768,
 
-    [Custom(Name = "Western", ResourceType = typeof(Resources.Enum.TvGenre))]
+    [FieldSettings("Western", ResourceType = typeof(Translations.Enum.TvGenre))]
     Western = 37
 }

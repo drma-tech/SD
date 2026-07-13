@@ -72,10 +72,10 @@
         };
     }
 
-    protected override async Task ProcessPopupData()
+    protected override async Task LoadStaticDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
-        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetFieldSettings(false).Name ?? "en-US";
 
         if (Type == MediaType.movie)
         {
@@ -144,7 +144,7 @@
         }
         else
         {
-            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetFieldSettings(false).Name ?? "en-US";
             var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, null, cts.Token);
 
             item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);

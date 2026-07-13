@@ -55,7 +55,7 @@ public static partial class StringHelper
     private static partial Regex DiacriticsRegex();
 
     /// <summary>
-    /// Removes diacritical marks (accents) from characters, converting them to their base ASCII equivalents. 
+    /// Removes diacritical marks (accents) from characters, converting them to their base ASCII equivalents.
     /// Useful for standardizing user input for comparison and identity matching.
     /// </summary>
     /// <param name="Text"></param>
@@ -89,6 +89,11 @@ public static partial class StringHelper
         return str;
     }
 
+    /// <summary>
+    /// Generates a deterministic SHA-256 based hash from a string input. The hash is used for identity matching, deduplication, and secure fingerprinting of normalized data.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
     public static string? ToHash(this string? text)
     {
         if (text.Empty()) return null;

@@ -90,21 +90,18 @@
 
 @code {
     public MediaType MediaType { get; set; } = MediaType.movie;
-    [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
+    [FieldSettings("Model")] public DeliveryModel? DeliveryModel { get; set; }
 
     private AllProviders? AllProviders { get; set; }
-    public List<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
-
-    public List<EnumObject<ContentLanguage>> Languages { get; set; } = [];
+    public List<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Languages = EnumHelper.GetList<ContentLanguage>();
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
     }
 
-    protected override async Task ProcessPageData()
+    protected override async Task LoadStaticDataAsync()
     {
         AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
     }
@@ -128,12 +125,12 @@
                 var details = AllProviders.Items;
                 var blocked_providers = new List<string>() { "Amazon Channel", "Amzon Channel", "Apple TV Channel", "Roku Premium Channel", "on U-Next" };
 
-                foreach (var region in EnumHelper.GetArray<Region>())
+                foreach (var region in EnumHelper.GetValues<Region>())
                 {
                     var parameter = new Dictionary<string, string>()
                         {
                             { "api_key", TmdbOptions.ApiKey },
-                            { "language", ContentLanguage.enUS.GetName(false) ?? "en-US" },
+                            { "language", ContentLanguage.enUS.GetFieldSettings(false).Name ?? "en-US" },
                             { "watch_region", region.ToString().ToUpper() }
                         };
 

@@ -8,10 +8,10 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<EditorsChoice>
 
-<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetName()})")" Description="@Translations.Description.EditorsChoice.Format(MediaType.GetName())"
+<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Description="@Translations.Description.EditorsChoice.Format(MediaType.GetFieldSettings().Name)"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences"
-                      Description="@Translations.Description.EditorsChoice.Format(MediaType.GetName())"
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Subtitle="Top-rated titles for all audiences"
+                      Description="@Translations.Description.EditorsChoice.Format(MediaType.GetFieldSettings().Name)"
                       UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
 @if (MediaType == MediaType.movie)
@@ -30,7 +30,7 @@ else
 @code {
     [Parameter] public string? Type { get; set; }
 
-    public MediaType MediaType => Type.ParseToEnum(MediaType.movie);
+    public MediaType MediaType => Type.ParseToEnum<MediaType>(MediaType.movie);
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -43,7 +43,7 @@ else
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);

@@ -34,7 +34,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" },
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(false).Name ?? "en-US" },
             { "watch_region", region?.ToUpper() ?? (await AppStateStatic.GetRegion(null, null, cancellationToken)).ToString().ToUpper() },
             { "include_adult", "false" },
             { "include_video", "false" },

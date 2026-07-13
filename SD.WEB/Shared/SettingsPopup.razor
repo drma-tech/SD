@@ -9,27 +9,27 @@
             <MudItem xs="12">
                 <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@Translations.Module.Help.Region"
                            HelperText="@Translations.Module.Help.RegionDesc" FullWidth="true">
-                    @foreach (var item in regions.OrderBy(p => p.GetName()))
+                    @foreach (var item in regions.OrderBy(p => p.Name))
                     {
-                        <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
+                        <MudSelectItem Value="@item.Value">@item.Name</MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
                 <MudSelect Value="@Language" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@Translations.Module.Help.AppLanguage"
                            HelperText="@Translations.Module.Help.AppLanguageDesc" FullWidth="true">
-                    @foreach (var item in appLanguages.OrderBy(p => p.GetName()))
+                    @foreach (var item in appLanguages.OrderBy(p => p.Name))
                     {
-                        <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
+                        <MudSelectItem Value="@item.Value">@item.Name</MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
                 <MudSelect Value="@ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@Translations.Module.Help.ContentLanguage"
                            HelperText="@Translations.Module.Help.ContentLanguageDesc" FullWidth="true">
-                    @foreach (var item in contentLanguages.OrderBy(p => p.GetName()))
+                    @foreach (var item in contentLanguages.OrderBy(p => p.Name))
                     {
-                        <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
+                        <MudSelectItem Value="@item.Value">@item.Name</MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
@@ -60,21 +60,23 @@
 
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    private readonly Region[] regions = Enum.GetValues<Region>();
-    private readonly AppLanguage[] appLanguages = Enum.GetValues<AppLanguage>();
-    private readonly ContentLanguage[] contentLanguages = Enum.GetValues<ContentLanguage>();
+    private readonly List<EnumFieldObject<Region>> regions = EnumHelper.GetList<Region>();
+    private readonly List<EnumFieldObject<AppLanguage>> appLanguages = EnumHelper.GetList<AppLanguage>();
+    private readonly List<EnumFieldObject<ContentLanguage>> contentLanguages = EnumHelper.GetList<ContentLanguage>();
 
     public AppLanguage Language { get; set; } = AppLanguage.en;
     public Region Region { get; set; } = Region.US;
     public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
     public bool DarkMode { get; set; } = false;
 
-    protected override async Task ProcessInitialData()
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
         Language = await AppStateStatic.GetAppLanguage(JsRuntime, cts.Token);
         Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
         ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token);
         DarkMode = await AppStateStatic.GetDarkMode(JsRuntime, cts.Token) ?? false;
+        
+        return true;
     }
 
     protected async Task AppLanguageValueChanged(AppLanguage value)
@@ -128,7 +130,7 @@
     {
         Region = value;
 
-        await JsRuntime.Utils().SetStorage("region", value.GetName(false), JavascriptContext.Default.String, cts.Token);
+        await JsRuntime.Utils().SetStorage("region", value.GetFieldSettings(false).Name ?? "en-US", JavascriptContext.Default.String, cts.Token);
 
         AppStateStatic.ChangeRegion(value);
     }

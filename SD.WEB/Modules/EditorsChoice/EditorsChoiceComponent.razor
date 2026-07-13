@@ -3,7 +3,7 @@
 
 @inject TmdbListApi TmdbListApi
 
-<PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@Translations.Description.EditorsChoice.Format(TypeSelected.GetName())">
+<PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@Translations.Description.EditorsChoice.Format(TypeSelected.GetFieldSettings().Name)">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -16,14 +16,14 @@
                 <a href="@($"/{Culture}/editors-choice/{MediaType.tv.ToString().ToLower()}")" style="display:none;"></a>
             </Header>
             <ChildContent>
-                <MudTabPanel Text="@MediaType.movie.GetName()">
+                <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
                     @if (_loaded[0])
                     {
                         <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watching="Watching" Wish="Wish" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@MediaType.tv.GetName()">
+                <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
                     @if (_loaded[1])
                     {
                         <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watching="Watching" Wish="Wish" Culture="@Culture">

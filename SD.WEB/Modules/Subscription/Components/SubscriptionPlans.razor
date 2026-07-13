@@ -9,7 +9,7 @@
 <MudStack Row="true" Breakpoint="Breakpoint.Xs" Spacing="2" Style="position: relative;">
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetName()</MudText>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetFieldSettings().Name</MudText>
             <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@Translations.Module.Subscription.Free</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 <MudItem xs="9">
@@ -52,8 +52,8 @@
     </MudCard>
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetName()</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()</MudText>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetFieldSettings().Name</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetFieldSettings().Description</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 <MudItem xs="9">
                     <MudText>@Translations.Module.Subscription.NoAds</MudText>
@@ -93,7 +93,7 @@
                     @Translations.Module.Subscription.Select
                 </MudText>
                 <MudChip T="string" Label="true" Style="height: auto; padding-inline: 6px;" Color="Color.Warning">
-                    @GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()
+                    @GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetFieldSettings().Description
                 </MudChip>
             </MudButton>
         </MudCardActions>
@@ -114,7 +114,7 @@
     private PaymentConfigurations? Config { get; set; }
     private bool _processing = false;
 
-    protected override async Task ProcessComponentData()
+    protected override async Task LoadStaticDataAsync()
     {
         Config = await ConfigurationApi.GetConfigurations(Provider, cts.Token);
     }
@@ -142,7 +142,7 @@
 
                 if (Provider == PaymentProvider.Paddle)
                 {
-                    await ShowWarning($"Provider not available: {Provider.GetName()}");
+                    await ShowWarning($"Provider not available: {Provider.GetFieldSettings().Name}");
                     _processing = false; StateHasChanged();
                 }
                 else if (Provider == PaymentProvider.Apple)
@@ -165,7 +165,7 @@
                 }
                 else
                 {
-                    await ShowWarning($"Provider not implemented: {Provider.GetName()}");
+                    await ShowWarning($"Provider not implemented: {Provider.GetFieldSettings().Name}");
                     _processing = false; StateHasChanged();
                 }
             }

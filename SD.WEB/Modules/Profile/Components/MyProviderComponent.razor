@@ -60,14 +60,16 @@
         };
     }
 
-    protected override async Task ProcessComponentData()
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
         AllProviders ??= await AllProvidersApi.GetAll(null, cts.Token);
 
         Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+
+        return true;
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         MyProviders = await MyProvidersApi.Get(Actions, token);
 

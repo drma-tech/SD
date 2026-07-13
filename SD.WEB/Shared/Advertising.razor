@@ -45,7 +45,6 @@
     [Parameter][EditorRequired] public AdSlot Slot { get; set; }
     [Parameter] public string[] IgnoreRoutes { get; set; } = ["auth", "legal"];
 
-    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
     private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 
     private string? country { get; set; }

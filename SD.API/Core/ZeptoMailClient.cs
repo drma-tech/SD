@@ -185,13 +185,13 @@ namespace SD.API.Core
                                 <h2 class=""email-title"">
                                     Verification Code
                                 </h2>
-                               
+
                                 <p>Use the code below to confirm your {appName} account.</p>
                                 <div style=""text-align:center"">
                                     <div class=""otp"">{otp}</div>
                                 </div>
                                 <p>This code expires in <span style=""color: #ff4081; font-weight: bold;"">10 minutes</span>.</p>
-                                                             
+
                                 <hr class=""email-divider"">
                                 <div class=""email-support"">
                                     Questions? Contact

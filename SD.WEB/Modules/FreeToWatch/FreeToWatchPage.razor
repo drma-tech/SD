@@ -5,11 +5,11 @@
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 
-<HeadComponent Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
-               Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
+<HeadComponent Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
+               Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
                Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
-                      Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
+<PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
+                      Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
                       UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
 
 @if (TypeEnum == MediaType.movie)
@@ -29,8 +29,8 @@ else
     [Parameter] public string? Type { get; set; }
     [Parameter] public string? Region { get; set; }
 
-    public MediaType TypeEnum => Type.ParseToEnum(MediaType.movie);
-    public Region RegionEnum => Region.ParseToEnum(SD.Shared.Enums.Region.US);
+    public MediaType TypeEnum => Type.ParseToEnum<MediaType>(MediaType.movie);
+    public Region RegionEnum => Region.ParseToEnum<Region>(SD.Shared.Enums.Region.US);
 
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }

@@ -2,50 +2,37 @@
 
 public static class EnumHelper
 {
-    public static TEnum[] GetArray<TEnum>() where TEnum : struct, Enum
+    public static T[] GetValues<T>() where T : struct, Enum
     {
-        return Enum.GetValues<TEnum>();
+        return Enum.GetValues<T>();
     }
 
-    public static List<EnumObject<TEnum>> GetList<TEnum>(bool translate = true) where TEnum : struct, Enum
+    public static List<EnumFieldObject<T>> GetList<T>(bool translate = true) where T : struct, Enum
     {
-        var result = new List<EnumObject<TEnum>>();
-        foreach (var val in GetArray<TEnum>())
-        {
-            var attr = val.GetCustomAttribute(translate);
+        var values = GetValues<T>();
+        var result = new List<EnumFieldObject<T>>(values.Length);
 
-            result.Add(new EnumObject<TEnum>(val, attr?.Name, attr?.Description, attr?.Group));
+        foreach (var val in values)
+        {
+            result.Add(val.GetFieldSettings(translate));
         }
+
         return result;
     }
 
-    public static TEnum ParseToEnum<TEnum>(this string? value) where TEnum : struct, Enum
+    public static T ParseToEnum<T>(this string? value, T? fallback = null) where T : struct, Enum
     {
-        if (Enum.TryParse<TEnum>(value, true, out var result) && Enum.IsDefined(result))
+        if (Enum.TryParse<T>(value, true, out var result) && Enum.IsDefined(result))
         {
             return result;
+        }
+        else if (fallback.HasValue)
+        {
+            return fallback.Value;
         }
         else
         {
-            throw new ArgumentException($"Invalid value for enum type {typeof(TEnum).Name}: {value}");
+            throw new ArgumentException($"Invalid value for enum type {typeof(T).Name}: {value}");
         }
     }
-
-    public static TEnum ParseToEnum<TEnum>(this string? value, TEnum fallback) where TEnum : struct, Enum
-    {
-        if (Enum.TryParse<TEnum>(value, true, out var result) && Enum.IsDefined(result))
-        {
-            return result;
-        }
-
-        return fallback;
-    }
-}
-
-public class EnumObject<TEnum>(TEnum value, string? name, string? description, string? group) where TEnum : struct, Enum
-{
-    public TEnum Value { get; set; } = value;
-    public string? Name { get; set; } = name;
-    public string? Description { get; set; } = description;
-    public string? Group { get; set; } = group;
 }

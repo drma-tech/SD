@@ -2,25 +2,25 @@
 {
     public enum AppLanguage
     {
-        [Custom(Name = "English")]
+        [FieldSettings("English")]
         en = 1,
 
-        [Custom(Name = "Português")] //Portuguese
+        [FieldSettings("Português")] //Portuguese
         pt = 2,
 
-        [Custom(Name = "Español")] //Spanish
+        [FieldSettings("Español")] //Spanish
         es = 3,
 
-        [Custom(Name = "中文")] //Chinese
+        [FieldSettings("中文")] //Chinese
         zh = 4,
 
-        [Custom(Name = "Français")] //French
+        [FieldSettings("Français")] //French
         fr = 5,
 
-        [Custom(Name = "Italiano")] //Italian
+        [FieldSettings("Italiano")] //Italian
         it = 6,
 
-        [Custom(Name = "Deutsch")] //German
+        [FieldSettings("Deutsch")] //German
         de = 7,
     }
 }

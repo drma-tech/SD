@@ -22,7 +22,7 @@
 
                 <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
                     <MudText Inline="true">
-                        @((MarkupString)string.Format(SD.WEB.Translations.Module.Auth.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.PrivacyPolicy}</a>"))
+                        @((MarkupString)string.Format(Translations.Module.Auth.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.PrivacyPolicy}</a>"))
                     </MudText>
                 </MudCheckBox>
                 <MudCheckBox @bind-Value="_terms2" Color="Color.Primary" Class="@Css.Build().Small("mb")">
@@ -55,14 +55,14 @@
     private bool _terms1 { get; set; } = false;
     private bool _terms2 { get; set; } = false;
 
-    protected override async Task ProcessInitialData()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         try
         {
             if (AppStateStatic.IsAuthenticated)
             {
-                StateHasChanged();
-
                 if (AppStateStatic.Principal == null) //first access
                 {
                     //wait the user answer the terms of use (call CreateAccount)

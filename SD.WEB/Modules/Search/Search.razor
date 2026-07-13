@@ -19,14 +19,14 @@
                 <MudTabPanel Text="@Translations.Module.Landing.Title">
                     <MudTextField T="string" Label="@Translations.Module.Landing.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
                                   AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
-                                  Variant="Variant.Outlined" OnAdornmentClick="@ProcessPageData" Clearable="true"
+                                  Variant="Variant.Outlined" OnAdornmentClick="@OnParametersSetAsync" Clearable="true"
                                   HelperText="@Translations.Module.Landing.TypeSomething" InputType="InputType.Text">
                     </MudTextField>
                 </MudTabPanel>
                 <MudTabPanel Text="@Translations.Module.Landing.Keywords">
                     <MudTextField T="string" Label="@Translations.Module.Landing.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
                                   AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
-                                  OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })" Clearable="true" 
+                                  OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })" Clearable="true"
                                   OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@Translations.Module.Landing.SearchKeywords" InputType="InputType.Text">
                     </MudTextField>
                     @foreach (var item in AppStateStatic.Keywords)
@@ -45,26 +45,26 @@
                 <MudTabPanel Text="@Translations.Module.Landing.Advanced">
                     <MudToolBar Gutters="false" WrapContent="true">
                         <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Type" Clearable="true" Class="me-2">
-                            @foreach (var item in EnumHelper.GetArray<MediaType>().Where(p => p != MediaType.person))
+                            @foreach (var item in Types)
                             {
-                                <MudSelectItem Value="(MediaType?)(object?)item">@item.GetName()</MudSelectItem>
+                                <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
                             }
                         </MudSelect>
                         @if (AppStateStatic.Type == MediaType.movie)
                         {
                             <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
-                                @foreach (var item in EnumHelper.GetArray<MovieGenre>())
+                                @foreach (var item in MovieGenres)
                                 {
-                                    <MudSelectItem Value="(MovieGenre?)(object?)item">@item.GetName()</MudSelectItem>
+                                    <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }
                         else
                         {
                             <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
-                                @foreach (var item in EnumHelper.GetArray<TvGenre>())
+                                @foreach (var item in TvGenres)
                                 {
-                                    <MudSelectItem Value="(TvGenre?)(object?)item">@item.GetName()</MudSelectItem>
+                                    <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }
@@ -129,6 +129,10 @@
     private Dictionary<string, string> ParametersKeyword = new() { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
     private Dictionary<string, string> ParametersAdvanced = new() { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };
 
+    public List<EnumFieldObject<MediaType>> Types { get; set; } = [];
+    public List<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
+    public List<EnumFieldObject<TvGenre>> TvGenres { get; set; } = [];
+
     protected override void OnParametersSet()
     {
         if (keyword.NotEmpty())
@@ -144,11 +148,17 @@
 
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+
+        Types = EnumHelper.GetList<MediaType>().Where(p => p.Value != MediaType.person).ToList();
+        MovieGenres = EnumHelper.GetList<MovieGenre>();
+        TvGenres = EnumHelper.GetList<TvGenre>();
     }
 
-    protected override async Task ProcessPageData()
+    protected override async Task<bool> OnParametersSetAsync()
     {
         await LoadItems(keyword);
+
+        return true;
     }
 
     private async Task LoadItems(string? keywordId)
@@ -184,7 +194,7 @@
         await Actions.FinishLoading.Invoke(Items);
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
@@ -196,7 +206,7 @@
 
         if (args.Key == "Enter")
         {
-            await ProcessPageData();
+            await OnParametersSetAsync();
         }
     }
 

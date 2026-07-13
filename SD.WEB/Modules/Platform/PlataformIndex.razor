@@ -19,11 +19,11 @@
 }
 else
 {
-    <HeadComponent Title="@(FreePlatforms ? Translations.Title.FreeProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.Title.Providers.Format(RegionEnum?.GetName() ?? "invalid country"))"
-                   Description="@Translations.Description.Platforms.Format(RegionEnum?.GetName() ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
+    <HeadComponent Title="@(FreePlatforms ? Translations.Title.FreeProviders.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country") : Translations.Title.Providers.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
+                   Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
 
-    <PageSectionComponent IsPageHeader="true" Title="@(FreePlatforms ? Translations.Title.FreeProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.Title.Providers.Format(RegionEnum?.GetName() ?? "invalid country"))"
-                          Description="@Translations.Description.Platforms.Format(RegionEnum?.GetName() ?? "invalid country")">
+    <PageSectionComponent IsPageHeader="true" Title="@(FreePlatforms ? Translations.Title.FreeProviders.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country") : Translations.Title.Providers.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
+                          Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")">
         <ActionsFragment>
             <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Translations.Module.Media.DeliveryModel" Dense="true" Class="me-2" Disabled="FreePlatforms">
                 @foreach (var item in DeliveryModels)
@@ -41,7 +41,7 @@ else
         </ActionsFragment>
     </PageSectionComponent>
 
-    <RenderControl Actions="Actions">
+    <RenderControl Actions="Actions" LoadingHeight="260px">
         @if (GetFilteredProviders(ShowAll).Any())
         {
             <div class="grid-relative-container-platform">
@@ -72,7 +72,7 @@ else
                                     @Translations.Module.Media.DeliveryModel:
                                 </MudText>
                                 <MudText Typo="Typo.body2" Inline="true">
-                                    @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetName())) : "N/A")
+                                    @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetFieldSettings().Name)) : "N/A")
                                 </MudText>
                             </MudCardContent>
                             <MudCardContent Class="py-1 px-2" Style="height: 48px;">
@@ -80,7 +80,7 @@ else
                                     @Translations.Module.Media.MediaType:
                                 </MudText>
                                 <MudText Typo="Typo.body2" Inline="true">
-                                    @(item.types.Any() ? string.Join(", ", item.types.Select(m => m.GetName())) : "N/A")
+                                    @(item.types.Any() ? string.Join(", ", item.types.Select(m => m.GetFieldSettings().Name)) : "N/A")
                                 </MudText>
                             </MudCardContent>
                             <MudCardContent Class="py-1 px-2">
@@ -100,7 +100,7 @@ else
                                 {
                                     <MudIconButton Icon="@Icons.Material.Filled.Star" Color="Color.Default" OnClick="@(() => Add(item))" />
                                 }
-                                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" OnClick="@(() => JsRuntime.Utils().Share(item.name, item.description, $"/{Culture}/platform/{item.id}", CancellationToken.None))" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" OnClick="@(() => ShareClick(item))" />
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Primary" Href="@($"/{Culture}/platform/{item.id}")" />
                             </MudCardActions>
                         </MudCard>
@@ -157,8 +157,8 @@ else
 
     private MyProviders? MyProviders { get; set; }
 
-    [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
-    [Custom(Name = "Type")] public MediaType? MediaType { get; set; }
+    [FieldSettings("Model")] public DeliveryModel? DeliveryModel { get; set; }
+    [FieldSettings("Type")] public MediaType? MediaType { get; set; }
     private string? name;
 
     [Parameter] public string? Region { get; set; }
@@ -182,8 +182,8 @@ else
                ?? [];
     }
 
-    public List<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
-    public List<EnumObject<MediaType>> MediaTypes { get; set; } = [];
+    public List<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];
+    public List<EnumFieldObject<MediaType>> MediaTypes { get; set; } = [];
 
     protected override void OnInitialized()
     {
@@ -192,7 +192,7 @@ else
         AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, cts.Token);
     }
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadParameterDataAsync()
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
         MediaTypes = EnumHelper.GetList<MediaType>().Where(p => p.Value != SD.Shared.Enums.MediaType.person).ToList();
@@ -209,7 +209,7 @@ else
         AllProviders = await AllProvidersApi.GetAll(Actions, cts.Token);
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         MyProviders = await MyProvidersApi.Get(null, token);
     }
@@ -259,6 +259,11 @@ else
         {
             await ProcessException(ex);
         }
+    }
+
+    private async Task ShareClick(ProviderModel provider)
+    {
+        await JsRuntime.Utils().Share(provider.name, provider.description, $"/{Culture}/platform/{provider.id}", CancellationToken.None);
     }
 
 }

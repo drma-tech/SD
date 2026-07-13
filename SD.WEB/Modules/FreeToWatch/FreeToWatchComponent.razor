@@ -5,7 +5,7 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject IpInfoApi IpInfoApi
 
-<PageSectionComponent Title="@($"{Translations.Title.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@Translations.Description.FreeWatch">
+<PageSectionComponent Title="@($"{Translations.Title.FreeWatch} ({(Region?.GetFieldSettings().Name ?? "United States")})")" Description="@Translations.Description.FreeWatch">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -15,7 +15,7 @@
                 </MudTooltip>
             </Header>
             <ChildContent>
-                <MudTabPanel Text="@MediaType.movie.GetName()">
+                <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
                     @if (_loaded[0])
                     {
                         <MediaListComponent MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.movie"
@@ -23,7 +23,7 @@
                         </MediaListComponent>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@MediaType.tv.GetName()">
+                <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
                     @if (_loaded[1])
                     {
                         <MediaListComponent MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.tv"
@@ -55,11 +55,13 @@
         _loaded[index] = true;
     }
 
-    protected override async Task ProcessComponentData()
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
         Region ??= await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
         _extraParameters = await GetExtraParameters();
         _loaded[0] = true;
+
+        return true;
     }
 
     private async Task<Dictionary<string, string>> GetExtraParameters()

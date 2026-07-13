@@ -28,13 +28,13 @@
                     <MudItem xs="12" sm="8">
                         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary">
                             <MudToggleItem Value="@AccountCycle.Weekly">
-                                @AccountCycle.Weekly.GetName()
+                                @AccountCycle.Weekly.GetFieldSettings().Name
                             </MudToggleItem>
                             <MudToggleItem Value="@AccountCycle.Monthly">
-                                @AccountCycle.Monthly.GetName()
+                                @AccountCycle.Monthly.GetFieldSettings().Name
                             </MudToggleItem>
                             <MudToggleItem Value="@AccountCycle.Yearly">
-                                @AccountCycle.Yearly.GetName()
+                                @AccountCycle.Yearly.GetFieldSettings().Name
                             </MudToggleItem>
                         </MudToggleGroup>
                     </MudItem>
@@ -43,7 +43,7 @@
                             @foreach (var item in Providers)
                             {
                                 <MudSelectItem T="PaymentProvider" Value="@item">
-                                    @item.GetName()
+                                    @item.GetFieldSettings().Name
                                 </MudSelectItem>
                             }
                         </MudSelect>
@@ -201,7 +201,7 @@
         BufferedEvent.Register(nameof(AppleVerify), async (string receipt) => await AppleVerify(receipt));
     }
 
-    protected override async Task ProcessPopupData()
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
         CurrentCountry = await IpInfoApi.GetCountry(cts.Token);
 
@@ -209,7 +209,7 @@
         {
             BlockedCountry = _XoloBlockedCountries.ContainsKey(CurrentCountry.ToUpper());
 
-            if (BlockedCountry) return;
+            if (BlockedCountry) return true;
         }
 
         Providers.Clear();
@@ -237,9 +237,11 @@
         }
 
         Provider = Providers[0]; //todo: when implemented, select native provider by default
+
+        return true;
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Client = await PrincipalApi.Get(true, token);
 

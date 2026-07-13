@@ -1,6 +1,6 @@
 ﻿@page "/{culture}/profile"
 
-@using SD.Shared.Resources.Enum
+@using SD.Shared.Translations.Enum
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
@@ -120,8 +120,10 @@
         };
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
+        Reviewed = await JsRuntime.Utils().GetStorage("reviewed", JavascriptContext.Default.Boolean, cts.Token);
+
         if (AppStateStatic.IsAuthenticated)
         {
             var subscriptionPopup = await JsRuntime.Utils().GetStorage("subscription-popup", JavascriptContext.Default.Boolean, cts.Token);
@@ -132,16 +134,11 @@
                 await JsRuntime.Utils().SetStorage("subscription-popup", true, JavascriptContext.Default.Boolean, cts.Token);
             }
         }
-
-        await base.OnAfterRenderAsync(firstRender);
+        
+        return true;
     }
 
-    protected override async Task ProcessPageData()
-    {
-        Reviewed = await JsRuntime.Utils().GetStorage("reviewed", JavascriptContext.Default.Boolean, cts.Token);
-    }
-
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         var demo = false;
        

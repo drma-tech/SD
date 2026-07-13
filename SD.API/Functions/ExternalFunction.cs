@@ -22,14 +22,18 @@ public class ExternalFunction(IHttpClientFactory factory)
     }
 
     [Function("Country")]
-    public async Task<string?> Country([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/country")] HttpRequestData req, CancellationToken cancellationToken)
+    public async Task<HttpResponseData> Country([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/country")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var ip = req.GetUserIP(false);
-        if (ip.Empty()) return null;
-        if (ip == "127.0.0.1") return null;
 
         var client = factory.CreateClient("ipinfo");
 
-        return await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+        if (ip.NotEmpty() && ip != "127.0.0.1")
+        {
+            var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+            return await req.CreateResponse(result, TtlCache.OneMinute, cancellationToken);
+        }
+
+        return await req.CreateResponse(null, TtlCache.OneMinute, cancellationToken);
     }
 }

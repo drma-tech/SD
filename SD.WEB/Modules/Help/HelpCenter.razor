@@ -17,7 +17,7 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');"); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@FeedbackClick">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Feedback"></MudIcon>
                     Feedback
                 </MudButton>
@@ -48,13 +48,13 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(cts.Token); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@ShowCacheClick">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Memory"></MudIcon>
                     @Translations.Button.ShowCache
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ClearAllStorage(); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@ClearCacheClick">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Clear"></MudIcon>
                     @Translations.Button.ClearCache
                 </MudButton>
@@ -72,12 +72,12 @@
 <PageSectionComponent Title="@Translations.Module.Help.AppLanguage">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
-            @foreach (var lang in Enum.GetValues<AppLanguage>().Where(p => AppStateStatic.SitemapTranslations.Contains(p.ToString())))
+            @foreach (var lang in EnumHelper.GetList<AppLanguage>().Where(p => AppStateStatic.SitemapTranslations.Contains(p.Value.ToString())))
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
-                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@($"/{lang.ToString()}/help")" OnClick="@(() => Navigation.NavigateTo($"/{lang.ToString()}/help", true))" Rel="nofollow">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@($"/{lang.Value.ToString()}/help")" OnClick="@(() => AppLanguageClick(lang.Value))" Rel="nofollow">
                         <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Translate"></MudIcon>
-                        @lang.GetName()
+                        @lang.Name
                     </MudButton>
                 </MudItem>
             }
@@ -258,6 +258,26 @@
         {
             await ProcessException(ex);
         }
+    }
+
+    private async Task FeedbackClick()
+    {
+        await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');");
+    }
+
+    private async Task ShowCacheClick()
+    {
+        await JsRuntime.Utils().ShowCache(cts.Token);
+    }
+
+    private async Task ClearCacheClick()
+    {
+        await JsRuntime.Utils().ClearAllStorage();
+    }
+
+    private void AppLanguageClick(AppLanguage lang)
+    {
+        Navigation.NavigateTo($"/{lang.ToString()}/help", true);
     }
 
     private async Task Logout()

@@ -29,7 +29,7 @@
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);

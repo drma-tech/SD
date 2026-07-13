@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SD.Shared.Resources.Enum {
+namespace SD.Shared.Translations.Enum {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace SD.Shared.Resources.Enum {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class TvGenre {
+    public class MovieGenre {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal TvGenre() {
+        internal MovieGenre() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace SD.Shared.Resources.Enum {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Resources.Enum.TvGenre", typeof(TvGenre).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Translations.Enum.MovieGenre", typeof(MovieGenre).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,20 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action &amp; Adventure.
+        ///   Looks up a localized string similar to Action.
         /// </summary>
-        public static string ActionAdventure {
+        public static string Action {
             get {
-                return ResourceManager.GetString("ActionAdventure", resourceCulture);
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adventure.
+        /// </summary>
+        public static string Adventure {
+            get {
+                return ResourceManager.GetString("Adventure", resourceCulture);
             }
         }
         
@@ -124,11 +133,38 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kids.
+        ///   Looks up a localized string similar to Fantasy.
         /// </summary>
-        public static string Kids {
+        public static string Fantasy {
             get {
-                return ResourceManager.GetString("Kids", resourceCulture);
+                return ResourceManager.GetString("Fantasy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        public static string History {
+            get {
+                return ResourceManager.GetString("History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horror.
+        /// </summary>
+        public static string Horror {
+            get {
+                return ResourceManager.GetString("Horror", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Music.
+        /// </summary>
+        public static string Music {
+            get {
+                return ResourceManager.GetString("Music", resourceCulture);
             }
         }
         
@@ -142,56 +178,47 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to News.
+        ///   Looks up a localized string similar to Romance.
         /// </summary>
-        public static string News {
+        public static string Romance {
             get {
-                return ResourceManager.GetString("News", resourceCulture);
+                return ResourceManager.GetString("Romance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reality.
+        ///   Looks up a localized string similar to Science Fiction.
         /// </summary>
-        public static string Reality {
+        public static string ScienceFiction {
             get {
-                return ResourceManager.GetString("Reality", resourceCulture);
+                return ResourceManager.GetString("ScienceFiction", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sci-Fi &amp; Fantasy.
+        ///   Looks up a localized string similar to Thriller.
         /// </summary>
-        public static string SciFiFantasy {
+        public static string Thriller {
             get {
-                return ResourceManager.GetString("SciFiFantasy", resourceCulture);
+                return ResourceManager.GetString("Thriller", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Soap.
+        ///   Looks up a localized string similar to TV Movie.
         /// </summary>
-        public static string Soap {
+        public static string TVMovie {
             get {
-                return ResourceManager.GetString("Soap", resourceCulture);
+                return ResourceManager.GetString("TVMovie", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Talk Show.
+        ///   Looks up a localized string similar to War.
         /// </summary>
-        public static string Talk {
+        public static string War {
             get {
-                return ResourceManager.GetString("Talk", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to War &amp; Politics.
-        /// </summary>
-        public static string WarPolitics {
-            get {
-                return ResourceManager.GetString("WarPolitics", resourceCulture);
+                return ResourceManager.GetString("War", resourceCulture);
             }
         }
         

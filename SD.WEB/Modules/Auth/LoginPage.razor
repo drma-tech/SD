@@ -92,10 +92,11 @@
     private bool _processingInProgress = false;
     private string? lastUsedProvider = null;
 
-    protected override async Task ProcessPopupData()
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
         Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
         lastUsedProvider = await JsRuntime.Utils().GetStorage("auth-last-used", JavascriptContext.Default.String, cts.Token);
+        return true;
     }
 
     private async Task SignIn(string? provider = null, string? email = null)

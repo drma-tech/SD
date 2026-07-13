@@ -12,6 +12,7 @@ public abstract class BaseComponentCore<T> : ComponentBase, IDisposable where T 
 {
     [Inject] private ILogger<T> Logger { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
+
     [Inject] protected IDialogService DialogService { get; set; } = null!;
     [Inject] protected IJSRuntime JsRuntime { get; set; } = null!;
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
@@ -125,31 +126,41 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
     protected override bool ShowExceptions => false;
 
     /// <summary>
-    /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
+    /// To load static data that does not change and does not depend on parameters.
     /// </summary>
     /// <returns></returns>
-    protected virtual Task ProcessInitialData()
+    protected virtual Task LoadStaticDataAsync()
     {
         return Task.CompletedTask;
     }
 
     /// <summary>
-    /// Exclusive for data associated with authenticated users (will be called every time the state changes)
-    ///
-    /// NOTE: All APIs should check if the user is logged in or not.
+    /// To load temporary data that may change and depends on parameters.
     /// </summary>
     /// <returns></returns>
-    protected virtual Task LoadAuthDataAsync(CancellationToken token)
+    protected virtual Task LoadParameterDataAsync()
     {
         return Task.CompletedTask;
     }
 
-    protected virtual Task ProcessComponentData()
+    /// <summary>
+    /// To process data that depends on the DOM, JavaScript, or element references.
+    ///
+    /// Note: Returns true when the component state changed and a re-render is required.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        return Task.CompletedTask;
+        return Task.FromResult(false);
     }
 
-    protected virtual Task ProcessPopupData()
+    /// <summary>
+    /// Exclusive for data associated with authenticated users (will be called every time the state changes)
+    ///
+    /// Note: All APIs should check if the user is logged in or not.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         return Task.CompletedTask;
     }
@@ -158,18 +169,35 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
     {
         try
         {
-            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => _ = InvokeAsync(StateHasChanged), cts.Token);
+            await base.OnInitializedAsync();
+
+            AppStateStatic.BreakpointChanged.Subscribe((bp) => _ = InvokeAsync(StateHasChanged), cts.Token);
             AppStateStatic.UserStateChanged.Subscribe(async () =>
             {
-                await _taskHelper.RunSingleAsync("LoadAuthDataAsync", AppStateStatic.IsAuthenticated, LoadAuthDataAsync, cts.Token); //AuthenticationStateChanged
+                await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", AppStateStatic.IsAuthenticated, LoadAuthenticatedDataAsync, cts.Token); //AuthenticationStateChanged
                 await InvokeAsync(StateHasChanged);
             }, cts.Token);
 
-            await ProcessInitialData();
+            await LoadStaticDataAsync();
+            await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", false, LoadAuthenticatedDataAsync, cts.Token); //start or route changes
         }
         catch (Exception ex)
         {
-            await ProcessException(ex, false);
+            await ProcessException(ex, ShowExceptions);
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            await base.OnParametersSetAsync();
+
+            await LoadParameterDataAsync();
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex, ShowExceptions);
         }
     }
 
@@ -179,12 +207,8 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            if (firstRender)
+            if (firstRender && await LoadInteropDataAsync(JsRuntime))
             {
-                await ProcessComponentData();
-                await ProcessPopupData();
-                await _taskHelper.RunSingleAsync("LoadAuthDataAsync", false, LoadAuthDataAsync, cts.Token); //start or route changes
-
                 StateHasChanged();
             }
         }
@@ -249,33 +273,13 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
 
     protected override bool ShowExceptions => true;
 
-    /// <summary>
-    /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
-    /// </summary>
-    /// <returns></returns>
-    protected virtual Task ProcessPageData()
-    {
-        return Task.CompletedTask;
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        try
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
         {
-            await base.OnAfterRenderAsync(firstRender);
-
-            if (firstRender)
-            {
-                await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
-
-                await ProcessPageData();
-
-                StateHasChanged();
-            }
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
         }
     }
 

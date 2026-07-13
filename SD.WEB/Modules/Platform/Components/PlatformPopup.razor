@@ -80,7 +80,7 @@
         };
     }
 
-    protected override async Task ProcessPopupData()
+    protected override async Task LoadStaticDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(null, cts.Token);
     }

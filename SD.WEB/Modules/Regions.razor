@@ -17,7 +17,6 @@
     </ActionsFragment>
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
-           
             @foreach (var item in GetRegions())
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
@@ -25,18 +24,18 @@
                         <MudCardHeader Class="pa-2">
                             <CardHeaderContent>
                                 <MudText Typo="Typo.h6" Color="Color.Primary">
-                                    @item.GetName()
+                                    @item.Name
                                 </MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardActions Class="pa-2">
-                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/movie/{item.ToString().ToLower()}")">
+                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/movie/{item.Value.ToString().ToLower()}")">
                                 @($"Free Movies")
                             </MudButton>
-                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/platforms/{item.ToString().ToLower()}")">
+                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/platforms/{item.Value.ToString().ToLower()}")">
                                 @($"Platforms")
                             </MudButton>
-                           @*  <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/platforms/{item.ToString().ToLower()}")">
+                            @*  <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/platforms/{item.ToString().ToLower()}")">
                                 @($"Free Platforms")
                             </MudButton> *@
                         </MudCardActions>
@@ -48,27 +47,27 @@
 </PageSectionComponent>
 
 @code {
-    public List<Region> RegionsList { get; set; } = [];
+    public List<EnumFieldObject<Region>> RegionsList { get; set; } = [];
 
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     private List<string?> Options { get; set; } = [];
     private string? filter;
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadStaticDataAsync()
     {
         filter = Culture;
 
-        RegionsList = EnumHelper.GetArray<Region>().ToList();
+        RegionsList = EnumHelper.GetList<Region>();
 
         Options.Add("en");
         Options.Add("pt");
         Options.Add("es");
 
-        Options.AddRange(RegionsList?.Select(p => p.GetCustomAttribute(false)?.Group).Distinct().ToList() ?? []);
+        Options.AddRange(RegionsList?.Select(p => p.Group).Distinct().ToList() ?? []);
     }
 
-    public List<Region> GetRegions()
+    public List<EnumFieldObject<Region>> GetRegions()
     {
         if (filter == "en")
         {
@@ -78,17 +77,17 @@
         {
             var portuguese = new HashSet<Region> { Region.BR, Region.PT };
 
-            return RegionsList.Where(p => portuguese.Contains(p)).ToList();
+            return RegionsList.Where(p => portuguese.Contains(p.Value)).ToList();
         }
         else if (filter == "es")
         {
             var spanish = new HashSet<Region> { Region.ES, Region.MX, Region.AR, Region.CL, Region.CO };
 
-            return RegionsList.Where(p => spanish.Contains(p)).ToList();
+            return RegionsList.Where(p => spanish.Contains(p.Value)).ToList();
         }
         else if (filter.NotEmpty())
         {
-            return RegionsList.Where(p => p.GetCustomAttribute(false)?.Group == filter).ToList();
+            return RegionsList.Where(p => p.Group == filter).ToList();
         }
         else
         {

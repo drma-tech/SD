@@ -2,10 +2,10 @@
 {
     public enum AuthProvider
     {
-        [Custom(Name = "Firebase")]
+        [FieldSettings("Firebase")]
         Firebase = 1,
 
-        [Custom(Name = "Supabase")]
+        [FieldSettings("Supabase")]
         Supabase = 2,
     }
 }

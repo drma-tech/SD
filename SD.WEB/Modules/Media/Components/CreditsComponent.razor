@@ -100,7 +100,7 @@
     public ComponentActions<Credits?> Actions { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
 
-    protected override async Task ProcessComponentData()
+    protected override async Task LoadParameterDataAsync()
     {
         Credits = await TmdbCreditApi.GetList(Type, TmdbId, Actions, cts.Token);
     }

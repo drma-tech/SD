@@ -9,7 +9,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" }
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(false).Name ?? "en-US" }
         };
 
         if (actions != null) await actions.StartLoading.Invoke(null);

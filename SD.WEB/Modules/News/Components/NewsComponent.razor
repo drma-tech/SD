@@ -17,7 +17,7 @@
                 <a href="@($"/{Culture}/news/{MediaType.tv.ToString().ToLower()}")" style="display:none;"></a>
             </Header>
             <ChildContent>
-                <MudTabPanel Text="@MediaType.movie.GetName()">
+                <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
                     @if (_loaded[0])
                     {
                         <RenderControl Actions="ActionsMovie">
@@ -49,7 +49,7 @@
                         </RenderControl>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@MediaType.tv.GetName()">
+                <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
                     @if (_loaded[1])
                     {
                         <RenderControl Actions="ActionsSerie">
@@ -98,14 +98,7 @@
     private int _activeIndex = 0;
     private bool[] _loaded = new bool[2] { true, false };
 
-    private async Task OnTabChanged(int index)
-    {
-        _activeIndex = index;
-        _loaded[index] = true;
-        await ProcessInitialData();
-    }
-
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadStaticDataAsync()
     {
         if (_activeIndex == 0)
         {
@@ -117,4 +110,10 @@
         }
     }
 
+    private async Task OnTabChanged(int index)
+    {
+        _activeIndex = index;
+        _loaded[index] = true;
+        await LoadStaticDataAsync();
+    }
 }

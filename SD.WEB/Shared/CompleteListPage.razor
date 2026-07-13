@@ -49,8 +49,8 @@
     public bool DetectRegions { get; set; }
 
     private EnumLists? List { get; set; }
-    private string Title => TitleHead ?? $"{List?.GetName()?.Format(DateTime.Now.Year)}" ?? "Title Error";
-    private string Description => DescriptionHead ?? $"{List?.GetDescription()}" ?? "Description Error";
+    private string Title => TitleHead ?? $"{List?.GetFieldSettings().Name?.Format(DateTime.Now.Year)}" ?? "Title Error";
+    private string Description => DescriptionHead ?? $"{List?.GetFieldSettings().Description}" ?? "Description Error";
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,7 +65,7 @@
         MediaListApi ??= new TmdbListApi(factory);
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
@@ -80,20 +80,20 @@
 
             if (Navigation.Uri.Contains("popular"))
             {
-                TitleHead = $"{provider?.name}: {Translations.Module.Media.Popular} ({TypeSelected!.GetName()})";
+                TitleHead = $"{provider?.name}: {Translations.Module.Media.Popular} ({TypeSelected?.GetFieldSettings().Name})";
                 DescriptionHead = Translations.Module.Media.PopularDesc.Format(provider?.name);
                 StringParameters = GetExtraParameters(id, "popularity.desc");
             }
             else if (Navigation.Uri.Contains("new"))
             {
-                TitleHead = $"{provider?.name}: {Translations.Module.Media.Release} ({TypeSelected!.GetName()})";
+                TitleHead = $"{provider?.name}: {Translations.Module.Media.Release} ({TypeSelected?.GetFieldSettings().Name})";
                 DescriptionHead = Translations.Module.Media.NewsDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "primary_release_date.desc");
             }
             else if (Navigation.Uri.Contains("top"))
             {
-                TitleHead = $"{provider?.name}: {Translations.Module.Media.TopRated} ({TypeSelected!.GetName()})";
+                TitleHead = $"{provider?.name}: {Translations.Module.Media.TopRated} ({TypeSelected?.GetFieldSettings().Name})";
                 DescriptionHead = Translations.Module.Media.RecommendedDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "vote_average.desc");

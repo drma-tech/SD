@@ -201,7 +201,7 @@
                                 {
                                     <div>
                                         <MudIcon Icon="@Icons.Custom.Brands.YouTube" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
-                                        <MudLink Href="@($"/{Culture}/video/{($"{item.key}|{item.name}".SimpleEncrypt())}")" Color="Color.Secondary">
+                                        <MudLink OnClick="@(() => VideoClick(item))" Color="Color.Secondary">
                                             @item.name
                                         </MudLink>
                                     </div>
@@ -304,9 +304,9 @@
         };
     }
 
-    protected override async Task ProcessPopupData()
+    protected override async Task LoadParameterDataAsync()
     {
-        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetFieldSettings(false).Name ?? "en-US";
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, Actions, cts.Token);
         Media.Videos.Reverse();
 
@@ -478,4 +478,8 @@
         await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
     }
 
+    private void VideoClick(Video item)
+    {
+        Navigation.NavigateTo($"/{Culture}/video/{($"{item.key}|{item.name}".SimpleEncrypt())}");
+    }
 }

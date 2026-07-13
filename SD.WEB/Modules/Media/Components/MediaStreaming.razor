@@ -250,11 +250,11 @@
                     else
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning">
-                            @(string.Format(Translations.Module.Media.TitleNotAvailable, Region.GetName()))
+                            @(string.Format(Translations.Module.Media.TitleNotAvailable, Region.GetFieldSettings().Name))
                         </MudAlert>
                     }
 
-                    @if (Region.GetName().Empty())
+                    @if (Region.GetFieldSettings().Name.Empty())
                     {
                         <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning">
                             <MudText Typo="Typo.h6">There was an error detecting your region</MudText>
@@ -286,111 +286,117 @@
 
     public Region Region { get; set; } = Region.US;
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadStaticDataAsync()
     {
         AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
     }
 
-    protected override async Task ProcessComponentData()
+    protected override async Task LoadParameterDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
         Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type, cts.Token);
         await Actions.FinishLoading.Invoke(Providers);
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
     }
 
-    private async Task Update()
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        if (Providers == null) return;
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
-        foreach (var item in Providers.GetFreeListProviders(Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            const DeliveryModel model = DeliveryModel.FREE;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetAdsListProviders(Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            const DeliveryModel model = DeliveryModel.AVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetFlatRateListProviders(Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            const DeliveryModel model = DeliveryModel.SVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetBuyListProviders(Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            const DeliveryModel model = DeliveryModel.TVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetRentListProviders(Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            const DeliveryModel model = DeliveryModel.TVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetFlatRateBuyListProviders(Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            const DeliveryModel model = DeliveryModel.PVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        if (AllProviders != null)
-        {
-            await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, cts.Token);
-        }
+        return true;
     }
+
+    // private async Task Update()
+    // {
+    //     if (Providers == null) return;
+
+    //     foreach (var item in Providers.GetFreeListProviders(Region))
+    //     {
+    //         var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+    //         const DeliveryModel model = DeliveryModel.FREE;
+
+    //         if (provider != null && !provider.models.Contains(model))
+    //         {
+    //             provider.models.Add(model);
+
+    //             provider.models = provider.models.OrderBy(o => o).ToList();
+    //         }
+    //     }
+
+    //     foreach (var item in Providers.GetAdsListProviders(Region))
+    //     {
+    //         var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+    //         const DeliveryModel model = DeliveryModel.AVOD;
+
+    //         if (provider != null && !provider.models.Contains(model))
+    //         {
+    //             provider.models.Add(model);
+
+    //             provider.models = provider.models.OrderBy(o => o).ToList();
+    //         }
+    //     }
+
+    //     foreach (var item in Providers.GetFlatRateListProviders(Region))
+    //     {
+    //         var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+    //         const DeliveryModel model = DeliveryModel.SVOD;
+
+    //         if (provider != null && !provider.models.Contains(model))
+    //         {
+    //             provider.models.Add(model);
+
+    //             provider.models = provider.models.OrderBy(o => o).ToList();
+    //         }
+    //     }
+
+    //     foreach (var item in Providers.GetBuyListProviders(Region))
+    //     {
+    //         var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+    //         const DeliveryModel model = DeliveryModel.TVOD;
+
+    //         if (provider != null && !provider.models.Contains(model))
+    //         {
+    //             provider.models.Add(model);
+
+    //             provider.models = provider.models.OrderBy(o => o).ToList();
+    //         }
+    //     }
+
+    //     foreach (var item in Providers.GetRentListProviders(Region))
+    //     {
+    //         var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+    //         const DeliveryModel model = DeliveryModel.TVOD;
+
+    //         if (provider != null && !provider.models.Contains(model))
+    //         {
+    //             provider.models.Add(model);
+
+    //             provider.models = provider.models.OrderBy(o => o).ToList();
+    //         }
+    //     }
+
+    //     foreach (var item in Providers.GetFlatRateBuyListProviders(Region))
+    //     {
+    //         var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+    //         const DeliveryModel model = DeliveryModel.PVOD;
+
+    //         if (provider != null && !provider.models.Contains(model))
+    //         {
+    //             provider.models.Add(model);
+
+    //             provider.models = provider.models.OrderBy(o => o).ToList();
+    //         }
+    //     }
+
+    //     if (AllProviders != null)
+    //     {
+    //         await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, cts.Token);
+    //     }
+    // }
 
 }

@@ -23,7 +23,7 @@
 
     private List<TmdbResultKeyword> List { get; set; } = [];
 
-    protected override async Task ProcessComponentData()
+    protected override async Task LoadParameterDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
         if (Type == MediaType.movie)

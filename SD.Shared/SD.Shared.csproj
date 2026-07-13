@@ -13,42 +13,42 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		</Compile>
-		<Compile Update="Resources\Enum\AccountCycle.Designer.cs">
+		<Compile Update="Translations\Enum\AccountCycle.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>AccountCycle.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\DeliveryModel.Designer.cs">
+		<Compile Update="Translations\Enum\DeliveryModel.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>DeliveryModel.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\ContentLanguage.Designer.cs">
+		<Compile Update="Translations\Enum\ContentLanguage.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>ContentLanguage.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\MediaType.Designer.cs">
+		<Compile Update="Translations\Enum\MediaType.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>MediaType.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\MovieGenre.Designer.cs">
+		<Compile Update="Translations\Enum\MovieGenre.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>MovieGenre.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\PopularType.Designer.cs">
+		<Compile Update="Translations\Enum\PopularType.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>PopularType.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\Region.Designer.cs">
+		<Compile Update="Translations\Enum\Region.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Region.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\TvGenre.Designer.cs">
+		<Compile Update="Translations\Enum\TvGenre.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>TvGenre.resx</DependentUpon>
@@ -59,35 +59,35 @@
 		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\AccountCycle.resx">
+		<EmbeddedResource Update="Translations\Enum\AccountCycle.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>AccountCycle.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\MovieGenre.resx">
+		<EmbeddedResource Update="Translations\Enum\MovieGenre.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>MovieGenre.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\PopularType.resx">
+		<EmbeddedResource Update="Translations\Enum\PopularType.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>PopularType.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\TvGenre.resx">
+		<EmbeddedResource Update="Translations\Enum\TvGenre.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>TvGenre.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\DeliveryModel.resx">
+		<EmbeddedResource Update="Translations\Enum\DeliveryModel.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>DeliveryModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\ContentLanguage.resx">
+		<EmbeddedResource Update="Translations\Enum\ContentLanguage.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>ContentLanguage.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\MediaType.resx">
+		<EmbeddedResource Update="Translations\Enum\MediaType.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>MediaType.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\Region.resx">
+		<EmbeddedResource Update="Translations\Enum\Region.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Region.Designer.cs</LastGenOutput>
 		</EmbeddedResource>

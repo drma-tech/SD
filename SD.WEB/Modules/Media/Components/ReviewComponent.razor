@@ -40,7 +40,7 @@
     public CacheDocument<ReviewModel>? Model { get; set; }
     private ComponentActions<CacheDocument<ReviewModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
-    protected override async Task ProcessComponentData()
+    protected override async Task LoadParameterDataAsync()
     {
         if (!string.IsNullOrEmpty(ImdbId))
         {

@@ -78,7 +78,7 @@
         }
     }
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadStaticDataAsync()
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("compact", Actions, cts.Token);
     }

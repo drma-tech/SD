@@ -29,9 +29,9 @@ else
             <ActionsFragment>
                 <div>
                     <MudSelect T="Region?" Value="SelectedRegion" ValueChanged="SelectedRegionChanged" Label="@Translations.Module.Media.Region" Variant="Variant.Text" Dense="true" Class="me-2" Style="width: 150px;">
-                        @foreach (var item in regions.OrderBy(p => p.GetName()))
+                        @foreach (var item in regions.OrderBy(p => p.Name))
                         {
-                            <MudSelectItem Value="@((Region?)item)">@item.GetName()</MudSelectItem>
+                            <MudSelectItem Value="@((Region?)item.Value)">@item.Name</MudSelectItem>
                         }
                     </MudSelect>
                 </div>
@@ -85,7 +85,7 @@ else
     public ComponentActions<ProviderModel?> Actions { get; set; } = new(obj => obj == null);
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
-    private List<Region> regions = [];
+    private List<EnumFieldObject<Region>> regions = [];
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -97,15 +97,21 @@ else
     private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
     private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;
 
-    protected override async Task ProcessInitialData()
+    protected override void OnInitialized()
     {
+        base.OnInitialized();
+
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+    } 
 
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
+    {
         Actions.StartLoading?.Invoke(null);
 
         AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
+        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
 
         if (Provider == null)
         {
@@ -113,16 +119,16 @@ else
         }
         else
         {
-            regions = Enum.GetValues<Region>().Where(p => Provider.regions.Contains(p)).ToList();
+            regions = EnumHelper.GetList<Region>().Where(p => Provider.regions.Contains(p.Value)).ToList();
 
             if (AppStateStatic.IsPrerendering(Navigation))
             {
-                SelectedRegion = regions.First();
+                SelectedRegion = regions.First().Value;
             }
             else
             {
                 var temp = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
-                if (regions.Contains(temp))
+                if (regions.Select(p => p.Value).Contains(temp))
                 {
                     SelectedRegion = temp;
                 }
@@ -130,14 +136,11 @@ else
         }
 
         Actions.FinishLoading?.Invoke(Provider);
+
+        return true;
     }
 
-    protected override async Task ProcessPageData()
-    {
-        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
-    }
-
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         MyProviders = await MyProvidersApi.Get(null, token);
 
@@ -151,7 +154,7 @@ else
 
         if (value.HasValue)
         {
-            await JsRuntime.Utils().SetStorage("region", value.GetName(false), JavascriptContext.Default.String, cts.Token);
+            await JsRuntime.Utils().SetStorage("region", value.Value.GetFieldSettings(false).Name, JavascriptContext.Default.String, cts.Token);
 
             AppStateStatic.ChangeRegion(value.Value);
         }
@@ -171,7 +174,7 @@ else
     private string? GetSubtitle()
     {
         if (Provider == null) return null;
-        var models = string.Join(", ", Provider.models.Select(s => s.GetName()));
+        var models = string.Join(", ", Provider.models.Select(s => s.GetFieldSettings().Name));
         return $"{Translations.Module.Media.DeliveryModel}: {(models.Empty() ? "null" : models)} | {Translations.Module.Media.Countries}: {Provider.regions.Count}";
     }
 

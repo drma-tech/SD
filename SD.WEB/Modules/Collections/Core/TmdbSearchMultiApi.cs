@@ -13,7 +13,7 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" },
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(false).Name ?? "en-US" },
             { "page", page.ToString() },
             { "include_adult", "false" }
         };
@@ -69,9 +69,9 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
 
         return type switch
         {
-            MediaType.movie => MediaType.movie.GetName(),
-            MediaType.tv => MediaType.tv.GetName(),
-            MediaType.person => $"{MediaType.person.GetName()},{item.known_for_department}",
+            MediaType.movie => MediaType.movie.GetFieldSettings().Name,
+            MediaType.tv => MediaType.tv.GetFieldSettings().Name,
+            MediaType.person => $"{MediaType.person.GetFieldSettings().Name},{item.known_for_department}",
             _ => null
         };
     }

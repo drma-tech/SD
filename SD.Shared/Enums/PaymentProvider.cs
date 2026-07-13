@@ -2,19 +2,19 @@
 {
     public enum PaymentProvider
     {
-        [Custom(Name = "Paddle")]
+        [FieldSettings("Paddle")]
         Paddle = 1,
 
-        [Custom(Name = "Microsoft Store")]
+        [FieldSettings("Microsoft Store")]
         Microsoft = 2,
 
-        [Custom(Name = "Google Play")]
+        [FieldSettings("Google Play")]
         Google = 3,
 
-        [Custom(Name = "App Store")]
+        [FieldSettings("App Store")]
         Apple = 4,
 
-        [Custom(Name = "Stripe")]
+        [FieldSettings("Stripe")]
         Stripe = 5
     }
 }

@@ -9,10 +9,10 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<HeadComponent Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetName()})")"
-               Description="@Translations.Description.PopularIndex.Format(PopularType.GetName())" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetName()})")"
-                      Description="@Translations.Description.PopularIndex.Format(PopularType.GetName())" UrlShare="@($"/{Culture}/popular/{Type}")" />
+<HeadComponent Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetFieldSettings().Name})")"
+               Description="@Translations.Description.PopularIndex.Format(PopularType.GetFieldSettings().Name)" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetFieldSettings().Name})")"
+                      Description="@Translations.Description.PopularIndex.Format(PopularType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/popular/{Type}")" />
 
 @if (PopularType == PopularType.Movie)
 {
@@ -30,7 +30,7 @@ else
 @code {
     [Parameter] public string? Type { get; set; }
 
-    public PopularType PopularType => Type.ParseToEnum(PopularType.Movie);
+    public PopularType PopularType => Type.ParseToEnum<PopularType>(PopularType.Movie);
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }

@@ -41,16 +41,16 @@
         <MudIconButton Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").Animation(IconAnimation.Fade).Font" Style="margin-right: -8px;" OnClick="@OpenSubscription" />
     }
 
-    <MudIconButton Icon="@Icons.Material.Filled.Apps" Color="Color.Inherit" Class="me-1" OnClick="@(() => { _openApps = true; })" />
+    <MudIconButton Icon="@Icons.Material.Filled.Apps" Color="Color.Inherit" Class="me-1" OnClick="@AppsClick" />
 
     <AuthorizeView>
         <Authorized>
             <MudAvatar>
-                <MudImage Src=@(AppStateStatic.User?.FindFirst(c => c.Type == "avatar")?.Value ?? "images/no-user.webp") onclick="@(() => { _openMenu = true; })" Style="cursor: pointer;"></MudImage>
+                <MudImage Src=@(AppStateStatic.User?.FindFirst(c => c.Type == "avatar")?.Value ?? "images/no-user.webp") onclick="@(() => MenuClick())" Style="cursor: pointer;"></MudImage>
             </MudAvatar>
         </Authorized>
         <NotAuthorized>
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _openMenu = true; })" />
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@MenuClick" />
         </NotAuthorized>
     </AuthorizeView>
 </MudAppBar>
@@ -103,10 +103,10 @@
             </Authorized>
         </AuthorizeView>
         <MudNavLink Icon="@Icons.Material.Filled.Settings" OnClick="@OpenConfigurations">
-            Settings
+            @Translations.Module.Help.Settings
         </MudNavLink>
         <MudNavLink Icon="@Icons.Material.Filled.HelpCenter" Href=@($"/{Culture}/help") rel="nofollow">
-            Help Center
+            @Translations.Module.Help.HelpTitle
         </MudNavLink>
 
         <MudDivider></MudDivider>
@@ -126,7 +126,7 @@
     </MudNavMenu>
     <MudSpacer></MudSpacer>
     <MudText Typo="Typo.caption" Align="Align.Center" Class="mb-2">
-        @($"Version: {AppStateStatic.Version}")
+        @($"{Translations.Notification.Version}: {AppStateStatic.Version}")
     </MudText>
 </MudDrawer>
 
@@ -165,7 +165,7 @@
     private bool _processing => _processingCount > 0;
 
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
-    private string menuClass => AppStateStatic.Breakpoint == Breakpoint.Xs ? "icon-text-button" : "px-3";
+    private string menuClass => AppStateStatic.IsMobile ? "icon-text-button" : "px-3";
 
     private WatchingList? Watching { get; set; }
     private bool MovieSync => (Watching?.CanSync(MediaType.movie) ?? false) && (Watching?.Items(MediaType.movie).Any() ?? false);
@@ -182,7 +182,7 @@
         PrincipalApi.DataChanged += principal => StateHasChanged();
         AppStateStatic.UserStateChanged.Subscribe(async () =>
         {
-            await _taskHelper.RunSingleAsync("LoadAuthDataAsync", AppStateStatic.IsAuthenticated, LoadAuthDataAsync, cts.Token);
+            await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", AppStateStatic.IsAuthenticated, LoadAuthenticatedDataAsync, cts.Token);
             await InvokeAsync(StateHasChanged);
         }, cts.Token);
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
@@ -224,13 +224,13 @@
                 }
             }
 
-            await _taskHelper.RunSingleAsync("LoadAuthDataAsync", AppStateStatic.IsAuthenticated, LoadAuthDataAsync, cts.Token);
+            await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", AppStateStatic.IsAuthenticated, LoadAuthenticatedDataAsync, cts.Token);
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    protected async Task LoadAuthDataAsync(CancellationToken token)
+    protected async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         try
         {
@@ -303,6 +303,16 @@
 
         await JsRuntime.Utils().PlayBeep(220, 400, "square", cts.Token);
         await JsRuntime.Utils().Vibrate([200, 100, 200], cts.Token);
+    }
+
+    private void AppsClick()
+    {
+        _openApps = true;
+    }
+
+    private void MenuClick()
+    {
+        _openMenu = true;
     }
 
     void IDisposable.Dispose()

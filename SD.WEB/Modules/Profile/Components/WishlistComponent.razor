@@ -60,7 +60,7 @@
                     </MudTooltip>
                 </Header>
                 <ChildContent>
-                    <MudTabPanel Text="@MediaType.movie.GetName()">
+                    <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
                         <RenderControl Actions="ActionsMovie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
@@ -105,7 +105,7 @@
                             }
                         </RenderControl>
                     </MudTabPanel>
-                    <MudTabPanel Text="@MediaType.tv.GetName()">
+                    <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
                         <RenderControl Actions="ActionsTv" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {

@@ -44,7 +44,7 @@
         </MudTabs>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+        <MudButton OnClick="CloseClick">
             @Translations.Button.Close
         </MudButton>
     </DialogActions>
@@ -56,5 +56,10 @@
     private async Task Logout()
     {
         await JsRuntime.Supabase().SignOutAsync(cts.Token);
+    }
+
+    private void CloseClick()
+    {
+        MudDialog?.Close();
     }
 }

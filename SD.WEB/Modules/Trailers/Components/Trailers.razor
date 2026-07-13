@@ -37,7 +37,7 @@
     public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadStaticDataAsync()
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("full", Actions, cts.Token);
     }

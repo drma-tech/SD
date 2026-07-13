@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SD.Shared.Resources.Enum {
+namespace SD.Shared.Translations.Enum {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace SD.Shared.Resources.Enum {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class PopularType {
+    public class MediaType {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PopularType() {
+        internal MediaType() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace SD.Shared.Resources.Enum {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Resources.Enum.PopularType", typeof(PopularType).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Translations.Enum.MediaType", typeof(MediaType).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,27 +63,27 @@ namespace SD.Shared.Resources.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Movies.
         /// </summary>
-        public static string MovieName {
+        public static string movieName {
             get {
-                return ResourceManager.GetString("MovieName", resourceCulture);
+                return ResourceManager.GetString("movieName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Person.
+        /// </summary>
+        public static string personName {
+            get {
+                return ResourceManager.GetString("personName", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Series.
         /// </summary>
-        public static string ShowName {
+        public static string tvName {
             get {
-                return ResourceManager.GetString("ShowName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Star.
-        /// </summary>
-        public static string StarName {
-            get {
-                return ResourceManager.GetString("StarName", resourceCulture);
+                return ResourceManager.GetString("tvName", resourceCulture);
             }
         }
     }

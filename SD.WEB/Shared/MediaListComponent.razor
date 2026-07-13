@@ -22,7 +22,7 @@
                 <ChildContent>
                     @if (ShowMovieFilter)
                     {
-                        <MudTabPanel Text="@MediaType.movie.GetName()">
+                        <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
                             <RenderControl Actions="Actions">
                                 <Slider List="Items" Context="item">
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
@@ -37,7 +37,7 @@
                     }
                     @if (ShowTvFilter)
                     {
-                        <MudTabPanel Text="@MediaType.tv.GetName()">
+                        <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
                             <RenderControl Actions="Actions">
                                 <Slider List="Items" Context="item">
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
@@ -98,7 +98,7 @@ else
 
     [Parameter] public MediaType TypeSelected { get; set; }
 
-    private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
+    private string Title => TitleHead ?? List?.GetFieldSettings().Name ?? "Title Error";
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list != null && list.Empty());
@@ -118,7 +118,7 @@ else
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             // if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async region => await ProcessInitialData(), cts.Token);
+            if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async region => await LoadParameterDataAsync(), cts.Token);
         }
         catch (Exception ex)
         {
@@ -126,7 +126,7 @@ else
         }
     }
 
-    protected override async Task ProcessInitialData()
+    protected override async Task LoadParameterDataAsync()
     {
         await LoadItems(TypeSelected);
     }

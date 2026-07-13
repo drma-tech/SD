@@ -53,26 +53,26 @@
                 <MudTabPanel Text="@Translations.Module.Landing.Advanced">
                     <MudToolBar Gutters="false" WrapContent="true">
                         <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Type" Clearable="true" Class="me-2">
-                            @foreach (var item in EnumHelper.GetArray<MediaType>().Where(p => p != MediaType.person))
+                            @foreach (var item in Types)
                             {
-                                <MudSelectItem Value="(MediaType?)(object?)item">@item.GetName()</MudSelectItem>
+                                <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
                             }
                         </MudSelect>
                         @if (AppStateStatic.Type == MediaType.movie)
                         {
                             <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
-                                @foreach (var item in EnumHelper.GetArray<MovieGenre>())
+                                @foreach (var item in MovieGenres)
                                 {
-                                    <MudSelectItem Value="(MovieGenre?)(object?)item">@item.GetName()</MudSelectItem>
+                                    <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }
                         else
                         {
                             <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
-                                @foreach (var item in EnumHelper.GetArray<TvGenre>())
+                                @foreach (var item in TvGenres)
                                 {
-                                    <MudSelectItem Value="(TvGenre?)(object?)item">@item.GetName()</MudSelectItem>
+                                    <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }
@@ -142,15 +142,23 @@
     private WatchingList? Watching { get; set; }
     private WishList? Wish { get; set; }
 
+    public List<EnumFieldObject<MediaType>> Types { get; set; } = [];
+    public List<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
+    public List<EnumFieldObject<TvGenre>> TvGenres { get; set; } = [];
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+
+        Types = EnumHelper.GetList<MediaType>().Where(p => p.Value != MediaType.person).ToList();
+        MovieGenres = EnumHelper.GetList<MovieGenre>();
+        TvGenres = EnumHelper.GetList<TvGenre>();
     }
 
-    protected override async Task LoadAuthDataAsync(CancellationToken token)
+    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);

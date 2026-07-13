@@ -2,18 +2,18 @@
 
 public enum DeliveryModel
 {
-    [Custom(Name = "FREEName", Description = "FREEDescription", ResourceType = typeof(Resources.Enum.DeliveryModel))]
+    [FieldSettings("FREEName", Description = "FREEDescription", ResourceType = typeof(Translations.Enum.DeliveryModel))]
     FREE = 0,
 
-    [Custom(Name = "AVODName", Description = "AVODDescription", ResourceType = typeof(Resources.Enum.DeliveryModel))]
+    [FieldSettings("AVODName", Description = "AVODDescription", ResourceType = typeof(Translations.Enum.DeliveryModel))]
     AVOD = 1,
 
-    [Custom(Name = "SVODName", Description = "SVODDescription", ResourceType = typeof(Resources.Enum.DeliveryModel))]
+    [FieldSettings("SVODName", Description = "SVODDescription", ResourceType = typeof(Translations.Enum.DeliveryModel))]
     SVOD = 2,
 
-    [Custom(Name = "TVODName", Description = "TVODDescription", ResourceType = typeof(Resources.Enum.DeliveryModel))]
+    [FieldSettings("TVODName", Description = "TVODDescription", ResourceType = typeof(Translations.Enum.DeliveryModel))]
     TVOD = 3,
 
-    [Custom(Name = "PVODName", Description = "PVODDescription", ResourceType = typeof(Resources.Enum.DeliveryModel))]
+    [FieldSettings("PVODName", Description = "PVODDescription", ResourceType = typeof(Translations.Enum.DeliveryModel))]
     PVOD = 4
 }

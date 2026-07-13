@@ -2,9 +2,9 @@
 
 public enum PopularType
 {
-    [Custom(Name = "MovieName", ResourceType = typeof(Resources.Enum.PopularType))]
+    [FieldSettings("MovieName", ResourceType = typeof(Translations.Enum.PopularType))]
     Movie,
 
-    [Custom(Name = "ShowName", ResourceType = typeof(Resources.Enum.PopularType))]
+    [FieldSettings("ShowName", ResourceType = typeof(Translations.Enum.PopularType))]
     Show
 }

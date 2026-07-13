@@ -4,7 +4,7 @@
 @inject ImdbPopularApi ImdbPopularApi
 
 <PageSectionComponent Title="@Translations.Module.Media.Popular"
-                      Description="@Translations.Description.PopularIndex.Format(TypeSelected.GetName())">
+                      Description="@Translations.Description.PopularIndex.Format(TypeSelected.GetFieldSettings().Name)">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -17,7 +17,7 @@
                 <a href="@($"/{Culture}/popular/{PopularType.Show.ToString().ToLower()}")" style="display:none;"></a>
             </Header>
             <ChildContent>
-                <MudTabPanel Text="@PopularType.Movie.GetName()">
+                <MudTabPanel Text="@PopularType.Movie.GetFieldSettings().Name">
                     @if (_loaded[0])
                     {
                         <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
@@ -25,7 +25,7 @@
                         </MediaListComponent>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@PopularType.Show.GetName()">
+                <MudTabPanel Text="@PopularType.Show.GetFieldSettings().Name">
                     @if (_loaded[1])
                     {
                         <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
