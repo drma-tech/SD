@@ -7,7 +7,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
-@inherits PageCore<PlataformIndex>
+@inherits PageParameterCore<PlataformIndex>
 
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
@@ -190,6 +190,15 @@ else
         base.OnInitialized();
 
         AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, cts.Token);
+    }
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            Culture,
+            Region
+        };
     }
 
     protected override async Task LoadParameterDataAsync()

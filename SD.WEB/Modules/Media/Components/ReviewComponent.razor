@@ -1,6 +1,6 @@
 ﻿@using SD.Shared.Models.Reviews
 @using SD.WEB.Shared.Core
-@inherits ComponentCore<ReviewComponent>
+@inherits ComponentParameterCore<ReviewComponent>
 
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
@@ -39,6 +39,15 @@
 
     public CacheDocument<ReviewModel>? Model { get; set; }
     private ComponentActions<CacheDocument<ReviewModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            ImdbId,
+            Type
+        };
+    }
 
     protected override async Task LoadParameterDataAsync()
     {

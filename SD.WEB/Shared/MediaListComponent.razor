@@ -1,4 +1,4 @@
-﻿@inherits ComponentCore<MediaListComponent>
+﻿@inherits ComponentParameterCore<MediaListComponent>
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
@@ -124,6 +124,11 @@ else
         {
             await ProcessException(ex);
         }
+    }
+
+    protected override object? GetParameterKey()
+    {
+        return TypeSelected;
     }
 
     protected override async Task LoadParameterDataAsync()

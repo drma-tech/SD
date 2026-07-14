@@ -4,7 +4,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Shared.Core
-@inherits ComponentCore<MediaPopup>
+@inherits ComponentParameterCore<MediaPopup>
 
 @inject TmdbApi TmdbApi
 @inject CacheRatingsApi CacheRatingsApi
@@ -301,6 +301,15 @@
             Wish = model;
             WishChanged.InvokeAsync(model);
             StateHasChanged();
+        };
+    }
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            TmdbId,
+            Type
         };
     }
 

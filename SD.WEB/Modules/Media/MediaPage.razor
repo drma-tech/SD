@@ -8,7 +8,7 @@
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
 
-@inherits PageCore<MediaPage>
+@inherits PageParameterCore<MediaPage>
 @implements IDisposable
 @attribute [Authorize]
 
@@ -219,6 +219,16 @@
 
     private ComponentActions<HashSet<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
     public HashSet<MediaDetail> Recommendations { get; set; } = [];
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            Culture,
+            TmdbId,
+            Type
+        };
+    }
 
     protected override async Task LoadParameterDataAsync()
     {

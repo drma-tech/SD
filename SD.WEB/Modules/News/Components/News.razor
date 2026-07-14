@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/news/{category}"
 @using SD.Shared.Models.News
 @using SD.WEB.Shared.Core
-@inherits PageCore<News>
+@inherits PageParameterCore<News>
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
@@ -45,9 +45,17 @@
     private CacheDocument<NewsModel>? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            Culture,
+            category
+        };
+    }
+
     protected override async Task LoadParameterDataAsync()
     {
         NewsList = await CacheFlixsterApi.GetNews("full", category, Actions, cts.Token);
     }
-
 }

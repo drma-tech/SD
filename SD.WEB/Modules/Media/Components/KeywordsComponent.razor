@@ -1,7 +1,7 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Shared.Core
-@inherits ComponentCore<KeywordsComponent>
+@inherits ComponentParameterCore<KeywordsComponent>
 
 @inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
@@ -22,6 +22,15 @@
     private ComponentActions<List<TmdbResultKeyword>> Actions { get; set; } = new(lst => lst == null || lst.Empty());
 
     private List<TmdbResultKeyword> List { get; set; } = [];
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            Type,
+            TmdbId
+        };
+    }
 
     protected override async Task LoadParameterDataAsync()
     {

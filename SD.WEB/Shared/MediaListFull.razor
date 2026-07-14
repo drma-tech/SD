@@ -2,7 +2,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
 @using SD.WEB.Shared.Core
-@inherits ComponentCore<MediaListFull>
+@inherits ComponentParameterCore<MediaListFull>
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
@@ -81,6 +81,16 @@
         // AppState.WatchedListChanged += StateHasChanged;
 
         if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await LoadParameterDataAsync(), cts.Token);
+    }
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            MediaListApi,
+            TypeSelected,
+            StringParameters,
+        };
     }
 
     protected override async Task LoadParameterDataAsync()

@@ -1,7 +1,7 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Shared.Core
-@inherits ComponentCore<CreditsComponent>
+@inherits ComponentParameterCore<CreditsComponent>
 
 @inject TmdbCreditApi TmdbCreditApi
 
@@ -99,6 +99,15 @@
 
     public ComponentActions<Credits?> Actions { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            Type,
+            TmdbId
+        };
+    }
 
     protected override async Task LoadParameterDataAsync()
     {

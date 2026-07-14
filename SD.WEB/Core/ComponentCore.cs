@@ -135,15 +135,6 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
     }
 
     /// <summary>
-    /// To load temporary data that may change and depends on parameters.
-    /// </summary>
-    /// <returns></returns>
-    protected virtual Task LoadParameterDataAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
     /// To process data that depends on the DOM, JavaScript, or element references.
     ///
     /// Note: Returns true when the component state changed and a re-render is required.
@@ -180,20 +171,6 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
 
             await LoadStaticDataAsync();
             await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", false, LoadAuthenticatedDataAsync, cts.Token); //start or route changes
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex, ShowExceptions);
-        }
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        try
-        {
-            await base.OnParametersSetAsync();
-
-            await LoadParameterDataAsync();
         }
         catch (Exception ex)
         {
@@ -265,7 +242,85 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
     }
 }
 
+public abstract class ComponentParameterCore<T> : ComponentCore<T> where T : class
+{
+    /// <summary>
+    /// To load temporary data that may change and depends on parameters.
+    /// </summary>
+    /// <returns></returns>
+    protected abstract Task LoadParameterDataAsync();
+
+    private object? _lastParameterKey;
+
+    protected abstract object? GetParameterKey();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            await base.OnParametersSetAsync();
+
+            var parameterKey = GetParameterKey();
+
+            if (!Equals(_lastParameterKey, parameterKey))
+            {
+                _lastParameterKey = parameterKey;
+
+                await LoadParameterDataAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex, ShowExceptions);
+        }
+    }
+}
+
 public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, IAsyncDisposable where T : class
+{
+    [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
+
+    [Parameter] public string? Culture { get; set; }
+
+    protected override bool ShowExceptions => true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+        }
+    }
+
+    #region BrowserViewportObserver
+
+    Guid IBrowserViewportObserver.Id { get; } = Guid.NewGuid();
+
+    Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        if (AppStateStatic.Breakpoint != browserViewportEventArgs.Breakpoint)
+        {
+            AppStateStatic.Size = browserViewportEventArgs.Breakpoint == Breakpoint.Xs ? Size.Small : Size.Medium;
+            AppStateStatic.Breakpoint = browserViewportEventArgs.Breakpoint;
+            AppStateStatic.BreakpointChanged.Publish(browserViewportEventArgs.Breakpoint);
+        }
+
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public virtual async ValueTask DisposeAsync()
+    {
+        Dispose();
+        await BrowserViewportService.UnsubscribeAsync(this);
+        GC.SuppressFinalize(this);
+    }
+
+    #endregion BrowserViewportObserver
+}
+
+public abstract class PageParameterCore<T> : ComponentParameterCore<T>, IBrowserViewportObserver, IAsyncDisposable where T : class
 {
     [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
 

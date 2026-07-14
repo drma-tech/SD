@@ -5,7 +5,7 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
-@inherits ComponentCore<MediaStreaming>
+@inherits ComponentParameterCore<MediaStreaming>
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
@@ -289,6 +289,15 @@
     protected override async Task LoadStaticDataAsync()
     {
         AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
+    }
+
+    protected override object? GetParameterKey()
+    {
+        return new
+        {
+            TmdbId,
+            Type
+        };
     }
 
     protected override async Task LoadParameterDataAsync()
