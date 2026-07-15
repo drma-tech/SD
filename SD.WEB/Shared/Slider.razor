@@ -35,10 +35,12 @@
 
     private ComponentActions<IEnumerable<T>> Actions { get; set; } = new(list => list == null || list.Empty());
     private readonly string _id = $"{Guid.NewGuid()}";
+    private bool refreshed = false;
 
     protected override async Task OnParametersSetAsync()
     {
         await Actions.FinishLoading.Invoke(List);
+        refreshed = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -46,7 +48,8 @@
         try
         {
             await Actions.FinishLoading.Invoke(List);
-            await JsRuntime.Slider().InitLists(_id, CancellationToken.None);
+            await JsRuntime.Slider().InitLists(_id, CancellationToken.None, null, refreshed);
+            refreshed = false;
         }
         catch (Exception ex)
         {

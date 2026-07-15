@@ -75,7 +75,7 @@
         Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
         ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token);
         DarkMode = await AppStateStatic.GetDarkMode(JsRuntime, cts.Token) ?? false;
-        
+
         return true;
     }
 
