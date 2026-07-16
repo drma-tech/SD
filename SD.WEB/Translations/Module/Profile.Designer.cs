@@ -187,15 +187,6 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your partner&apos;s profile is not yet available.
-        /// </summary>
-        internal static string PartnerProfileNotAvailable {
-            get {
-                return ResourceManager.GetString("PartnerProfileNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Platforms.
         /// </summary>
         internal static string Platforms {

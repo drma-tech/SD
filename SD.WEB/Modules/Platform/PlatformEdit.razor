@@ -90,7 +90,7 @@
 
 @code {
     public MediaType MediaType { get; set; } = MediaType.movie;
-    [FieldSettings("Model")] public DeliveryModel? DeliveryModel { get; set; }
+    public DeliveryModel? DeliveryModel { get; set; }
 
     private AllProviders? AllProviders { get; set; }
     public List<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];

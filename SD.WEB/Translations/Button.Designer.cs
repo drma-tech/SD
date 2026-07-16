@@ -250,15 +250,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate.
-        /// </summary>
-        internal static string Simulate {
-            get {
-                return ResourceManager.GetString("Simulate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unfollow.
         /// </summary>
         internal static string Unfollow {
