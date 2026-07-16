@@ -140,6 +140,13 @@
             {
                 var priceId = Config?.GetPriceId(product, Cycle);
 
+                if (priceId.Empty())
+                {
+                    await ShowWarning($"Price not available for {product.GetFieldSettings().Name}");
+                    _processing = false; StateHasChanged();
+                    return;
+                }
+
                 if (Provider == PaymentProvider.Paddle)
                 {
                     await ShowWarning($"Provider not available: {Provider.GetFieldSettings().Name}");

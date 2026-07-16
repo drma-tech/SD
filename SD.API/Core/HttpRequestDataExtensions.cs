@@ -63,6 +63,26 @@ public static class HttpRequestDataExtensions
         return response;
     }
 
+    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, string? text, TtlCache maxAge, CancellationToken cancellationToken)
+    {
+        var response = req.CreateResponse();
+
+        if (text.NotEmpty())
+        {
+            response.StatusCode = HttpStatusCode.OK;
+            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+            await response.WriteStringAsync(text, cancellationToken);
+        }
+        else
+        {
+            response.StatusCode = HttpStatusCode.NoContent;
+        }
+
+        response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+
+        return response;
+    }
+
     public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, Stream? stream, TtlCache maxAge, CancellationToken cancellationToken)
     {
         var response = req.CreateResponse();
