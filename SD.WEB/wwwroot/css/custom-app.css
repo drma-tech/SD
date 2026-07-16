@@ -64,13 +64,13 @@ body .pwa-updater[b-pwa-updater] {
 
 .grid-relative-container-platform {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 12px;
 }
 
 @media (max-width: 599.95px), (max-height: 599.95px) {
     .grid-relative-container-platform {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 8px;
     }
 }

@@ -63,9 +63,7 @@
         752,
         756,
         764,
-        784,
         792,
-        800,
         818,
         826,
         840,
@@ -139,7 +137,6 @@
         752,
         756,
         764,
-        784,
         792,
         818,
         826,
@@ -158,10 +155,10 @@
     {
       "id": "7",
       "name": "Fandango At Home",
-      "priority": 35,
+      "priority": 38,
       "description": "Fandango at Home gives you the option to rent or purchase movies and TV shows, with streaming available online or through its app on smart TVs, mobile devices, and other platforms.",
       "link": "https://athome.fandango.com/",
-      "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+      "logo_path": "/oIXE9vJdkilIxCLAtlbtiqewgvn.jpg",
       "regions": [
         840
       ],
@@ -357,15 +354,19 @@
         348,
         352,
         356,
+        360,
         372,
         380,
         392,
         428,
         440,
+        458,
         484,
         528,
         554,
         578,
+        604,
+        608,
         616,
         620,
         642,
@@ -373,6 +374,7 @@
         724,
         752,
         756,
+        764,
         792,
         826,
         840
@@ -388,7 +390,7 @@
     {
       "id": "11",
       "name": "MUBI",
-      "priority": 30,
+      "priority": 8,
       "description": "MUBI is a curated streaming service showcasing acclaimed films, festival favorites, and hidden gems. A new handpicked movie is added daily, with ad-free streaming and the option to download for offline viewing.",
       "link": "https://mubi.com/",
       "logo_path": "/x570VpH2C9EKDf1riP83rYc5dnL.jpg",
@@ -500,7 +502,6 @@
         788,
         792,
         796,
-        800,
         807,
         818,
         826,
@@ -542,7 +543,7 @@
     {
       "id": "19",
       "name": "NetMovies",
-      "priority": 14,
+      "priority": 15,
       "description": "NetMovies permite assistir filmes e séries online em casa, disponíveis para Android, iPad, Smart TVs (Philips, LG, Samsung), computadores (PC e Mac) e consoles como Xbox 360 e Xbox One.",
       "link": "https://www.netmovies.com.br/",
       "logo_path": "/jlyafDbXLyNXNNFZbIgB9VrlScW.jpg",
@@ -560,7 +561,7 @@
     {
       "id": "20",
       "name": "maxdome Store",
-      "priority": 17,
+      "priority": 18,
       "description": "Im maxdome Store können Sie die neuesten Filme und Serien online anschauen, ohne Abo. Die Plattform bietet preisgekrönte Unterhaltung und eine große Auswahl für jeden Geschmack.",
       "link": "https://store.maxdome.de/",
       "logo_path": "/cBN4jd4wPq6on0kESiTlevqvlnL.jpg",
@@ -597,7 +598,7 @@
     {
       "id": "25",
       "name": "Fandor",
-      "priority": 47,
+      "priority": 49,
       "description": "Fandor offers a curated selection of exceptional films for cinema enthusiasts. Explore unique, thought-provoking movies and connect with a community passionate about meaningful and engaging storytelling.",
       "link": "https://www.fandor.com/",
       "logo_path": "/45lSM3J7Ts4TXTtDv0EuTPL0eH5.jpg",
@@ -615,7 +616,7 @@
     {
       "id": "28",
       "name": "Netzkino",
-      "priority": 25,
+      "priority": 26,
       "description": "Netzkino bietet einen kostenlosen, legalen Streaming-Dienst mit über 2.000 Filmen. Genieße jederzeit Filme online ohne Abonnement oder Kosten.",
       "link": "https://www.netzkino.de/",
       "logo_path": "/4bKgwiotEIN6wiZNQhQfjp7qPCk.jpg",
@@ -635,10 +636,10 @@
     {
       "id": "29",
       "name": "Sky Go",
-      "priority": 5,
+      "priority": 6,
       "description": "Sky Go bietet Sport, Serien und Filme in HD und UHD. Mit flexiblen Optionen für Neu- und Bestandskunden kannst du jederzeit auf deine Lieblingsinhalte auf verschiedenen Geräten zugreifen.",
       "link": "https://www.sky.at/",
-      "logo_path": "/kAZkQcIxMxTmlwdgSB05fqtymp0.jpg",
+      "logo_path": "/vDdk3LyjWkYlfCtkrhkjFKFK1Hg.jpg",
       "regions": [
         40,
         276,
@@ -657,7 +658,7 @@
     {
       "id": "30",
       "name": "WOW",
-      "priority": 13,
+      "priority": 14,
       "description": "WOW bietet Filme, Serien und Live-Sport zum sofortigen Streamen. Entdecke dein neues Entertainment-Zuhause mit einer großen Auswahl an beliebten Inhalten auf verschiedenen Geräten.",
       "link": "https://www.wowtv.de/",
       "logo_path": "/9r5zFWuYnwjzO1JrNjSbLQwUc3P.jpg",
@@ -675,7 +676,7 @@
     {
       "id": "33",
       "name": "Alleskino",
-      "priority": 21,
+      "priority": 22,
       "description": "Alleskino.de bietet deutschen Spiel- und Dokumentarfilmen aus verschiedenen Jahrzehnten die Möglichkeit, online angesehen zu werden. Entdecke Filme bequem von zuhause aus.",
       "link": "https://www.alleskino.de/en/pages/home",
       "logo_path": "/m0zZQjEHcp8np3lkMdMZE9QRwjA.jpg",
@@ -695,7 +696,7 @@
     {
       "id": "34",
       "name": "MGM Plus",
-      "priority": 50,
+      "priority": 52,
       "description": "MGM Plus provides thousands of movies and TV series for ad-free streaming. Enjoy classic and modern titles across devices, with the freedom to cancel your subscription anytime.",
       "link": "https://www.mgmplus.com/",
       "logo_path": "/ctiRpS16dlaTXQBSsiFncMrgWmh.jpg",
@@ -713,7 +714,7 @@
     {
       "id": "35",
       "name": "Rakuten TV",
-      "priority": 4,
+      "priority": 5,
       "description": "Rakuten TV offers Hollywood blockbusters, popular TV series, and acclaimed independent films. Stream easily on computers, smart TVs, tablets, phones, and consoles, with early access and special offers available.",
       "link": "https://rakuten.tv/uk",
       "logo_path": "/bZvc9dXrXNly7cA0V4D9pR8yJwm.jpg",
@@ -759,7 +760,7 @@
     {
       "id": "38",
       "name": "BBC iPlayer",
-      "priority": 14,
+      "priority": 15,
       "description": "BBC iPlayer lets you stream live BBC channels, catch up on missed programs, and access exclusive shows. Enjoy a wide range of content across devices anytime.",
       "link": "https://www.bbc.co.uk/iplayer",
       "logo_path": "/nc8Tpsr8SqCbsTUogPDD06gGzB3.jpg",
@@ -777,7 +778,7 @@
     {
       "id": "39",
       "name": "Now TV",
-      "priority": 9,
+      "priority": 10,
       "description": "Now TV lets you pick a membership to stream movies, TV series, live sports, and kids’ content on demand. Watch across devices anytime, anywhere with flexible options.",
       "link": "https://www.nowtv.com/",
       "logo_path": "/g0E9h3JAeIwmdvxlT73jiEuxdNj.jpg",
@@ -797,7 +798,7 @@
     {
       "id": "40",
       "name": "CHILI",
-      "priority": 31,
+      "priority": 32,
       "description": "Without subscription, wherever you are, forever. LIVE YOUR MOVIE!",
       "link": "https://it.chili.com/",
       "logo_path": "/cNqhhi5UYjAvJv2M69t5cwSn0So.jpg",
@@ -814,7 +815,7 @@
     {
       "id": "41",
       "name": "ITVX",
-      "priority": 21,
+      "priority": 22,
       "description": "ITVX is a UK streaming service offering exclusive shows, blockbuster movies, live events, and thousands of boxsets. Enjoy a variety of content all in one convenient platform.",
       "link": "https://www.itv.com/",
       "logo_path": "/1LuvKw01c2KQCt6DqgAgR06H2pT.jpg",
@@ -832,7 +833,7 @@
     {
       "id": "43",
       "name": "Starz",
-      "priority": 37,
+      "priority": 40,
       "description": "Starz delivers original series, movies, and bonus content with bold storytelling and diverse perspectives. Stream on-demand, ad-free, and enjoy exclusive entertainment across devices.",
       "link": "https://www.starz.com",
       "logo_path": "/yIKwylTLP1u8gl84Is7FItpYLGL.jpg",
@@ -850,7 +851,7 @@
     {
       "id": "47",
       "name": "Looke",
-      "priority": 5,
+      "priority": 6,
       "description": "Looke permite assistir filmes e séries online no conforto de casa, compatível com Android, iPad, Smart TVs (Philips, LG, Samsung), computadores (PC e Mac) e consoles como Xbox 360 e Xbox One.",
       "link": "https://www.looke.com.br/",
       "logo_path": "/9HhIlyFlilVtx0sMTcPbhs5qR31.jpg",
@@ -884,7 +885,7 @@
     {
       "id": "58",
       "name": "Canal VOD",
-      "priority": 9,
+      "priority": 10,
       "description": "Canal VOD permet d’acheter, louer et télécharger une large sélection de films et séries. Profitez de vos contenus préférés directement sur vos appareils.",
       "link": "https://vod.canalplus.com/",
       "logo_path": "/cAUTwxqoI7zc9XtYr1SMtWZEsXg.jpg",
@@ -917,7 +918,7 @@
     {
       "id": "61",
       "name": "Orange VOD",
-      "priority": 11,
+      "priority": 12,
       "description": "Orange VOD offre un large catalogue de films et séries à regarder à la demande. Parcourez les nouveautés et classiques disponibles directement sur vos appareils.",
       "link": "https://www.justwatch.com/fr/plateforme/orange-vod",
       "logo_path": "/9Fyo6njYvroAIxAzTBbLgnjgYga.jpg",
@@ -935,7 +936,7 @@
     {
       "id": "62",
       "name": "Atres Player",
-      "priority": 13,
+      "priority": 14,
       "description": "Atres Player ofrece series, programas, noticias, deportes, telenovelas, TV en directo y contenido infantil. Disfruta también de producciones originales y exclusivas directamente en línea.",
       "link": "https://www.atresplayer.com/",
       "logo_path": "/zXlrphHQ0EiLTYZcDdVtDxmsjk5.jpg",
@@ -953,7 +954,7 @@
     {
       "id": "63",
       "name": "Filmin",
-      "priority": 22,
+      "priority": 23,
       "description": "Filmin ofrece películas, series y cortometrajes online en alta definición. Disfruta de un catálogo variado de cine independiente y de autor desde cualquier dispositivo.",
       "link": "https://www.filmin.es/",
       "logo_path": "/kO2SWXvDCHAquaUuTJBuZkTBAuU.jpg",
@@ -973,7 +974,7 @@
     {
       "id": "64",
       "name": "Filmin Plus",
-      "priority": 23,
+      "priority": 24,
       "description": "Filmin Plus ofrece acceso a una selección premium de películas, series y cortometrajes en alta definición, con contenido exclusivo y cine de autor para disfrutar online.",
       "link": "https://www.filmin.es/suscribete",
       "logo_path": "/ozZU2vSlyL11rFGEkq1HE0yxIJq.jpg",
@@ -991,7 +992,7 @@
     {
       "id": "66",
       "name": "Nuestro Cine MX",
-      "priority": 10,
+      "priority": 11,
       "description": "Nuestro Cine MX ofrece documentales y películas seleccionadas para streaming. Descubre todo el catálogo disponible en Filmin Latino y disfruta de contenido variado desde cualquier dispositivo.",
       "link": "https://www.justwatch.com/mx/proveedor/filmin-latino",
       "logo_path": "/aNlqB4iEoh7BQKaKj72iiC4WmkN.jpg",
@@ -1009,7 +1010,7 @@
     {
       "id": "71",
       "name": "Pathé Thuis",
-      "priority": 8,
+      "priority": 9,
       "description": "Pathé Thuis biedt een breed scala aan films, van grote blockbusters tot prijswinnende arthouse, zodat je als eerste vanuit je eigen huis van bioscoopkwaliteit kunt genieten.",
       "link": "https://www.pathe-thuis.nl/",
       "logo_path": "/lnOkJKyFl87mzqNebAbE8ADdHoB.jpg",
@@ -1026,7 +1027,7 @@
     {
       "id": "72",
       "name": "Videoland",
-      "priority": 7,
+      "priority": 8,
       "description": "Videoland biedt een uitgebreide collectie films en series voor streaming op smart-tv’s, computers en mobiele apparaten. Geniet van je favoriete entertainment waar en wanneer je wilt.",
       "link": "https://www.videoland.com/nl/",
       "logo_path": "/qN7uDYanT47WI0MmbwOr5HFFot.jpg",
@@ -1044,7 +1045,7 @@
     {
       "id": "73",
       "name": "Tubi TV",
-      "priority": 348,
+      "priority": 347,
       "description": "Tubi TV offers free streaming of movies and TV shows in HD. Watch a wide variety of genres on any device without subscription, ads, or hidden costs.",
       "link": "https://tubitv.com/",
       "logo_path": "/zLYr7OPvpskMA4S79E3vlCi71iC.jpg",
@@ -1067,7 +1068,7 @@
     {
       "id": "76",
       "name": "Viaplay",
-      "priority": 6,
+      "priority": 7,
       "description": "Viaplay erbjuder hyrfilmer, TV-serier och live sport som fotboll och Premier League. Streama allt online på dator, mobil eller smart-TV när det passar dig.",
       "link": "https://viaplay.se/",
       "logo_path": "/bnoTnLzz2MAhK3Yc6P9KXe5drIz.jpg",
@@ -1077,7 +1078,6 @@
         352,
         528,
         578,
-        616,
         752
       ],
       "types": [
@@ -1092,7 +1092,7 @@
     {
       "id": "79",
       "name": "NBC",
-      "priority": 48,
+      "priority": 50,
       "description": "NBC lets you stream episodes and content from NBCUniversal networks online. Watch popular shows, specials, and exclusive programming anytime on computers, mobile devices, or smart TVs.",
       "link": "https://www.nbc.com/shows/nbc/popular",
       "logo_path": "/6hFf3sIdmXSAczy3i6tLSmy6gwK.jpg",
@@ -1111,7 +1111,7 @@
     {
       "id": "80",
       "name": "AMC",
-      "priority": 44,
+      "priority": 46,
       "description": "Watch the latest full episodes and video extras for AMC shows: The Walking Dead, Better Call Saul, Killing Eve, Fear the Walking Dead, Mad Men and more.",
       "link": "https://www.amc.com/",
       "logo_path": "/92Kx25Od0habmgRBTqT6XWgwgKt.jpg",
@@ -1147,7 +1147,7 @@
     {
       "id": "83",
       "name": "The CW",
-      "priority": 32,
+      "priority": 35,
       "description": "The CW offers streaming of popular series like Riverdale, The Flash, Superman & Lois, and All American. Watch full episodes and exclusive content from your favorite shows across devices.",
       "link": "https://www.cwtv.com/shows/",
       "logo_path": "/spcwROYevucLluqZZ8Fv75UuTBt.jpg",
@@ -1165,7 +1165,7 @@
     {
       "id": "84",
       "name": "U-NEXT",
-      "priority": 5,
+      "priority": 6,
       "description": "U-NEXT is a leading Japanese streaming service offering movies, TV shows, anime, and more. Discover their latest content, features, and updates on the official U-NEXT platform.",
       "link": "https://www.unext.co.jp",
       "logo_path": "/a5T7vNaGvoeckYO6rQkHolvyYf4.jpg",
@@ -1183,7 +1183,7 @@
     {
       "id": "87",
       "name": "Acorn TV",
-      "priority": 56,
+      "priority": 57,
       "description": "Acorn TV offers the best British television on demand, streaming new and featured series without commercials. Enjoy a variety of UK shows anytime on multiple devices.",
       "link": "https://acorn.tv/",
       "logo_path": "/doCc555FPPgGtuaZJxf9QZVpIp5.jpg",
@@ -1205,7 +1205,7 @@
     {
       "id": "97",
       "name": "Watcha",
-      "priority": 5,
+      "priority": 6,
       "description": "Watcha에서는 영화, 드라마, 다큐멘터리, 애니메이션을 언제 어디서나 최고의 화질로 무제한 스트리밍할 수 있으며, 다양한 장르의 콘텐츠를 즐길 수 있습니다.",
       "link": "https://watcha.com/",
       "logo_path": "/5gmEivxOGPdq4Afpq1f8ktLtEW1.jpg",
@@ -1223,7 +1223,7 @@
     {
       "id": "99",
       "name": "Shudder",
-      "priority": 55,
+      "priority": 56,
       "description": "Shudder offers an extensive collection of horror, thriller, and suspense films, all uncut and ad-free. Stream chilling content anytime on smart TVs, computers, or mobile devices.",
       "link": "https://www.shudder.com/",
       "logo_path": "/vEtdiYRPRbDCp1Tcn3BEPF1Ni76.jpg",
@@ -1303,7 +1303,7 @@
     {
       "id": "103",
       "name": "Channel 4",
-      "priority": 15,
+      "priority": 16,
       "description": "Channel 4 lets you stream your favorite shows online from Channel 4, E4, and Walter Presents. Enjoy a wide range of series, documentaries, and exclusive content anytime.",
       "link": "https://www.channel4.com/",
       "logo_path": "/uMWCgjsGnO5IoQtqxXOjnQA5gt9.jpg",
@@ -1323,7 +1323,7 @@
     {
       "id": "109",
       "name": "Timvision",
-      "priority": 8,
+      "priority": 9,
       "description": "TIMVISION offre un nuovo modo di guardare la TV, con i migliori programmi disponibili su PC, Mac, tablet e smartphone, per goderti serie, film e intrattenimento ovunque.",
       "link": "https://www.timvision.it/",
       "logo_path": "/FyDfVwFZGuu2KVv7Kuz4ww7Ra3.jpg",
@@ -1340,27 +1340,9 @@
       ]
     },
     {
-      "id": "110",
-      "name": "Infinity+",
-      "priority": 14,
-      "description": "Mediaset Infinity offre programmi TV, canali live, film, serie, documentari e clip video. Streaming completo con funzione Restart per guardare i contenuti quando vuoi.",
-      "link": "https://mediasetinfinity.mediaset.it/",
-      "logo_path": "/tDlGQeD2LaDaHO62itqblktNwmM.jpg",
-      "regions": [
-        380
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        2,
-        3
-      ]
-    },
-    {
       "id": "113",
       "name": "Ivi",
-      "priority": 6,
+      "priority": 7,
       "description": "Онлайн-кинотеатр с огромной коллекцией фильмов, сериалов и мультфильмов. Легальный контент в HD-качестве для просмотра на любом устройстве в удобное время.",
       "link": "https://www.ivi.tv/",
       "logo_path": "/4smEkH3vlf5V3vo2vwrOQ6Chb35.jpg",
@@ -1421,7 +1403,7 @@
     {
       "id": "117",
       "name": "Kinopoisk",
-      "priority": 20,
+      "priority": 21,
       "description": "Умный кинотеатр от Яндекса: огромная библиотека фильмов, сериалов и аниме. Рекомендации, новинки и возможность скачивания. Смотрите без рекламы в любимой озвучке.",
       "link": "https://hd.kinopoisk.ru/",
       "logo_path": "/51wuCkUdkEQTUtB8TrtZzzxp3Tj.jpg",
@@ -1588,7 +1570,7 @@
     {
       "id": "123",
       "name": "FXNow",
-      "priority": 41,
+      "priority": 44,
       "description": "Stream exclusive FX original series, hit movies, and live television from the FX, FXX, and FXM networks. Dive into critically acclaimed dramas and edgy comedies.",
       "link": "https://fxnow.fxnetworks.com",
       "logo_path": "/m4KUe3UoTnLgN4g6txYMnBqeUI5.jpg",
@@ -1607,7 +1589,7 @@
     {
       "id": "124",
       "name": "Bookmyshow",
-      "priority": 45,
+      "priority": 46,
       "description": "BookMyShow offers showtimes, movie tickets, reviews, trailers, concert tickets and events near Mumbai . Also features promotional offers, coupons and mobile app.",
       "link": "https://in.bookmyshow.com/",
       "logo_path": "/hAKPOEwWdjE9evzxByVdF8QUMH3.jpg",
@@ -1622,7 +1604,7 @@
     {
       "id": "130",
       "name": "Sky Store",
-      "priority": 9,
+      "priority": 10,
       "description": "Die neuesten Kinofilme direkt bei Ihnen zu Hause. Sky Store bietet ein riesiges Angebot an Blockbustern und Klassikern zum Leihen oder Kaufen in bester Qualität.",
       "link": "https://store.sky.at/",
       "logo_path": "/59TxOAYcoFaufd6CWm465oPchD.jpg",
@@ -1662,7 +1644,7 @@
     {
       "id": "133",
       "name": "Videobuster",
-      "priority": 18,
+      "priority": 19,
       "description": "Ihr DVD- & Blu-ray-Verleih mit riesiger Auswahl. Über 80.000 Titel zum Leihen, inklusive neueste Filme, Serien und Klassiker auf DVD, Blu-ray und per Streaming.",
       "link": "https://www.videobuster.de/",
       "logo_path": "/82hFfWsPYtyskBrnkL8Y36vHcVf.jpg",
@@ -1716,7 +1698,7 @@
     {
       "id": "137",
       "name": "UKTV Play",
-      "priority": 26,
+      "priority": 27,
       "description": "The free streaming service from UKTV. Enjoy full box sets and catch up on shows from popular channels like Dave, Drama, W, and Yesterday. A brilliant mix of entertainment.",
       "link": "https://uktvplay.co.uk/",
       "logo_path": "/yJzefjm8ccbhxYN97bK3jOBzzdD.jpg",
@@ -1733,7 +1715,7 @@
     {
       "id": "140",
       "name": "CosmoGo",
-      "priority": 18,
+      "priority": 19,
       "description": "CosmoGo ile yüzlerce film, belgesel, çocuk ve spor içeriğini istediğin zaman, istediğin yerden izle! Aylık ve yıllık üyelik seçenekleriyle HD kalitesinde kurulumsuz izleme deneyimi.",
       "link": "https://app.cosmogo.com/",
       "logo_path": "/4bIKO5tqPgko0135wL9GhMsb1wv.jpg",
@@ -1751,7 +1733,7 @@
     {
       "id": "143",
       "name": "Sundance Now",
-      "priority": 57,
+      "priority": 58,
       "description": "Stream a curated selection of independent films, gripping true crime, political thrillers, and award-winning dramatic series. Ad-free viewing experience.",
       "link": "https://www.sundancenow.com/",
       "logo_path": "/1Edma9SrJnqkQW3BqFd2rJNHZvX.jpg",
@@ -1770,7 +1752,7 @@
     {
       "id": "146",
       "name": "iciTouTV",
-      "priority": 12,
+      "priority": 13,
       "description": "La plateforme de divertissement francophone du Canada. Offre du contenu exclusif de Radio-Canada, incluant séries, documentaires et émissions jeunesse.",
       "link": "https://ici.tou.tv/",
       "logo_path": "/7rJJlPpuGz0DV5OLjVW1HzYaFj9.jpg",
@@ -1788,7 +1770,7 @@
     {
       "id": "147",
       "name": "M6+",
-      "priority": 10,
+      "priority": 11,
       "description": "La plateforme de streaming du Groupe M6. Retrouvez tous vos programmes en replay : séries, divertissements, reality shows, films et podcasts.",
       "link": "https://www.m6.fr/",
       "logo_path": "/tmYzlEKeiWStvXwC1QdpXIASpN4.jpg",
@@ -1825,7 +1807,7 @@
     {
       "id": "149",
       "name": "Movistar Plus+ Ficción Total ",
-      "priority": 6,
+      "priority": 7,
       "description": "Disfruta del mejor cine, series nacionales e internacionales y canales en abierto. Incluye deportes en directo como LaLiga y la Champions League.",
       "link": "https://www.movistarplus.es/",
       "logo_path": "/f6TRLB3H4jDpFEZ0z2KWSSvu1SB.jpg",
@@ -1844,7 +1826,7 @@
     {
       "id": "150",
       "name": "blue TV",
-      "priority": 4,
+      "priority": 5,
       "description": "Das Unterhaltungsabo der Swisscom: Live-TV, Filme, Serien, Sport und On-Demand-Inhalte. Mit Replay-Funktion und Cloud-Aufnahme für flexibles Fernsehen.",
       "link": "https://tv.blue.ch/",
       "logo_path": "/47klot430ytIqldQUUx2avN45Sr.jpg",
@@ -1863,7 +1845,7 @@
     {
       "id": "151",
       "name": "BritBox",
-      "priority": 60,
+      "priority": 61,
       "description": "The largest collection of British TV available for streaming. Binge classic and contemporary mysteries, dramas, comedies, and exclusive BritBox Originals.",
       "link": "https://www.britbox.com/",
       "logo_path": "/8oA7IcDNNUtBa9JYB5kQ8hrDz5o.jpg",
@@ -1887,7 +1869,7 @@
     {
       "id": "155",
       "name": "History",
-      "priority": 331,
+      "priority": 330,
       "description": "Stream full episodes of HISTORY's hit shows, including Ancient Aliens, The Curse of Oak Island, and Forged in Fire. Dive into documentaries and historical series.",
       "link": "http://www.history.com/shows",
       "logo_path": "/xqZSzhIcq8qaAU13rMhVhzDi4T8.jpg",
@@ -1906,7 +1888,7 @@
     {
       "id": "156",
       "name": "A&E",
-      "priority": 53,
+      "priority": 54,
       "description": "Stream full episodes of A&E's compelling reality series and documentaries, including The First 48, 60 Days In, Intervention, and Court Cam.",
       "link": "https://www.aetv.com/",
       "logo_path": "/pA4qJFsD4lUFxJzwOE7U4FAxK7v.jpg",
@@ -1924,7 +1906,7 @@
     {
       "id": "157",
       "name": "Lifetime",
-      "priority": 54,
+      "priority": 55,
       "description": "Stream Lifetime's original movies and addictive reality series, including Married at First Sight, Dance Moms, and Little Women: Atlanta.",
       "link": "https://www.mylifetime.com/",
       "logo_path": "/tWq6XvHqPjBW1BZTpf4Nziy8CDD.jpg",
@@ -1942,7 +1924,7 @@
     {
       "id": "158",
       "name": "Viu",
-      "priority": 20,
+      "priority": 21,
       "description": "Popular Asian streaming service offering the latest Korean dramas, Chinese series, Thai shows, and anime. Watch with subtitles or local dubbing for free.",
       "link": "https://www.viu.com/ott/th/en",
       "logo_path": "/o7WsYI2r1llIf9h6JTGVX9yTHPx.jpg",
@@ -1966,7 +1948,7 @@
     {
       "id": "159",
       "name": "Catchplay",
-      "priority": 14,
+      "priority": 15,
       "description": "Asian streaming service offering a vast library of Hollywood blockbusters, independent films, and popular series. Rent, buy, or subscribe for unlimited access.",
       "link": "https://corporate.catchplay.com",
       "logo_path": "/9qSVItdgkVHH3Rrl9db2yRWsgBq.jpg",
@@ -1987,7 +1969,7 @@
     {
       "id": "160",
       "name": "iflix",
-      "priority": 4,
+      "priority": 5,
       "description": "Leading Asian streaming service offering unlimited access to thousands of movies, TV shows, and original series. Watch on any device with a free trial available.",
       "link": "https://www2.iflix.com/",
       "logo_path": "/vCTY2WtY1oJ8EKpp0UCz4SRpE4S.jpg",
@@ -2008,7 +1990,7 @@
     {
       "id": "167",
       "name": "Claro video",
-      "priority": 9,
+      "priority": 10,
       "description": "Uma plataforma completa de entretenimento na América Latina. Filmes, séries, canais de TV ao vivo e conteúdo exclusivo para assistir quando quiser.",
       "link": "https://www.clarovideo.com/",
       "logo_path": "/21M5CpiOYGOhHj2sVPXqwt6yeTO.jpg",
@@ -2073,7 +2055,7 @@
     {
       "id": "178",
       "name": "MagentaTV",
-      "priority": 22,
+      "priority": 23,
       "description": "Das TV-Entertainment von Telekom: Über 100 Sender, innovative Funktionen wie Cloud-Aufnahme und eine große Auswahl an Filmen & Serien on-demand.",
       "link": "https://web.magentatv.de/",
       "logo_path": "/nCsFBTEmlCMc5NA4fwPuluTz6AO.jpg",
@@ -2092,7 +2074,7 @@
     {
       "id": "182",
       "name": "Hollywood Suite",
-      "priority": 28,
+      "priority": 29,
       "description": "Celebrate decades of cinema with four commercial-free channels dedicated to the 70s, 80s, 90s, and 2000s. Essential classics and cult favorites on demand.",
       "link": "https://hollywoodsuite.ca/",
       "logo_path": "/qsOM361vYHE7pcNFG7bCJHyievG.jpg",
@@ -2127,7 +2109,7 @@
     {
       "id": "188",
       "name": "YouTube Premium",
-      "priority": 31,
+      "priority": 34,
       "description": "An enhanced YouTube experience: watch all videos ad-free, download them for offline viewing, and play content in the background on your mobile devices.",
       "link": "https://www.youtube.com/premium",
       "logo_path": "/rMb93u1tBeErSYLv79zSTR07UdO.jpg",
@@ -2168,7 +2150,7 @@
     {
       "id": "189",
       "name": "Curzon Home Cinema",
-      "priority": 38,
+      "priority": 39,
       "description": "The premier destination for arthouse and independent cinema lovers. Rent the latest curated film releases and festival favorites to watch at home.",
       "link": "https://homecinema.curzon.com/",
       "logo_path": "/pXQhPQmlIYsIZD4urWs8Ul8PhA6.jpg",
@@ -2186,7 +2168,7 @@
     {
       "id": "190",
       "name": "Curiosity Stream",
-      "priority": 9,
+      "priority": 6,
       "description": "Stream thousands of high-quality documentaries on science, history, technology, and nature. Affordable subscription service for the endlessly curious.",
       "link": "https://curiositystream.com/",
       "logo_path": "/oR1aNm1Qu9jQBkW4VrGPWhqbC3P.jpg",
@@ -2301,7 +2283,7 @@
     {
       "id": "191",
       "name": "Kanopy",
-      "priority": 33,
+      "priority": 36,
       "description": "Free streaming service for library card holders and students. Access curated indie films, classic cinema, and educational documentaries.",
       "link": "https://www.kanopy.com/",
       "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
@@ -2320,7 +2302,7 @@
     {
       "id": "192",
       "name": "YouTube",
-      "priority": 18,
+      "priority": 20,
       "description": "The world's largest video platform offering movies and shows for rental or purchase. From latest releases to classics, available on any device.",
       "link": "https://www.youtube.com/feed/storefront",
       "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
@@ -2367,7 +2349,7 @@
     {
       "id": "207",
       "name": "The Roku Channel",
-      "priority": 26,
+      "priority": 29,
       "description": "Free ad-supported streaming service on Roku devices. Offers movies, TV shows, and live news from various content partners.",
       "link": "https://www.roku.com/",
       "logo_path": "/wQzSN83BnWVgO7xEh0SeTVqtrFv.jpg",
@@ -2385,7 +2367,7 @@
     {
       "id": "209",
       "name": "PBS",
-      "priority": 40,
+      "priority": 43,
       "description": "Stream iconic PBS programming including Masterpiece, NOVA, Frontline, and PBS NewsHour. Educational content, documentaries, and cultural programming.",
       "link": "https://www.pbs.org/",
       "logo_path": "/iLjStQKQwzyxXJb3jyNpvDmW9mx.jpg",
@@ -2403,7 +2385,7 @@
     {
       "id": "210",
       "name": "Sky",
-      "priority": 7,
+      "priority": 8,
       "description": "Streamen Sie die neuesten Film-Highlights und exklusive Serien mit Sky Show. Flexibles Abo ohne Mindestlaufzeit für Unterhaltung auf allen Geräten.",
       "link": "https://show.sky.ch",
       "logo_path": "/ytApMa9fThUQUFTn696AeNBrB8f.jpg",
@@ -2421,7 +2403,7 @@
     {
       "id": "211",
       "name": "Freeform",
-      "priority": 51,
+      "priority": 53,
       "description": "Freeform offers young adult series, original movies, and popular TV shows. Features coming-of-age stories, comedies, and fantasy dramas.",
       "link": "https://www.freeform.com/",
       "logo_path": "/4cHGd32hhEHmFjDGJcjVEAwFQg0.jpg",
@@ -2439,7 +2421,7 @@
     {
       "id": "212",
       "name": "Hoopla",
-      "priority": 34,
+      "priority": 37,
       "description": "Free digital streaming service through your local library. Borrow movies, TV shows, music, audiobooks, and comics with your library card.",
       "link": "https://www.hoopladigital.com/",
       "logo_path": "/j7D006Uy3UWwZ6G0xH6BMgIWTzH.jpg",
@@ -2461,7 +2443,7 @@
     {
       "id": "219",
       "name": "ARD Mediathek",
-      "priority": 23,
+      "priority": 24,
       "description": "Die Mediathek der ARD: Nachrichten, Dokumentationen, Filme und Serien des Ersten Deutschen Fernsehens. Kostenlos und in HD-Qualität streamen.",
       "link": "https://www.daserste.de/",
       "logo_path": "/avItehPq07h5nKCJgwNTxl6OD0y.jpg",
@@ -2479,7 +2461,7 @@
     {
       "id": "222",
       "name": "Rai Play",
-      "priority": 15,
+      "priority": 16,
       "description": "Il servizio streaming della RAI: canali in diretta, programmi on demand, film, serie TV e documentari. Tutti i contenuti gratuiti per il pubblico italiano.",
       "link": "https://www.raiplay.it/",
       "logo_path": "/cmURKKdS72Ckr52615xvc2JPsJm.jpg",
@@ -2497,7 +2479,7 @@
     {
       "id": "223",
       "name": "Hayu",
-      "priority": 4,
+      "priority": 5,
       "description": "Reality TV streaming service featuring Keeping Up With The Kardashians, Real Housewives, and hundreds of other reality shows available same day as US broadcast.",
       "link": "https://www.hayu.com/",
       "logo_path": "/jxIBXlxRbCcy7Y4GvOZKszCd0dv.jpg",
@@ -2536,7 +2518,7 @@
     {
       "id": "224",
       "name": "BFI Player",
-      "priority": 20,
+      "priority": 21,
       "description": "The British Film Institute's streaming service. Curated collection of classic cinema, independent films, and restored classics from the BFI National Archive.",
       "link": "https://www.bfi.org.uk/",
       "logo_path": "/erGoVIuKJ0PYOJ8dh62o4YhwaJK.jpg",
@@ -2554,7 +2536,7 @@
     {
       "id": "230",
       "name": "Crave",
-      "priority": 5,
+      "priority": 6,
       "description": "Canada's premium streaming service for HBO, Showtime, and Starz content. Includes hit series, movies, and Crave Original programming like Letterkenny.",
       "link": "https://www.crave.ca/en",
       "logo_path": "/ewOptMVIYcOadMGGJz8DJueH2bH.jpg",
@@ -2665,7 +2647,7 @@
     {
       "id": "234",
       "name": "Arte",
-      "priority": 36,
+      "priority": 37,
       "description": "European cultural channel offering documentaries, films, and series focused on arts and culture. Free streaming available in multiple languages.",
       "link": "https://www.arte.tv/en/",
       "logo_path": "/vPZrjHe7wvALuwJEXT2kwYLi0gV.jpg",
@@ -2691,7 +2673,7 @@
     {
       "id": "235",
       "name": "YouTube Free",
-      "priority": 96,
+      "priority": 97,
       "description": "Free ad-supported streaming of movies and TV shows on YouTube. Includes classic films, popular series, and YouTube Originals available to watch without subscription.",
       "link": "https://www.youtube.com/",
       "logo_path": "/4tJBhJcuF1ZstI5Yqu82G0yroLa.jpg",
@@ -2711,7 +2693,7 @@
     {
       "id": "237",
       "name": "Sony Liv",
-      "priority": 9,
+      "priority": 10,
       "description": "Indian streaming service from Sony Pictures. Features original series, Bollywood movies, sports content, and popular TV shows across multiple languages.",
       "link": "https://www.sonyliv.com/",
       "logo_path": "/3973zlBbBXdXxaWqRWzGG2GYxbT.jpg",
@@ -2747,7 +2729,7 @@
     {
       "id": "251",
       "name": "ALLBLK",
-      "priority": 62,
+      "priority": 63,
       "description": "Streaming service dedicated to Black culture and entertainment. Features original series, independent films, classic Black cinema, and popular network shows.",
       "link": "https://allblk.tv/",
       "logo_path": "/4cKdiYEPW1BsWLb9UmNzAyUlD5p.jpg",
@@ -2765,7 +2747,7 @@
     {
       "id": "257",
       "name": "fuboTV",
-      "priority": 9,
+      "priority": 10,
       "description": "Live TV streaming service with sports, news, and entertainment channels. Includes cloud DVR and features ABC, CBS, NBC, Fox, ESPN, and more.",
       "link": "https://www.fubo.tv/lp/cordcutter/",
       "logo_path": "/9BgaNQRMDvVlji1JBZi6tcfxpKx.jpg",
@@ -2785,7 +2767,7 @@
     {
       "id": "258",
       "name": "Criterion Channel",
-      "priority": 39,
+      "priority": 42,
       "description": "Streaming service from the Criterion Collection. Curated selection of classic and contemporary cinema, independent films, and restored masterpieces.",
       "link": "https://www.criterionchannel.com/",
       "logo_path": "/yhrtzYd43pFIhRq0ruO8umJPuyn.jpg",
@@ -2804,7 +2786,7 @@
     {
       "id": "260",
       "name": "WWE Network",
-      "priority": 66,
+      "priority": 67,
       "description": "Official streaming home of WWE. Watch live pay-per-views, original series, and access the extensive library of WWE archives and classic matches.",
       "link": "https://watch.wwe.com/",
       "logo_path": "/7Wo1H7YMmRy7S56sz6HJAMYRdGq.jpg",
@@ -2822,7 +2804,7 @@
     {
       "id": "264",
       "name": "MyOutdoorTV",
-      "priority": 65,
+      "priority": 66,
       "description": "Specialty streaming service for outdoor enthusiasts. Features hunting, fishing, and adventure programming with over 20,000 episodes available.",
       "link": "https://myoutdoortv.com/",
       "logo_path": "/bSmoVepHvK0ijBAWGx3QlIeTtsu.jpg",
@@ -2839,7 +2821,7 @@
     {
       "id": "268",
       "name": "History Vault",
-      "priority": 63,
+      "priority": 64,
       "description": "Premium streaming archive from HISTORY. Access classic series, documentaries, and specials from the HISTORY channel library commercial-free.",
       "link": "https://www.historyvault.com/",
       "logo_path": "/z5jtxEEeJEK1kYDqbyXzfquolC9.jpg",
@@ -2856,7 +2838,7 @@
     {
       "id": "273",
       "name": "Neon TV",
-      "priority": 4,
+      "priority": 6,
       "description": "New Zealand streaming service offering hit TV shows, movies, and original content. Rent new releases or subscribe for unlimited access to their catalog.",
       "link": "https://www.neontv.co.nz/",
       "logo_path": "/iscLKFDwQlr0BAgVDBcuRapLiwC.jpg",
@@ -2874,7 +2856,7 @@
     {
       "id": "278",
       "name": "Pure Flix",
-      "priority": 67,
+      "priority": 68,
       "description": "Faith-based streaming service offering family-friendly and inspirational content. Christian movies, series, and educational programming for all ages.",
       "link": "https://www.pureflix.com/",
       "logo_path": "/7L4eXQD0yFVDKZ2qwYtxcV5gm6n.jpg",
@@ -2892,7 +2874,7 @@
     {
       "id": "283",
       "name": "Crunchyroll",
-      "priority": 24,
+      "priority": 12,
       "description": "World's largest anime streaming service. Watch thousands of episodes including simulcasts, classics, and Crunchyroll Originals with premium subscriptions.",
       "link": "https://www.crunchyroll.com/",
       "logo_path": "/fzN5Jok5Ig1eJ7gyNGoMhnLSCfh.jpg",
@@ -3024,7 +3006,7 @@
     {
       "id": "284",
       "name": "Lifetime Movie Club",
-      "priority": 68,
+      "priority": 69,
       "description": "Dedicated streaming service for Lifetime movies. Access the complete library of Lifetime original movies commercial-free with a subscription.",
       "link": "https://www.lifetimemovieclub.com/",
       "logo_path": "/m4ofXxkTOj04N8df5KJGCIjnWii.jpg",
@@ -3041,7 +3023,7 @@
     {
       "id": "297",
       "name": "Ziggo TV",
-      "priority": 6,
+      "priority": 7,
       "description": "Dutch cable TV streaming service. Watch live channels, on-demand content, and exclusive programming from Ziggo's entertainment portfolio.",
       "link": "https://www.ziggogo.tv/",
       "logo_path": "/ozUfbWZXVdymn8iC3zze0cQPeUi.jpg",
@@ -3059,7 +3041,7 @@
     {
       "id": "298",
       "name": "RTL+",
-      "priority": 5,
+      "priority": 6,
       "description": "Deutsches Streaming-Portal von RTL. Live-TV, Serien, Filme, Shows und Sport events streamen. Alle Sendungen auch nach TV-Ausstrahlung verfügbar.",
       "link": "https://www.tvnow.de/",
       "logo_path": "/jmR0t1kjzHcyV7raynzMbF87J9d.jpg",
@@ -3094,7 +3076,7 @@
     {
       "id": "300",
       "name": "Pluto TV",
-      "priority": 18,
+      "priority": 19,
       "description": "Free ad-supported streaming service with 250+ live channels and thousands of on-demand movies and TV shows. No subscription required.",
       "link": "https://pluto.tv/",
       "logo_path": "/dB8G41Q6tSL5NBisrIeqByfepBc.jpg",
@@ -3140,7 +3122,7 @@
     {
       "id": "304",
       "name": "Joyn",
-      "priority": 11,
+      "priority": 12,
       "description": "Deutscher Streaming-Dienst mit Live-TV, Serien, Filmen und Sport. Kostenlose Inhalte und Premium-Angebote von ProSieben, Sat.1 und anderen Sendern.",
       "link": "https://www.joyn.de/",
       "logo_path": "/3tKojIkk9QpkDUeU8HgpHQ9Jb2v.jpg",
@@ -3159,7 +3141,7 @@
     {
       "id": "307",
       "name": "Globoplay",
-      "priority": 9,
+      "priority": 10,
       "description": "A plataforma de streaming do Grupo Globo. Conteúdo exclusivo, novelas, jornalismo, esportes ao vivo e produções originais brasileiras.",
       "link": "https://globoplay.globo.com/",
       "logo_path": "/7Cg8esVVXOijXAm1f1vrS7jVjcN.jpg",
@@ -3177,7 +3159,7 @@
     {
       "id": "309",
       "name": "Sun Nxt",
-      "priority": 8,
+      "priority": 3,
       "description": "Streaming service for South Indian content. Watch Tamil, Telugu, and Malayalam movies, TV serials, and live channels from the Sun Network.",
       "link": "https://www.sunnxt.com/",
       "logo_path": "/6KEQzITx2RrCAQt5Nw9WrL1OI8z.jpg",
@@ -3313,7 +3295,7 @@
     {
       "id": "310",
       "name": "LaCinetek",
-      "priority": 18,
+      "priority": 19,
       "description": "Plateforme VOD dédiée aux chefs-d'œuvre du cinéma mondial. Une sélection de films classiques et cultes curatée par des réalisateurs contemporains.",
       "link": "https://www.lacinetek.com/",
       "logo_path": "/1syoSwH2yIskHUqeOiK9re8AMJC.jpg",
@@ -3333,7 +3315,7 @@
     {
       "id": "311",
       "name": "Be TV Go",
-      "priority": 5,
+      "priority": 6,
       "description": "Service de streaming belge. Films, séries, documentaires et contenus exclusifs disponibles en direct et en replay pour abonnés Be TV.",
       "link": "https://www.betv.be/",
       "logo_path": "/acANFKCTLQuvDPjJAb5SnmzJaT6.jpg",
@@ -3351,7 +3333,7 @@
     {
       "id": "312",
       "name": "VRT MAX",
-      "priority": 6,
+      "priority": 7,
       "description": "Gratis streamingdienst van VRT. Bekijk programma's, series en documentaires van de Vlaamse openbare omroep on-demand via app of website.",
       "link": "https://www.vrt.be/vrtmax/",
       "logo_path": "/gqxv8W54I95K3hNS6UT6sDRe2Az.jpg",
@@ -3369,7 +3351,7 @@
     {
       "id": "314",
       "name": "CBC Gem",
-      "priority": 42,
+      "priority": 43,
       "description": "Canada's free streaming service from CBC. Watch live TV, CBC originals, popular series, and movies with optional premium ad-free subscription.",
       "link": "https://gem.cbc.ca/",
       "logo_path": "/a7O0Z1uhFjgGydRrgT6ucBisP4K.jpg",
@@ -3501,7 +3483,7 @@
     {
       "id": "318",
       "name": "Adult Swim",
-      "priority": 93,
+      "priority": 94,
       "description": "Adult-oriented animation and comedy streaming. Features Rick and Morty, Robot Chicken, and other cult favorite adult cartoons and original series.",
       "link": "https://www.adultswim.com/",
       "logo_path": "/da2dkyeFe4GCRaKxpsW4mzt2UPl.jpg",
@@ -3520,7 +3502,7 @@
     {
       "id": "321",
       "name": "Sky X",
-      "priority": 17,
+      "priority": 18,
       "description": "Austrian streaming service from Sky. Offers movies, series, and exclusive content for subscribers to watch on-demand across multiple devices.",
       "link": null,
       "logo_path": "/67FAj8KvIiV5iZMJuPUdMrqMftw.jpg",
@@ -3536,7 +3518,7 @@
     {
       "id": "322",
       "name": "USA Network",
-      "priority": 94,
+      "priority": 95,
       "description": "Stream original USA Network series, movies, and exclusive content. Features popular dramas, comedies, and reality programming from the NBCUniversal network.",
       "link": "https://www.usanetwork.com/",
       "logo_path": "/A95qgiMz6ulV2SxeKcJ5Gc9pqGS.jpg",
@@ -3555,7 +3537,7 @@
     {
       "id": "323",
       "name": "Yle Areena",
-      "priority": 5,
+      "priority": 6,
       "description": "Suomen suoratoistopalvelu Yleltä. Katso ohjelmia, elokuvia, dokumentteja ja uutisia suorana lähetyksenä tai myöhemmin Areenasta.",
       "link": "https://areena.yle.fi/tv",
       "logo_path": "/nrORhu39C2YjBhx9v8rU8oFlulj.jpg",
@@ -3571,26 +3553,9 @@
       ]
     },
     {
-      "id": "324",
-      "name": "Cinemas a la Demande",
-      "priority": 19,
-      "description": "Service français de vidéo à la demande. Location et achat de films récents et classiques pour visionnement immédiat sur tous vos appareils.",
-      "link": null,
-      "logo_path": "/AboEF9vQyH2AAndLimdO043IzLh.jpg",
-      "regions": [
-        250
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        3
-      ]
-    },
-    {
       "id": "326",
       "name": "CTV",
-      "priority": 43,
+      "priority": 44,
       "description": "Canadian network's streaming service. Watch full episodes of CTV shows, popular series, and exclusive content with free and premium options.",
       "link": "https://www.ctv.ca/",
       "logo_path": "/xoFyQOXR3qINRsdnCQyd7jGx8Wo.jpg",
@@ -3608,7 +3573,7 @@
     {
       "id": "331",
       "name": "FlixFling",
-      "priority": 95,
+      "priority": 96,
       "description": "Stream hard-to-find movies, cult classics and new releases. Enjoy thousands of titles without any advertisements. Cancel anytime with no commitment.",
       "link": "https://www.flixfling.com/",
       "logo_path": "/yFGu4sSzwUMfhwmSsZgez8QhaVl.jpg",
@@ -3628,10 +3593,10 @@
     {
       "id": "332",
       "name": "Fandango at Home Free",
-      "priority": 38,
+      "priority": 41,
       "description": "Free streaming service offering movies and TV shows with ad-supported content. Access a selection of popular titles without subscription required.",
       "link": "https://athome.fandango.com/",
-      "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+      "logo_path": "/oIXE9vJdkilIxCLAtlbtiqewgvn.jpg",
       "regions": [
         840
       ],
@@ -3646,7 +3611,7 @@
     {
       "id": "333",
       "name": "5",
-      "priority": 34,
+      "priority": 35,
       "description": "British free-to-air television channel offering drama, sports and entertainment programming. Stream selected content online through their digital platform.",
       "link": "https://www.channel5.com/",
       "logo_path": "/4ee4wGJs6Us4vc6971WRkDUnn5m.jpg",
@@ -3740,14 +3705,13 @@
       ],
       "models": [
         2,
-        3,
-        4
+        3
       ]
     },
     {
       "id": "338",
       "name": "Ruutu",
-      "priority": 6,
+      "priority": 7,
       "description": "Ruutu - ei koskaan tylsää hetkeä. Katso Suomen suosituimmat sarjat, leffat, lastenohjelmat ja urheilu yhdessä paikassa. Kokeile heti.",
       "link": "https://www.ruutu.fi/",
       "logo_path": "/c7SqVo4DFrbK3RwhGbxvQ9SRco2.jpg",
@@ -3766,7 +3730,7 @@
     {
       "id": "339",
       "name": "MovistarTV",
-      "priority": 8,
+      "priority": 9,
       "description": "Servicio de streaming de Movistar con series, películas, deportes en vivo y contenido exclusivo. Disfruta de producción original y canales en directo.",
       "link": "https://www.movistarplay.com.pe/",
       "logo_path": "/tRNA2CRgA4XHvd7Mx9dH3sFtDVb.jpg",
@@ -3789,7 +3753,7 @@
     {
       "id": "342",
       "name": "puhutv",
-      "priority": 4,
+      "priority": 5,
       "description": "puhutv ile en popüler dizileri ve unutulmaz Türk filmlerini tek parça, HD görüntü kalitesiyle web'den, mobilden, tabletten ve Smart TV'den ücretsiz izle!",
       "link": "https://puhutv.com/",
       "logo_path": "/ffvIywFtojPQnVwHVmTSZEdemdt.jpg",
@@ -3807,7 +3771,7 @@
     {
       "id": "344",
       "name": "Rakuten Viki",
-      "priority": 17,
+      "priority": 18,
       "description": "Stream Asian dramas, movies and K-pop content with community-translated subtitles. Watch Korean, Chinese, Japanese and Taiwanese shows with multi-language support.",
       "link": "https://www.viki.com/",
       "logo_path": "/73uV3YooOA8gD9YQTXFj2XakZWA.jpg",
@@ -3891,7 +3855,7 @@
     {
       "id": "349",
       "name": "Kino on Demand",
-      "priority": 34,
+      "priority": 35,
       "description": "Deutscher Video-on-Demand-Service für Kinofilme und Special Interest Content. Enthält auch vergriffene Produktionen und Filmklassiker.",
       "link": "https://www.kino-on-demand.com/",
       "logo_path": "/yTwdlHzReo6l9HLWrZqEaEUECBt.jpg",
@@ -4004,7 +3968,7 @@
     {
       "id": "356",
       "name": "wavve",
-      "priority": 4,
+      "priority": 5,
       "description": "세상 얕은 콘텐츠부터 세상 딥한 콘텐츠까지 JUST DIVE! Wavve",
       "link": "https://www.wavve.com/",
       "logo_path": "/hPcjSaWfMwEqXaCMu7Fkb529Dkc.jpg",
@@ -4023,7 +3987,7 @@
     {
       "id": "357",
       "name": "DocPlay",
-      "priority": 9,
+      "priority": 10,
       "description": "Stream the world's best documentaries across true crime, history, science and nature. Curated collection of award-winning non-fiction storytelling.",
       "link": "https://www.docplay.com/",
       "logo_path": "/pVoZH9ZMGfrr1Ajk1UD29weO6iA.jpg",
@@ -4042,7 +4006,7 @@
     {
       "id": "359",
       "name": "Mediaset Infinity",
-      "priority": 12,
+      "priority": 13,
       "description": "Scopri Mediaset Infinity: guarda gratis film, canali TV live, documentari, soap, nuove fiction, serie TV e programmi di intrattenimento in streaming online!",
       "link": "https://mediasetinfinity.mediaset.it/",
       "logo_path": "/2hBbMVUI2G4GAGRAD0RZCZqDMUh.jpg",
@@ -4060,7 +4024,7 @@
     {
       "id": "360",
       "name": "NPO Start",
-      "priority": 18,
+      "priority": 19,
       "description": "Start programma's waar en wanneer je maar wilt op NPO Start. Met een plus abonnement kijk je zonder reclame alle afleveringen van je favoriete Nederlandse series.",
       "link": "https://npo.nl/start",
       "logo_path": "/jPNvTunAw7309LeRMT6m3yZy1Lm.jpg",
@@ -4166,7 +4130,7 @@
     {
       "id": "370",
       "name": "VOD Club",
-      "priority": 19,
+      "priority": 20,
       "description": "Austrian video-on-demand service offering movie rentals and purchases. Digital platform for recent releases and classic films in German language.",
       "link": null,
       "logo_path": "/y7gH7FKJEE6LrO5h6wZTHQdmukO.jpg",
@@ -4181,7 +4145,7 @@
     {
       "id": "373",
       "name": "Go3",
-      "priority": 8,
+      "priority": 9,
       "description": "Baltic streaming service offering movies, TV series, live sports and television channels. Available in Latvia, Estonia and Lithuania with multi-device support.",
       "link": "https://go3.lv/en/",
       "logo_path": "/1y6ds7KDN5Q33Jb0ZxnroEJ58Gd.jpg",
@@ -4219,7 +4183,7 @@
     {
       "id": "381",
       "name": "Canal+",
-      "priority": 34,
+      "priority": 35,
       "description": "myCANAL vous propose de regarder les meilleurs films, les dernières séries et les matchs en HD et en VOST ou FR.",
       "link": "https://www.canalplus.com/streaming/",
       "logo_path": "/geOzgeKZWpZC3lymAVEHVIk3X0q.jpg",
@@ -4242,7 +4206,7 @@
     {
       "id": "383",
       "name": "TV 2",
-      "priority": 8,
+      "priority": 9,
       "description": "Dansk streamingtjeneste med TV-serier, nyheder, sport og underholdning. Se TV 2s kanaler live eller on-demand med dansk produceret indhold.",
       "link": "https://play.tv2.dk/",
       "logo_path": "/ddwrbKxlX8n7TasdvrauFijCmEm.jpg",
@@ -4260,7 +4224,7 @@
     {
       "id": "385",
       "name": "BINGE",
-      "priority": 5,
+      "priority": 6,
       "description": "Australian streaming service featuring HBO content, blockbuster movies and popular TV series. Offers entertainment from various studios in one platform.",
       "link": "https://binge.com.au/",
       "logo_path": "/7QX5OdsQZrXGNBKq9SPzoPV9OYQ.jpg",
@@ -4297,7 +4261,7 @@
     {
       "id": "387",
       "name": "Peacock Premium Plus",
-      "priority": 215,
+      "priority": 214,
       "description": "Ad-free tier of Peacock with full content library, offline downloads and local NBC station live stream. All features of Premium without advertisements.",
       "link": "https://www.justwatch.com/us/provider/peacock-premium-plus",
       "logo_path": "/drPlq5beqXtBaP7MNs8W616YRhm.jpg",
@@ -4315,7 +4279,7 @@
     {
       "id": "389",
       "name": "Sooner",
-      "priority": 11,
+      "priority": 12,
       "description": "European streaming platform for arthouse cinema, independent films and film festivals. Curated selection of international content and cultural programming.",
       "link": "https://sooner.de/en/",
       "logo_path": "/brt7T1qjJhyKaazaHP2N9r31TRS.jpg",
@@ -4337,7 +4301,7 @@
     {
       "id": "392",
       "name": "wedotv",
-      "priority": 17,
+      "priority": 18,
       "description": "Free ad-supported streaming service offering movies, TV series and documentaries. German platform with entertainment content available without subscription.",
       "link": "https://wedotv.com/",
       "logo_path": "/jAwT86Q0H9U8RESR3zR2FVKe83D.jpg",
@@ -4412,7 +4376,7 @@
     {
       "id": "395",
       "name": "TVNZ+",
-      "priority": 11,
+      "priority": 12,
       "description": "Watch free movies, TV shows, news, sport & live TV online. Enjoy local, international and popular entertainment. Stream to your smart TV, game console, PC, Mac, mobile, tablet.",
       "link": "https://www.tvnz.co.nz/",
       "logo_path": "/kZRT6tkMn7zzRy8PjPuB3g3TItL.jpg",
@@ -4430,7 +4394,7 @@
     {
       "id": "396",
       "name": "Film1",
-      "priority": 17,
+      "priority": 18,
       "description": "Online interactive TV platform. You can browse your TV guide, mark your favorite channels or programs, set reminders, record your favorite shows and programs remotely to your TV decoder, or watch newest films",
       "link": "https://play.film1.nl/",
       "logo_path": "/uYJwhSwKHy1BahLwm3KnjP7ajgt.jpg",
@@ -4631,7 +4595,7 @@
     {
       "id": "421",
       "name": "Joyn Plus",
-      "priority": 36,
+      "priority": 37,
       "description": "Teste jetzt Joyn PLUS+ ✓unbegrenzt Serien und Filme ✓Serien vor TV-Ausstrahlung ✓Originals & Exclusives ✓über 70 Live TV Sender ✓als App oder im Web",
       "link": "https://www.joyn.de/plus",
       "logo_path": "/5aHLriu21FRDGlxY5zbzyEuoSvA.jpg",
@@ -4668,7 +4632,7 @@
     {
       "id": "423",
       "name": "Blockbuster",
-      "priority": 14,
+      "priority": 15,
       "description": "Se de nye film og serier online. Lej eller køb og stream tusindvis af film uden abonnement hos Blockbuster. Se film og serier både fra vores hjemmeside og apps. Vi er først med de nye film og eksklusive serie sæsoner!",
       "link": "https://blockbuster.dk/",
       "logo_path": "/auWzottqpExOHUlJwDZ4DvdHGoL.jpg",
@@ -4689,7 +4653,7 @@
     {
       "id": "426",
       "name": "SF Anytime",
-      "priority": 15,
+      "priority": 16,
       "description": "På SF Anytime kan du hyra eller köpa de senaste filmerna och serierna! Streama online eller ladda ned offline och betala endast för det du vill se.",
       "link": "https://www.sfanytime.com/sv",
       "logo_path": "/sNmIwrniZZORvNJOmEuWGhwBJNf.jpg",
@@ -4710,7 +4674,7 @@
     {
       "id": "427",
       "name": "Mhz Choice",
-      "priority": 84,
+      "priority": 85,
       "description": "The world’s best mysteries, dramas & comedies. No commitment, cancel anytime. Available in the U.S. and Canada.",
       "link": "https://watch.mhzchoice.com/",
       "logo_path": "/tnxLjN2lLYpkTIX8NPSId6bgqh8.jpg",
@@ -4730,7 +4694,7 @@
     {
       "id": "430",
       "name": "HiDive",
-      "priority": 76,
+      "priority": 77,
       "description": "Watch HIDIVE’s DUBCASTs and stream anime online! Find anime such as Redo of Healer, Haikyuu, Food Wars! and more",
       "link": "https://www.hidive.com/",
       "logo_path": "/iCV9oPBeoLDC5okFRZEgQkx7je0.jpg",
@@ -4749,7 +4713,7 @@
     {
       "id": "431",
       "name": "TV 2 Play",
-      "priority": 16,
+      "priority": 17,
       "description": "På TV 2 Play er det alltid noe å se for hele familien",
       "link": "https://play.tv2.no/",
       "logo_path": "/tpfmd22xEapb1aW2gzjSM5104rx.jpg",
@@ -4786,7 +4750,7 @@
     {
       "id": "433",
       "name": "OVID",
-      "priority": 82,
+      "priority": 83,
       "description": "OVID.tv, your new destination for streaming documentaries, art-house and independent films.",
       "link": "https://www.ovid.tv/",
       "logo_path": "/jxavsObOHN6UqlbuZQ1UpVRVv6X.jpg",
@@ -4804,7 +4768,7 @@
     {
       "id": "436",
       "name": "Fetch TV",
-      "priority": 4,
+      "priority": 5,
       "description": "Fetch Movies, Shows, Channels, Catch-Up, YouTube, Netflix, Stan and more. All on one menu with voice control and Universal Search. All your entertainment, easy.",
       "link": "https://www.fetchtv.com.au/",
       "logo_path": "/9B7l9ZSos54kFrZbliVExt2z9C9.jpg",
@@ -4822,7 +4786,7 @@
     {
       "id": "437",
       "name": "Hungama Play",
-      "priority": 15,
+      "priority": 16,
       "description": "Latest Bollywood New FREE Songs (2023) Online: New Punjabi Music free MP3 Songs Download and listen online New MP3 Hindi songs (2023) for free, new dj songs, hindi songs, free music online* at Hungama. Watch new hindi songs for free and latest popular Hindi songs online, English and regional movies, TV shows, FREE listening music, videos (2023) and online songs. Bollywood MP3 Free Hungama online Music & Hungama Play app to get access to unlimited free Bollywood songs, mp3 free music, free movies, latest music videos, online radio, new TV shows and much more at Hungama. Listen to free music and earn Hungama Coins, redeem Hungama coins for free subscription on Hungama Music & Hungama Play App and many more free gifts.",
       "link": "https://www.hungama.com/",
       "logo_path": "/pMTVKAUyjMb0xdMnHqfNj73MGH6.jpg",
@@ -4841,7 +4805,7 @@
     {
       "id": "438",
       "name": "Chai Flicks",
-      "priority": 83,
+      "priority": 84,
       "description": "Watch a highly acclaimed library of Jewish, Israeli movies, tv online - Free Trial",
       "link": "https://www.chaiflicks.com/",
       "logo_path": "/qesugDq8sUCixmOOsqDM1xAnBYz.jpg",
@@ -4859,7 +4823,7 @@
     {
       "id": "439",
       "name": "Shout! Factory TV",
-      "priority": 81,
+      "priority": 82,
       "description": "Watch full length films and TV episodes online from ShoutFactoryTV",
       "link": "https://www.shoutfactorytv.com/",
       "logo_path": "/y9jFndski0fRO4MHh3yg5PIL9ZI.jpg",
@@ -4878,7 +4842,7 @@
     {
       "id": "440",
       "name": "ThreeNow",
-      "priority": 15,
+      "priority": 16,
       "description": "Watch the latest TV On Demand episodes of all your favourite shows from Three with ThreeNow. Watch Three livestream, Newshub, Three Movies and Three shows.",
       "link": "https://www.threenow.co.nz/",
       "logo_path": "/vcsLhyNRm528LzfVqQJDddusP27.jpg",
@@ -4896,7 +4860,7 @@
     {
       "id": "441",
       "name": "NFB",
-      "priority": 48,
+      "priority": 49,
       "description": "Watch quality Canadian documentary, animation and fiction films online",
       "link": "https://www.nfb.ca/",
       "logo_path": "/zwTo48JWc9FNCgJ1ADPAfkhYUuA.jpg",
@@ -4915,7 +4879,7 @@
     {
       "id": "442",
       "name": "NRK TV",
-      "priority": 13,
+      "priority": 14,
       "description": "Se hele NRKs store utvalg av serier, dokumentarer, underholdning, film, sport og nyheter.",
       "link": "https://tv.nrk.no/",
       "logo_path": "/teyfWuW8nS8wsk6rVXIbynrxIX6.jpg",
@@ -4933,7 +4897,7 @@
     {
       "id": "443",
       "name": "Filmstriben",
-      "priority": 13,
+      "priority": 14,
       "description": "Se hvilke film, der var de mest populære i marts - for voksne, børn og dokumentarfilm.",
       "link": "https://fjernleje.filmstriben.dk/",
       "logo_path": "/eRRc8n7fzQewjh15d2fao45Xxvi.jpg",
@@ -4951,7 +4915,7 @@
     {
       "id": "444",
       "name": "Dekkoo",
-      "priority": 14,
+      "priority": 13,
       "description": "Watch gay movies and TV shows online or stream right to your PC, Mac, mobile device, tablet and more. Start your free trial today.",
       "link": "https://www.dekkoo.com/",
       "logo_path": "/x6nRFzF32hCzMHaVM4RHRo7lsgS.jpg",
@@ -5064,7 +5028,7 @@
     {
       "id": "446",
       "name": "Retrocrush",
-      "priority": 80,
+      "priority": 81,
       "description": "RetroCrush is a streaming service dedicated to the Golden Age of anime. All fans, old and new, are welcome.",
       "link": "https://www.retrocrush.tv/",
       "logo_path": "/5zUnCq0pvixEtQafzOBBWqxNRvX.jpg",
@@ -5083,7 +5047,7 @@
     {
       "id": "447",
       "name": "Belas Artes à La Carte",
-      "priority": 16,
+      "priority": 17,
       "description": "Uma nova maneira de ver filmes em casa: com programação especial, como a do Cine Belas Artes.  Aqui você encontra um acervo com curadoria, pensado para você, que ama uma programação de qualidade.",
       "link": "https://www.belasartesalacarte.com.br/",
       "logo_path": "/gBYz3cTgDPRoRFOCS4gG9BNPJdX.jpg",
@@ -5101,7 +5065,7 @@
     {
       "id": "448",
       "name": "Beamafilm",
-      "priority": 17,
+      "priority": 18,
       "description": "Watch movies and series with Beamafilm on all your favourite devices. Stream movies, docs and series straight from your TV, computer or device. Choose from over a thousand great films. Find something new or rediscover a classic with our easy access interface. Sign up today and enjoy the Beamafilm experience.",
       "link": "https://beamafilm.com/",
       "logo_path": "/mKHumLTIy1SmihWSVqN9iPxFnqf.jpg",
@@ -5110,7 +5074,8 @@
         554
       ],
       "types": [
-        1
+        1,
+        2
       ],
       "models": [
         0,
@@ -5121,7 +5086,7 @@
     {
       "id": "449",
       "name": "Global TV",
-      "priority": 46,
+      "priority": 47,
       "description": "Live TV Streaming, On Demand, and 24/7 Global News. Now More Channels on Global TV",
       "link": "https://watch.globaltv.com/view/61e47be8-4ea2-11ea-b113-4209a9e843ee",
       "logo_path": "/o2qiZykonJuLglxwBbtUbHu4wIO.jpg",
@@ -5139,7 +5104,7 @@
     {
       "id": "451",
       "name": "Picl",
-      "priority": 19,
+      "priority": 20,
       "description": "Picl is het filmtheater bij je thuis. Bekijk hier de allernieuwste films online, van de beste filmhuizen. Geniet direct zonder abonnement.",
       "link": "https://picl.nl/",
       "logo_path": "/mj1iZQtWmq9s0LmPhZ7KjUtgVja.jpg",
@@ -5156,7 +5121,7 @@
     {
       "id": "452",
       "name": "RTPplay",
-      "priority": 11,
+      "priority": 12,
       "description": "TV e Rádio em direto, séries, filmes, documentários, humor, podcasts, informação e conteúdos para toda a família, de acesso livre, disponíveis no seu computador, smart tv, telemóvel ou tablet. RTP Play, é bem visto!",
       "link": "https://www.rtp.pt/play/",
       "logo_path": "/9HQD7iNLyJQYhEq3Z9blyn7P4Vk.jpg",
@@ -5174,7 +5139,7 @@
     {
       "id": "455",
       "name": "Night Flight Plus",
-      "priority": 78,
+      "priority": 79,
       "description": "Stream original Night Flight episodes and a huge library of cult, b-movie and music films.",
       "link": "https://www.nightflightplus.com/",
       "logo_path": "/zOWoxUMmGW0OfDFAQsCosho2PZz.jpg",
@@ -5192,7 +5157,7 @@
     {
       "id": "457",
       "name": "VIX ",
-      "priority": 8,
+      "priority": 9,
       "description": "Más de 100 canales de TV con miles de películas, series y novelas, el mejor fútbol en directo y noticias 24 horas para mantenerte informado",
       "link": "https://www.vix.com/tv/on-demand",
       "logo_path": "/jwRPknT20dfU1GeVqbcDXFyvtdG.jpg",
@@ -5227,7 +5192,7 @@
     {
       "id": "458",
       "name": "Vice TV ",
-      "priority": 86,
+      "priority": 87,
       "description": "The new TV channel from VICE.",
       "link": "https://www.vicetv.com/en_us",
       "logo_path": "/zU75skIWNQ06SeFkmbFoaqhg069.jpg",
@@ -5244,7 +5209,7 @@
     {
       "id": "461",
       "name": "RTBF Auvio",
-      "priority": 12,
+      "priority": 13,
       "description": "Voir et écouter en replay tous les programmes de la RTBF. Regarder ou écouter en direct vos chaînes TV et radio. Découvrir des contenus exclusifs.",
       "link": "https://auvio.rtbf.be/",
       "logo_path": "/gdqGg9TIzmQQBmkG8bljY20KX0z.jpg",
@@ -5262,7 +5227,7 @@
     {
       "id": "463",
       "name": "Kirjastokino",
-      "priority": 15,
+      "priority": 16,
       "description": "Kotikino",
       "link": "https://kotikino.fi/",
       "logo_path": "/27Zotk8HAfHk7qPz9x6DWWhOpb7.jpg",
@@ -5280,7 +5245,7 @@
     {
       "id": "464",
       "name": "Kocowa",
-      "priority": 330,
+      "priority": 329,
       "description": "Looking for Korean TV Shows? KOCOWA streams 1000s of Korean television shows with English, Portuguese, and Spanish subtitles. Access exclusive content starting at $6.99.",
       "link": "https://www.kocowa.com/",
       "logo_path": "/hwsU65QW7A4dbMEWkDpgHyCNcfS.jpg",
@@ -5323,7 +5288,7 @@
     {
       "id": "467",
       "name": "DIRECTV GO",
-      "priority": 9,
+      "priority": 10,
       "description": " Assista a séries, filmes e jogos exclusivos em um só lugar. Saiba mais!",
       "link": "https://www.directvgo.com/",
       "logo_path": "/nr5UBW4IGKgBwmhpTMOfcvnX2vX.jpg",
@@ -5346,7 +5311,7 @@
     {
       "id": "468",
       "name": "genflix",
-      "priority": 12,
+      "priority": 13,
       "description": "Tonton online streaming film HD Indonesia, film Hollywood, Live Show, TV Channel, dan drama Korea terbaru dengan subtitle Indonesia dan Inggris di Genflix.",
       "link": "https://genflix.co.id/",
       "logo_path": "/o506FcbahVPxvVcsSA5dFLj9drV.jpg",
@@ -5364,7 +5329,7 @@
     {
       "id": "469",
       "name": "Club Illico",
-      "priority": 51,
+      "priority": 52,
       "description": "Experience the best of Online TV and watch movies, series, TV channels and more on illico.tv, the web TV with the widest variety of content.",
       "link": "https://illicoweb.videotron.com/home",
       "logo_path": "/cQjWvOiKRPeSuWRNGegcBjyqVbR.jpg",
@@ -5382,7 +5347,7 @@
     {
       "id": "472",
       "name": "NLZIET",
-      "priority": 21,
+      "priority": 22,
       "description": "Online tv kijken zoals jij dat wilt ✓ Kijk wanneer het jou uitkomt ✓ Overal in de EU ✓ Probeer 14 dagen gratis en ontdek het grote aanbod aan programma's",
       "link": "https://www.nlziet.nl/nl/",
       "logo_path": "/88ssxWDyhabjrwSrbSf87nCDK2y.jpg",
@@ -5421,7 +5386,7 @@
     {
       "id": "474",
       "name": "ShemarooMe",
-      "priority": 18,
+      "priority": 19,
       "description": "Unlimited bollywood movies, Gujarati movies, TV Serials and Devotional content. Watch high quality old classic movies, TV serials, bollywood music, kids shows in various languages, devotional content in regional languages such as Gujarati and Punjabi only at ShemarooMe. Download best OTT app in India.",
       "link": "https://www.shemaroome.com/",
       "logo_path": "/ec3kgfQ6YXbT3AFRh8bkQZQFLb2.jpg",
@@ -5436,7 +5401,7 @@
     {
       "id": "475",
       "name": "DOCSVILLE",
-      "priority": 10,
+      "priority": 8,
       "description": "Docsville is a global, on-demand documentary service. The best stories are always true.",
       "link": "https://www.docsville.com/",
       "logo_path": "/5zqbck5mo8PuVbGu2ngBUdn5Yga.jpg",
@@ -5531,7 +5496,7 @@
     {
       "id": "476",
       "name": "EPIC ON",
-      "priority": 17,
+      "priority": 18,
       "description": "Watch TV Shows, Web Series, Movies, Podcasts, Live TV Channels online at Epic On, India's premier OTT platform in India. With a wide selection of new and classic shows and Movies",
       "link": "https://www.epicon.in/",
       "logo_path": "/ymlo2k6RlX0zF5Te1AYwXRQ7Pra.jpg",
@@ -5549,7 +5514,7 @@
     {
       "id": "477",
       "name": "GOSPEL PLAY",
-      "priority": 21,
+      "priority": 22,
       "description": "O melhor conteúdo cristão para você e sua família.",
       "link": "https://www.gospelplay.com/",
       "logo_path": "/vPqYxDMMtoHlYg8ZzEXS5S6y6iQ.jpg",
@@ -5566,7 +5531,7 @@
     {
       "id": "479",
       "name": "Home of Horror",
-      "priority": 38,
+      "priority": 39,
       "description": "Die besten Horrorfilme und Serien online schauen - zuhause und unterwegs. Dein Streaming Angebot für Thriller, Mystery, Slasher und Zombie Filme. Jetzt testen",
       "link": "https://www.homeofhorror.de/",
       "logo_path": "/ntvIffmJe7ZO1SSobwSx8ABAZFG.jpg",
@@ -5574,7 +5539,8 @@
         276
       ],
       "types": [
-        1
+        1,
+        2
       ],
       "models": [
         2
@@ -5583,7 +5549,7 @@
     {
       "id": "480",
       "name": "Filmtastic",
-      "priority": 40,
+      "priority": 41,
       "description": "Blockbuster, Kultfilme, Überraschungshits & moderne Klassiker - der neue Streaming-Service für Kino-Fans. Jetzt kostenlos testen!",
       "link": "https://www.filmtastic.de/",
       "logo_path": "/eptSSZPhXJllBI8QywFDmgOMNkU.jpg",
@@ -5601,7 +5567,7 @@
     {
       "id": "481",
       "name": "ArthouseCNMA",
-      "priority": 41,
+      "priority": 42,
       "description": "Arthouse auf Abruf: Schau ausgewählte Independent-Filme, Autoren-Werke, preisgekrönte Festival-Highlights und Filmklassiker online - Jetzt kostenlos testen.",
       "link": "https://www.cnmaarthouse.de/",
       "logo_path": "/eBt8WXNGuJGBgQ28W88Y3eTAWsD.jpg",
@@ -5618,7 +5584,7 @@
     {
       "id": "482",
       "name": "ManoramaMax",
-      "priority": 22,
+      "priority": 23,
       "description": "Watch the Latest Movies, TV Shows & News - ManoramaMAX.",
       "link": "https://www.manoramamax.com/",
       "logo_path": "/tFkqZYsDhNe6hJCx50Aw6oma24w.jpg",
@@ -5636,7 +5602,7 @@
     {
       "id": "483",
       "name": "MAX Stream",
-      "priority": 14,
+      "priority": 15,
       "description": "Let's #NONSTOPNONTON with MAXstream! MAXstream is video application where you can enjoy thousands of movies and TV series from MAXstream Original, HBO GO, iflix, MyPlay, NOMO, Starvision, Sushiroll, Vidio, VIU, WeTV iflix, and other interesting movie series. MAXstream also provides various channels such as WARNER TV, NET TV, RTV, RCTI, HBO, and many more.",
       "link": "https://maxstream.tv/",
       "logo_path": "/zDSJn28xTG4f6h2yxZ6UmCPvZ8j.jpg",
@@ -5654,7 +5620,7 @@
     {
       "id": "484",
       "name": "Claro tv+",
-      "priority": 20,
+      "priority": 21,
       "description": "Assista agora os seus programas, séries de TV preferidas e os lançamentos recém saídos do cinema pra curtir pela TV, pela web ou pelo celular.",
       "link": "https://www.nowonline.com.br/",
       "logo_path": "/7EpFKOCMrlo3bjsyBMrec64c7Wb.jpg",
@@ -5692,7 +5658,7 @@
     {
       "id": "487",
       "name": "OXYGEN",
-      "priority": 336,
+      "priority": 335,
       "description": "Watch full episodes of Oxygen true crime shows including Snapped, Killer Couples, and Three Days to Live. Visit Crime Time for breaking crime news and listen to the Martinis & Murder podcast.",
       "link": "https://www.oxygen.com/",
       "logo_path": "/9BcTvaS8RhQ58LoEbiuoCNghbcz.jpg",
@@ -5709,7 +5675,7 @@
     {
       "id": "488",
       "name": "tvo",
-      "priority": 53,
+      "priority": 54,
       "description": "Stream thought-provoking full length documentaries",
       "link": "https://www.tvo.org/documentaries",
       "logo_path": "/yQhSfwOzTF9EATdq47LlRFghmiO.jpg",
@@ -5727,7 +5693,7 @@
     {
       "id": "489",
       "name": "Vidio",
-      "priority": 16,
+      "priority": 17,
       "description": "Streaming TV, film, serial, & olahraga favoritmu. Tayangan eksklusif lokal & internasional. Temukan pengalaman menonton yang #LebihDariHiburan di Vidio.",
       "link": "https://www.vidio.com/",
       "logo_path": "/l2ZNwMC37iK0fquVuYWfcgIJJdF.jpg",
@@ -5745,7 +5711,7 @@
     {
       "id": "491",
       "name": "CINE",
-      "priority": 13,
+      "priority": 14,
       "description": "CINE.AR PLAY es la Plataforma de video a demanda de Contenidos Audiovisuales Nacionales, desarrollada en el país, para que veas las películas, series y cortos, cuando quieras y donde quieras.",
       "link": "https://play.cine.ar",
       "logo_path": "/21uSo4VQUdEmeA6RJ6gPSRwusbt.jpg",
@@ -5763,7 +5729,7 @@
     {
       "id": "493",
       "name": "SVT",
-      "priority": 17,
+      "priority": 18,
       "description": "Se dina favoritprogram när du vill i SVT Play - fri television på nätet.",
       "link": "https://www.svtplay.se/",
       "logo_path": "/oBdaG066fB5O7XYrYKQflOZvd89.jpg",
@@ -5781,7 +5747,7 @@
     {
       "id": "496",
       "name": "Cineasterna",
-      "priority": 21,
+      "priority": 22,
       "description": "Välkommen till Cineasterna, en filmtjänst till landets bibliotek. Det är en motsvarighet till liknande filmtjänster som finns på marknaden. Den stora skillnaden är att tjänsten enbart är tillgänglig för bibliotek och dess låntagare.",
       "link": "https://www.cineasterna.com/",
       "logo_path": "/w1V9hzBaRlkpISBWhCv676kI8Mp.jpg",
@@ -5801,7 +5767,7 @@
     {
       "id": "497",
       "name": "Tele2 Play",
-      "priority": 19,
+      "priority": 20,
       "description": "Upptäck succéunderhållning från populära streamingtjänster som Disney+, SkyShowtime, HBO Max, Viaplay, TV4 Play eller följ spänningen i direktsänd sport från de största tv-kanalerna. ",
       "link": "https://www.tele2play.se/",
       "logo_path": "/jy4yvY3szonb0p6rtMXvF5stuX9.jpg",
@@ -5819,11 +5785,12 @@
     {
       "id": "498",
       "name": "South Park",
-      "priority": 27,
+      "priority": 28,
       "description": "Ver los episodios completos de South Park - una comedia animada de televisión creada por Trey Parker y Matt Stone.",
       "link": "https://www.southpark.lat/",
       "logo_path": "/9kxo34bWuDJcGvNQBlSY4o6OujZ.jpg",
       "regions": [
+        70,
         276,
         528,
         566,
@@ -5840,7 +5807,7 @@
     {
       "id": "499",
       "name": "Oldflix",
-      "priority": 19,
+      "priority": 20,
       "description": "Assista a séries de TV e Filmes online. Os maiores e melhores clássicos retrô do cinema e TV estão aqui.",
       "link": "https://www.oldflix.com.br/",
       "logo_path": "/rXNXvz2096ri69ZlZsFwKxZYJsS.jpg",
@@ -5858,7 +5825,7 @@
     {
       "id": "502",
       "name": "Tata Play",
-      "priority": 20,
+      "priority": 21,
       "description": "Tata Play (formerly Tata Sky) offers 600+ channels through its DTH service. With 20+ million connections, Tata Play (formerly Tata Sky) is the preferred DTH connection service provider in India. Choose DTH packages, plans, & channels.",
       "link": "https://www.tataplay.com/",
       "logo_path": "/5VLMQDq6LWfftQCl7sYrtTseXRA.jpg",
@@ -5894,7 +5861,7 @@
     {
       "id": "505",
       "name": "Player",
-      "priority": 10,
+      "priority": 11,
       "description": "Player.pl | Sprawdź najbardziej angażujący serwis VOD w Polsce. Programy i seriale TVN nawet tydzień przed premierą w TV, filmy na życzenie prosto z kina, wyselekcjonowane bajki dla dzieci. Kanały na żywo m.in: TVN24, MINIMINI+, ALEKINO+, NSPORT+, ELEVEN.",
       "link": "https://player.pl/",
       "logo_path": "/jhMNVBV2UocEGepRkr9oFPD7Gpb.jpg",
@@ -5984,7 +5951,7 @@
     {
       "id": "510",
       "name": "Discovery+",
-      "priority": 21,
+      "priority": 22,
       "description": "Watch HGTV, Food Network, TLC, ID and more plus exclusive originals, all in one place. Start your 7-day free trial today.",
       "link": "https://discoveryplus.com",
       "logo_path": "/eMTnWwNVtThkjvQA6zwxaoJG9NE.jpg",
@@ -6002,7 +5969,7 @@
     {
       "id": "511",
       "name": "iWant",
-      "priority": 21,
+      "priority": 22,
       "description": "Watch hundreds of Pinoy shows, movies, live sports and news you'll love on iWantTFC",
       "link": "https://www.iwanttfc.com/",
       "logo_path": "/jb38w281Douk6kXy1iVB2L7FJTN.jpg",
@@ -6033,7 +6000,7 @@
     {
       "id": "513",
       "name": "Shadowz",
-      "priority": 24,
+      "priority": 25,
       "description": "Essayez gratuitement Shadowz, la 1ère plateforme de screaming pendant 7 jours sans engagement. Profitez du plus large catalogue de films de genre (Horreur, Thriller, Fantastique, Science-Fiction...) en streaming sur votre PC, Mac, Smartphone et Tablette. Le meilleur de l'horreur est sur Shadowz.",
       "link": "https://www.shadowz.fr/home",
       "logo_path": "/qwRq7klF8EijYs7XgvxSaYd6v6w.jpg",
@@ -6070,7 +6037,7 @@
     {
       "id": "515",
       "name": "MX Player",
-      "priority": 23,
+      "priority": 24,
       "description": "MXPlay is a video streaming service and India's Maha entertainment destination.",
       "link": "https://www.mxplayer.in/",
       "logo_path": "/ayHY6wKxvCKj2PU8eRPFxnPc6B0.jpg",
@@ -6088,7 +6055,7 @@
     {
       "id": "516",
       "name": "Noovo",
-      "priority": 57,
+      "priority": 58,
       "description": "Toutes les émissions des chaînes Noovo, Canal Vie, Z, Canal D, VRAK et Investigation, en plus des contenus numériques inédits, à un seul endroit! Le meilleur du divertissement télévisuel québécois, c'est sur Noovo.ca que ça se passe!",
       "link": "https://www.noovo.ca/",
       "logo_path": "/ss6JfWLwwrIjO1AfEsBy8GYM1EU.jpg",
@@ -6106,7 +6073,7 @@
     {
       "id": "517",
       "name": "TriArt Play",
-      "priority": 20,
+      "priority": 21,
       "description": "Streama kvalitetsfilm på TriArt Play.",
       "link": "https://www.triartplay.se/home",
       "logo_path": "/sgws7qaFHYTEeYhc8RCjZ5D7IlH.jpg",
@@ -6144,7 +6111,7 @@
     {
       "id": "522",
       "name": "Popcorntimes",
-      "priority": 42,
+      "priority": 43,
       "description": "Popcorntimes GmbH is a video on demand company located in Munich, Germany, providing free and legal movie streaming services. We are holding the licenses for all of our published movies.",
       "link": "https://www.dailymotion.com/popcorntimes",
       "logo_path": "/3kmmwlTET45ryW7azWfFJ0Piwll.jpg",
@@ -6163,7 +6130,7 @@
     {
       "id": "524",
       "name": "Discovery+",
-      "priority": 20,
+      "priority": 21,
       "description": "Watch HGTV, Food Network, TLC, ID and more plus exclusive originals, all in one place. Start your 7-day free trial today.",
       "link": "https://discoveryplus.com",
       "logo_path": "/bPW3J8KlLrot95sLzadnpzVe61f.jpg",
@@ -6185,7 +6152,7 @@
     {
       "id": "525",
       "name": "Knowledge Network",
-      "priority": 54,
+      "priority": 55,
       "description": "Thought-provoking documentaries. Award-winning Knowledge Originals. 100% free. 0% commercials. Sign me up.",
       "link": "https://www.knowledge.ca/",
       "logo_path": "/7wADjxAylhGGqWYNz86jGOQSoZG.jpg",
@@ -6203,7 +6170,7 @@
     {
       "id": "526",
       "name": "AMC+",
-      "priority": 29,
+      "priority": 32,
       "description": "Watch your favorite AMC shows ad-free, on demand. Binge or stream new shows & movies from IFC Films Unlimited, Shudder, and Sundance Now. Award-winning series, popular movies, horror, sci-fi, true crime, and more.",
       "link": "https://www.amcplus.com/",
       "logo_path": "/ovmu6uot1XVvsemM2dDySXLiX57.jpg",
@@ -6224,7 +6191,7 @@
     {
       "id": "529",
       "name": "ARROW",
-      "priority": 363,
+      "priority": 362,
       "description": null,
       "link": null,
       "logo_path": "/wAuMUrRTVaJ2CZ4ZpyQbayZx0iU.jpg",
@@ -6234,14 +6201,15 @@
         840
       ],
       "types": [
-        1
+        1,
+        2
       ],
       "models": []
     },
     {
       "id": "531",
       "name": "Paramount Plus",
-      "priority": 6,
+      "priority": 7,
       "description": "Watch thousands of hit movies and episodes of your favorite shows, all in one place. Stream it all on Paramount+. Try 7 days free.",
       "link": "https://www.paramountplus.com",
       "logo_path": "/h5DcR0J2EESLitnhR8xLG1QymTE.jpg",
@@ -6285,7 +6253,7 @@
     {
       "id": "532",
       "name": "aha",
-      "priority": 8,
+      "priority": 9,
       "description": "Watch Movies Online - Watch unlimited exclusive movies and originals online on aha. Stream movies and originals on your internet enabled devices from aha app.",
       "link": "https://www.aha.video/",
       "logo_path": "/8WerMI8XcZXqPpkHTZNtzMzousF.jpg",
@@ -6347,7 +6315,7 @@
     {
       "id": "533",
       "name": "Amazon Arthaus Channel",
-      "priority": 45,
+      "priority": 46,
       "description": "Türkiye’nin dijital platformu EXXEN! EXXEN’de her gün yeni içerikler ve sürpriz formatlar sizleri bekliyor.",
       "link": "https://www.exxen.com/",
       "logo_path": "/9MABvFilVMUAV86vLUgBgeM5LQQ.jpg",
@@ -6366,7 +6334,7 @@
     {
       "id": "534",
       "name": "Argo",
-      "priority": 6,
+      "priority": 7,
       "description": "Stream the best short films from around the world, curated by the top film festivals, filmmakers and influencers. Discover weekly playlists around trending topics.",
       "link": "https://watchargo.com/",
       "logo_path": "/jQMOpRluniNQSEp6V7IvtKxXMW.jpg",
@@ -6406,6 +6374,7 @@
         788,
         818,
         834,
+        858,
         887,
         99999
       ],
@@ -6419,7 +6388,7 @@
     {
       "id": "537",
       "name": "ZDF",
-      "priority": 47,
+      "priority": 48,
       "description": "Alle Videos und Livestreams im ZDF anschauen - ständig verfügbar und interaktiv! Entdecke Filme, Serien, Sportevents, Dokumentationen und vieles mehr!",
       "link": "https://www.zdf.de/",
       "logo_path": "/ugus0p8BGGhE8sxhwAjJz2o8jyy.jpg",
@@ -6439,7 +6408,7 @@
     {
       "id": "538",
       "name": "Plex",
-      "priority": 26,
+      "priority": 5,
       "description": "Paying to watch movies is a thing of the past. Watch FREE MOVIES ONLINE at zero cost on any device with Plex. Browse our collection of 100,000+ FREE movies and shows.",
       "link": "https://www.plex.tv/watch-free/",
       "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
@@ -6567,7 +6536,7 @@
     {
       "id": "539",
       "name": "Viddla",
-      "priority": 17,
+      "priority": 18,
       "description": "Viddla is the libraries' own film streaming service. You can easily borrow films with your library card. Stream Oscar winners, films from all over the world, great children's and family films and award-winning documentaries.",
       "link": "https://viddla.fi/",
       "logo_path": "/zDWv7ROPCqZXsIKSVFRANOTC1wx.jpg",
@@ -6584,7 +6553,7 @@
     {
       "id": "540",
       "name": "Elisa Viihde",
-      "priority": 18,
+      "priority": 19,
       "description": "Elisa Viihteessä tallenteet, viihde ja monipuolinen urheilutarjonta ovat fiksusti yhdessä. Katso silloin kun sinulle sopii.",
       "link": "https://elisaviihde.fi/",
       "logo_path": "/eglAxQEXSO13p6gNf3HKymrIu7y.jpg",
@@ -6603,7 +6572,7 @@
     {
       "id": "541",
       "name": "rtve",
-      "priority": 22,
+      "priority": 23,
       "description": "Todos los contenidos de RTVE Play para el mundo. Informativos, documentales, entretenimiento, series y directos. El mejor portal de contenidos en español.",
       "link": "https://www.rtve.es/play/internacional/portada/",
       "logo_path": "/ywOjT3Mxu71tJgwdoTPhmcAGf2B.jpg",
@@ -6621,7 +6590,7 @@
     {
       "id": "542",
       "name": "filmfriend",
-      "priority": 10,
+      "priority": 11,
       "description": "Stream with your library card | Feature films from around the world | Doc films | kids movies | ad-free | On smart TVs, smartphones, tablets",
       "link": "https://www.filmfriend.de/en/pages/home",
       "logo_path": "/78IXtvIZfol9aJhFoNAUYDxIB25.jpg",
@@ -6644,7 +6613,7 @@
     {
       "id": "544",
       "name": "Libreflix",
-      "priority": 22,
+      "priority": 23,
       "description": "Libreflix é uma plataforma de streaming aberta e colaborativa que reúne produções audiovisuais independentes, de livre exibição e que fazem pensar.",
       "link": "https://libreflix.org/",
       "logo_path": "/3MsEoFiBy9eaUdKo5Cx1iR9BPQy.jpg",
@@ -6662,7 +6631,7 @@
     {
       "id": "546",
       "name": "WOW Presents Plus",
-      "priority": 11,
+      "priority": 10,
       "description": "WOW Presents Plus is the official streamer of all things drag featuring Werq The World, UNHhhh with Trixie and Katya, and hundreds of other World of Wonder originals, documentaries, specials, and LGBTQ+ programming.",
       "link": "https://www.wowpresentsplus.com/",
       "logo_path": "/6dET59jNU0ADysghEjl8Unuc7Ca.jpg",
@@ -6752,7 +6721,7 @@
     {
       "id": "548",
       "name": "IFFR Unleashed",
-      "priority": 25,
+      "priority": 26,
       "description": "Welkom bij International Film Festival Rotterdam (IFFR) – een onmisbare bestemming voor filmliefhebbers en filmprofessionals.",
       "link": "https://iffr.com/nl/",
       "logo_path": "/fpHXCUD89WRC21wJjz3DDCgyudw.jpg",
@@ -6788,7 +6757,7 @@
     {
       "id": "551",
       "name": "Magellan TV",
-      "priority": 12,
+      "priority": 11,
       "description": "Watch thousands of great documentaries on MagellanTV. Unlimited streaming, no ads, and 4K streaming are all great reasons to check out MagellanTV.",
       "link": "https://www.magellantv.com/",
       "logo_path": "/mSH24WQcRDJ2fsL5iucXqqRnSRb.jpg",
@@ -6900,7 +6869,7 @@
     {
       "id": "552",
       "name": "QFT Player",
-      "priority": 23,
+      "priority": 24,
       "description": "Queen's Film Theatre (or QFT) is Northern Ireland's leading independent cinema, located beside Queen's University Belfast and founded in 1968.",
       "link": "https://queensfilmtheatre.com/",
       "logo_path": "/fFIAM3bHNoyjeQ8q160NWUD3S94.jpg",
@@ -6917,7 +6886,7 @@
     {
       "id": "553",
       "name": "Telia Play",
-      "priority": 13,
+      "priority": 14,
       "description": "Mėgstamiausi TV kanalai, HBO ir naujausi filmai – visada su jumis. Žiūrėkite, kur norite – telefone, kompiuteryje, planšetėje.",
       "link": "https://play.telia.lt/",
       "logo_path": "/7QzLA6rsML2rKxhuagWlDl7Zxlm.jpg",
@@ -6937,7 +6906,7 @@
     {
       "id": "554",
       "name": "BroadwayHD",
-      "priority": 11,
+      "priority": 12,
       "description": "Stream Your Favorite Broadway Hits! Anytime, Anywhere!",
       "link": "https://www.broadwayhd.com/",
       "logo_path": "/6IYZ4NjwPikxN7J9cfSmuyeHeMm.jpg",
@@ -7035,6 +7004,7 @@
         826,
         834,
         840,
+        858,
         862,
         887,
         99999
@@ -7068,7 +7038,7 @@
     {
       "id": "557",
       "name": "More TV",
-      "priority": 13,
+      "priority": 14,
       "description": "",
       "link": "https://more.tv/",
       "logo_path": "/yyMxS08v80D96O7NtL9supa5sn7.jpg",
@@ -7086,7 +7056,7 @@
     {
       "id": "559",
       "name": "Filmzie",
-      "priority": 13,
+      "priority": 14,
       "description": "Watch Free Online Movies and TV Shows on any device without registration or signup. 100% legal.",
       "link": "https://filmzie.com/",
       "logo_path": "/eUBxtrqO26wAJfYOZJOzhQEo3mm.jpg",
@@ -7183,6 +7153,7 @@
         826,
         834,
         840,
+        858,
         862,
         887,
         99999
@@ -7197,7 +7168,7 @@
     {
       "id": "560",
       "name": "Filmoteket",
-      "priority": 23,
+      "priority": 24,
       "description": "Filmoteket is the libraries' own film streaming service. You can easily borrow films with your library card. Stream Oscar winners, films from all over the world, great children's and family films and award-winning documentaries.",
       "link": "https://filmoteket.no/",
       "logo_path": "/rTLyVzy9lyPpujUQ026CiRDqQrF.jpg",
@@ -7215,7 +7186,7 @@
     {
       "id": "561",
       "name": "Lionsgate Play",
-      "priority": 28,
+      "priority": 29,
       "description": "LIONSGATEPLAY brings you Hollywood movies, original TV shows and children's programs on our online entertainment subscription service – anytime, anywhere!",
       "link": "https://www.lionsgateplay.com/",
       "logo_path": "/e2hCUg2Z3sJ6yWF9NLU24SIKeWa.jpg",
@@ -7256,7 +7227,7 @@
     {
       "id": "563",
       "name": "KPN",
-      "priority": 29,
+      "priority": 30,
       "description": "Met KPN Combivoordeel stel je al jouw thuis en mobiele abonnementen zelf samen. Internet, mobiel, TV, entertainment en meer. Via het netwerk van Nederland.",
       "link": "https://www.kpn.com/",
       "logo_path": "/nzjqsR28PVVp5GJAlHtbBArNKqN.jpg",
@@ -7373,6 +7344,7 @@
         826,
         834,
         840,
+        858,
         862,
         887,
         99999
@@ -7463,6 +7435,7 @@
         792,
         826,
         840,
+        858,
         862,
         887,
         99999
@@ -7478,7 +7451,7 @@
     {
       "id": "570",
       "name": "Premier",
-      "priority": 17,
+      "priority": 18,
       "description": "Кем бы вы ни были, и что бы ни любили — в онлайн-кинотеатре PREMIER вы найдете фильмы, сериалы, мультфильмы и шоу на свой вкус. Присоединяйтесь, чтобы смотреть российские и зарубежные новинки в хорошем качестве, а также ностальгировать под любимую классику.",
       "link": "https://premier.one/",
       "logo_path": "/r7cgAhlSLI4r80P1Si9P0jOevrr.jpg",
@@ -7496,7 +7469,7 @@
     {
       "id": "572",
       "name": "RTL Play",
-      "priority": 23,
+      "priority": 24,
       "description": "Profitez gratuitement des programmes des chaînes RTL TVI,Club RTL,PLUG RTL,RTL Info,BEL RTL,Contact,RTL PLAY2,RTL PLAY3. Toutes vos séries & émissions TV en live streaming ou en vidéo à la demande.",
       "link": "https://www.rtlplay.be/",
       "logo_path": "/3KaY2AQFkPHlc6QgGQmRbYxnsQa.jpg",
@@ -7536,7 +7509,7 @@
     {
       "id": "576",
       "name": "KlikFilm",
-      "priority": 24,
+      "priority": 25,
       "description": "KlikFilm adalah layanan streaming movie yang memberikan pengalaman menonton ratusan film Box Office Indonesia.",
       "link": "https://klikfilm.com/",
       "logo_path": "/f1V0OhsOKnOQVyNb8h8BbioorQ4.jpg",
@@ -7553,7 +7526,7 @@
     {
       "id": "577",
       "name": "TvIgle",
-      "priority": 18,
+      "priority": 19,
       "description": "Смотреть фильмы и сериалы на Tvigle. Онлайн-кинотеатр с новинками кино, мультфильмами, ТВ",
       "link": "https://www.tvigle.ru/",
       "logo_path": "/3EJQtj4m83kRh7bV9BF6KWmPiKp.jpg",
@@ -7571,7 +7544,7 @@
     {
       "id": "578",
       "name": "Strim",
-      "priority": 27,
+      "priority": 28,
       "description": "Velkommen til Strim - Norges mest komplette strømmetjeneste, med TV, film og serier på ett sted! · En enklere TV-løsning for deg som vil se TV.",
       "link": "https://www.strim.no/",
       "logo_path": "/3ZigBD8WTEPcEHAvMWiJGUsv5u4.jpg",
@@ -7589,7 +7562,7 @@
     {
       "id": "579",
       "name": "Film Movement Plus",
-      "priority": 203,
+      "priority": 202,
       "description": "Stream exclusive independent and world cinema titles, cult and arthouse classics, award-winning documentaries and more.",
       "link": "https://www.filmmovementplus.com/",
       "logo_path": "/8cjvUhc1ga7ySEdAFM7Ok9G6HOr.jpg",
@@ -7607,7 +7580,7 @@
     {
       "id": "580",
       "name": "Nova Play",
-      "priority": 12,
+      "priority": 13,
       "description": "NOVA News и телевизия NOVA HD на живо изцяло онлайн. Записи на новини, предавания, спортни новини и подкасти, сериали и филми онлайн от Нова телевизия.",
       "link": "https://play.nova.bg/",
       "logo_path": "/ApcuSS6VOCV7slF4GBRARfy31bg.jpg",
@@ -7625,7 +7598,7 @@
     {
       "id": "581",
       "name": "iQIYI",
-      "priority": 18,
+      "priority": 19,
       "description": "iQiyi is the world's leading movie and video streaming website, offering OTT services including a variety of TV dramas, movies, shows, animation, and other quality content. Our excellent content and services let you watch to your heart's content, anytime and anywhere.",
       "link": "https://www.iq.com/",
       "logo_path": "/c4eVkfMna2VzHzZ8N2vWXUnMrlD.jpg",
@@ -7707,7 +7680,7 @@
     {
       "id": "591",
       "name": "Now TV Cinema",
-      "priority": 43,
+      "priority": 44,
       "description": "Choose your NOW Membership and stream the latest movies, TV series, live sports and kids entertainment on demand. ",
       "link": "https://www.nowtv.com/",
       "logo_path": "/6sJLsWk4TZHz1EffmTRSkaDehkh.jpg",
@@ -7725,7 +7698,7 @@
     {
       "id": "593",
       "name": "STV Player",
-      "priority": 38,
+      "priority": 39,
       "description": "Gripping drama box sets, eye-opening documentaries, true crime and absolute classics.  STV Player, TV you’ll love for free.",
       "link": "https://player.stv.tv/",
       "logo_path": "/aG4lXRDfHl3qgQCgpWI6KEJV0i7.jpg",
@@ -7765,7 +7738,7 @@
     {
       "id": "614",
       "name": "VI movies and tv",
-      "priority": 35,
+      "priority": 36,
       "description": "Watch new TV shows, movies, breaking live news & live tv online in full HD on Vi Movies and TV. Over 450+ live channels & 10,000+ titles across 13 languages.",
       "link": "https://moviesandtv.myvi.in",
       "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
@@ -7801,7 +7774,7 @@
     {
       "id": "620",
       "name": "DRTV",
-      "priority": 27,
+      "priority": 28,
       "description": "Se eller gense DR's TV-programmer her på DRTV. Du kan se programmer fra både DR1, DR2 og DR Ramasjang. Se live-tv eller on-demand",
       "link": "https://www.dr.dk/drtv/",
       "logo_path": "/dnD5cUeAPruAcYwwKKxYbMcfccq.jpg",
@@ -7819,7 +7792,7 @@
     {
       "id": "621",
       "name": "Nordisk Film+",
-      "priority": 26,
+      "priority": 27,
       "description": "Nordisk Film+ is our streaming service available in Denmark and also widely distributed in Norway and Sweden through partnerships, with a focus on local films. V2",
       "link": "https://nordiskfilm.com/streaming",
       "logo_path": "/dB6eeNS5TEykyQLPixHOPQqzPcp.jpg",
@@ -7836,7 +7809,7 @@
     {
       "id": "622",
       "name": "UPC TV",
-      "priority": 31,
+      "priority": 32,
       "description": "Sunrise TV",
       "link": "https://www.sunrisetv.ch/en/home",
       "logo_path": "/l5SFTF3l9l1KSgZJM7foAppUenz.jpg",
@@ -7854,7 +7827,7 @@
     {
       "id": "623",
       "name": "WeTV",
-      "priority": 28,
+      "priority": 29,
       "description": "We TV is the premium network destination where culture, passion, and drama thrive. Watch the latest episodes of The Braxtons, Love After Lockup, Brat Loves Judy, Toya & Reginae, Mama June and more.",
       "link": "https://www.wetv.com/",
       "logo_path": "/r3tmJFjecQGAfHjWOafhr1pux6b.jpg",
@@ -7874,7 +7847,7 @@
     {
       "id": "625",
       "name": "LINE TV",
-      "priority": 29,
+      "priority": 30,
       "description": "共享追劇生活！台劇、韓劇、陸劇、BL、泰劇、綜藝、動漫、電影，正版戲劇影音、影視內容免費看！VIP會員高畫質影片線上看，追劇無廣吿再送LINE POINTS",
       "link": "https://www.linetv.tw/",
       "logo_path": "/j35eayHG7RC9Ll0ehtbOuek0TZL.jpg",
@@ -7893,7 +7866,7 @@
     {
       "id": "626",
       "name": "Otta",
-      "priority": 24,
+      "priority": 25,
       "description": null,
       "link": null,
       "logo_path": "/z7IYTxUHSrk1VPYgsc5RDe1E3tA.jpg",
@@ -7929,7 +7902,7 @@
     {
       "id": "628",
       "name": "Edisonline",
-      "priority": 25,
+      "priority": 26,
       "description": "VOD filmy dostupné kdekoľvek a kedykoľvek. Vstúpte do najlepšej ponuky festivalových filmov na Slovensku a v Česku.",
       "link": "https://edisonline.sk/",
       "logo_path": "/hsuv1uc7SUr9YjCXRlLQNELt4UU.jpg",
@@ -7946,7 +7919,7 @@
     {
       "id": "629",
       "name": "OSN+",
-      "priority": 20,
+      "priority": 21,
       "description": "Watch live TV & OSN+ of trending series, award-winning movies and best documentaries on OSN. All subtitled or dubbed in Arabic. Start streaming now.",
       "link": "https://www.osn.com/en-sa/home",
       "logo_path": "/kC6JTo59Gj6I4vJPyBAYGh0sKAE.jpg",
@@ -7995,7 +7968,7 @@
     {
       "id": "631",
       "name": "HRTi",
-      "priority": 23,
+      "priority": 24,
       "description": "Molim instalirajte mobilnu aplikaciju kako biste mogli gledati sadržaj na ovom uređaju. Popis za reprodukciju. Nastavi Pokreni od početka.",
       "link": "https://hrti.hrt.hr/home",
       "logo_path": "/yHqa57jOQqhBarOh9lw2noJno00.jpg",
@@ -8013,7 +7986,7 @@
     {
       "id": "637",
       "name": "Pickbox NOW",
-      "priority": 24,
+      "priority": 25,
       "description": "Pickbox NOW is streaming thousands of hours of exclusive premieres, hit series, films and documentaries. Watch them anywhere and anytime online.",
       "link": "https://www.pickboxnow.com/en",
       "logo_path": "/p6hKVngF1iWciIyxYmrl3UUitg7.jpg",
@@ -8031,7 +8004,7 @@
     {
       "id": "638",
       "name": "Public Domain Movies",
-      "priority": 4,
+      "priority": 5,
       "description": "Public Domain Movies - Feature Movies in the Public Domain",
       "link": "http://publicdomainmovies.net/",
       "logo_path": "/aN0Y2BNZQBH91JkVOeLTs8IhQrH.jpg",
@@ -8085,10 +8058,8 @@
         703,
         705,
         780,
-        784,
         788,
         796,
-        800,
         807,
         818,
         834,
@@ -8107,7 +8078,7 @@
     {
       "id": "639",
       "name": "CineMember",
-      "priority": 35,
+      "priority": 36,
       "description": "Onbeperkt streamen van meer dan 1500 arthousefilms. Altijd en overal op meerdere schermen tegelijk. vanaf &euro;7,95 per maand. Elke week...",
       "link": "https://www.cinemember.nl/nl",
       "logo_path": "/6vchFMhgi7jhyXyKBoutzwMmM5b.jpg",
@@ -8125,7 +8096,7 @@
     {
       "id": "641",
       "name": "Nexo Plus",
-      "priority": 17,
+      "priority": 18,
       "description": "Scopri il catalogo completo di Nexo TV: centinaia di film d'autore, documentari esclusivi, serie TV e oltre venti canali live in streaming gratuito.",
       "link": "https://www.nexotv.it/",
       "logo_path": "/jyiwuXdyRrh2R5UwY4MhOF4Xbfy.jpg",
@@ -8143,7 +8114,7 @@
     {
       "id": "677",
       "name": "Eventive",
-      "priority": 18,
+      "priority": 6,
       "description": "Stream independent film from film festivals, art house cinemas, virtual cinema screenings, classic repertory catalogs, and special events. Easily search the entire Eventive catalog for the freshest content anywhere.",
       "link": "https://watch.eventive.org/",
       "logo_path": "/fwx5Ed64TkfWiRH1SOSkc4781Ts.jpg",
@@ -8248,16 +8219,15 @@
         756,
         764,
         780,
-        784,
         788,
         792,
         796,
-        800,
         807,
         818,
         826,
         834,
         840,
+        858,
         862,
         887,
         894,
@@ -8273,7 +8243,7 @@
     {
       "id": "691",
       "name": "Play Suisse",
-      "priority": 12,
+      "priority": 13,
       "description": "Entdecken Sie kostenlos die besten Schweizer Filme, Serien und Dokumentarfilme. Erleben Sie überraschende Geschichten aus der ganzen Schweiz!",
       "link": "https://www.playsuisse.ch/",
       "logo_path": "/c1Nj8YGitlXbvvv0taHLkBeyTaK.jpg",
@@ -8291,7 +8261,7 @@
     {
       "id": "692",
       "name": "Cultpix",
-      "priority": 6,
+      "priority": 7,
       "description": "Streaming classic cult, exploitation, grindhouse and genre films that other sites are afraid to show you. Join for $6.66 a month or $59 for full year.",
       "link": "https://www.cultpix.com/",
       "logo_path": "/uauVx3dGWt0GICqdMCBYJObd3Mo.jpg",
@@ -8417,7 +8387,7 @@
     {
       "id": "696",
       "name": "Serially",
-      "priority": 39,
+      "priority": 40,
       "description": "La nuova piattaforma di streaming per guardare serie tv e film in prima visione gratuita. Gratis, per sempre.",
       "link": "https://www.serially.it/",
       "logo_path": "/911zAHHLswJYihv988hbHDKa5M4.jpg",
@@ -8435,7 +8405,7 @@
     {
       "id": "697",
       "name": "meJane",
-      "priority": 39,
+      "priority": 40,
       "description": "Bekijk de beste en nieuwste films op meJane. Beschikbaar op Smart Tv, Android, iOS en via de browser.",
       "link": "https://www.mejane.com/",
       "logo_path": "/651I5dLHpxDUePZcNkYTDcARTeE.jpg",
@@ -8452,7 +8422,7 @@
     {
       "id": "701",
       "name": "FilmBox+",
-      "priority": 20,
+      "priority": 3,
       "description": "Filmbox+ is an entertainment service that you can watch hundreds of movies and videos online with a single subscription.",
       "link": "https://www.filmbox.com/",
       "logo_path": "/fbveJTcro9Xw2KuPIIoPPePHiwy.jpg",
@@ -8579,7 +8549,7 @@
     {
       "id": "702",
       "name": "iBAKATV",
-      "priority": 14,
+      "priority": 15,
       "description": "IBAKATV is an online movie streaming service that offers large varieties of the latest premium Nollywood blockbuster movies and TV series with genres ranging from Drama, Thriller, Crime, Family, Romance, etc.",
       "link": "https://ibakatv.com/",
       "logo_path": "/k1LBSLQ2d6B95VpMoBASkM7EdZ2.jpg",
@@ -8598,7 +8568,7 @@
     {
       "id": "704",
       "name": "IROKOTV",
-      "priority": 8,
+      "priority": 9,
       "description": "Watch thousands of Nollywood movies and series right on your PC, Mac, tablet or smartphone. Subscribe and watch today.",
       "link": "https://irokotv.com/",
       "logo_path": "/4bsFc5AgxDNdDeS1NIjVRviARhB.jpg",
@@ -8634,7 +8604,7 @@
     {
       "id": "1715",
       "name": "Shahid VIP",
-      "priority": 9,
+      "priority": 10,
       "description": "Shahid is the number one Arabic VOD service in the world with premium originals, exclusive series and movies, Live TV, Sports & much more",
       "link": "https://shahid.mbc.net/",
       "logo_path": "/7qZED0kLBtiV8mLRNBtW4PQCAqW.jpg",
@@ -8694,7 +8664,7 @@
     {
       "id": "1717",
       "name": "Acontra Plus",
-      "priority": 43,
+      "priority": 44,
       "description": "acontra+ es la única plataforma que te da una entrada para ir al cine y acceso a todo el contenido online.",
       "link": "https://acontraplus.com/home",
       "logo_path": "/8vES2nJNwOF57muvqLByDLm6snp.jpg",
@@ -8764,7 +8734,7 @@
     {
       "id": "1724",
       "name": "AVA CSAL",
-      "priority": 37,
+      "priority": 38,
       "description": "Documentary · All Films · Animation · Art · Cultures & Traditions · Current Affairs · Economy & Employment · Environment & Nature · History · LGBTQ",
       "link": "https://csal.ava.watch/",
       "logo_path": "/aqyyZxc2tQ1gEORXNF2d55GvD5P.jpg",
@@ -8781,7 +8751,7 @@
     {
       "id": "1725",
       "name": "AVA BGB",
-      "priority": 22,
+      "priority": 23,
       "description": "Documentary · All Films · Animation · Art · Cultures & Traditions · Current Affairs · Economy & Employment · Environment & Nature · History · LGBTQ",
       "link": "https://bgb.ava.watch/",
       "logo_path": "/zJtYNzq9lpMrsqhg6t2y9AWs9dL.jpg",
@@ -8798,7 +8768,7 @@
     {
       "id": "1750",
       "name": "TOD",
-      "priority": 23,
+      "priority": 24,
       "description": "Watch the best of western Movies and series, TOD originals, kids shows and Sports events only on TOD streaming app.",
       "link": "https://www.tod.tv/en",
       "logo_path": "/bFxDjHDXP02u1dLPZfTsTC1L6EA.jpg",
@@ -8887,7 +8857,7 @@
     {
       "id": "1771",
       "name": "Takflix",
-      "priority": 23,
+      "priority": 11,
       "description": "All films. Unforgettable films selected by Takflix curators.",
       "link": "https://takflix.com/en",
       "logo_path": "/ed0vz5bryWIhQB5sHiuGvHKnHHn.jpg",
@@ -8990,16 +8960,15 @@
         756,
         764,
         780,
-        784,
         788,
         792,
         796,
-        800,
         807,
         818,
         826,
         834,
         840,
+        858,
         862,
         887,
         894,
@@ -9128,7 +9097,7 @@
     {
       "id": "1826",
       "name": "TOD TV",
-      "priority": 23,
+      "priority": 24,
       "description": "Follow your favorite football leagues, stream matches and live sports in 4K. Watch new movies, TOD Originals, exclusives, BeIN Sports channels, TV shows & series in HD anytime anywhere.",
       "link": "https://www.tod.tv/en",
       "logo_path": "/gaDNJ1xISHBBq9LQXwwe8PPSRHD.jpg",
@@ -9178,7 +9147,7 @@
     {
       "id": "1838",
       "name": "Tivify",
-      "priority": 52,
+      "priority": 53,
       "description": "Televisión en streaming, más de 80 canales, calidad HD, 350 horas de grabación, búsqueda por voz, visionado en diferido.",
       "link": "https://tivify.tv/inicio",
       "logo_path": "/8VhN4PeHU7yfMNoWK0DnwdS1HlS.jpg",
@@ -9196,7 +9165,7 @@
     {
       "id": "1856",
       "name": "Magenta TV",
-      "priority": 6,
+      "priority": 7,
       "description": "Streaming-Dienste & Partner. SERVICE. Über MagentaTV · Jugendschutz · Nutzung EU-Ausland · Unterstützte Geräte · Verbraucherinfos Videoload/Erotic Lounge",
       "link": "https://www.magenta.tv/",
       "logo_path": "/f195E2gXoZBp7QjGNL4XICXxiDk.jpg",
@@ -9211,7 +9180,7 @@
     {
       "id": "1857",
       "name": "Telenet",
-      "priority": 31,
+      "priority": 32,
       "description": "Telenet TV",
       "link": "https://www.telenet.tv/nl/home",
       "logo_path": "/kwftIxtjuCAROIcdd53UEjzSmca.jpg",
@@ -9256,7 +9225,7 @@
     {
       "id": "1875",
       "name": "Runtime",
-      "priority": 24,
+      "priority": 25,
       "description": "Our mission is to bring the best movies and worldwide TV to millions of users, whether on their SmartTVs, mobile devices or web. Here you can watch titles live or choose from our extensive on-demand catalogue with more than 5,000 titles globally (and counting!). Create your own fav playlist with the movies and series you love the most and let us recommend you what to watch next.",
       "link": "https://www.runtime.tv/",
       "logo_path": "/xm8xr6LDdY5j2gjYf1S3yqaeRbE.jpg",
@@ -9326,9 +9295,24 @@
       ]
     },
     {
+      "id": "1884",
+      "name": "ABEMA",
+      "priority": 27,
+      "description": null,
+      "link": null,
+      "logo_path": "/igAwAvkH4ucv6ahCIQp0kmSknw3.jpg",
+      "regions": [
+        392
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
       "id": "1898",
       "name": "Amazon MX Player",
-      "priority": 42,
+      "priority": 43,
       "description": "Watch popular web series, movies, short films, and k-dramas of different genres online. Amazon miniTV is a free OTT service available on Amazon, both on web & app.",
       "link": "https://www.amazon.in/minitv",
       "logo_path": "/yfIWD2zJNHla5RD4xjQNzvKMEwP.jpg",
@@ -9346,11 +9330,12 @@
     {
       "id": "1899",
       "name": "HBO Max",
-      "priority": 27,
+      "priority": 28,
       "description": "Conoce Max, la plataforma de streaming que combina todo lo que más te gusta de HBO con tus películas y series favoritas además de Max Originals.",
       "link": "https://www.max.com/cr/es",
       "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
       "regions": [
+        8,
         20,
         28,
         32,
@@ -9372,22 +9357,33 @@
         214,
         218,
         222,
+        233,
+        242,
         246,
         250,
         276,
+        300,
         320,
         340,
         344,
         348,
+        352,
         360,
+        372,
+        376,
         380,
         388,
+        428,
+        438,
+        440,
         458,
+        470,
         484,
         492,
         498,
         528,
         578,
+        586,
         591,
         600,
         604,
@@ -9402,11 +9398,13 @@
         705,
         724,
         752,
+        756,
         764,
         780,
         792,
         796,
         807,
+        826,
         840,
         858,
         862,
@@ -9419,6 +9417,22 @@
       "models": [
         2
       ]
+    },
+    {
+      "id": "1900",
+      "name": "OPTO SIC",
+      "priority": 31,
+      "description": null,
+      "link": null,
+      "logo_path": "/v3qwZuggU9D2JDREgezzZYFSduk.jpg",
+      "regions": [
+        620
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
     },
     {
       "id": "1902",
@@ -9441,7 +9455,7 @@
     {
       "id": "1904",
       "name": "TV+",
-      "priority": 9,
+      "priority": 10,
       "description": "Filmden belgesele, diziden spora, canlı tv'den animasyona izlenecek ne varsa TV+'ta. TV Plus ile Canlı TV diziler, filmler, belgeseller ve çocuk içeriklerini her yerden izleyin.",
       "link": "https://tvplus.com.tr/",
       "logo_path": "/c8ryDZroFQtuyRVPBwXq5PLpTWV.jpg",
@@ -9482,6 +9496,7 @@
         56
       ],
       "types": [
+        1,
         2
       ],
       "models": []
@@ -9506,7 +9521,7 @@
     {
       "id": "1920",
       "name": "Reserva Imovision",
-      "priority": 45,
+      "priority": 46,
       "description": "A maior plataforma de filmes independentes da América Latina. 100% brasileira, com um leve sotaque francês! Assine agora!",
       "link": "https://reservaimovision.com.br/",
       "logo_path": "/cV6ShEHGS1Bs83xszJlorJVRU47.jpg",
@@ -9523,7 +9538,7 @@
     {
       "id": "1928",
       "name": "Prima Plus",
-      "priority": 25,
+      "priority": 26,
       "description": "Sledujte filmy, seriály a pořady televize Prima kdykoliv a kdekoliv. Pustit si je můžete na počítači, tabletu, mobilu i televizoru.",
       "link": "https://www.iprima.cz/",
       "logo_path": "/vrefjVylvD4RkEjQguuXebCp9UQ.jpg",
@@ -9541,7 +9556,7 @@
     {
       "id": "1929",
       "name": "Filmtastic bei Canal+",
-      "priority": 57,
+      "priority": 58,
       "description": "Bei CANAL+ kannst du die besten Filme und Serien in Österreich streamen. Hier ist eine Auswahl unseres Streaming-Angebots.",
       "link": "https://www.canalplus.at/stream/",
       "logo_path": "/kP741xlbpymqjELaTcPiAet3SnV.jpg",
@@ -9559,7 +9574,7 @@
     {
       "id": "1939",
       "name": "Lepsi TV",
-      "priority": 26,
+      "priority": 27,
       "description": "Forget about traditional TV. LEPŠÍ.TV is online TV over the internet with 167 channels and thousands of movies and series. Watch from anywhere up to 100 days back.",
       "link": "https://www.xn--lep-tma39c.tv/en/",
       "logo_path": "/489t5n9o1KhH7voGNQkrXT7vBKV.jpg",
@@ -9577,7 +9592,7 @@
     {
       "id": "1944",
       "name": "TV4 Play",
-      "priority": 39,
+      "priority": 40,
       "description": "Streama program, reality, underhållning, sport, filmer, serier och mycket mer på TV4 Play!",
       "link": "https://www.tv4play.se/",
       "logo_path": "/5lKPs5yrjeKHFrXh9RIvzyJJzSd.jpg",
@@ -9710,7 +9725,7 @@
     {
       "id": "1961",
       "name": "Allente",
-      "priority": 37,
+      "priority": 38,
       "description": "Saml de bedste TV-kanaler og streamingpakker med Allente. Få adgang til 18 TV-kanaler og Viaplay Film & Serier og vælg mellem TV 2 Play, HBO Max, SkyShowtime, Apple TV, og mange flere! \nSe udvalget og stream her.",
       "link": "https://www.allente.dk/",
       "logo_path": "/a6z85DKGuPOyTg03TlJ6ShzzFO6.jpg",
@@ -9781,7 +9796,7 @@
     {
       "id": "1965",
       "name": "Pluto TV Live",
-      "priority": 212,
+      "priority": 211,
       "description": "Watch 1000s of free movies and TV shows on demand & 100s of live TV channels for free.",
       "link": "https://pluto.tv/",
       "logo_path": "/dB8G41Q6tSL5NBisrIeqByfepBc.jpg",
@@ -9796,7 +9811,7 @@
     {
       "id": "1967",
       "name": "Molotov TV",
-      "priority": 34,
+      "priority": 33,
       "description": "L'installation de l'application Molotov est disponible sur tous vos appareils : Android, iOS, Smart TV et bien d'autres.",
       "link": "https://www.molotov.tv/",
       "logo_path": "/8qSG9LtUhBQIWy2Fr6fzeW7gBdd.jpg",
@@ -9851,7 +9866,7 @@
     {
       "id": "1973",
       "name": "Filmicca",
-      "priority": 47,
+      "priority": 48,
       "description": "O streaming do cinema mundial, do clássico ao contemporâneo.",
       "link": "https://www.filmicca.com.br/",
       "logo_path": "/ptNJnBKMVLv3XxmLU9UMVSDop80.jpg",
@@ -9903,7 +9918,7 @@
     {
       "id": "1986",
       "name": "NPO Plus",
-      "priority": 44,
+      "priority": 45,
       "description": "Start programma's waar en wanneer je maar wilt op NPO Start. Met een plus-abonnement kijk je zonder reclame alle afleveringen van je favoriete Nederlandse series.",
       "link": "https://npo.nl/start",
       "logo_path": "/cYyxWlMG0o1dKRvOdpMrVIFrY4F.jpg",
@@ -9991,7 +10006,7 @@
     {
       "id": "2029",
       "name": "MTV Katsomo",
-      "priority": 38,
+      "priority": 39,
       "description": "Huippuunsa viritettyä urheilua ja viihdettä jokaiseen makuun. Koko Suomen kokoisessa katsomossa on paikka jokaiselle.",
       "link": "https://www.mtv.fi/",
       "logo_path": "/wRMEDOZ8iAEEHXIY2VyckvT0K8I.jpg",
@@ -10064,38 +10079,9 @@
       ]
     },
     {
-      "id": "2077",
-      "name": "Plex Channel",
-      "priority": 129,
-      "description": "The full list of movies and TV shows on Plex Channel. Find out what to watch on Plex Channel with JustWatch!",
-      "link": "https://www.justwatch.com/us/provider/plex-channel",
-      "logo_path": "/27WMfRN7pQE3j5Khm8fPM7vYyLV.jpg",
-      "regions": [
-        56,
-        76,
-        203,
-        208,
-        250,
-        276,
-        356,
-        528,
-        604,
-        643,
-        756,
-        840
-      ],
-      "types": [
-        1,
-        2
-      ],
-      "models": [
-        0
-      ]
-    },
-    {
       "id": "2078",
       "name": "Troma NOW",
-      "priority": 205,
+      "priority": 204,
       "description": "We dug deep into the vault to find buried releases, fan favorites and other Tromazing greatness you may have missed. Sign up for new TROMA programming every month with instant streaming access wherever you go.",
       "link": "https://watch.troma.com/",
       "logo_path": "/2CYF8CNs5WK3sB69K0AlmwUxrzv.jpg",
@@ -10131,7 +10117,7 @@
     {
       "id": "2083",
       "name": "Sony pictures",
-      "priority": 61,
+      "priority": 62,
       "description": "Assiste aos grandes sucessos e clássicos da Sony Pictures com uma qualidade audiovisual épica.",
       "link": "https://www.sonypictures.com/",
       "logo_path": "/52IaYfmAVn5X88KGSoZvhwXxrJ7.jpg",
@@ -10146,7 +10132,7 @@
     {
       "id": "2100",
       "name": "Amazon Prime Video with Ads",
-      "priority": 204,
+      "priority": 203,
       "description": "The full list of movies and TV shows on Amazon Prime Video with Ads. Find out what to watch on Amazon Prime Video with Ads with JustWatch!",
       "link": "https://www.justwatch.com/us/provider/amazon-prime-video-with-ads",
       "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
@@ -10177,10 +10163,10 @@
     {
       "id": "2101",
       "name": "CANAL+",
-      "priority": 32,
+      "priority": 33,
       "description": "myCANAL vous propose de regarder les meilleurs films, les dernières séries et les matchs en HD et en VOST ou FR.",
       "link": "canalplus.com/streaming/",
-      "logo_path": "/yFjeEJFQqalphfmYivOYyatPVEd.jpg",
+      "logo_path": "/aOx26MhWCT5Dc8YwZXXXjcQPajZ.jpg",
       "regions": [
         616
       ],
@@ -10195,7 +10181,7 @@
     {
       "id": "2102",
       "name": "Premiery Canal+",
-      "priority": 33,
+      "priority": 34,
       "description": "Pakiety TV z dostępem przez telewizję satelitarną oraz przez internet. Darmowa dostawa, dekoder HD lub 4K Ultra HD. Zamów online!",
       "link": "https://pl.canalplus.com/oferta/satelitarna",
       "logo_path": "/mBliLuM0AbkRPGDoVa7IGxwC59b.jpg",
@@ -10230,7 +10216,7 @@
     {
       "id": "2115",
       "name": "Cinu",
-      "priority": 49,
+      "priority": 50,
       "description": "Das aktuelle Kinoprogramm der Kinos Riffraff &amp; Houdini in Zürich und Bourbaki in Luzern und ein breitgefächertes Angebot an Streamingtiteln.",
       "link": "https://www.cinu.ch/de-ch/programm.html",
       "logo_path": "/twKkyl31iYVtxfICNkDdrxrJ7KS.jpg",
@@ -10247,7 +10233,7 @@
     {
       "id": "2129",
       "name": "BYUtv",
-      "priority": 75,
+      "priority": 76,
       "description": "BYUtv has family-friendly comedies, award-winning dramas, and uplifting reality shows to watch for free without commercials. Enjoy our BYU sports content and our documentary series. Watch Hollywood movies that are perfect for family viewing.\nStream free hit shows like The Chosen, Heartland, Studio C, Relative Race, Big Stories from the Big 12 and beyond, The Wizard of Paws, Emmy® nominee Malory Towers, and more. No contracts or credit card required.",
       "link": "https://www.byutv.org/",
       "logo_path": "/9YYuvhTfMuBR7keJ7DPa1GFlDrF.jpg",
@@ -10265,7 +10251,7 @@
     {
       "id": "2135",
       "name": "Kino Film Collection",
-      "priority": 211,
+      "priority": 210,
       "description": "Kino Film Collection is a monthly subscription streaming service featuring award-winning independent films, international premieres, thought-provoking documentaries, indie favorites, and newly restored classics.  Kino Lorber has been synonymous with great cinema for over 45 years.",
       "link": "https://kinofilmcollection.com/",
       "logo_path": "/l8nPh3HtqfIJiFTYT7RdNdsv1XD.jpg",
@@ -10301,7 +10287,7 @@
     {
       "id": "2149",
       "name": "CG TV STREAMING",
-      "priority": 43,
+      "priority": 44,
       "description": "Novità · Start Up! Esclusive · Al cinema · Promozioni · Education · News · Visita CGTV Streaming. Ricerca prodotti. Login. Seguici Sui Social.",
       "link": "https://www.cgtv.it/",
       "logo_path": "/kE6XgnYwfeGXDx80YmP3bxvsl8J.jpg",
@@ -10318,7 +10304,7 @@
     {
       "id": "2151",
       "name": "ORF ON",
-      "priority": 66,
+      "priority": 67,
       "description": "Entdecken Sie Filme, Serien, Dokus, Sport und Nachrichten und viele weitere Videos aus dem ORF-Fernsehen.",
       "link": "https://on.orf.at/",
       "logo_path": "/d1d8EljUNvWVU09ShQyXHE1mO9L.jpg",
@@ -10336,7 +10322,7 @@
     {
       "id": "2152",
       "name": "ORF KIDS",
-      "priority": 67,
+      "priority": 68,
       "description": "Spielen, lachen und entdecken - in ORF KIDS, der Streaming-Plattform speziell für Kinder, findest du unterhaltsame, spannende und lehrreiche Videos rund um die Uhr.",
       "link": "https://kids.orf.at/",
       "logo_path": "/5fS4WiQZ7yX3fBHKelQBO9NwUcD.jpg",
@@ -10461,7 +10447,7 @@
     {
       "id": "2214",
       "name": "CDA Premium",
-      "priority": 41,
+      "priority": 42,
       "description": "CDA - multimedialna społeczność od 2003 roku. W serwisie znajdziesz: gry, materiały video, śmieszne grafiki oraz dział download.",
       "link": "https://www.cda.pl/premium",
       "logo_path": "/rZG2UBzS8ysl2kloSbrm9w4Mth2.jpg",
@@ -10515,7 +10501,7 @@
     {
       "id": "2237",
       "name": "3Cat",
-      "priority": 69,
+      "priority": 70,
       "description": "A 3Cat hi trobaràs a la carta estrenes exclusives digitals, programes originals i els èxits de sempre. També els directes de TV3, Catalunya Ràdio i SX3",
       "link": "https://www.3cat.cat/",
       "logo_path": "/lDvzuBuNVgpcdzDpPmmufKvrZPb.jpg",
@@ -10533,7 +10519,7 @@
     {
       "id": "2239",
       "name": "FlixHouse",
-      "priority": 43,
+      "priority": 45,
       "description": "Watch free Indie movies Documentaries TV shows and 24/7 live TV anytime anywhere worldwide in HD on your PC mobile apps online connected TV streaming devices.",
       "link": "https://flixhouse.com/",
       "logo_path": "/69eoIMVggmpyY7Aa8qeN4jsREfd.jpg",
@@ -10550,7 +10536,7 @@
     {
       "id": "2241",
       "name": "Movistar Plus+",
-      "priority": 4,
+      "priority": 5,
       "description": "En Movistar Plus+ puedes ver series, cine, documentales, canales de televisión, el mejor deporte en directo y más. Todo, con tu suscripción de 9,99€/mes.",
       "link": "https://www.movistarplus.es/",
       "logo_path": "/jse4MOi92Jgetym7nbXFZZBI6LK.jpg",
@@ -10568,7 +10554,7 @@
     {
       "id": "2283",
       "name": "Monomax",
-      "priority": 28,
+      "priority": 29,
       "description": "Monomax ดูหนังออนไลน์ ซีรีส์ การ์ตูน กีฬา ดูได้ทั้งครอบครัว ทุกที่ ทุกเวลา",
       "link": "https://www.monomax.me/",
       "logo_path": "/kwuUSaCoI9XN0ofHGVTkRm4BMYt.jpg",
@@ -10586,10 +10572,10 @@
     {
       "id": "2285",
       "name": "JustWatch TV",
-      "priority": 27,
+      "priority": 4,
       "description": "The full list of movies and TV shows on JustWatchTV. Find out what to watch on JustWatchTV with JustWatch!",
       "link": "https://www.justwatch.com/us/provider/justwatchtv",
-      "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
+      "logo_path": "/y2wjCLxPrzPbghH07Sekqw5D1bE.jpg",
       "regions": [
         8,
         12,
@@ -10722,7 +10708,7 @@
     {
       "id": "2286",
       "name": "VIVA by videofutur",
-      "priority": 80,
+      "priority": 79,
       "description": "VIVA by VIDEOFUTUR, c'est le meilleur du cinéma et des séries en streaming. Plus de 15 000 programmes disponibles dans votre application : toutes les nouveautés du box office américain, français et du monde entier ; les blockbusters Disney avec la Disneytek ; des programmes jeunesse mais aussi les plus grands films cultes du cinéma.",
       "link": "https://viva.videofutur.fr/",
       "logo_path": "/PAaj5bekwbeeoRC1evWg4KJW8p.jpg",
@@ -10829,7 +10815,7 @@
     {
       "id": "2307",
       "name": "Premiere Max",
-      "priority": 82,
+      "priority": 81,
       "description": "Avec PREMIERE MAX découvrez en VOD les sélections et les coups de cœur de la rédaction de PREMIERE, toutes les nouveautés françaises et américaines, et les films qui ont fait l'histoire du cinéma.",
       "link": "https://www.premieremax.com/",
       "logo_path": "/rdMFjYYE0uZ55rBdlX149gRF1XQ.jpg",
@@ -10883,7 +10869,7 @@
     {
       "id": "2330",
       "name": "Jolt Film",
-      "priority": 28,
+      "priority": 6,
       "description": "Jolt is a streaming platform connecting extraordinary independent films with the most relevant audiences.",
       "link": "https://www.jolt.film/",
       "logo_path": "/sBTV0rN8JUhF4G3uIceinWtQ3gi.jpg",
@@ -10990,16 +10976,15 @@
         756,
         764,
         780,
-        784,
         788,
         792,
         796,
-        800,
         807,
         818,
         826,
         834,
         840,
+        858,
         862,
         887,
         894,
@@ -11050,7 +11035,7 @@
     {
       "id": "2383",
       "name": "Philo",
-      "priority": 52,
+      "priority": 17,
       "description": "Why pay more for TV? Start your Philo free trial and enjoy live TV plus on-demand content starting at just $25/month. Stream hit shows, movies, and more.",
       "link": "https://www.philo.com/",
       "logo_path": "/ptmbGSttkyzawLbxx9MElmxKuVo.jpg",
@@ -11114,7 +11099,7 @@
     {
       "id": "2478",
       "name": "FOUND TV",
-      "priority": 29,
+      "priority": 7,
       "description": "Explore a world of found footage horror with FOUND! Stream your favorite horror movies and experience fan moments in your local area.",
       "link": "https://foundtv.com/",
       "logo_path": "/mD3KV7olfMJOBxJqKKPjvNrpVJF.jpg",
@@ -11248,7 +11233,7 @@
     {
       "id": "2479",
       "name": "Stupid Co",
-      "priority": 328,
+      "priority": 327,
       "description": null,
       "link": null,
       "logo_path": "/xghkVW88ucmejNkk7DEFGZh8dvs.jpg",
@@ -11274,7 +11259,7 @@
     {
       "id": "2480",
       "name": "Gaiam TV Yoga & Fit",
-      "priority": 329,
+      "priority": 328,
       "description": "100’s of home workouts, yoga &amp;amp; fitness programs",
       "link": "https://www.gaiamtv.com/",
       "logo_path": "/pJRVLFLEPNeXra6AoRp5SQ2txhy.jpg",
@@ -11306,7 +11291,7 @@
     {
       "id": "2525",
       "name": "Super Channel Plus",
-      "priority": 23,
+      "priority": 24,
       "description": "Entertainment at its best! From feel-good and heart-warming, to a unique selection of popular films, exclusive series and documentaries! With plenty to watch for the true romantic AND the true crime enthusiast, Super Channel+ offers \r\nsomething for everyone.",
       "link": "https://signup.superchannelplus.ca/",
       "logo_path": "/pK3bUzescsBuvzrCCZkj1YTdoDA.jpg",
@@ -11322,7 +11307,7 @@
     {
       "id": "2528",
       "name": "YouTube TV",
-      "priority": 36,
+      "priority": 39,
       "description": "Stream live TV from ABC, CBS, FOX, NBC, ESPN & popular cable networks in English and Spanish. Record without DVR storage space limits. Try it free. Cancel anytime.",
       "link": "https://tv.youtube.com/welcome/",
       "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
@@ -11353,7 +11338,7 @@
     {
       "id": "2533",
       "name": "Mometu",
-      "priority": 335,
+      "priority": 334,
       "description": "Discover thousands of hand-curated movies & shows with no subscription or credit card required!",
       "link": "https://mometu.com/",
       "logo_path": "/q5nP5VaOM4YdkCjJmo7vC5wpCOw.jpg",
@@ -11385,7 +11370,7 @@
     {
       "id": "2537",
       "name": "IFI@Home",
-      "priority": 16,
+      "priority": 17,
       "description": "The Irish Film Institute is Ireland's national cultural institution for cinema, and IFI @ Home now offers audiences across Ireland access to the best Irish and international independent films.",
       "link": "https://www.ifihome.ie/",
       "logo_path": "/5zNYQG7TVVAEWbnhrcnKsEGk8xR.jpg",
@@ -11400,7 +11385,7 @@
     {
       "id": "2555",
       "name": "Bloodstream",
-      "priority": 31,
+      "priority": 9,
       "description": "Bloodstreamtv | Stream the best in horror, thriller, and sci-fi. Blood Stream delivers chilling classics, bold indies, and festival hits—all in one terrifyingly good platform. Join the horror revolution now.",
       "link": "https://bloodstreamtv.com/home",
       "logo_path": "/qlsnWCrmcisQH5JnEDxPV2v2vlb.jpg",
@@ -11508,16 +11493,15 @@
         756,
         764,
         780,
-        784,
         788,
         792,
         796,
-        800,
         807,
         818,
         826,
         834,
         840,
+        858,
         862,
         887,
         894,
@@ -11532,7 +11516,7 @@
     {
       "id": "2557",
       "name": "Cinobo",
-      "priority": 15,
+      "priority": 16,
       "description": "Watch the best movies online with a single subscription from 7.49€/month. Try Cinobo for free now.",
       "link": "https://cinobo.com/",
       "logo_path": "/fPeKpIa1yVXDp3ZUUTdNnD78m7m.jpg",
@@ -11548,58 +11532,13 @@
     {
       "id": "2565",
       "name": "MovieMe",
-      "priority": 345,
+      "priority": 344,
       "description": null,
       "link": null,
       "logo_path": "/zODyP8gGRnp3Gd23FhXhQwIpLie.jpg",
       "regions": [
-        36,
-        40,
-        56,
-        76,
-        124,
-        152,
-        170,
-        203,
-        218,
-        246,
-        250,
-        276,
-        300,
-        356,
-        360,
         372,
-        376,
-        380,
-        392,
-        404,
-        410,
-        414,
-        458,
-        484,
-        528,
-        566,
-        586,
-        604,
-        608,
-        616,
-        620,
-        634,
-        642,
-        643,
-        682,
-        702,
-        710,
-        724,
-        764,
-        784,
-        792,
-        800,
-        818,
-        826,
-        834,
-        840,
-        894
+        826
       ],
       "types": [
         1
@@ -11612,7 +11551,7 @@
       "priority": 56,
       "description": "Regardez les dernières nouveautés ou classiques intemporels, des plus grands blockbusters aux films d’auteurs primés, quelques semaines après leur sortie au cinéma.",
       "link": "https://www.pathehome.com/",
-      "logo_path": "/yvui9yFtpWHt0ZrsPelItbuTavI.jpg",
+      "logo_path": "/f0AbfwtuitfNzrnENo1CWcPQiN6.jpg",
       "regions": [
         250
       ],
@@ -11624,7 +11563,7 @@
     {
       "id": "2603",
       "name": "KableOne",
-      "priority": 33,
+      "priority": 10,
       "description": "Discover KableOne, the first global OTT platform dedicated to Punjabi entertainment. Watch movies, shows, and more, anytime, anywhere. Join the Punjabi revolution.",
       "link": "https://www.kableone.com/",
       "logo_path": "/nOE9GjiyF5UhUVRJ2yGSzdCh0ec.jpg",
@@ -11774,7 +11713,7 @@
     {
       "id": "2620",
       "name": "CaixaForum+",
-      "priority": 34,
+      "priority": 11,
       "description": "Todo o conteúdo audiovisual de cultura e ciência. A plataforma de streaming de que estava à espera. Acesso gratuito e a partir de...",
       "link": "https://caixaforumplus.org/",
       "logo_path": "/9pRY14ZWkDCRzQBuASRnYJ1KZwQ.jpg",
@@ -11908,7 +11847,7 @@
     {
       "id": "2621",
       "name": "KQED",
-      "priority": 350,
+      "priority": 349,
       "description": "Watch full episodes of your favorite PBS dramas, find in-depth news analysis and explore documentaries on history, science, art and more!",
       "link": "https://video.kqed.org/",
       "logo_path": "/trKuSZLIe3KX01ihS40qJIpDryQ.jpg",
@@ -11924,7 +11863,7 @@
     {
       "id": "2622",
       "name": "Thirteen",
-      "priority": 351,
+      "priority": 350,
       "description": null,
       "link": null,
       "logo_path": "/jpQn5rQZmwo7VdKe5lAcgbQYMYw.jpg",
@@ -11939,7 +11878,7 @@
     {
       "id": "2623",
       "name": "Artiflix",
-      "priority": 35,
+      "priority": 12,
       "description": "Welcome to Artiflix, your gateway to a world of forgotten cinematic treasures! Our mission is to bring you thousands of classic movies that were once thought to be lost to the ravages of time and film degradation. Through extensive efforts, our master collectors scoured the depths of film history to assemble and convert these rare gems into a stunning digital library. Now, you have the opportunity to make them a part of your personal collection.",
       "link": "https://artiflix.com/",
       "logo_path": "/5MsbQCp7FpYr3INLpeKDLJrlDh8.jpg",
@@ -12041,16 +11980,15 @@
         756,
         764,
         780,
-        784,
         788,
         792,
         796,
-        800,
         807,
         818,
         826,
         834,
         840,
+        858,
         862,
         887,
         894,
@@ -12081,7 +12019,7 @@
     {
       "id": "2657",
       "name": "WETA+",
-      "priority": 352,
+      "priority": 351,
       "description": "WETA+ offers PBS and WETA programs for free. Add PBS Passport for access to thousands more. If you’re already a WETA Member, simply log in and start streaming.",
       "link": "https://weta.org/wetaplus",
       "logo_path": "/yAX7g4FBEqr7Qk3Rgq9BZgbCxwJ.jpg",
@@ -12160,7 +12098,7 @@
     {
       "id": "2667",
       "name": "YOW.tv",
-      "priority": 354,
+      "priority": 353,
       "description": "Discover YOW.tv, the premier streaming platform offering freedom for filmmakers and diverse, engaging content for viewers. Watch independent films, exclusive premieres, riveting documentaries, and more. Join Yow tv today for unlimited access to unique stories and innovative entertainment.",
       "link": "https://yow.tv/",
       "logo_path": "/ApDOxwTDcRbmgCORofsBftwm53B.jpg",
@@ -12192,7 +12130,7 @@
     {
       "id": "2670",
       "name": "Novo 19",
-      "priority": 102,
+      "priority": 101,
       "description": "Documentaires, Info, séries, films - Direct, replay et streaming",
       "link": "https://novo19.ouest-france.fr/",
       "logo_path": "/jZHi37cUrp7r31FMGDK3w7ZNGzm.jpg",
@@ -12208,7 +12146,7 @@
     {
       "id": "2671",
       "name": "ARTE Boutique",
-      "priority": 103,
+      "priority": 102,
       "description": "VOD - Les nouveautés cinéma disponibles 4 mois après leur sortie au cinéma et des promos et bonus exclusifs tout au long de l’année !",
       "link": "https://boutique.arte.tv/",
       "logo_path": "/1gtidYfh89iLkGcbhPtr1lvx47W.jpg",
@@ -12271,7 +12209,7 @@
     {
       "id": "2679",
       "name": "Amasian TV",
-      "priority": 358,
+      "priority": 357,
       "description": "Stream award-winning Asian films, blockbuster hits, iconic TV dramas, and live channels from Korea, China, India, Vietnam, and Japan on Amasian TV. No account required.",
       "link": "https://amasian.tv/video",
       "logo_path": "/oG9cLnUa37Rg6zzlILTqtamMgzu.jpg",
@@ -12303,7 +12241,7 @@
     {
       "id": "2684",
       "name": "TPT",
-      "priority": 359,
+      "priority": 358,
       "description": "TPT offers three channels for livestreaming: TPT 2, TPT KIDS, and TPT NOW. Available on you laptop, phone, or streaming device.",
       "link": "https://tpt.org/streaming/",
       "logo_path": "/dS4RfnzVK2iOno0SkdnXQPopf40.jpg",
@@ -12319,7 +12257,7 @@
     {
       "id": "2685",
       "name": "Artify",
-      "priority": 37,
+      "priority": 13,
       "description": "Watch Tunisian films, Tunisian series and Tunisian theatre scenes",
       "link": "https://artify.tv/",
       "logo_path": "/rQqxsXq63XsDY8xcabqBWU5WWbw.jpg",
@@ -12453,7 +12391,7 @@
     {
       "id": "2688",
       "name": "MĀORI+",
-      "priority": 64,
+      "priority": 65,
       "description": "Watch kapa haka performances, TV shows, movies, sports, and live events - immersing yourself in the vibrant world of Māori entertainment anytime, anywhere.",
       "link": "https://www.maoriplus.co.nz/",
       "logo_path": "/f2NUTEi3vdf4gqJL08564h4luRe.jpg",
@@ -12660,7 +12598,7 @@
     {
       "id": "2703",
       "name": "Chilling",
-      "priority": 361,
+      "priority": 360,
       "description": "Chilling is the ultimate destination for true horror fans. A streaming platform packed with terrifying films, immersive audio stories, and original nightmares you won’t find anywhere else.",
       "link": "https://www.chillingapp.com/",
       "logo_path": "/cREEVLl0rxXdK0rfdxJeLX9bssS.jpg",
@@ -12697,6 +12635,229 @@
       "logo_path": "/7dzDnGE9FQBqqTWlM3fOmee8rj1.jpg",
       "regions": [
         764
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2713",
+      "name": "Antel TV",
+      "priority": 41,
+      "description": null,
+      "link": null,
+      "logo_path": "/pn7ZElU9MliTPdkK7CKJy1cYSlr.jpg",
+      "regions": [
+        858
+      ],
+      "types": [
+        1
+      ],
+      "models": []
+    },
+    {
+      "id": "2714",
+      "name": "CanalSurMas",
+      "priority": 91,
+      "description": null,
+      "link": null,
+      "logo_path": "/4SBh9iYygSJYCBFlQQ1LlaRnGuL.jpg",
+      "regions": [
+        724
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2715",
+      "name": "Cignal Play",
+      "priority": 44,
+      "description": null,
+      "link": null,
+      "logo_path": "/m96XwMazeZKY2WxrFw6HJt5na9S.jpg",
+      "regions": [
+        608
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2723",
+      "name": "Maraya",
+      "priority": 30,
+      "description": null,
+      "link": null,
+      "logo_path": "/xVpnrPPCqZqscNMwTvODlmMVAu6.jpg",
+      "regions": [
+        784
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2725",
+      "name": "TV 2 Kosmopol",
+      "priority": 60,
+      "description": null,
+      "link": null,
+      "logo_path": "/ueEndp7bpm5qn38n1UkClYd49Tk.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2726",
+      "name": "TV 2 Nord",
+      "priority": 61,
+      "description": null,
+      "link": null,
+      "logo_path": "/eXMXSn6Sm54KA7xHBTKIdVpCbxB.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2727",
+      "name": "TV 2 Fyn",
+      "priority": 54,
+      "description": null,
+      "link": null,
+      "logo_path": "/na8curTXoo0LnOmAsw9hyMB9laE.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2729",
+      "name": "TV 2 ØSTJYLLAND",
+      "priority": 55,
+      "description": null,
+      "link": null,
+      "logo_path": "/7cg6vmMIRsEyD4rFuyWUD5EAPO7.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2730",
+      "name": "TV SYD",
+      "priority": 56,
+      "description": null,
+      "link": null,
+      "logo_path": "/86dc2eUINuIBwQ03M3BG1cpmw0F.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2731",
+      "name": "TV2 ØST",
+      "priority": 57,
+      "description": null,
+      "link": null,
+      "logo_path": "/kKiqZqgUtBUKSpWWWDkION82U0c.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2732",
+      "name": "TV MIDTVEST",
+      "priority": 58,
+      "description": null,
+      "link": null,
+      "logo_path": "/2UL3PyqbMOlLTvfJdPurEK2PTZc.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2733",
+      "name": "TV 2 Bornholm",
+      "priority": 59,
+      "description": null,
+      "link": null,
+      "logo_path": "/dKZz65gLZsUKYRUbD1wM1eotTfX.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2736",
+      "name": "Brew",
+      "priority": 18,
+      "description": null,
+      "link": null,
+      "logo_path": "/mJKIwXQd9hW55IHZLAqfRLgZavh.jpg",
+      "regions": [
+        36,
+        124,
+        356,
+        702,
+        826,
+        840
+      ],
+      "types": [
+        1
+      ],
+      "models": []
+    },
+    {
+      "id": "2744",
+      "name": "INA madelen",
+      "priority": 111,
+      "description": null,
+      "link": null,
+      "logo_path": "/d3k7rAkFmmPGBtnlZcvAQSkoHok.jpg",
+      "regions": [
+        250
       ],
       "types": [
         1,

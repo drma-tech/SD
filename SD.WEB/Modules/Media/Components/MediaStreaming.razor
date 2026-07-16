@@ -128,43 +128,6 @@
                 </MudItem>
             }
 
-            @if (Providers?.GetFlatRateBuyListProviders(Region).Any() ?? false)
-            {
-                hasProvider = true;
-                <MudItem xs="12" md="6" lg="4">
-                    <MudPaper Outlined="true" Class="pt-2 px-2">
-                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.Module.Media.DeliveryModelFlatRateBuy
-                        </MudText>
-                        <MudDivider Class="mb-2"></MudDivider>
-                        <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetFlatRateBuyListProviders(Region))
-                            {
-                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                {
-                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-
-                                    <MudTooltip Text="@item.provider_name">
-                                        <MudLink OnClick="@(() => OpenExternalWebsite(provider.link))" rel="nofollow" Class="me-2">
-                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.webp"
-                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator" Context="ctx">
-                                                <Authorized>
-                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.PVOD))
-                                                    {
-                                                        <span>false</span>
-                                                    }
-                                                </Authorized>
-                                            </AuthorizeView>
-                                        </MudLink>
-                                    </MudTooltip>
-                                }
-                            }
-                        </MudToolBar>
-                    </MudPaper>
-                </MudItem>
-            }
-
             @if (Providers?.GetRentListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;

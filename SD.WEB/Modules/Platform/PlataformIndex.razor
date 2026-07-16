@@ -67,7 +67,7 @@ else
                                     </MudLink>
                                 </CardHeaderContent>
                             </MudCardHeader>
-                            <MudCardContent Class="py-1 px-2" Style="height: 48px;">
+                            <MudCardContent Class="py-1 px-2">
                                 <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
                                     @Translations.Module.Media.DeliveryModel:
                                 </MudText>
@@ -75,7 +75,7 @@ else
                                     @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetFieldSettings().Name)) : "N/A")
                                 </MudText>
                             </MudCardContent>
-                            <MudCardContent Class="py-1 px-2" Style="height: 48px;">
+                            <MudCardContent Class="py-1 px-2">
                                 <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
                                     @Translations.Module.Media.MediaType:
                                 </MudText>
