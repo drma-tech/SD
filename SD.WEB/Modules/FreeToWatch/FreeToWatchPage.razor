@@ -30,7 +30,7 @@ else
     [Parameter] public string? Region { get; set; }
 
     public MediaType TypeEnum => Type.ParseToEnum<MediaType>(MediaType.movie);
-    public Region RegionEnum => Region.ParseToEnum<Region>(SD.Shared.Enums.Region.US);
+    public Country RegionEnum => Region.ParseToEnum<Country>(SD.Shared.Enums.Country.US);
 
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }

@@ -11,7 +11,6 @@ namespace SD.Shared.Core.Helper
         public string? Group { get; set; }
         public string? Placeholder { get; set; }
         public string? Description { get; set; }
-        public string? Tips { get; set; }
         public T Value { get; set; } = value;
     }
 

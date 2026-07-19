@@ -138,7 +138,7 @@ else
         {
             <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning"
                       Class="@Css.Build().Large("mb")" Style="text-align: justify; width: 100%;">
-                @Translations.Notification.CustomVisibilityNoData
+                @Translations.Notification.RenderControlNoData
             </MudAlert>
         }
     </RenderControl>
@@ -164,7 +164,7 @@ else
     [Parameter] public string? Region { get; set; }
     private bool isNotFound;
 
-    public Region? RegionEnum { get; set; }
+    public Country? RegionEnum { get; set; }
     private bool ShowAll { get; set; } = false;
 
     public bool FreePlatforms => Navigation.Uri.Contains("/free/");
@@ -208,7 +208,7 @@ else
 
         try
         {
-            RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Region>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+            RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Country>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
         }
         catch (Exception)
         {

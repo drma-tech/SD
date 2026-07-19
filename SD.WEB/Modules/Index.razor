@@ -55,7 +55,7 @@
                         <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Type" Clearable="true" Class="me-2">
                             @foreach (var item in Types)
                             {
-                                <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
+                                <MudSelectItem Value="(MediaType?)item.Value">@item.Name</MudSelectItem>
                             }
                         </MudSelect>
                         @if (AppStateStatic.Type == MediaType.movie)
@@ -63,7 +63,7 @@
                             <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
                                 @foreach (var item in MovieGenres)
                                 {
-                                    <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
+                                    <MudSelectItem Value="(MovieGenre?)item.Value">@item.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }
@@ -72,7 +72,7 @@
                             <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
                                 @foreach (var item in TvGenres)
                                 {
-                                    <MudSelectItem Value="item.Value">@item.Name</MudSelectItem>
+                                    <MudSelectItem Value="(TvGenre?)item.Value">@item.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }

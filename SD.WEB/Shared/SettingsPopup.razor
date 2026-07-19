@@ -7,7 +7,7 @@
     <DialogContent>
         <MudGrid Spacing="@Css.SpaceMedium">
             <MudItem xs="12">
-                <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@Translations.Module.Help.Region"
+                <MudSelect Value="@Region" ValueChanged="@((Country vl) => RegionValueChanged(vl))" Label="@Translations.Module.Help.Region"
                            HelperText="@Translations.Module.Help.RegionDesc" FullWidth="true">
                     @foreach (var item in regions.OrderBy(p => p.Name))
                     {
@@ -60,12 +60,12 @@
 
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    private readonly List<EnumFieldObject<Region>> regions = EnumHelper.GetList<Region>();
+    private readonly List<EnumFieldObject<Country>> regions = EnumHelper.GetList<Country>();
     private readonly List<EnumFieldObject<AppLanguage>> appLanguages = EnumHelper.GetList<AppLanguage>();
     private readonly List<EnumFieldObject<ContentLanguage>> contentLanguages = EnumHelper.GetList<ContentLanguage>();
 
     public AppLanguage Language { get; set; } = AppLanguage.en;
-    public Region Region { get; set; } = Region.US;
+    public Country Region { get; set; } = Country.US;
     public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
     public bool DarkMode { get; set; } = false;
 
@@ -126,7 +126,7 @@
         AppStateStatic.ChangeDarkMode(value);
     }
 
-    protected async Task RegionValueChanged(Region value)
+    protected async Task RegionValueChanged(Country value)
     {
         Region = value;
 

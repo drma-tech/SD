@@ -256,18 +256,18 @@ public static class AppStateStatic
                 return _country;
             }
 
-            var cache = await js.Utils().GetStorage("country", JavascriptContext.Default.String, cancellationToken);
+            var cache = await js.Utils().GetStorage("country", JavascriptContext.Default.String, cancellationToken, UtilsJs.BrowserStorageType.Session);
 
             if (cache.NotEmpty())
             {
-                _country = cache.Trim();
+                _country = cache;
             }
             else
             {
-                _country = (await api.GetCountry(cancellationToken))?.Trim();
+                _country = await api.GetCountry(cancellationToken);
 
                 if (_country.NotEmpty())
-                    await js.Utils().SetStorage("country", _country, JavascriptContext.Default.String, cancellationToken);
+                    await js.Utils().SetStorage("country", _country, JavascriptContext.Default.String, cancellationToken, UtilsJs.BrowserStorageType.Session);
             }
 
             return _country;
@@ -286,12 +286,12 @@ public static class AppStateStatic
 
     #region Region
 
-    private static Region? _region;
+    private static Country? _region;
     private static readonly SemaphoreSlim _regionSemaphore = new(1, 1);
 
-    public static ActionDispatcher<Region> RegionChanged { get; } = new();
+    public static ActionDispatcher<Country> RegionChanged { get; } = new();
 
-    public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null, CancellationToken cancellationToken = default)
+    public static async Task<Country> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null, CancellationToken cancellationToken = default)
     {
         await _regionSemaphore.WaitAsync(cancellationToken);
         try
@@ -309,16 +309,16 @@ public static class AppStateStatic
 
                 if (_region == null)
                 {
-                    _region = Region.US;
-                    if (js != null) await js.Utils().SetStorage("region", _region, JavascriptContext.Default.NullableRegion, cancellationToken);
+                    _region = Country.US;
+                    if (js != null) await js.Utils().SetStorage("region", _region, JavascriptContext.Default.NullableCountry, cancellationToken);
                 }
             }
             else
             {
                 var code = api != null && js != null ? await GetCountry(api, js, cancellationToken) : null;
 
-                _region = ConvertRegion(code) ?? Region.US;
-                if (js != null) await js.Utils().SetStorage("region", _region, JavascriptContext.Default.NullableRegion, cancellationToken);
+                _region = ConvertRegion(code) ?? Country.US;
+                if (js != null) await js.Utils().SetStorage("region", _region, JavascriptContext.Default.NullableCountry, cancellationToken);
             }
 
             return _region.Value;
@@ -329,17 +329,17 @@ public static class AppStateStatic
         }
     }
 
-    private static Region? ConvertRegion(string? code)
+    private static Country? ConvertRegion(string? code)
     {
         if (code.Empty()) return null;
 
-        if (System.Enum.TryParse<Region>(code, true, out var region) && System.Enum.IsDefined(region))
+        if (System.Enum.TryParse<Country>(code, true, out var region) && System.Enum.IsDefined(region))
             return region;
         else
             return null;
     }
 
-    public static void ChangeRegion(Region value)
+    public static void ChangeRegion(Country value)
     {
         _region = value;
         RegionChanged.Publish(value);

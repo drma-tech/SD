@@ -125,7 +125,7 @@
                 var details = AllProviders.Items;
                 var blocked_providers = new List<string>() { "Amazon Channel", "Amzon Channel", "Apple TV Channel", "Roku Premium Channel", "on U-Next" };
 
-                foreach (var region in EnumHelper.GetValues<Region>())
+                foreach (var region in EnumHelper.GetValues<Country>())
                 {
                     var parameter = new Dictionary<string, string>()
                         {
@@ -159,7 +159,7 @@
         }
     }
 
-    private static void AddProvider(List<ProviderModel> final_list, List<ProviderBase> new_providers, List<ProviderModel> current_providers, Region region, MediaType type)
+    private static void AddProvider(List<ProviderModel> final_list, List<ProviderBase> new_providers, List<ProviderModel> current_providers, Country region, MediaType type)
     {
         foreach (var item in new_providers)
         {
@@ -180,7 +180,7 @@
                     link = detail?.link,
                     models = detail?.models ?? new(),
                     //api by regions
-                    regions = new List<Region> { region },
+                    regions = new List<Country> { region },
                     types = new List<MediaType> { type }
                 });
             }

@@ -126,7 +126,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
         var originalTransactionId = transaction.OriginalTransactionId;
 
-        var results = await repo.Query<AuthPrincipal>(x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), DocumentType.Principal, cancellationToken);
+        var results = await repo.Query<AuthPrincipal>(DocumentType.Principal, x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), null, cancellationToken);
 
         var client = results.LastOrDefault();
 
@@ -309,7 +309,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (!obj.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
             {
                 //if no metadada, try to find the user with the StripeCustomerId
-                var list = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == obj.Id, DocumentType.Principal, cancellationToken);
+                var list = await repo.Query<AuthPrincipal>(DocumentType.Principal, p => p.StripeCustomerId == obj.Id, null, cancellationToken);
 
                 if (list.Count > 0)
                 {

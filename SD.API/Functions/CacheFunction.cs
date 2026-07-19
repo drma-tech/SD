@@ -292,7 +292,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var id = req.GetQueryParameters()["id"];
-        var ttl = TtlCache.OneDay;
+        var ttl = TtlCache.OneWeek;
 
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
@@ -334,8 +334,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var id = req.GetQueryParameters()["id"];
-        var title = req.GetQueryParameters()["title"];
-        var ttl = TtlCache.OneDay;
+        //var title = req.GetQueryParameters()["title"];
+        var ttl = TtlCache.OneWeek;
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
@@ -347,22 +347,24 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
             doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
-            if (doc == null)
-            {
-                var list = ScrapingReview.GetTvReviews(title, releaseDate.Year);
-                //if (obj.meta?.title == "undefined critic reviews") return null;
+            //todo: find api to get reviews
 
-                var newModel = new ReviewModel();
+            //if (doc == null)
+            //{
+            //    var list = ScrapingReview.GetTvReviews(title, releaseDate.Year);
+            //    //if (obj.meta?.title == "undefined critic reviews") return null;
 
-                foreach (var item in list)
-                {
-                    newModel.Items.Add(new ReviewModelItem(item.Site, item.Url, item.Reviewer, item.Score, item.Quote));
-                }
+            //    var newModel = new ReviewModel();
 
-                ttl = CalculateTtl(releaseDate);
+            //    foreach (var item in list)
+            //    {
+            //        newModel.Items.Add(new ReviewModelItem(item.Site, item.Url, item.Reviewer, item.Score, item.Quote));
+            //    }
 
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
-            }
+            //    ttl = CalculateTtl(releaseDate);
+
+            //    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+            //}
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }

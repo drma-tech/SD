@@ -45,13 +45,15 @@ public class CosmosJobRepository
         }
     }
 
-    public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, JobType type, CancellationToken cancellationToken) where T : JobDocument
+    public async Task<List<T>> Query<T>(JobType type, Expression<Func<T, bool>>? predicate, Func<IQueryable<T>, IQueryable<T>>? transform, CancellationToken cancellationToken) where T : JobDocument
     {
         try
         {
             var query = Container
                 .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions())
-                .Where(predicate.Compose(item => item.Type == type, Expression.AndAlso));
+                .Where(predicate?.Compose(item => item.Type == type, Expression.AndAlso) ?? (item => item.Type == type));
+
+            if (transform != null) query = transform(query);
 
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();

@@ -16,7 +16,7 @@ namespace SD.WEB.Core.Api
     [JsonSerializable(typeof(Platform?))]
     [JsonSerializable(typeof(AppLanguage?))]
     [JsonSerializable(typeof(ContentLanguage?))]
-    [JsonSerializable(typeof(Region?))]
+    [JsonSerializable(typeof(Country?))]
     [JsonSerializable(typeof(AuthProvider))]
     [JsonSerializable(typeof(AllProviders))]
     [JsonSerializable(typeof(TMDB_AllProviders))]

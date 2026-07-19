@@ -19,7 +19,7 @@
                                     @(item.episode_number + " - " + item.name)
                                 </MudText>
                                 <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: normal;">
-                                    @(item.overview.Empty() ? Translations.Notification.CustomVisibilityNoData : item.overview)
+                                    @(item.overview.Empty() ? Translations.Notification.RenderControlNoData : item.overview)
                                 </MudText>
                             </div>
                         </div>

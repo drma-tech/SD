@@ -77,14 +77,16 @@ public class CosmosRepository
         }
     }
 
-    public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, DocumentType type, CancellationToken cancellationToken)
+    public async Task<List<T>> Query<T>(DocumentType type, Expression<Func<T, bool>>? predicate, Func<IQueryable<T>, IQueryable<T>>? transform, CancellationToken cancellationToken)
         where T : MainDocument
     {
         try
         {
             var query = Container
                 .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions())
-                .Where(predicate.Compose(item => item.Type == type, Expression.AndAlso));
+                .Where(predicate?.Compose(item => item.Type == type, Expression.AndAlso) ?? (item => item.Type == type));
+
+            if (transform != null) query = transform(query);
 
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();

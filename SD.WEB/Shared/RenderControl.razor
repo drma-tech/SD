@@ -8,14 +8,14 @@
         <div style="position: relative;">
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
             <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 500;">
-                @Translations.Notification.CustomVisibilityLoading
+                @Translations.Notification.RenderControlLoading
             </span>
         </div>
     }
     else if (Actions.CurrentStatus == RenderStatus.Error)
     {
         <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
-            @(Actions.MessageError ?? Translations.Notification.CustomVisibilityInvalid)
+            @(Actions.MessageError ?? Translations.Notification.RenderControlInvalid)
         </MudAlert>
     }
     else if (PremiumFeature && !IsPremium)
@@ -37,7 +37,7 @@
     else if (Actions.CurrentStatus == RenderStatus.Warning)
     {
         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
-            @(Actions.MessageWarning ?? Translations.Notification.CustomVisibilityNoData)
+            @(Actions.MessageWarning ?? Translations.Notification.RenderControlNoData)
         </MudAlert>
     }
     else //Content
@@ -51,7 +51,7 @@
             else
             {
                 <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
-                    @Translations.Notification.CustomVisibilityNoData
+                    @Translations.Notification.RenderControlNoData
                 </MudAlert>
             }
         }

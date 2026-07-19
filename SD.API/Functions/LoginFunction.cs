@@ -39,7 +39,7 @@ public class LoginFunction(CosmosRepository repo, IDistributedCache cache)
             var newLogin = new AuthLogin
             {
                 UserId = userId,
-                Accesses = [new Access { Date = now, Platform = platform, Ip = ip, Country = country }]
+                Accesses = [new Access { Date = now, Platform = platform, Ip = ip, Country = country.ToLower() }]
             };
             newLogin.Initialize(userId);
 
@@ -59,13 +59,36 @@ public class LoginFunction(CosmosRepository repo, IDistributedCache cache)
 
             login.Accesses = login.Accesses
                 .Where(a => a.Date >= cutoff)
-                .Union([new Access { Date = now, Platform = platform, Ip = ip, Country = country }])
+                .Union([new Access { Date = now, Platform = platform, Ip = ip, Country = country.ToLower() }])
                 .Take(100)
                 .ToArray();
 
             await repo.UpsertItemAsync(login, cancellationToken);
         }
     }
+
+    //[Function("LoginFix")]
+    //public async Task LoginFix(
+    //   [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "login/fix")] HttpRequestData req, CancellationToken cancellationToken)
+    //{
+    //    var logins = await repo.ListAll<AuthLogin>(DocumentType.Login, cancellationToken);
+    //    var client = factory.CreateClient("ipinfo");
+
+    //    foreach (var login in logins)
+    //    {
+    //        foreach (var access in login.Accesses)
+    //        {
+    //            var ip = access.Ip?.Split(":")[0];
+    //            if (ip.NotEmpty() && ip != "127.0.0.1")
+    //            {
+    //                var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+    //                access.Country = result?.Trim()?.ToLower();
+    //            }
+    //        }
+
+    //        await repo.UpsertItemAsync(login, cancellationToken);
+    //    }
+    //}
 
     [Function("LoginEmailAuth")]
     public async Task LoginEmailAuth(

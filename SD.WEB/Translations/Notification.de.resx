@@ -123,13 +123,10 @@
   <data name="CheckOurApps" xml:space="preserve">
     <value>Entdecken Sie unsere anderen tollen Apps:</value>
   </data>
-  <data name="CustomVisibilityInvalid" xml:space="preserve">
+  <data name="RenderControlInvalid" xml:space="preserve">
     <value>Ungültiger Vorgang. Bitte versuchen Sie es erneut.</value>
   </data>
-  <data name="CustomVisibilityLoading" xml:space="preserve">
-    <value>Laden...</value>
-  </data>
-  <data name="CustomVisibilityNoData" xml:space="preserve">
+  <data name="RenderControlNoData" xml:space="preserve">
     <value>Daten nicht verfügbar</value>
   </data>
   <data name="ExternalWebsiteNotice" xml:space="preserve">
@@ -173,5 +170,8 @@
   </data>
   <data name="YouMustLogged" xml:space="preserve">
     <value>Sie müssen angemeldet sein</value>
+  </data>
+  <data name="RenderControlLoading" xml:space="preserve">
+    <value>Laden...</value>
   </data>
 </root>

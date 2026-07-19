@@ -28,10 +28,10 @@ else
                               UrlShare="@($"/{Culture}/platform/{Provider.id}")">
             <ActionsFragment>
                 <div>
-                    <MudSelect T="Region?" Value="SelectedRegion" ValueChanged="SelectedRegionChanged" Label="@Translations.Module.Media.Region" Variant="Variant.Text" Dense="true" Class="me-2" Style="width: 150px;">
+                    <MudSelect T="Country?" Value="SelectedRegion" ValueChanged="SelectedRegionChanged" Label="@Translations.Module.Media.Region" Variant="Variant.Text" Dense="true" Class="me-2" Style="width: 150px;">
                         @foreach (var item in regions.OrderBy(p => p.Name))
                         {
-                            <MudSelectItem Value="@((Region?)item.Value)">@item.Name</MudSelectItem>
+                            <MudSelectItem Value="@((Country?)item.Value)">@item.Name</MudSelectItem>
                         }
                     </MudSelect>
                 </div>
@@ -85,14 +85,14 @@ else
     public ComponentActions<ProviderModel?> Actions { get; set; } = new(obj => obj == null);
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
-    private List<EnumFieldObject<Region>> regions = [];
+    private List<EnumFieldObject<Country>> regions = [];
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
     public MyProviders? MyProviders { get; set; }
     public SD.Shared.Enums.Platform? Platform { get; set; }
-    public SD.Shared.Enums.Region? SelectedRegion { get; set; }
+    public SD.Shared.Enums.Country? SelectedRegion { get; set; }
 
     private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
     private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;
@@ -119,7 +119,7 @@ else
         }
         else
         {
-            regions = EnumHelper.GetList<Region>().Where(p => Provider.regions.Contains(p.Value)).ToList();
+            regions = EnumHelper.GetList<Country>().Where(p => Provider.regions.Contains(p.Value)).ToList();
 
             if (AppStateStatic.IsPrerendering(Navigation))
             {
@@ -148,7 +148,7 @@ else
         Wish = await WishApi.Get(null, token);
     }
 
-    private async Task SelectedRegionChanged(Region? value)
+    private async Task SelectedRegionChanged(Country? value)
     {
         SelectedRegion = value;
 

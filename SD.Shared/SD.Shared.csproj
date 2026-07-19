@@ -43,10 +43,10 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>PopularType.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Translations\Enum\Region.Designer.cs">
+		<Compile Update="Translations\Enum\Country.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
-			<DependentUpon>Region.resx</DependentUpon>
+			<DependentUpon>Country.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Translations\Enum\TvGenre.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -87,9 +87,9 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>MediaType.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Translations\Enum\Region.resx">
+		<EmbeddedResource Update="Translations\Enum\Country.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Region.Designer.cs</LastGenOutput>
+			<LastGenOutput>Country.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 </Project>

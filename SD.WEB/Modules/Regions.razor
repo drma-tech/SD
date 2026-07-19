@@ -47,7 +47,7 @@
 </PageSectionComponent>
 
 @code {
-    public List<EnumFieldObject<Region>> RegionsList { get; set; } = [];
+    public List<EnumFieldObject<Country>> RegionsList { get; set; } = [];
 
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
@@ -58,7 +58,7 @@
     {
         filter = Culture;
 
-        RegionsList = EnumHelper.GetList<Region>();
+        RegionsList = EnumHelper.GetList<Country>();
 
         Options.Add("en");
         Options.Add("pt");
@@ -67,7 +67,7 @@
         Options.AddRange(RegionsList?.Select(p => p.Group).Distinct().ToList() ?? []);
     }
 
-    public List<EnumFieldObject<Region>> GetRegions()
+    public List<EnumFieldObject<Country>> GetRegions()
     {
         if (filter == "en")
         {
@@ -75,13 +75,13 @@
         }
         else if (filter == "pt")
         {
-            var portuguese = new HashSet<Region> { Region.BR, Region.PT };
+            var portuguese = new HashSet<Country> { Country.BR, Country.PT };
 
             return RegionsList.Where(p => portuguese.Contains(p.Value)).ToList();
         }
         else if (filter == "es")
         {
-            var spanish = new HashSet<Region> { Region.ES, Region.MX, Region.AR, Region.CL, Region.CO };
+            var spanish = new HashSet<Country> { Country.ES, Country.MX, Country.AR, Country.CL, Country.CO };
 
             return RegionsList.Where(p => spanish.Contains(p.Value)).ToList();
         }
