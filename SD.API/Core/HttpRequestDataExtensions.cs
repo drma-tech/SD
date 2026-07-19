@@ -169,7 +169,7 @@ public static class HttpRequestDataExtensions
     /// <summary>
     /// Ideally, wait two weeks before forcing a version (this gives most users time to update naturally).
     /// </summary>
-    private static readonly DateOnly MinimumSupportedVersion = new(2026, 06, 13);
+    private static readonly DateOnly MinimumSupportedVersion = new(2026, 07, 13);
 
     public static bool IsOutdated(string? version)
     {
