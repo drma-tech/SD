@@ -28,7 +28,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             return new PaymentConfigurations
             {
-                PricePremiumWeek = ApiStartup.Configurations.Apple?.Premium?.PriceWeek,
                 PricePremiumMonth = ApiStartup.Configurations.Apple?.Premium?.PriceMonth,
                 PricePremiumYear = ApiStartup.Configurations.Apple?.Premium?.PriceYear
             };
@@ -37,7 +36,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             return new PaymentConfigurations
             {
-                PricePremiumWeek = ApiStartup.Configurations.Stripe?.Premium?.PriceWeek,
                 PricePremiumMonth = ApiStartup.Configurations.Stripe?.Premium?.PriceMonth,
                 PricePremiumYear = ApiStartup.Configurations.Stripe?.Premium?.PriceYear
             };
@@ -231,9 +229,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
         AccountCycle? cycle = null;
 
-        if (priceId == ApiStartup.Configurations.Stripe!.Premium!.PriceWeek)
-            cycle = AccountCycle.Weekly;
-        else if (priceId == ApiStartup.Configurations.Stripe.Premium.PriceMonth)
+        if (priceId == ApiStartup.Configurations.Stripe!.Premium!.PriceMonth)
             cycle = AccountCycle.Monthly;
         else if (priceId == ApiStartup.Configurations.Stripe.Premium.PriceYear)
             cycle = AccountCycle.Yearly;

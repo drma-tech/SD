@@ -47,7 +47,6 @@ public class Stripe
 
 public class ProductSettings
 {
-    public string? PriceWeek { get; set; }
     public string? PriceMonth { get; set; }
     public string? PriceYear { get; set; }
 }

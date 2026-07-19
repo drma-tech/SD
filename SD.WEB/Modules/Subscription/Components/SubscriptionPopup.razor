@@ -27,9 +27,6 @@
                 <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Small("mb")">
                     <MudItem xs="12" sm="8">
                         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary">
-                            <MudToggleItem Value="@AccountCycle.Weekly">
-                                @AccountCycle.Weekly.GetFieldSettings().Name
-                            </MudToggleItem>
                             <MudToggleItem Value="@AccountCycle.Monthly">
                                 @AccountCycle.Monthly.GetFieldSettings().Name
                             </MudToggleItem>
