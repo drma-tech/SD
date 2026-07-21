@@ -10,7 +10,7 @@
     if (Navigation.IsLocalhost())
     {
         <div style="text-align: center;" class="my-1">
-            <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
+            <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">@Translations.Button.RemoveAdvertising</MudLink>
         </div>
         <div style="@($"height: 200px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
             Advertising
@@ -21,7 +21,7 @@
         @if (Network != AdNetwork.None)
         {
             <div style="text-align: center;" class="my-1">
-                <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
+                <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">@Translations.Button.RemoveAdvertising</MudLink>
             </div>
         }
         @if (Network == AdNetwork.Adsense)

@@ -8,9 +8,11 @@
 
             request.Headers.Add("X-App-Version", AppStateStatic.Version);
 
-            if (request.RequestUri?.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase) == true)
+            var platform = AppStateStatic.GetSavedPlatform();
+
+            if (request.RequestUri?.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase) == true && (platform == null || platform != Platform.webapp))
             {
-                throw new UnhandledException("It looks like you are using an older version of the app. Please update it through your app store (Microsoft Store, Google Play, Apple App Store, etc.). If you are using a web browser, access the site without 'www'.");
+                throw new UnhandledException("It looks like you are using an older version of the app. Please update it through your app store (Microsoft Store, Google Play, Apple App Store, etc.).");
             }
 
             return await base.SendAsync(request, cancellationToken);
