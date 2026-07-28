@@ -100,13 +100,13 @@
     public ComponentActions<Credits?> Actions { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return new
-        {
-            Type,
+        return
+        [
+            Type.ToString(),
             TmdbId
-        };
+        ];
     }
 
     protected override async Task LoadParameterDataAsync()

@@ -192,13 +192,12 @@ else
         AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, cts.Token);
     }
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return new
-        {
+        return [
             Culture,
             Region
-        };
+        ];
     }
 
     protected override async Task LoadParameterDataAsync()

@@ -2,7 +2,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Shared.Core
-@inherits PageCore<Search>
+@inherits PageParameterCore<Search>
 
 @inject TmdbSearchMultiApi TmdbSearch
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
@@ -17,7 +17,8 @@
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>
                 <MudTabPanel Text="@Translations.Module.Landing.Title">
-                    <MudTextField T="string" Label="@Translations.Module.Landing.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
+                    <MudTextField T="string" Label="@Translations.Module.Landing.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio"
+                                  @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
                                   AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
                                   Variant="Variant.Outlined" OnAdornmentClick="@OnParametersSetAsync" Clearable="true"
                                   HelperText="@Translations.Module.Landing.TypeSomething" InputType="InputType.Text">
@@ -97,20 +98,17 @@
 <RenderControl Actions="Actions">
     @if (AppStateStatic.Index == 0)
     {
-        <MediaListFull MediaListApi="TmdbSearch" StringParameters="@ParametersQuery" Items="Items" ShowHead="false" FullPage="true"
-                       Watching="Watching" Wish="Wish" Culture="@Culture">
+        <MediaListFull Items="Items" ShowHead="false" FullPage="true" Watching="Watching" Wish="Wish" Culture="@Culture">
         </MediaListFull>
     }
     else if (AppStateStatic.Index == 1)
     {
-        <MediaListFull MediaListApi="TmdbDiscoveryApi" StringParameters="@ParametersKeyword" Items="Items" ShowHead="false" FullPage="true"
-                       Watching="Watching" Wish="Wish" Culture="@Culture">
+        <MediaListFull Items="Items" ShowHead="false" FullPage="true" Watching="Watching" Wish="Wish" Culture="@Culture">
         </MediaListFull>
     }
     else if (AppStateStatic.Index == 2)
     {
-        <MediaListFull MediaListApi="TmdbDiscoveryApi" StringParameters="@ParametersAdvanced" Items="Items" ShowHead="false" FullPage="true"
-                       Watching="Watching" Wish="Wish" Culture="@Culture" TypeSelected="@AppStateStatic.Type">
+        <MediaListFull Items="Items" ShowHead="false" FullPage="true" Watching="Watching" Wish="Wish" Culture="@Culture" TypeSelected="@AppStateStatic.Type">
         </MediaListFull>
     }
 </RenderControl>
@@ -133,15 +131,6 @@
     public List<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
     public List<EnumFieldObject<TvGenre>> TvGenres { get; set; } = [];
 
-    protected override void OnParametersSet()
-    {
-        if (keyword.NotEmpty())
-        {
-            ParametersKeyword["with_keywords"] = keyword;
-            AppStateStatic.Index = 1;
-        }
-    }
-
     protected override void OnInitialized()
     {
         Actions.CustomMessageWarning = Translations.Module.Landing.SearchReturnedNothing;
@@ -154,11 +143,27 @@
         TvGenres = EnumHelper.GetList<TvGenre>();
     }
 
-    protected override async Task<bool> OnParametersSetAsync()
+    protected override List<string?> GetParameterKey()
     {
-        await LoadItems(keyword);
+        return [
+            AppStateStatic.Index.ToString(),
+            GetDictionaryKey(ParametersQuery),
+            GetDictionaryKey(ParametersKeyword),
+            AppStateStatic.Type.ToString(),
+            AppStateStatic.MovieGenre.ToString(),
+            AppStateStatic.TvGenre.ToString()
+        ];
+    }
 
-        return true;
+    protected override async Task LoadParameterDataAsync()
+    {
+        if (keyword.NotEmpty())
+        {
+            ParametersKeyword["with_keywords"] = keyword;
+            AppStateStatic.Index = 1;
+        }
+
+        await LoadItems(keyword);
     }
 
     private async Task LoadItems(string? keywordId)

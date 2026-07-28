@@ -83,14 +83,15 @@
         if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await LoadParameterDataAsync(), cts.Token);
     }
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return new
-        {
-            MediaListApi,
-            TypeSelected,
-            StringParameters,
-        };
+        return
+        [
+            MediaListApi?.GetType().FullName,
+            GetDictionaryKey(StringParameters),
+            GetCollectionKey(Items.Select(s => s.tmdb_id)),
+            TypeSelected.ToString()
+        ];
     }
 
     protected override async Task LoadParameterDataAsync()

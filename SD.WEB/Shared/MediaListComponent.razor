@@ -126,9 +126,9 @@ else
         }
     }
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return TypeSelected;
+        return [TypeSelected.ToString()];
     }
 
     protected override async Task LoadParameterDataAsync()

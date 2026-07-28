@@ -45,13 +45,12 @@
     private NewsCache? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return new
-        {
+        return [
             Culture,
             category
-        };
+        ];
     }
 
     protected override async Task LoadParameterDataAsync()

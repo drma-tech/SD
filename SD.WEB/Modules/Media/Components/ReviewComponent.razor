@@ -40,13 +40,12 @@
     public MetaCriticCache? Model { get; set; }
     private ComponentActions<MetaCriticCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return new
-        {
+        return [
             ImdbId,
-            Type
-        };
+            Type.ToString()
+        ];
     }
 
     protected override async Task LoadParameterDataAsync()

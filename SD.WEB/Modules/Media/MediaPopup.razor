@@ -304,13 +304,12 @@
         };
     }
 
-    protected override object? GetParameterKey()
+    protected override List<string?> GetParameterKey()
     {
-        return new
-        {
+        return [
             TmdbId,
-            Type
-        };
+            Type.ToString()
+        ];
     }
 
     protected override async Task LoadParameterDataAsync()
