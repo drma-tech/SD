@@ -138,8 +138,8 @@
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
 
-    [Parameter][EditorRequired] public ComponentActions<CacheDocument<Ratings>?> Actions { get; set; }
-    [Parameter] public CacheDocument<Ratings>? RatingsCache { get; set; }
+    [Parameter][EditorRequired] public ComponentActions<RatingsCache> Actions { get; set; }
+    [Parameter] public RatingsCache? RatingsCache { get; set; }
 
     private Color GetColorByRating(string? rating)
     {

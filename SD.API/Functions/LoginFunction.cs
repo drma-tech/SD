@@ -2,6 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using SD.API.Core.Auth;
+using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.ZeptoMail;
 using Supabase.Gotrue;
@@ -10,16 +11,15 @@ using System.Text.Json;
 
 namespace SD.API.Functions;
 
-public class LoginFunction(CosmosRepository repo, IDistributedCache cache)
+public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
 {
     [Function("LoginGet")]
     public async Task<AuthLogin?> LoginGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "login/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
-        return await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
+        return await repo.ReadItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId), cancellationToken);
     }
 
     [Function("LoginAdd")]
@@ -30,20 +30,18 @@ public class LoginFunction(CosmosRepository repo, IDistributedCache cache)
         var country = req.GetQueryParameters()["country"] ?? "error";
         var ip = req.GetUserIP(true);
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
-        var login = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
+        var login = await repo.ReadItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId), cancellationToken);
         var now = DateTimeOffset.UtcNow;
 
         if (login == null)
         {
-            var newLogin = new AuthLogin
+            var newLogin = new AuthLogin(userId)
             {
                 UserId = userId,
                 Accesses = [new Access { Date = now, Platform = platform, Ip = ip, Country = country.ToLower() }]
             };
-            newLogin.Initialize(userId);
 
-            await repo.UpsertItemAsync(newLogin, cancellationToken);
+            await repo.UpsertItemAsync(newLogin);
         }
         else
         {
@@ -61,34 +59,11 @@ public class LoginFunction(CosmosRepository repo, IDistributedCache cache)
                 .Where(a => a.Date >= cutoff)
                 .Union([new Access { Date = now, Platform = platform, Ip = ip, Country = country.ToLower() }])
                 .Take(100)
-                .ToArray();
+                .ToHashSet();
 
-            await repo.UpsertItemAsync(login, cancellationToken);
+            await repo.UpsertItemAsync(login);
         }
     }
-
-    //[Function("LoginFix")]
-    //public async Task LoginFix(
-    //   [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "login/fix")] HttpRequestData req, CancellationToken cancellationToken)
-    //{
-    //    var logins = await repo.ListAll<AuthLogin>(DocumentType.Login, cancellationToken);
-    //    var client = factory.CreateClient("ipinfo");
-
-    //    foreach (var login in logins)
-    //    {
-    //        foreach (var access in login.Accesses)
-    //        {
-    //            var ip = access.Ip?.Split(":")[0];
-    //            if (ip.NotEmpty() && ip != "127.0.0.1")
-    //            {
-    //                var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
-    //                access.Country = result?.Trim()?.ToLower();
-    //            }
-    //        }
-
-    //        await repo.UpsertItemAsync(login, cancellationToken);
-    //    }
-    //}
 
     [Function("LoginEmailAuth")]
     public async Task LoginEmailAuth(

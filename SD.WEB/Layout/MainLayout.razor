@@ -228,8 +228,7 @@
         {
             var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cancellationToken);
 
-            //If you can't identify the country, it's probably in a blocked region (like China). Therefore, we force the user to approve consent.
-            if (country.Empty() || country.ToUpper() == "CN")
+            if (country?.ToUpper() == "CN")
             {
                 var consent = await JsRuntime.Utils().GetStorage("consent", JavascriptContext.Default.Boolean, cancellationToken);
 

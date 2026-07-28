@@ -13,38 +13,22 @@ namespace SD.API.Core;
 
 public static class HttpRequestDataExtensions
 {
-    public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken)
-        where T : CosmosDocument, new()
+    public static async Task ValidateUser(this HttpRequestData req, string? requestedUserId, CancellationToken cancellationToken)
     {
-        var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
+        ArgumentNullException.ThrowIfNull(requestedUserId);
 
-        model ??= new T();
+        var currentUserId = await req.GetUserIdAsync(cancellationToken);
 
-        var userId = await req.GetUserIdAsync(cancellationToken);
-
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
-
-        if (model is ProtectedMainDocument prot)
-            prot.Initialize(userId);
-        else if (model is PrivateMainDocument priv)
-            priv.Initialize(userId);
-        else if (model is CosmosDocument doc) //generic document
-            doc.SetIds(userId);
-
-        return model;
+        if (currentUserId != requestedUserId.RemovePrefix()) throw new NotificationException("User not validated");
     }
 
-    public static async Task<T> GetPublicBody<T>(this HttpRequestData req, CancellationToken cancellationToken)
-        where T : class, new()
+    public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken) where T : class
     {
         req.Body.Position = 0; //in case of a previous read
-        var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
-        model ??= new T();
-
-        return model;
+        return await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken) ?? throw new NotificationException("body not found");
     }
 
-    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge, CancellationToken cancellationToken) where T : class
+    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache? maxAge, CancellationToken cancellationToken) where T : class
     {
         var response = req.CreateResponse();
 
@@ -58,12 +42,12 @@ public static class HttpRequestDataExtensions
             response.StatusCode = HttpStatusCode.NoContent;
         }
 
-        response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+        if (maxAge.HasValue) response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
 
         return response;
     }
 
-    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, string? text, TtlCache maxAge, CancellationToken cancellationToken)
+    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, string? text, TtlCache? maxAge, CancellationToken cancellationToken)
     {
         var response = req.CreateResponse();
 
@@ -78,12 +62,12 @@ public static class HttpRequestDataExtensions
             response.StatusCode = HttpStatusCode.NoContent;
         }
 
-        response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+        if (maxAge.HasValue) response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
 
         return response;
     }
 
-    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, Stream? stream, TtlCache maxAge, CancellationToken cancellationToken)
+    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, Stream? stream, TtlCache? maxAge, CancellationToken cancellationToken)
     {
         var response = req.CreateResponse();
 
@@ -98,7 +82,7 @@ public static class HttpRequestDataExtensions
             response.StatusCode = HttpStatusCode.NoContent;
         }
 
-        response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+        if (maxAge.HasValue) response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
 
         return response;
     }
@@ -122,9 +106,8 @@ public static class HttpRequestDataExtensions
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
         var dictionary = new StringDictionary();
-        foreach (var key in valueCollection.AllKeys)
-            if (key != null)
-                dictionary.Add(key.ToLowerInvariant(), valueCollection[key]);
+        foreach (var key in valueCollection.AllKeys.Where(p => p.NotEmpty()))
+            dictionary.Add(key!.ToLowerInvariant(), valueCollection[key]);
 
         return dictionary;
     }
@@ -178,9 +161,9 @@ public static class HttpRequestDataExtensions
             return true;
         }
 
-        if (version == "loading")
+        if (version == "prerendering")
         {
-            return false; //todo: force load always the version
+            return false;
         }
 
         if (!DateOnly.TryParseExact(version, "yyyy.MM.dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var clientVersion))

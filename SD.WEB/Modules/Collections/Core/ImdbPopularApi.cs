@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace SD.WEB.Modules.Collections.Core;
 
-public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<CacheDocument<MostPopularData>>(factory, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentMostPopularData), IMediaListApi
+public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularDataCache>(factory, ApiType.Anonymous, null, [], ApiContext.Default.MostPopularDataCache), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, ComponentActions<HashSet<MediaDetail>>? actions,
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)

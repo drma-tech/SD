@@ -1,19 +1,19 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
+using SD.Shared.Core.Types;
 
 namespace SD.API.Functions;
 
-public class WatchingListFunction(CosmosRepository repo)
+public class WatchingListFunction(CosmosMainRepository repo)
 {
     [Function("WatchingListGet")]
     public async Task<HttpResponseData?> WatchingListGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
-        var doc = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
+        var doc = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
 
         return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
     }
@@ -24,21 +24,15 @@ public class WatchingListFunction(CosmosRepository repo)
         string mediaType, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-        var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
-        var newItem = await req.GetPublicBody<WatchingListItem>(cancellationToken);
+        var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
+        var newItem = await req.GetBody<WatchingListItem>(cancellationToken);
 
-        if (obj == null)
-        {
-            obj = new WatchingList();
-
-            obj.Initialize(userId);
-        }
+        obj ??= new WatchingList(userId);
 
         obj.AddItem(mediaType.ParseToEnum<MediaType>(), newItem);
 
-        return await repo.UpsertItemAsync(obj, cancellationToken);
+        return await repo.UpsertItemAsync(obj);
     }
 
     [Function("WatchingListRemove")]
@@ -47,20 +41,14 @@ public class WatchingListFunction(CosmosRepository repo)
         string mediaType, string collectionId, string tmdbId, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-        var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
+        var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
 
-        if (obj == null)
-        {
-            obj = new WatchingList();
-
-            obj.Initialize(userId);
-        }
+        obj ??= new WatchingList(userId);
 
         obj.RemoveItem(mediaType.ParseToEnum<MediaType>(), collectionId, tmdbId == "null" ? null : tmdbId);
 
-        return await repo.UpsertItemAsync(obj, cancellationToken);
+        return await repo.UpsertItemAsync(obj);
     }
 
     [Function("WatchingListSync")]
@@ -69,17 +57,11 @@ public class WatchingListFunction(CosmosRepository repo)
         string mediaType, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-        var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
-        var newItem = await req.GetPublicBody<WatchingList>(cancellationToken);
+        var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
+        var newItem = await req.GetBody<WatchingList>(cancellationToken);
 
-        if (obj == null)
-        {
-            obj = new WatchingList();
-
-            obj.Initialize(userId);
-        }
+        obj ??= new WatchingList(userId);
 
         var type = mediaType.ParseToEnum<MediaType>();
 
@@ -94,6 +76,6 @@ public class WatchingListFunction(CosmosRepository repo)
             obj.ShowSyncDate = DateTime.Now;
         }
 
-        return await repo.UpsertItemAsync(obj, cancellationToken);
+        return await repo.UpsertItemAsync(obj);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core.Models;
+﻿namespace SD.Shared.Core;
 
 public class Configurations
 {

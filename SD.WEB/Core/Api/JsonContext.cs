@@ -33,11 +33,11 @@ namespace SD.WEB.Core.Api
     [JsonSerializable(typeof(MyProviders))]
     [JsonSerializable(typeof(WatchingList))]
     [JsonSerializable(typeof(WishList))]
-    [JsonSerializable(typeof(CacheDocument<NewsModel>))]
-    [JsonSerializable(typeof(CacheDocument<TrailerModel>))]
-    [JsonSerializable(typeof(CacheDocument<Ratings>))]
-    [JsonSerializable(typeof(CacheDocument<ReviewModel>))]
-    [JsonSerializable(typeof(CacheDocument<MostPopularData>))]
+    [JsonSerializable(typeof(NewsCache))]
+    [JsonSerializable(typeof(YoutubeCache))]
+    [JsonSerializable(typeof(RatingsCache))]
+    [JsonSerializable(typeof(MetaCriticCache))]
+    [JsonSerializable(typeof(MostPopularDataCache))]
     [JsonSerializable(typeof(CustomListNew))]
     internal partial class ApiContext : JsonSerializerContext
     {

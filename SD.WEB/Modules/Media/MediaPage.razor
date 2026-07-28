@@ -214,8 +214,8 @@
     public string? EnglishTitle { get; set; }
 
     private ComponentActions<MediaDetail?> Actions { get; set; } = new(obj => obj == null);
-    private ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new(obj => obj?.Data == null);
-    private CacheDocument<Ratings>? _ratingsCache;
+    private ComponentActions<RatingsCache> RatingsActions { get; set; } = new(obj => obj?.Data == null);
+    private RatingsCache? _ratingsCache;
 
     private ComponentActions<HashSet<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
     public HashSet<MediaDetail> Recommendations { get; set; } = [];
@@ -335,7 +335,7 @@
                 return;
             }
 
-            Wish ??= new WishList();
+            Wish ??= new WishList(AppStateStatic.UserId);
 
             var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
 
@@ -377,7 +377,7 @@
 
             if (hasCollection)
             {
-                var watching = Watching ?? new WatchingList();
+                var watching = Watching ?? new WatchingList(AppStateStatic.UserId);
                 var collectionId = Media.MediaType == MediaType.movie ? Media.collectionId?.ToString() : Media.tmdb_id;
 
                 await DialogService.SelectItemsCollection(

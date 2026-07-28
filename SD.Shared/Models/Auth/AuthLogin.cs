@@ -1,22 +1,20 @@
-﻿namespace SD.Shared.Models.Auth;
+using SD.Shared.Core.Types;
 
-public class AuthLogin() : PrivateMainDocument(DocumentType.Login)
+namespace SD.Shared.Models.Auth;
+
+public class AuthLogin(string id) : MainDocument(new MainIdentity(MainType.Login, id))
 {
-    public string? UserId { get; set; }
+    public string? UserId { get; set; } = id;
 
-    public Access[] Accesses { get; set; } = [];
-
-    public override void Initialize(string userId)
-    {
-        base.Initialize(userId);
-        UserId = userId;
-    }
+    public HashSet<Access> Accesses { get; set; } = [];
 }
 
-public class Access
+public class Access : EqualityBase<Access>
 {
     public DateTimeOffset Date { get; set; }
     public string? Platform { get; set; }
     public string? Ip { get; set; }
     public string? Country { get; set; }
+
+    protected override object?[] EqualityValues => [Date];
 }

@@ -22,7 +22,7 @@ namespace SD.Shared.Translations.Enum {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AccountCycle {
+    public class AccountCycle {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SD.Shared.Translations.Enum {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Translations.Enum.AccountCycle", typeof(AccountCycle).Assembly);
@@ -51,7 +51,7 @@ namespace SD.Shared.Translations.Enum {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SD.Shared.Translations.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Month.
         /// </summary>
-        internal static string Month {
+        public static string Month {
             get {
                 return ResourceManager.GetString("Month", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace SD.Shared.Translations.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Monthly.
         /// </summary>
-        internal static string Monthly {
+        public static string Monthly {
             get {
                 return ResourceManager.GetString("Monthly", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace SD.Shared.Translations.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Year.
         /// </summary>
-        internal static string Year {
+        public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace SD.Shared.Translations.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Yearly.
         /// </summary>
-        internal static string Yearly {
+        public static string Yearly {
             get {
                 return ResourceManager.GetString("Yearly", resourceCulture);
             }

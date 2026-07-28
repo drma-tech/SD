@@ -41,8 +41,8 @@
 
     public MediaType MediaType => category.ParseToEnum<MediaType>(MediaType.movie);
 
-    public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
-    private CacheDocument<NewsModel>? NewsList { get; set; }
+    public ComponentActions<NewsCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    private NewsCache? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 
     protected override object? GetParameterKey()

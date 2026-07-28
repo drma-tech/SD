@@ -23,11 +23,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         var category = req.GetQueryParameters()["category"];
         var cacheKey = $"news_{mode}_{category}";
 
-        var doc = await cache.Get<NewsModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<NewsCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
-            doc = await cacheRepo.Get<NewsModel>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<NewsCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -48,7 +48,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                         item.date));
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, cacheKey), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new NewsCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.HalfDay, cancellationToken);
@@ -64,11 +64,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"trailers_{mode}";
 
-        var doc = await cache.Get<TrailerModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<YoutubeCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
-            doc = await cacheRepo.Get<TrailerModel>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<YoutubeCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -84,7 +84,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                         mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate()));
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, cacheKey), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.SixHours, cancellationToken);
@@ -100,11 +100,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"popular-movies-{mode}";
 
-        var doc = await cache.Get<MostPopularData>(cacheKey, cancellationToken);
+        var doc = await cache.Get<MostPopularDataCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
-            doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<MostPopularDataCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -129,7 +129,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     });
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, cacheKey), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
@@ -145,11 +145,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"popular-tv-{mode}";
 
-        var doc = await cache.Get<MostPopularData>(cacheKey, cancellationToken);
+        var doc = await cache.Get<MostPopularDataCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
-            doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<MostPopularDataCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -174,7 +174,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     });
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, cacheKey), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
@@ -195,13 +195,13 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
-        var doc = await cache.Get<Ratings>(cacheKey, cancellationToken);
+        var doc = await cache.Get<RatingsCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
             if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
-            doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<RatingsCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -225,7 +225,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
@@ -248,13 +248,13 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
-        var doc = await cache.Get<Ratings>(cacheKey, cancellationToken);
+        var doc = await cache.Get<RatingsCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
             if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
-            doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<RatingsCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -276,7 +276,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
@@ -297,13 +297,13 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
-        var doc = await cache.Get<ReviewModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<MetaCriticCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
             if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
 
-            doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<MetaCriticCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             if (doc == null)
             {
@@ -320,7 +320,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache($"review_{id}", newModel, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
@@ -339,13 +339,13 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
-        var doc = await cache.Get<ReviewModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<MetaCriticCache>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
             if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
 
-            doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
+            doc = await cacheRepo.ReadItemAsync<MetaCriticCache>(new CacheIdentity(cacheKey), cancellationToken);
 
             //todo: find api to get reviews
 
@@ -372,7 +372,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
 
-    private static async Task TrySaveCertifiedSd(CacheDocument<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token, IHttpClientFactory factory)
+    private static async Task TrySaveCertifiedSd(CacheDocumentData<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token, IHttpClientFactory factory)
     {
         if (tmdbId.Empty()) return;
 
@@ -433,7 +433,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         return TtlCache.SixMonths; // older then one month
     }
 
-    private async Task SaveCache<TData>(CacheDocument<TData>? doc, string cacheKey, TtlCache ttl, CancellationToken cancellationToken) where TData : class, new()
+    private async Task SaveCache<TData>(CacheDocumentData<TData>? doc, string cacheKey, TtlCache ttl, CancellationToken cancellationToken) where TData : class, new()
     {
         if (doc != null)
         {

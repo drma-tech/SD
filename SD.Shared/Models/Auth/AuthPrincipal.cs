@@ -1,26 +1,20 @@
 ﻿using Newtonsoft.Json;
-using SD.Shared.Core;
+using SD.Shared.Core.Types;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SD.Shared.Models.Auth;
 
-public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
+public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.Principal, id))
 {
-    public string? UserId { get; set; }
+    public string? UserId { get; set; } = id;
     public string? DisplayName { get; set; }
     [DataType(DataType.EmailAddress)] public string? Email { get; set; }
     public string? StripeCustomerId { get; set; }
 
     public string[] AuthProviders { get; set; } = [];
     public HashSet<AuthSubscription> Subscriptions { get; set; } = [];
-    public List<Event> Events { get; set; } = [];
-
-    public override void Initialize(string userId)
-    {
-        base.Initialize(userId);
-        UserId = userId;
-    }
+    public HashSet<Event> Events { get; set; } = [];
 
     public AuthSubscription? GetActiveSubscription()
     {
@@ -75,7 +69,7 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
     }
 }
 
-public class AuthSubscription
+public class AuthSubscription : EqualityBase<AuthSubscription>
 {
     public string? SubscriptionId { get; set; }
     public string? SessionId { get; set; }
@@ -104,24 +98,15 @@ public class AuthSubscription
         };
     }
 
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj is not AuthSubscription other) return false;
-
-        return string.Equals(SubscriptionId, other.SubscriptionId, StringComparison.Ordinal) && string.Equals(SessionId, other.SessionId, StringComparison.Ordinal);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(SubscriptionId, SessionId);
-    }
+    protected override object?[] EqualityValues => [SubscriptionId, SessionId];
 }
 
-public class Event(string? origin, string? description, string? ip)
+public class Event(string? origin, string? description, string? ip) : EqualityBase<Event>
 {
     public string? Origin { get; set; } = origin;
     public DateTimeOffset Date { get; set; } = DateTimeOffset.UtcNow;
     public string? Description { get; set; } = description;
     public string? Ip { get; set; } = ip;
+
+    protected override object?[] EqualityValues => [Origin, Date];
 }

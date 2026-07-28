@@ -34,8 +34,8 @@
 <FloatingButton Template="Template.Back"></FloatingButton>
 
 @code {
-    public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
-    private CacheDocument<TrailerModel>? TrailerModel { get; set; }
+    public ComponentActions<YoutubeCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    private YoutubeCache? TrailerModel { get; set; }
 
     protected override async Task LoadStaticDataAsync()
     {

@@ -152,7 +152,7 @@
 
         if (Wish == null && AppStateStatic.IsAuthenticated)
         {
-            Wish ??= new WishList();
+            Wish ??= new WishList(AppStateStatic.UserId);
 
             var result = await ImdbPopularApi.GetList([], null, SD.Shared.Enums.MediaType.movie);
             var media = result.list.FirstOrDefault();
@@ -183,7 +183,7 @@
         {
             await ProviderActions.StartLoading.Invoke(null);
 
-            MyProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
             var AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
             var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);

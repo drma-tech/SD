@@ -13,4 +13,13 @@ public static class CosmosRepositoryExtensions
             PartitionKey = key
         };
     }
+
+    public static PartitionKey ToPartitionKey(this object key) => key switch
+    {
+        string s => new PartitionKey(s),
+        int i => new PartitionKey(i),
+        bool b => new PartitionKey(b),
+        double d => new PartitionKey(d),
+        _ => throw new NotSupportedException($"Unsupported partition key type: {key.GetType()}")
+    };
 }

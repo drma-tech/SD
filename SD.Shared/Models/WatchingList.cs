@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
+using SD.Shared.Core.Types;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SD.Shared.Models;
 
-public class WatchingList() : PrivateMainDocument(DocumentType.WatchingList)
+public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.WatchingList, id))
 {
     public DateTime? MovieSyncDate { get; set; }
     public DateTime? ShowSyncDate { get; set; }
@@ -82,7 +83,7 @@ public class WatchingList() : PrivateMainDocument(DocumentType.WatchingList)
     }
 }
 
-public sealed class WatchingListItem : IEquatable<WatchingListItem>
+public sealed class WatchingListItem : EqualityBase<WatchingListItem>
 {
     public WatchingListItem()
     {
@@ -109,21 +110,5 @@ public sealed class WatchingListItem : IEquatable<WatchingListItem>
     public int maxItems { get; set; }
     public HashSet<string> watched { get; init; } = [];
 
-    public bool Equals(WatchingListItem? other)
-    {
-        if (other is null || other.id is null) return false;
-        if (id is null) return false;
-
-        return id.Equals(other.id);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as WatchingListItem);
-    }
-
-    public override int GetHashCode()
-    {
-        return id?.GetHashCode() ?? 0;
-    }
+    protected override object?[] EqualityValues => [id];
 }

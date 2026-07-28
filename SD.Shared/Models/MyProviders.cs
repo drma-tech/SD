@@ -1,8 +1,10 @@
-﻿namespace SD.Shared.Models;
+﻿using SD.Shared.Core.Types;
 
-public class MyProviders() : PrivateMainDocument(DocumentType.MyProvider)
+namespace SD.Shared.Models;
+
+public class MyProviders(string? id) : MainDocument(new MainIdentity(MainType.MyProvider, id))
 {
-    public List<MyProvidersItem> Items { get; set; } = [];
+    public HashSet<MyProvidersItem> Items { get; set; } = [];
 
     public void AddItem(HashSet<MyProvidersItem> items)
     {
@@ -15,26 +17,12 @@ public class MyProviders() : PrivateMainDocument(DocumentType.MyProvider)
     }
 }
 
-public sealed class MyProvidersItem
+public class MyProvidersItem : EqualityBase<MyProvidersItem>
 {
     public string? id { get; set; }
     public string? name { get; set; }
     public string? logo { get; set; }
     public Country? region { get; set; }
 
-    public bool Equals(MyProvidersItem? other)
-    {
-        if (other?.id is null) return false;
-        return id is not null && id.Equals(other.id);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as MyProvidersItem);
-    }
-
-    public override int GetHashCode()
-    {
-        return id?.GetHashCode() ?? 0;
-    }
+    protected override object?[] EqualityValues => [id];
 }

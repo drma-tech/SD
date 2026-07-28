@@ -1,6 +1,8 @@
-﻿namespace SD.Shared.Models;
+﻿using SD.Shared.Core.Types;
 
-public class WishList() : PrivateMainDocument(DocumentType.WishList)
+namespace SD.Shared.Models;
+
+public class WishList(string? id) : MainDocument(new MainIdentity(MainType.WishList, id))
 {
     public HashSet<WishListItem> Movies { get; init; } = [];
 
@@ -35,7 +37,7 @@ public class WishList() : PrivateMainDocument(DocumentType.WishList)
     }
 }
 
-public class WishListItem : IEquatable<WishListItem>
+public class WishListItem : EqualityBase<WishListItem>
 {
     public WishListItem()
     {
@@ -54,21 +56,5 @@ public class WishListItem : IEquatable<WishListItem>
     public string? logo { get; init; }
     public int? runtime { get; init; }
 
-    public bool Equals(WishListItem? other)
-    {
-        if (other is null || other.id is null) return false;
-        if (id is null) return false;
-
-        return id.Equals(other.id);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as WishListItem);
-    }
-
-    public override int GetHashCode()
-    {
-        return id?.GetHashCode() ?? 0;
-    }
+    protected override object?[] EqualityValues => [id];
 }

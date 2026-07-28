@@ -1,12 +1,10 @@
 ﻿namespace SD.Shared.Models.Blocked;
 
-public class DataBlockedCache : CacheDocument<DataBlocked>
+public class DataBlockedCache(string id, DataBlocked data) : CacheDocumentData<DataBlocked>(new CacheIdentity(id), data, TtlCache.OneWeek)
 {
-    public DataBlockedCache()
-    {
-    }
+}
 
-    public DataBlockedCache(DataBlocked data, string key, TtlCache ttl) : base(key, data, ttl)
-    {
-    }
+public class DataBlocked
+{
+    public int Quantity { get; set; } = 1;
 }

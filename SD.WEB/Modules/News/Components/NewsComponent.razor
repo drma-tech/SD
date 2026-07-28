@@ -89,11 +89,11 @@
 @code {
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    public ComponentActions<CacheDocument<NewsModel>?> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
-    public ComponentActions<CacheDocument<NewsModel>?> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public ComponentActions<NewsCache> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public ComponentActions<NewsCache> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
-    private CacheDocument<NewsModel>? NewsMovie { get; set; }
-    private CacheDocument<NewsModel>? NewsSerie { get; set; }
+    private NewsCache? NewsMovie { get; set; }
+    private NewsCache? NewsSerie { get; set; }
 
     private int _activeIndex = 0;
     private bool[] _loaded = new bool[2] { true, false };

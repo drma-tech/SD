@@ -37,8 +37,8 @@
     [Parameter] public DateTime? ReleaseDate { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public CacheDocument<ReviewModel>? Model { get; set; }
-    private ComponentActions<CacheDocument<ReviewModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public MetaCriticCache? Model { get; set; }
+    private ComponentActions<MetaCriticCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
     protected override object? GetParameterKey()
     {

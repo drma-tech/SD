@@ -1,27 +1,17 @@
-﻿namespace SD.Shared.Core.Models;
+﻿using SD.Shared.Core.Types;
 
-public enum JobType
+namespace SD.Shared.Core.Models;
+
+public readonly record struct JobIdentity(JobType Type, string? DocId) : ICosmosIdentity
 {
-    ExpectedMovies = 1,
+    public string Id => $"{Type}:{DocId.RemovePrefix()}";
+    public string? RawId => DocId?.RemovePrefix();
+    public object Key => (int)Type;
 }
 
-public abstract class JobDocument : CosmosDocument
+public abstract class JobDocument(JobIdentity identity, DateTimeOffset runAt) : CosmosDocument(identity)
 {
-    protected JobDocument(JobType type)
-    {
-        Type = type;
-    }
+    public JobType Type { get; set; } = identity.Type;
 
-    protected JobDocument(string id, JobType type) : base($"{type}:{id}")
-    {
-        Type = type;
-    }
-
-    public JobType Type { get; set; }
-    public DateTimeOffset RunAt { get; set; }
-
-    public virtual void Initialize(string id)
-    {
-        SetIds($"{Type}:{id}");
-    }
+    public DateTimeOffset RunAt { get; set; } = runAt;
 }

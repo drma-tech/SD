@@ -1,6 +1,6 @@
 ﻿namespace SD.WEB.Modules.Profile.Core;
 
-public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist", ApiContext.Default.WatchingList)
+public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist", [], ApiContext.Default.WatchingList)
 {
     public async Task<WatchingList?> Get(ComponentActions<WatchingList?>? actions, CancellationToken cancellationToken)
     {

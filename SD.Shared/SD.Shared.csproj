@@ -60,7 +60,7 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Translations\Enum\AccountCycle.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
+			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>AccountCycle.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Translations\Enum\MovieGenre.resx">

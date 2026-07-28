@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null, ApiContext.Default.AuthLogin)
+public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null, [], ApiContext.Default.AuthLogin)
 {
     public async Task<AuthLogin?> Get(CancellationToken cancellationToken)
     {
@@ -11,7 +11,7 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
 
     public async Task Add(SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)
     {
-        await PostAsync(Endpoint.Add(platform.ToString(), country), null, ApiContext.Default.AuthLogin, cancellationToken);
+        await PostAsync(Endpoint.Add(platform.ToString(), country), cancellationToken);
     }
 
     private struct Endpoint
@@ -25,11 +25,11 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
     }
 }
 
-public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, null, ApiContext.Default.AuthLogin)
+public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, null, [], ApiContext.Default.AuthLogin)
 {
     public async Task SendEmail(string? email, string? reference, CancellationToken cancellationToken)
     {
-        await PostAsync(Endpoint.SendEmail(email, reference), null, ApiContext.Default.AuthLogin, cancellationToken);
+        await PostAsync(Endpoint.SendEmail(email, reference), cancellationToken);
     }
 
     public async Task<string?> StatusEmail(string? reference, CancellationToken cancellationToken)

@@ -2,21 +2,21 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using SD.API.Core.Auth;
+using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Blocked;
 
 namespace SD.API.Functions;
 
-public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repoCache)
+public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository repoCache)
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-        var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+        var model = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
         return await req.CreateResponse(model, TtlCache.OneDay, cancellationToken);
     }
@@ -53,15 +53,15 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         var userId = await req.GetUserIdAsync(cancellationToken);
         var body = await req.GetBody<AuthPrincipal>(cancellationToken);
 
-        if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
+        await req.ValidateUser(body.UserId, cancellationToken);
 
         //check if user ip is blocked for insert
         var ip = req.GetUserIP(false) ?? throw new UnhandledException("Failed to retrieve IP");
-        var blockedIp = await repoCache.Get<DataBlocked>($"block-{ip}", cancellationToken);
+        var blockedIp = await repoCache.ReadItemAsync<DataBlockedCache>(new CacheIdentity($"block-{ip}"), cancellationToken);
         if (blockedIp?.Data != null)
         {
             blockedIp.Data.Quantity++;
-            await repoCache.UpsertItemAsync(blockedIp, cancellationToken);
+            await repoCache.UpsertItemAsync(blockedIp);
 
             if (blockedIp.Data?.Quantity > 2)
             {
@@ -72,7 +72,7 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         }
         else
         {
-            _ = repoCache.CreateItemAsync(new DataBlockedCache(new DataBlocked(), $"block-{ip}", TtlCache.OneWeek), cancellationToken);
+            _ = repoCache.CreateItemAsync(new DataBlockedCache($"block-{ip}", new DataBlocked()));
         }
 
         foreach (var item in body.Events.Where(w => w.Ip.Empty()))
@@ -83,16 +83,15 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         var zepto = new ZeptoMailClient(ApiStartup.Configurations.ZeptoMail!.JobApiKey!);
         if (body.Email.NotEmpty()) _ = zepto.SendWelcomeEmail(body.Email, userId, cancellationToken);
 
-        var principal = new AuthPrincipal
+        var principal = new AuthPrincipal(userId)
         {
             AuthProviders = body.AuthProviders,
             DisplayName = body.DisplayName,
             Email = body.Email,
             Events = body.Events
         };
-        principal.Initialize(userId);
 
-        return await repo.CreateItemAsync(principal, cancellationToken);
+        return await repo.CreateItemAsync(principal);
     }
 
     [Function("PrincipalUpdate")]
@@ -102,30 +101,30 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         var userId = await req.GetUserIdAsync(cancellationToken);
         var body = await req.GetBody<AuthPrincipal>(cancellationToken);
 
-        if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
+        await req.ValidateUser(body.UserId, cancellationToken);
 
-        var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
         principal!.AuthProviders = body.AuthProviders;
 
-        return await repo.UpsertItemAsync(principal, cancellationToken);
+        return await repo.UpsertItemAsync(principal);
     }
 
     [Function("PrincipalEvent")]
     public async Task<AuthPrincipal> PrincipalEvent(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
+       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
         var ip = req.GetUserIP(true);
 
-        var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
+        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
 
         var app = req.GetQueryParameters()["app"];
         var msg = req.GetQueryParameters()["msg"];
 
         principal.Events.Add(new Event(app, msg, ip));
 
-        return await repo.UpsertItemAsync(principal, cancellationToken);
+        return await repo.UpsertItemAsync(principal);
     }
 
     [Function("PrincipalRemove")]
@@ -134,20 +133,11 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
 
-        var myPrincipal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
-        if (myPrincipal != null) await repo.Delete(myPrincipal, cancellationToken);
-
-        var myLogins = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
-        if (myLogins != null) await repo.Delete(myLogins, cancellationToken);
-
-        var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
-        if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
-
-        var myWatching = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
-        if (myWatching != null) await repo.Delete(myWatching, cancellationToken);
-
-        var myWish = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
-        if (myWish != null) await repo.Delete(myWish, cancellationToken);
+        await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId));
+        await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId));
+        await repo.DeleteItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId));
+        await repo.DeleteItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId));
+        await repo.DeleteItemAsync<WishList>(new MainIdentity(MainType.WishList, userId));
     }
 
     //[Function("PrincipalMigrate")]

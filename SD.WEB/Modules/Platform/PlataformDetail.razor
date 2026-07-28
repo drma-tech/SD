@@ -188,7 +188,7 @@ else
                 return;
             }
 
-            MyProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
             var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
@@ -213,7 +213,7 @@ else
                 return;
             }
 
-            MyProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
             MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id), ApiContext.Default.MyProvidersItem, cts.Token);
 

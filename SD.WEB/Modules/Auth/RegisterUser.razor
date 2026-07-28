@@ -90,7 +90,7 @@
             if (AppStateStatic.Principal != null) throw new InvalidOperationException("Principal is already set.");
             if (AppStateStatic.User == null) throw new InvalidOperationException("User is null.");
 
-            AppStateStatic.Principal = new AuthPrincipal
+            AppStateStatic.Principal = new AuthPrincipal(AppStateStatic.UserId)
             {
                 AuthProviders = [AppStateStatic.User.FindFirst("idp")!.Value],
                 DisplayName = AppStateStatic.User.FindFirst("name")?.Value,

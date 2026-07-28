@@ -1,19 +1,19 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
+using SD.Shared.Core.Types;
 
 namespace SD.API.Functions;
 
-public class WishListFunction(CosmosRepository repo)
+public class WishListFunction(CosmosMainRepository repo)
 {
     [Function("WishListGet")]
     public async Task<HttpResponseData?> WishListGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
-        var doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+        var doc = await repo.ReadItemAsync<WishList>(new MainIdentity(MainType.WishList, userId), cancellationToken);
 
         return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
     }
@@ -23,21 +23,15 @@ public class WishListFunction(CosmosRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/add/{type}")] HttpRequestData req, string type, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-        var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
-        var newItem = await req.GetPublicBody<WishListItem>(cancellationToken);
+        var obj = await repo.ReadItemAsync<WishList>(new MainIdentity(MainType.WishList, userId), cancellationToken);
+        var newItem = await req.GetBody<WishListItem>(cancellationToken);
 
-        if (obj == null)
-        {
-            obj = new WishList();
-
-            obj.Initialize(userId);
-        }
+        obj ??= new WishList(userId);
 
         obj.AddItem(type.ParseToEnum<MediaType>(), newItem);
 
-        return await repo.UpsertItemAsync(obj, cancellationToken);
+        return await repo.UpsertItemAsync(obj);
     }
 
     [Function("WishListRemove")]
@@ -45,19 +39,13 @@ public class WishListFunction(CosmosRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req, string type, string id, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-        var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+        var obj = await repo.ReadItemAsync<WishList>(new MainIdentity(MainType.WishList, userId), cancellationToken);
 
-        if (obj == null)
-        {
-            obj = new WishList();
-
-            obj.Initialize(userId);
-        }
+        obj ??= new WishList(userId);
 
         obj.RemoveItem(type.ParseToEnum<MediaType>(), id);
 
-        return await repo.UpsertItemAsync(obj, cancellationToken);
+        return await repo.UpsertItemAsync(obj);
     }
 }

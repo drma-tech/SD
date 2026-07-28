@@ -8,16 +8,13 @@ namespace SD.API.Core.Auth;
 
 public static class AuthUsersHelper
 {
-    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
+    public static async Task<string> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken)
     {
         var principal = await req.ParseAndValidateJwtAsync(cancellationToken);
 
         var id = principal?.Claims.FirstOrDefault(w => w.Type == "user_id")?.Value;
 
-        if (required)
-            return id ?? throw new UnhandledException("user id not available");
-        else
-            return id;
+        return id ?? throw new UnhandledException("unauthenticated user");
     }
 
     public static string? GetUserIP(this HttpRequestData req, bool includePort)

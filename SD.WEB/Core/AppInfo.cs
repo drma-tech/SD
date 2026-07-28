@@ -35,6 +35,7 @@ namespace SD.WEB.Core
             new("Modern Matchmaker", "Find a compatible partner through Smart Matchmaking", "https://modern-matchmaker.com", "/logo/modern-matchmaker.png", true ),
             new("My Next Spot", "Find the Best Cities and Countries to Live or Travel", "https://my-next-spot.com", "/logo/next-spot.png", true ),
             new("Web Standards", "Web Standards Generator for Websites and PWAs", "https://web-standards.com", "/logo/webstandards.png", false ),
+            //new("Shared Home", "Room rentals, shared homes and community", "https://shared-home.com", "/logo/shared-home.png", true ),
        ];
     }
 }

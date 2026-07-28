@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Platform.Core;
 
-public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Local)
+public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null, [], ApiType.Local)
 {
     public async Task<AllProviders?> GetAll(ComponentActions<AllProviders?>? actions, CancellationToken cancellationToken)
     {
