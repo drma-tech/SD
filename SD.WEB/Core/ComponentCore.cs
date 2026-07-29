@@ -309,7 +309,7 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
 
     [Parameter] public string? Culture { get; set; }
 
-    protected override bool ShowExceptions => false;
+    protected override bool ShowExceptions => true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -353,7 +353,7 @@ public abstract class PageParameterCore<T> : ComponentParameterCore<T>, IBrowser
 
     [Parameter] public string? Culture { get; set; }
 
-    protected override bool ShowExceptions => false;
+    protected override bool ShowExceptions => true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
