@@ -69,7 +69,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
                         </MudListItem>
                     }
                 }
-                <MudListItem Href=@($"/{Culture}/help#get-the-app") Class="py-0" rel="nofollow">
+                <MudListItem Href=@($"/{Culture}/help#get-the-app") Class="py-0">
                     <ChildContent>
                         <MudIcon Icon="@Icons.Material.Filled.Apps" Class="ma-0 me-1" Style="vertical-align: middle;" />
                         More
@@ -84,7 +84,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
                         Support
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@Translations.Title.HelpCenter" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
+                <MudListItem Text="@Translations.Title.HelpCenter" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" />
                 <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Class="py-0" rel="nofollow" />
                 <MudListItem Text="@Translations.Title.FAQ" Href=@($"/{Culture}/help/faq") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
                 <MudListItem Text="@Translations.Title.Compare" Href=@($"/{Culture}/compare") Class="py-0" Disabled="_blockedActions" />
