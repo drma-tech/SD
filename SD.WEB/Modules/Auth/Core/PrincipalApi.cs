@@ -9,11 +9,11 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
         return await GetAsync(Endpoint.Get, setNewVersion, null, cancellationToken);
     }
 
-    public async Task<AuthPrincipal> Add(AuthPrincipal? obj, CancellationToken cancellationToken)
+    public async Task<AuthPrincipal> Add(AuthPrincipal? obj, SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync(Endpoint.Add, obj, cancellationToken);
+        return await PostAsync(Endpoint.Add(platform.ToString(), country), obj, cancellationToken);
     }
 
     public async Task<AuthPrincipal> Update(AuthPrincipal? obj, CancellationToken cancellationToken)
@@ -38,9 +38,10 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
     private struct Endpoint
     {
         public const string Get = "principal/get";
-        public const string Add = "principal/add";
         public const string Update = "principal/update";
         public const string Remove = "principal/remove";
+
+        public static string Add(string platform, string? country) => $"principal/add?platform={platform}&country={country}";
 
         public static string Event(string app, string msg) => $"principal/event?app={app}&msg={msg}";
     }

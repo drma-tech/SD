@@ -48,7 +48,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                         item.date));
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new NewsCache(cacheKey, compactModels));
+                doc = await cacheRepo.CreateItemAsync(new NewsCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.HalfDay, cancellationToken);
@@ -84,7 +84,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                         mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate()));
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(cacheKey, compactModels));
+                doc = await cacheRepo.CreateItemAsync(new YoutubeCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.SixHours, cancellationToken);
@@ -129,7 +129,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     });
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(cacheKey, compactModels));
+                doc = await cacheRepo.CreateItemAsync(new MostPopularDataCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
@@ -174,7 +174,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     });
                 }
 
-                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(cacheKey, compactModels));
+                doc = await cacheRepo.CreateItemAsync(new MostPopularDataCache(cacheKey, compactModels));
             }
 
             await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
@@ -225,7 +225,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
+                doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
@@ -276,7 +276,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
+                doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
@@ -320,7 +320,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache($"review_{id}", newModel, ttl));
+                doc = await cacheRepo.CreateItemAsync(new MetaCriticCache($"review_{id}", newModel, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
@@ -363,7 +363,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
             //    ttl = CalculateTtl(releaseDate);
 
-            //    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+            //    doc = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             //}
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);

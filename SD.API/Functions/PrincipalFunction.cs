@@ -52,6 +52,8 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
 
         var userId = await req.GetUserIdAsync(cancellationToken);
         var body = await req.GetBody<AuthPrincipal>(cancellationToken);
+        var platform = req.GetQueryParameters()["platform"];
+        var country = req.GetQueryParameters()["country"];
 
         await req.ValidateUser(body.UserId, cancellationToken);
 
@@ -91,7 +93,20 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
             Events = body.Events
         };
 
-        return await repo.CreateItemAsync(principal);
+        principal = await repo.CreateItemAsync(principal);
+
+        if (platform.NotEmpty())
+        {
+            var newLogin = new AuthLogin(userId)
+            {
+                UserId = userId,
+                Accesses = [new Access { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip, Country = country?.ToLower() }]
+            };
+
+            await repo.CreateItemAsync(newLogin);
+        }
+
+        return principal;
     }
 
     [Function("PrincipalUpdate")]

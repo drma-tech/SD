@@ -81,11 +81,10 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
                 Provider = PaymentProvider.Apple,
                 Product = AccountProduct.Premium,
                 Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly,
-                SessionId = receipt //save receipt before cause it may fail
+                SessionId = receipt, //save receipt before cause it may fail
+                SubscriptionId = purchase.original_transaction_id,
+                ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture))
             };
-
-            sub.SubscriptionId = purchase.original_transaction_id;
-            sub.ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture));
 
             client.AddSubscription(sub);
 

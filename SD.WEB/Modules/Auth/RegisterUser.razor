@@ -69,7 +69,7 @@
                 }
                 else //just do login
                 {
-                    await RegisterLogin();
+                    await RegisterLogin(false);
                 }
             }
             else
@@ -102,11 +102,14 @@
                 AppStateStatic.Principal.Events.Add(new Event(AppInfo.Title, "Terms of use accepted.", null));
             }
 
-            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal, cts.Token);
+            var platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+
+            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal, platform, country, cts.Token);
 
             if (AppStateStatic.Principal == null) throw new InvalidOperationException("Failed to create principal.");
 
-            await RegisterLogin();
+            await RegisterLogin(true);
         }
         catch (Exception ex)
         {
@@ -114,13 +117,16 @@
         }
     }
 
-    private async Task RegisterLogin()
+    private async Task RegisterLogin(bool firstAccess)
     {
-        var platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
-        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+        if (!firstAccess)
+        {
+            var platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
 
-        await LoginApi.Add(platform, country, cts.Token);
-
+            await LoginApi.Add(platform, country, cts.Token);
+        }
+        
         if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
             AppStateStatic.Principal.AuthProviders = AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
