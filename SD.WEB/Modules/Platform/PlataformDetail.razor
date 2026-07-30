@@ -14,7 +14,7 @@
 @inject MyProvidersApi MyProvidersApi
 @inject IpInfoApi IpInfoApi
 
-@if (isNotFound)
+@if (isNotFound || Id.Empty())
 {
     <NotFoundComponent></NotFoundComponent>
 }
