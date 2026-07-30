@@ -7,7 +7,7 @@
 
 <PageSectionComponent ShowHeader="false">
     <ActionsFragment>
-        <MudSelect Label="Filter" FitContent="!IsMobile" Clearable="true" Dense="true" Class="me-2" Variant="Variant.Text"
+        <MudSelect Label="Filter" FitContent="!AppStateStatic.IsMobile" Clearable="true" Dense="true" Class="me-2" Variant="Variant.Text"
                    Value="filter" ValueChanged="@((string? vl) => { filter = vl; StateHasChanged(); })">
             @foreach (var item in Options)
             {
@@ -48,8 +48,6 @@
 
 @code {
     public List<EnumFieldObject<Country>> RegionsList { get; set; } = [];
-
-    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     private List<string?> Options { get; set; } = [];
     private string? filter;
