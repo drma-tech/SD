@@ -20,7 +20,8 @@
 }
 else
 {
-    <HeadComponent Title="@Translations.Title.PlatformDetail.Format(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")" Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" />
+    <HeadComponent Title="@Translations.Title.PlatformDetail.Format(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")" 
+                   Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" FixedAlternateLanguage="@Culture" />
 
     @if (Provider != null)
     {
