@@ -103,15 +103,14 @@ else
 
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
-    } 
+    }
 
-    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
+    protected override async Task LoadStaticDataAsync()
     {
         Actions.StartLoading?.Invoke(null);
 
         AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
-        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
 
         if (Provider == null)
         {
@@ -136,6 +135,11 @@ else
         }
 
         Actions.FinishLoading?.Invoke(Provider);
+    }
+
+    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
+    {
+        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
 
         return true;
     }
