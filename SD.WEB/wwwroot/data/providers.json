@@ -63,7 +63,9 @@
         752,
         756,
         764,
+        784,
         792,
+        800,
         818,
         826,
         840,
@@ -137,6 +139,7 @@
         752,
         756,
         764,
+        784,
         792,
         818,
         826,
@@ -155,7 +158,7 @@
     {
       "id": "7",
       "name": "Fandango At Home",
-      "priority": 38,
+      "priority": 39,
       "description": "Fandango at Home gives you the option to rent or purchase movies and TV shows, with streaming available online or through its app on smart TVs, mobile devices, and other platforms.",
       "link": "https://athome.fandango.com/",
       "logo_path": "/oIXE9vJdkilIxCLAtlbtiqewgvn.jpg",
@@ -502,6 +505,7 @@
         788,
         792,
         796,
+        800,
         807,
         818,
         826,
@@ -598,7 +602,7 @@
     {
       "id": "25",
       "name": "Fandor",
-      "priority": 49,
+      "priority": 50,
       "description": "Fandor offers a curated selection of exceptional films for cinema enthusiasts. Explore unique, thought-provoking movies and connect with a community passionate about meaningful and engaging storytelling.",
       "link": "https://www.fandor.com/",
       "logo_path": "/45lSM3J7Ts4TXTtDv0EuTPL0eH5.jpg",
@@ -833,7 +837,7 @@
     {
       "id": "43",
       "name": "Starz",
-      "priority": 40,
+      "priority": 41,
       "description": "Starz delivers original series, movies, and bonus content with bold storytelling and diverse perspectives. Stream on-demand, ad-free, and enjoy exclusive entertainment across devices.",
       "link": "https://www.starz.com",
       "logo_path": "/yIKwylTLP1u8gl84Is7FItpYLGL.jpg",
@@ -1092,7 +1096,7 @@
     {
       "id": "79",
       "name": "NBC",
-      "priority": 50,
+      "priority": 51,
       "description": "NBC lets you stream episodes and content from NBCUniversal networks online. Watch popular shows, specials, and exclusive programming anytime on computers, mobile devices, or smart TVs.",
       "link": "https://www.nbc.com/shows/nbc/popular",
       "logo_path": "/6hFf3sIdmXSAczy3i6tLSmy6gwK.jpg",
@@ -1111,7 +1115,7 @@
     {
       "id": "80",
       "name": "AMC",
-      "priority": 46,
+      "priority": 47,
       "description": "Watch the latest full episodes and video extras for AMC shows: The Walking Dead, Better Call Saul, Killing Eve, Fear the Walking Dead, Mad Men and more.",
       "link": "https://www.amc.com/",
       "logo_path": "/92Kx25Od0habmgRBTqT6XWgwgKt.jpg",
@@ -1147,7 +1151,7 @@
     {
       "id": "83",
       "name": "The CW",
-      "priority": 35,
+      "priority": 36,
       "description": "The CW offers streaming of popular series like Riverdale, The Flash, Superman & Lois, and All American. Watch full episodes and exclusive content from your favorite shows across devices.",
       "link": "https://www.cwtv.com/shows/",
       "logo_path": "/spcwROYevucLluqZZ8Fv75UuTBt.jpg",
@@ -1338,6 +1342,21 @@
         2,
         3
       ]
+    },
+    {
+      "id": "110",
+      "name": "Infinity+",
+      "priority": 15,
+      "description": null,
+      "link": null,
+      "logo_path": "/tDlGQeD2LaDaHO62itqblktNwmM.jpg",
+      "regions": [
+        380
+      ],
+      "types": [
+        1
+      ],
+      "models": []
     },
     {
       "id": "113",
@@ -1570,7 +1589,7 @@
     {
       "id": "123",
       "name": "FXNow",
-      "priority": 44,
+      "priority": 45,
       "description": "Stream exclusive FX original series, hit movies, and live television from the FX, FXX, and FXM networks. Dive into critically acclaimed dramas and edgy comedies.",
       "link": "https://fxnow.fxnetworks.com",
       "logo_path": "/m4KUe3UoTnLgN4g6txYMnBqeUI5.jpg",
@@ -2109,7 +2128,7 @@
     {
       "id": "188",
       "name": "YouTube Premium",
-      "priority": 34,
+      "priority": 35,
       "description": "An enhanced YouTube experience: watch all videos ad-free, download them for offline viewing, and play content in the background on your mobile devices.",
       "link": "https://www.youtube.com/premium",
       "logo_path": "/rMb93u1tBeErSYLv79zSTR07UdO.jpg",
@@ -2168,7 +2187,7 @@
     {
       "id": "190",
       "name": "Curiosity Stream",
-      "priority": 6,
+      "priority": 9,
       "description": "Stream thousands of high-quality documentaries on science, history, technology, and nature. Affordable subscription service for the endlessly curious.",
       "link": "https://curiositystream.com/",
       "logo_path": "/oR1aNm1Qu9jQBkW4VrGPWhqbC3P.jpg",
@@ -2283,7 +2302,7 @@
     {
       "id": "191",
       "name": "Kanopy",
-      "priority": 36,
+      "priority": 37,
       "description": "Free streaming service for library card holders and students. Access curated indie films, classic cinema, and educational documentaries.",
       "link": "https://www.kanopy.com/",
       "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
@@ -2302,7 +2321,7 @@
     {
       "id": "192",
       "name": "YouTube",
-      "priority": 20,
+      "priority": 21,
       "description": "The world's largest video platform offering movies and shows for rental or purchase. From latest releases to classics, available on any device.",
       "link": "https://www.youtube.com/feed/storefront",
       "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
@@ -2331,7 +2350,7 @@
     {
       "id": "193",
       "name": "SFR Play",
-      "priority": 57,
+      "priority": 55,
       "description": "Service de streaming de SFR : chaînes TV en direct et replay, films, séries et contenus exclusifs comme SyFy, Discovery Channel et 13ème rue.",
       "link": "https://www.sfr.fr/sfrplay/",
       "logo_path": "/vo4tm5HBLpctihoSX6bTIG0VB9d.jpg",
@@ -2349,7 +2368,7 @@
     {
       "id": "207",
       "name": "The Roku Channel",
-      "priority": 29,
+      "priority": 30,
       "description": "Free ad-supported streaming service on Roku devices. Offers movies, TV shows, and live news from various content partners.",
       "link": "https://www.roku.com/",
       "logo_path": "/wQzSN83BnWVgO7xEh0SeTVqtrFv.jpg",
@@ -2367,7 +2386,7 @@
     {
       "id": "209",
       "name": "PBS",
-      "priority": 43,
+      "priority": 44,
       "description": "Stream iconic PBS programming including Masterpiece, NOVA, Frontline, and PBS NewsHour. Educational content, documentaries, and cultural programming.",
       "link": "https://www.pbs.org/",
       "logo_path": "/iLjStQKQwzyxXJb3jyNpvDmW9mx.jpg",
@@ -2421,7 +2440,7 @@
     {
       "id": "212",
       "name": "Hoopla",
-      "priority": 37,
+      "priority": 38,
       "description": "Free digital streaming service through your local library. Borrow movies, TV shows, music, audiobooks, and comics with your library card.",
       "link": "https://www.hoopladigital.com/",
       "logo_path": "/j7D006Uy3UWwZ6G0xH6BMgIWTzH.jpg",
@@ -2767,7 +2786,7 @@
     {
       "id": "258",
       "name": "Criterion Channel",
-      "priority": 42,
+      "priority": 43,
       "description": "Streaming service from the Criterion Collection. Curated selection of classic and contemporary cinema, independent films, and restored masterpieces.",
       "link": "https://www.criterionchannel.com/",
       "logo_path": "/yhrtzYd43pFIhRq0ruO8umJPuyn.jpg",
@@ -2874,7 +2893,7 @@
     {
       "id": "283",
       "name": "Crunchyroll",
-      "priority": 12,
+      "priority": 24,
       "description": "World's largest anime streaming service. Watch thousands of episodes including simulcasts, classics, and Crunchyroll Originals with premium subscriptions.",
       "link": "https://www.crunchyroll.com/",
       "logo_path": "/fzN5Jok5Ig1eJ7gyNGoMhnLSCfh.jpg",
@@ -3159,7 +3178,7 @@
     {
       "id": "309",
       "name": "Sun Nxt",
-      "priority": 3,
+      "priority": 8,
       "description": "Streaming service for South Indian content. Watch Tamil, Telugu, and Malayalam movies, TV serials, and live channels from the Sun Network.",
       "link": "https://www.sunnxt.com/",
       "logo_path": "/6KEQzITx2RrCAQt5Nw9WrL1OI8z.jpg",
@@ -3593,7 +3612,7 @@
     {
       "id": "332",
       "name": "Fandango at Home Free",
-      "priority": 41,
+      "priority": 42,
       "description": "Free streaming service offering movies and TV shows with ad-supported content. Access a selection of popular titles without subscription required.",
       "link": "https://athome.fandango.com/",
       "logo_path": "/oIXE9vJdkilIxCLAtlbtiqewgvn.jpg",
@@ -3838,7 +3857,7 @@
     {
       "id": "345",
       "name": "Canal+ Séries",
-      "priority": 69,
+      "priority": 67,
       "description": "Regarder les meilleurs programmes, films, séries, sports en streaming direct ou en replay. Le programme TV de toutes les chaines est gratuit et sans pub.",
       "link": "https://www.canalplus.com/",
       "logo_path": "/nBrPDnOWhullZrtcYM0qWpm4xNH.jpg",
@@ -4915,7 +4934,7 @@
     {
       "id": "444",
       "name": "Dekkoo",
-      "priority": 13,
+      "priority": 14,
       "description": "Watch gay movies and TV shows online or stream right to your PC, Mac, mobile device, tablet and more. Start your free trial today.",
       "link": "https://www.dekkoo.com/",
       "logo_path": "/x6nRFzF32hCzMHaVM4RHRo7lsgS.jpg",
@@ -5401,7 +5420,7 @@
     {
       "id": "475",
       "name": "DOCSVILLE",
-      "priority": 8,
+      "priority": 10,
       "description": "Docsville is a global, on-demand documentary service. The best stories are always true.",
       "link": "https://www.docsville.com/",
       "logo_path": "/5zqbck5mo8PuVbGu2ngBUdn5Yga.jpg",
@@ -6000,7 +6019,7 @@
     {
       "id": "513",
       "name": "Shadowz",
-      "priority": 25,
+      "priority": 70,
       "description": "Essayez gratuitement Shadowz, la 1ère plateforme de screaming pendant 7 jours sans engagement. Profitez du plus large catalogue de films de genre (Horreur, Thriller, Fantastique, Science-Fiction...) en streaming sur votre PC, Mac, Smartphone et Tablette. Le meilleur de l'horreur est sur Shadowz.",
       "link": "https://www.shadowz.fr/home",
       "logo_path": "/qwRq7klF8EijYs7XgvxSaYd6v6w.jpg",
@@ -6170,7 +6189,7 @@
     {
       "id": "526",
       "name": "AMC+",
-      "priority": 32,
+      "priority": 33,
       "description": "Watch your favorite AMC shows ad-free, on demand. Binge or stream new shows & movies from IFC Films Unlimited, Shudder, and Sundance Now. Award-winning series, popular movies, horror, sci-fi, true crime, and more.",
       "link": "https://www.amcplus.com/",
       "logo_path": "/ovmu6uot1XVvsemM2dDySXLiX57.jpg",
@@ -6631,7 +6650,7 @@
     {
       "id": "546",
       "name": "WOW Presents Plus",
-      "priority": 10,
+      "priority": 11,
       "description": "WOW Presents Plus is the official streamer of all things drag featuring Werq The World, UNHhhh with Trixie and Katya, and hundreds of other World of Wonder originals, documentaries, specials, and LGBTQ+ programming.",
       "link": "https://www.wowpresentsplus.com/",
       "logo_path": "/6dET59jNU0ADysghEjl8Unuc7Ca.jpg",
@@ -6739,7 +6758,7 @@
     {
       "id": "550",
       "name": "Tenk",
-      "priority": 29,
+      "priority": 28,
       "description": "Voir ou revoir des documentaires d&rsquo;auteur gr&acirc;ce &agrave; la premi&egrave;re plateforme VOD exclusivement d&eacute;di&eacute;e au genre. Des classiques, des nouveaut&eacute;s et des chefs-d&rsquo;&oelig;uvre maintenant disponibles sur T&euml;nk.",
       "link": "https://on-tenk.com/fr",
       "logo_path": "/7up8PVB6RaL0fDs5XFzjJlq9mg2.jpg",
@@ -6757,7 +6776,7 @@
     {
       "id": "551",
       "name": "Magellan TV",
-      "priority": 11,
+      "priority": 12,
       "description": "Watch thousands of great documentaries on MagellanTV. Unlimited streaming, no ads, and 4K streaming are all great reasons to check out MagellanTV.",
       "link": "https://www.magellantv.com/",
       "logo_path": "/mSH24WQcRDJ2fsL5iucXqqRnSRb.jpg",
@@ -7056,7 +7075,7 @@
     {
       "id": "559",
       "name": "Filmzie",
-      "priority": 14,
+      "priority": 13,
       "description": "Watch Free Online Movies and TV Shows on any device without registration or signup. 100% legal.",
       "link": "https://filmzie.com/",
       "logo_path": "/eUBxtrqO26wAJfYOZJOzhQEo3mm.jpg",
@@ -8058,8 +8077,10 @@
         703,
         705,
         780,
+        784,
         788,
         796,
+        800,
         807,
         818,
         834,
@@ -8114,7 +8135,7 @@
     {
       "id": "677",
       "name": "Eventive",
-      "priority": 6,
+      "priority": 18,
       "description": "Stream independent film from film festivals, art house cinemas, virtual cinema screenings, classic repertory catalogs, and special events. Easily search the entire Eventive catalog for the freshest content anywhere.",
       "link": "https://watch.eventive.org/",
       "logo_path": "/fwx5Ed64TkfWiRH1SOSkc4781Ts.jpg",
@@ -8219,9 +8240,11 @@
         756,
         764,
         780,
+        784,
         788,
         792,
         796,
+        800,
         807,
         818,
         826,
@@ -8261,7 +8284,7 @@
     {
       "id": "692",
       "name": "Cultpix",
-      "priority": 7,
+      "priority": 19,
       "description": "Streaming classic cult, exploitation, grindhouse and genre films that other sites are afraid to show you. Join for $6.66 a month or $59 for full year.",
       "link": "https://www.cultpix.com/",
       "logo_path": "/uauVx3dGWt0GICqdMCBYJObd3Mo.jpg",
@@ -8568,7 +8591,7 @@
     {
       "id": "704",
       "name": "IROKOTV",
-      "priority": 9,
+      "priority": 21,
       "description": "Watch thousands of Nollywood movies and series right on your PC, Mac, tablet or smartphone. Subscribe and watch today.",
       "link": "https://irokotv.com/",
       "logo_path": "/4bsFc5AgxDNdDeS1NIjVRviARhB.jpg",
@@ -8604,7 +8627,7 @@
     {
       "id": "1715",
       "name": "Shahid VIP",
-      "priority": 10,
+      "priority": 22,
       "description": "Shahid is the number one Arabic VOD service in the world with premium originals, exclusive series and movies, Live TV, Sports & much more",
       "link": "https://shahid.mbc.net/",
       "logo_path": "/7qZED0kLBtiV8mLRNBtW4PQCAqW.jpg",
@@ -8801,7 +8824,7 @@
     {
       "id": "1754",
       "name": "TF1+",
-      "priority": 51,
+      "priority": 49,
       "description": "400 séries, 200 films, 200 divertissements… 0€. Qui dit mieux ? Profitez gratuitement de centaines de contenus, disponibles à tout moment, en illimité",
       "link": "https://www.tf1.fr/",
       "logo_path": "/blrBF9R2ONYu04ifGkYEb3k779N.jpg",
@@ -8857,7 +8880,7 @@
     {
       "id": "1771",
       "name": "Takflix",
-      "priority": 11,
+      "priority": 23,
       "description": "All films. Unforgettable films selected by Takflix curators.",
       "link": "https://takflix.com/en",
       "logo_path": "/ed0vz5bryWIhQB5sHiuGvHKnHHn.jpg",
@@ -8960,9 +8983,11 @@
         756,
         764,
         780,
+        784,
         788,
         792,
         796,
+        800,
         807,
         818,
         826,
@@ -9382,6 +9407,7 @@
         492,
         498,
         528,
+        554,
         578,
         586,
         591,
@@ -9504,7 +9530,7 @@
     {
       "id": "1912",
       "name": "Apollo",
-      "priority": 65,
+      "priority": 63,
       "description": null,
       "link": null,
       "logo_path": "/5FeLH5VGqpE4K48huk2T5h2xnY5.jpg",
@@ -9811,7 +9837,7 @@
     {
       "id": "1967",
       "name": "Molotov TV",
-      "priority": 33,
+      "priority": 32,
       "description": "L'installation de l'application Molotov est disponible sur tous vos appareils : Android, iOS, Smart TV et bien d'autres.",
       "link": "https://www.molotov.tv/",
       "logo_path": "/8qSG9LtUhBQIWy2Fr6fzeW7gBdd.jpg",
@@ -9931,24 +9957,6 @@
       ],
       "models": [
         2
-      ]
-    },
-    {
-      "id": "1988",
-      "name": "Brollie",
-      "priority": 60,
-      "description": "Brollie is a free streaming service dedicated to showcasing some of the best award-winning movies and TV from Australia and around the world.",
-      "link": "https://watch.brollie.com.au/",
-      "logo_path": "/zlOChFXWhfIqK2QCf6KPxu0nH2D.jpg",
-      "regions": [
-        36
-      ],
-      "types": [
-        1,
-        2
-      ],
-      "models": [
-        1
       ]
     },
     {
@@ -10166,7 +10174,7 @@
       "priority": 33,
       "description": "myCANAL vous propose de regarder les meilleurs films, les dernières séries et les matchs en HD et en VOST ou FR.",
       "link": "canalplus.com/streaming/",
-      "logo_path": "/aOx26MhWCT5Dc8YwZXXXjcQPajZ.jpg",
+      "logo_path": "/qgGvfpnevWSs5tRyfoCOj4fAfHk.jpg",
       "regions": [
         616
       ],
@@ -10519,7 +10527,7 @@
     {
       "id": "2239",
       "name": "FlixHouse",
-      "priority": 45,
+      "priority": 46,
       "description": "Watch free Indie movies Documentaries TV shows and 24/7 live TV anytime anywhere worldwide in HD on your PC mobile apps online connected TV streaming devices.",
       "link": "https://flixhouse.com/",
       "logo_path": "/69eoIMVggmpyY7Aa8qeN4jsREfd.jpg",
@@ -10976,9 +10984,11 @@
         756,
         764,
         780,
+        784,
         788,
         792,
         796,
+        800,
         807,
         818,
         826,
@@ -11307,7 +11317,7 @@
     {
       "id": "2528",
       "name": "YouTube TV",
-      "priority": 39,
+      "priority": 40,
       "description": "Stream live TV from ABC, CBS, FOX, NBC, ESPN & popular cable networks in English and Spanish. Record without DVR storage space limits. Try it free. Cancel anytime.",
       "link": "https://tv.youtube.com/welcome/",
       "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
@@ -11362,7 +11372,6 @@
         203
       ],
       "types": [
-        1,
         2
       ],
       "models": []
@@ -11379,6 +11388,21 @@
       ],
       "types": [
         1
+      ],
+      "models": []
+    },
+    {
+      "id": "2545",
+      "name": "FOX One",
+      "priority": 342,
+      "description": null,
+      "link": null,
+      "logo_path": "/nDWgrNeNgkmb9ZD6EK5Ot6ohLEm.jpg",
+      "regions": [
+        840
+      ],
+      "types": [
+        2
       ],
       "models": []
     },
@@ -11493,9 +11517,11 @@
         756,
         764,
         780,
+        784,
         788,
         792,
         796,
+        800,
         807,
         818,
         826,
@@ -11537,8 +11563,53 @@
       "link": null,
       "logo_path": "/zODyP8gGRnp3Gd23FhXhQwIpLie.jpg",
       "regions": [
+        36,
+        40,
+        56,
+        76,
+        124,
+        152,
+        170,
+        203,
+        218,
+        246,
+        250,
+        276,
+        300,
+        356,
+        360,
         372,
-        826
+        376,
+        380,
+        392,
+        404,
+        410,
+        414,
+        458,
+        484,
+        528,
+        566,
+        586,
+        604,
+        608,
+        616,
+        620,
+        634,
+        642,
+        643,
+        682,
+        702,
+        710,
+        724,
+        764,
+        784,
+        792,
+        800,
+        818,
+        826,
+        834,
+        840,
+        894
       ],
       "types": [
         1
@@ -11548,7 +11619,7 @@
     {
       "id": "2601",
       "name": "Pathé Home",
-      "priority": 56,
+      "priority": 54,
       "description": "Regardez les dernières nouveautés ou classiques intemporels, des plus grands blockbusters aux films d’auteurs primés, quelques semaines après leur sortie au cinéma.",
       "link": "https://www.pathehome.com/",
       "logo_path": "/f0AbfwtuitfNzrnENo1CWcPQiN6.jpg",
@@ -11980,9 +12051,11 @@
         756,
         764,
         780,
+        784,
         788,
         792,
         796,
+        800,
         807,
         818,
         826,
@@ -12085,7 +12158,7 @@
       "priority": 142,
       "description": "Explorez l’univers de TV5 et d’Unis TV! Vous découvrirez une foule d’émissions à voir gratuitement en ligne et vous pourrez consulter les horaires de nos chaînes.",
       "link": "https://www.tv5plus.ca/",
-      "logo_path": "/jJchUvznSKLtQbdgNk7HwsSt8mL.jpg",
+      "logo_path": "/yR8lOw4xt1e1FFxXexLPtiy1qAG.jpg",
       "regions": [
         124
       ],
@@ -12559,8 +12632,7 @@
         428
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": []
     },
@@ -12575,8 +12647,7 @@
         428
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": []
     },
@@ -12700,6 +12771,7 @@
         784
       ],
       "types": [
+        1,
         2
       ],
       "models": []
@@ -12841,6 +12913,7 @@
         124,
         356,
         702,
+        784,
         826,
         840
       ],
