@@ -128,7 +128,7 @@ else
 
     protected override List<string?> GetParameterKey()
     {
-        return [TypeSelected.ToString()];
+        return [TypeSelected.ToString(), Culture];
     }
 
     protected override async Task LoadParameterDataAsync()
