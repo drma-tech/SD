@@ -19,7 +19,8 @@
 else
 {
     <HeadComponent Title="@(Translations.Title.Providers.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
-                   Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
+                   Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}")
+                   Index="@Region.NotEmpty()" Shared="true" FixedAlternateLanguage="@Culture"></HeadComponent>
 
     <PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.Providers.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
                           Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")">

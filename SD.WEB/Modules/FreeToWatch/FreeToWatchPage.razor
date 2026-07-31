@@ -7,7 +7,8 @@
 
 <HeadComponent Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
                Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
-               Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true"></HeadComponent>
+               Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true" FixedAlternateLanguage="@Culture"></HeadComponent>
+
 <PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
                       Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
                       UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
