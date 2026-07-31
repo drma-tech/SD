@@ -20,11 +20,18 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
     <!-- hreflang -->
-    @if (Index && FixedAlternateLanguage.Empty())
+    @if (Index)
     {
-        foreach (var lang in AppStateStatic.SitemapTranslations)
+        if (FixedAlternateLanguage.Empty())
         {
-            <link rel="alternate" href="@GetUrlForLanguage(lang)" hreflang="@lang" />
+            foreach (var lang in AppStateStatic.SitemapTranslations)
+            {
+                <link rel="alternate" href="@GetUrlForLanguage(lang)" hreflang="@lang" />
+            }
+        }
+        else
+        {
+            <link rel="alternate" href="@GetUrlForLanguage(FixedAlternateLanguage)" hreflang="@FixedAlternateLanguage" />
         }
     }
 

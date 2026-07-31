@@ -64,9 +64,7 @@
     {
         if (filter == "en")
         {
-            var english = new HashSet<Country> { Country.US };
-
-            return RegionsList.Where(p => english.Contains(p.Value)).ToList();
+            return RegionsList;
         }
         else if (filter == "pt")
         {
