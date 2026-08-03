@@ -1,14 +1,10 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.JSInterop
-@using SD.WEB.Modules.Auth.Core
-@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
 
 @implements IDisposable
 
-@inject WatchingListApi WatchingApi
 @inject PaymentPublicApi PaymentPublicApi
-@inject PrincipalApi PrincipalApi
 
 @inject NavigationManager Navigation
 @inject IDialogService DialogService
@@ -25,11 +21,9 @@
     <MudButton StartIcon="@Icons.Material.Filled.House" Color="@GetColor($"/{Culture}")" Href=@($"/{Culture}") Variant="@GetVariant($"/{Culture}")" Class="@menuClass" Disabled="_blockedActions">
         @Translations.Title.Main
     </MudButton>
-    <MudBadge Dot="true" Color="Color.Warning" Visible="@(MovieSync || ShowSync)">
-        <MudButton StartIcon="@Icons.Material.Filled.Person" Color="@GetColor($"/{Culture}/profile")" Href=@($"/{Culture}/profile") Variant="@GetVariant($"/{Culture}/profile")" Class="@menuClass" Disabled="_blockedActions" Target="_self" Rel="nofollow">
-            @Translations.Title.Profile
-        </MudButton>
-    </MudBadge>
+    <MudButton StartIcon="@Icons.Material.Filled.Person" Color="@GetColor($"/{Culture}/profile")" Href=@($"/{Culture}/profile") Variant="@GetVariant($"/{Culture}/profile")" Class="@menuClass" Disabled="_blockedActions" Target="_self" Rel="nofollow">
+        @Translations.Title.Profile
+    </MudButton>
     <MudButton StartIcon="@Icons.Material.Filled.Movie" Color="@GetColor($"/{Culture}/platforms")" Href=@($"/{Culture}/platforms") Variant="@GetVariant($"/{Culture}/platforms")" Class="@menuClass" Disabled="_blockedActions" Rel="nofollow">
         @Translations.Title.Platforms
     </MudButton>
@@ -167,10 +161,6 @@
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
     private string menuClass => AppStateStatic.IsMobile ? "icon-text-button" : "px-3";
 
-    private WatchingList? Watching { get; set; }
-    private bool MovieSync => (Watching?.CanSync(MediaType.movie) ?? false) && (Watching?.Items(MediaType.movie).Any() ?? false);
-    private bool ShowSync => (Watching?.CanSync(MediaType.tv) ?? false) && (Watching?.Items(MediaType.tv).Any() ?? false);
-    private readonly TaskHelper _taskHelper = new();
     protected readonly CancellationTokenSource cts = new();
 
     protected override void OnInitialized()
@@ -178,14 +168,6 @@
         Navigation.LocationChanged += delegate { StateHasChanged(); };
 
         AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
-
-        PrincipalApi.DataChanged += principal => StateHasChanged();
-        AppStateStatic.UserStateChanged.Subscribe(async () =>
-        {
-            await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", AppStateStatic.IsAuthenticated, LoadAuthenticatedDataAsync, cts.Token);
-            await InvokeAsync(StateHasChanged);
-        }, cts.Token);
-        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
 
         //avoid - Object reference not set to an instance of an object.
         //commit: breakpoint refactorer / ActionDispatcher and TaskDispatcher (2026-05-25)
@@ -223,23 +205,9 @@
                     await ShowError("Something didn’t go as expected. If your payment wasn’t completed, please try again. You can also contact support for assistance.");
                 }
             }
-
-            await _taskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", AppStateStatic.IsAuthenticated, LoadAuthenticatedDataAsync, cts.Token);
         }
 
         await base.OnAfterRenderAsync(firstRender);
-    }
-
-    protected async Task LoadAuthenticatedDataAsync(CancellationToken token)
-    {
-        try
-        {
-            Watching = await WatchingApi.Get(null, token);
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Snackbar, Logger);
-        }
     }
 
     private async Task Login()

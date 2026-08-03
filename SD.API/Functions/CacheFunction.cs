@@ -10,10 +10,11 @@ using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache cache, IHttpClientFactory factory)
+public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache cache, IHttpClientFactory factory)
 {
     [Function("CacheNews")]
     public async Task<HttpResponseData?> CacheNews([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
@@ -57,6 +58,9 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
         return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
     }
 
+    [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled)]
+    private static partial Regex IsPopular();
+
     [Function("CacheTrailers")]
     public async Task<HttpResponseData?> CacheTrailers(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
@@ -81,7 +85,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 {
                     if (item == null) continue;
                     compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,
-                        mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate()));
+                        mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(),
+                        IsPopular().IsMatch(item.viewCountText ?? "")));
                 }
 
                 doc = await cacheRepo.CreateItemAsync(new YoutubeCache(cacheKey, compactModels));

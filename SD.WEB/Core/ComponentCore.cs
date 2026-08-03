@@ -4,6 +4,17 @@ using MudBlazor;
 
 namespace SD.WEB.Core;
 
+// ** Code ordering recommendation **
+
+// Inject
+// Parameters
+// Cascading Parameters
+// Public properties
+// Private fields
+// Lifecycle
+// Event handlers
+// Private helpers
+
 /// <summary>
 /// There is a memory cost when implementing this class. Use it when necessary.
 /// </summary>
@@ -20,7 +31,7 @@ public abstract class BaseComponentCore<T> : ComponentBase, IDisposable where T 
     protected readonly CancellationTokenSource cts = new();
     protected virtual bool ShowExceptions => false;
 
-    #region notification module
+    #region Notification
 
     protected async Task ShowInfo(string message)
     {
@@ -88,7 +99,7 @@ public abstract class BaseComponentCore<T> : ComponentBase, IDisposable where T 
         }
     }
 
-    #endregion notification module
+    #endregion Notification
 
     #region Dispose
 

@@ -15,13 +15,14 @@ public class TrailerModelItem
     {
     }
 
-    public TrailerModelItem(string? id, string? title, string? url, string? published, DateTime? dateTime)
+    public TrailerModelItem(string? id, string? title, string? url, string? published, DateTime? dateTime, bool popular)
     {
         this.id = id;
         this.title = title;
         this.url = url;
         this.published = published;
         this.DateTime = dateTime;
+        this.Popular = popular;
     }
 
     public string? id { get; set; }
@@ -29,4 +30,5 @@ public class TrailerModelItem
     public string? url { get; set; }
     public string? published { get; set; }
     public DateTime? DateTime { get; set; }
+    public bool Popular { get; set; }
 }

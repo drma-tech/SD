@@ -152,7 +152,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudStack Row="true" Spacing="@Css.SpaceSmall" Wrap="Wrap.Wrap">
-                            @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
+                            @foreach (var item in Media?.Videos.Where(w => w.type == group).Take(10) ?? [])
                             {
                                 <div>
                                     <MudIcon Icon="@Icons.Custom.Brands.YouTube" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>

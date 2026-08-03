@@ -57,14 +57,14 @@
     {
         public static class Solid
         {
-            public static Icon Icon(string? name) => new("fa-solid", name ?? "");
+            public static Icon Icon(string? name) => new("fa-solid", name);
         }
     }
 
-    public class Icon(string category, string name, IconAnimation animation = IconAnimation.None)
+    public class Icon(string category, string? name, IconAnimation animation = IconAnimation.None)
     {
         public string Category { get; set; } = category;
-        public string Name { get; set; } = name;
+        public string? Name { get; set; } = name;
 
         public IconAnimation IconAnimation { get; set; } = animation;
 
@@ -77,14 +77,14 @@
         /// <summary>
         /// If the icon is inside a conditional (if + rendering caused by user action) + FA (JavaScript), it may cause an error in Blazor. Use a traditional icon instead.
         /// </summary>
-        public string? Font => IconHelper.GetFont(this);
+        public string Font => IconHelper.GetFont(this);
     }
 
     public static class IconHelper
     {
-        public static string? GetFont(Icon icon)
+        public static string GetFont(Icon icon)
         {
-            if (icon.Name.Empty()) return null;
+            if (icon.Name.Empty()) return "";
 
             var animationClass = icon.IconAnimation switch
             {
@@ -97,7 +97,7 @@
                 IconAnimation.Spin => "fa-spin",
                 IconAnimation.SpinReverse => "fa-spin-reverse",
                 IconAnimation.SpinPulse => "fa-spin-pulse",
-                _ => null
+                _ => ""
             };
 
             return $"{icon.Category} fa-{icon.Name} {animationClass}".Trim();

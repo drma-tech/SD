@@ -50,7 +50,7 @@ else
                     var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
                     <div>
-                        <MudCard Outlined="true">
+                        <MudCard Outlined="true" Style="height: 100%;">
                             <MudCardHeader Style="padding: 8px;">
                                 <CardHeaderAvatar>
                                     <MudLink Href="@($"/{Culture}/platform/{item.id}")">

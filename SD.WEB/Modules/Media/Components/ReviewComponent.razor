@@ -9,7 +9,7 @@
         @foreach (var item in Model?.Data?.Items ?? [])
         {
             <MudItem xs="12" md="6" Style="text-align: justify;">
-                <MudPaper Outlined="true" Class="pa-2">
+                <MudPaper Outlined="true" Class="pa-2" Style="height: 100%;">
                     <div style="display: flex; gap: 8px; align-items: center;">
                         <MudChip T="string" Color="GetColorByRating(item?.score)" Label="true" Style="padding: 0.2rem; height: auto; margin: 0; margin-bottom: 4px;" Size="AppStateStatic.Size">
                             @item?.score

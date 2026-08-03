@@ -77,7 +77,7 @@
             var spanish = new HashSet<Country> { Country.ES, Country.MX, Country.AR, Country.CL, Country.CO };
 
             return RegionsList.Where(p => spanish.Contains(p.Value)).ToList();
-        }       
+        }
         else
         {
             return [];
