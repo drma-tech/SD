@@ -98,10 +98,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
         var builder = new UriBuilder(baseAddress);
 
         //force apex domain
-        //if (builder.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
-        //{
-        //    builder.Host = builder.Host[4..];
-        //}
+        if (builder.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+        {
+            builder.Host = builder.Host[4..];
+        }
 
         webUri = builder.Uri;
         apiUri = new Uri(webUri, "api/");
