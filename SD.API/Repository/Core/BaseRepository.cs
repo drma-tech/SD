@@ -11,7 +11,7 @@ namespace SD.API.Repository.Core
     {
         protected ILogger<TClass> Logger { get; }
         protected Container Container { get; }
-        private const double extra = 1;
+        protected const double extra = 1;
 
         protected BaseRepository(CosmosClient CosmosClient, ILogger<TClass> logger, string containerId)
         {
