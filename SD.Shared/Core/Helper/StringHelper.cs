@@ -146,7 +146,7 @@ public static partial class StringHelper
     private static readonly Regex ObfuscatedRegex = new(@"\b/([a-z0-9- ]{2,}\s*)((?:\.|\[\.]|\(.\))|\[\s*dot\s*\]|\(\s*dot\s*\)|\s*dot\s*)\s*(com|net|org|io|co|dev|app|me)/gm\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
     private static readonly Regex ShortLinkRegex = new(@"(bit\.ly|tinyurl|goo\.gl|t\.co)", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
     private static readonly Regex MentionRegex = new(@"@\w+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
-    private static readonly Regex RepeatedCharSeqRegex = new(@"(?<c>.)\k<c>{10,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    private static readonly Regex RepeatedCharSeqRegex = new(@"(.)\1{10,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
     private static readonly Regex SymbolSeqRegex = new(@"[^\p{L}\p{N}\s]{10,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
     private static readonly Regex EmojiRegex = new(@"\p{So}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 

@@ -304,7 +304,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
                 if (list.Count > 0)
                 {
-                    var item = list.Single();
+                    var item = list.First();
                     item.StripeCustomerId = null;
                     await repo.UpsertItemAsync(item);
                 }
