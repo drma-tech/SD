@@ -241,5 +241,5 @@ public enum ContentLanguage
     zhTW = 139,
 
     [FieldSettings("zu-ZA", ResourceType = typeof(Translations.Enum.ContentLanguage))]
-    zuZA = 140
+    zuZA = 140,
 }

@@ -57,5 +57,5 @@ public enum MovieGenre
     War = 10752,
 
     [FieldSettings(nameof(Translations.Enum.MovieGenre.Western), ResourceType = typeof(Translations.Enum.MovieGenre))]
-    Western = 37
+    Western = 37,
 }

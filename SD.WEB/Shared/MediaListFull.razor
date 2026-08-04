@@ -105,20 +105,15 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList([], Actions, TypeSelected, StringParameters, List, 1, Cts.Token);
+            var (_, lastPage) = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, 1, Cts.Token);
 
-            Items = result.list;
-            DisableLoadMore = result.lastPage || Items.Count >= 200;
+            DisableLoadMore = lastPage || Items.Count >= 200;
 
             if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
             {
-                var result2 = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
-                foreach (var item in result2.list)
-                {
-                    Items.Add(item);
-                }
+                _ = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
-                DisableLoadMore = result.lastPage || Items.Count >= 200;
+                DisableLoadMore = lastPage || Items.Count >= 200;
             }
 
             if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();
@@ -207,9 +202,9 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
-            Items = result.list;
-            DisableLoadMore = result.lastPage || Items.Count >= 250;
+            var (_, lastPage) = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+            
+            DisableLoadMore = lastPage || Items.Count >= 250;
 
             if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();
 

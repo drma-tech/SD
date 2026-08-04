@@ -9,5 +9,5 @@ public enum MediaType
     tv = 2,
 
     [FieldSettings(nameof(Translations.Enum.MediaType.personName), ResourceType = typeof(Translations.Enum.MediaType))]
-    person = 3
+    person = 3,
 }

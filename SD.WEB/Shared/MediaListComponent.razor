@@ -149,16 +149,11 @@ else
 
             if (MediaListApi != null)
             {
-                var result = await MediaListApi.GetList([], Actions, type, StringParameters, List, 1, Cts.Token);
-                Items = result.list;
+                _ = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 1, Cts.Token);
 
                 if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
-                    var result2 = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 2, Cts.Token);
-                    foreach (var item in result2.list)
-                    {
-                        Items.Add(item);
-                    }
+                    _ = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 2, Cts.Token);
                 }
 
                 if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();

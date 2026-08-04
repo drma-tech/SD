@@ -21,7 +21,7 @@
 <HeadComponent Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Title" Description="@Description" UrlShare="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></PageSectionComponent>
 
-@if (MediaListApi != null)
+@if (MediaListApi != null && TypeSelected != null && StringParameters.NotEmpty())
 {
     <MediaListFull IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
                    StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
@@ -32,6 +32,8 @@
 
 @code {
     [Parameter] public string? id { get; set; }
+    [Parameter] public bool OnlyYear { get; set; }
+    [Parameter] public string? Type { get; set; }
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -39,11 +41,9 @@
 
     public IMediaListApi? MediaListApi { get; set; }
     public bool IsImdb { get; set; } = false;
-    public MediaType? TypeSelected { get; set; } = MediaType.movie;
+    public MediaType? TypeSelected { get; set; }
     public Dictionary<string, string> StringParameters { get; set; } = new();
     public bool CommentsIsImage { get; set; } = false;
-    [Parameter] public bool OnlyYear { get; set; }
-    [Parameter] public string? Type { get; set; }
     public string? TitleHead { get; set; }
     public string? DescriptionHead { get; set; }
     public bool DetectRegions { get; set; }
@@ -52,14 +52,19 @@
     private string Title => TitleHead ?? $"{List?.GetFieldSettings().Name?.CustomFormat(DateTime.Now.Year)}" ?? "Title Error";
     private string Description => DescriptionHead ?? $"{List?.GetFieldSettings().Description}" ?? "Description Error";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        base.OnInitialized();
+
         if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = id.ParseToEnum<EnumLists>();
         if (Type.NotEmpty()) TypeSelected = Type.ParseToEnum<MediaType>();
 
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+    }
 
+    protected override async Task LoadStaticDataAsync()
+    {
         await ProcessNonList();
 
         MediaListApi ??= new TmdbListApi(factory);
@@ -109,5 +114,4 @@
 
         return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy } };
     }
-
 }

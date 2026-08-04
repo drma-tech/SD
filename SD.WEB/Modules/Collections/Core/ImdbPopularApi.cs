@@ -9,7 +9,6 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
     public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, ComponentActions<ICollection<MediaDetail>>? actions,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
-        var listMedia = new List<MediaDetail>();
         if (actions != null && currentList.Empty()) await actions.StartLoading(null);
 
         if (type == MediaType.movie)
@@ -18,7 +17,7 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
 
             foreach (var item in result?.Data?.Items ?? [])
             {
-                listMedia.Add(new MediaDetail
+                currentList.Add(new MediaDetail
                 {
                     tmdb_id = item.Id,
                     title = item.Title,
@@ -45,7 +44,7 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
                 //    ? item.Image?.Remove(item.Image.IndexOf("_V1_", StringComparison.Ordinal)) + "_V1_QL75_UY207_CR13,0,140,207_.jpg"
                 //    : item.Image;
 
-                listMedia.Add(new MediaDetail
+                currentList.Add(new MediaDetail
                 {
                     tmdb_id = item.Id,
                     title = item.Title,
@@ -62,8 +61,8 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
             }
         }
 
-        if (actions != null) await actions.FinishLoading(listMedia);
+        if (actions != null) await actions.FinishLoading(currentList);
 
-        return (listMedia, true);
+        return (currentList, true);
     }
 }

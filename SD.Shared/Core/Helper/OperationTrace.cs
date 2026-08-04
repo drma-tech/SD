@@ -40,7 +40,7 @@ namespace SD.Shared.Core.Helper
                 steps.Add(new ProfileStep
                 {
                     Name = name,
-                    ElapsedMs = _sw.ElapsedMilliseconds
+                    ElapsedMs = _sw.ElapsedMilliseconds,
                 });
             }
         }

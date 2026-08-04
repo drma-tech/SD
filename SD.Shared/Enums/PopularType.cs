@@ -6,5 +6,5 @@ public enum PopularType
     Movie,
 
     [FieldSettings(nameof(Translations.Enum.PopularType.ShowName), ResourceType = typeof(Translations.Enum.PopularType))]
-    Show
+    Show,
 }

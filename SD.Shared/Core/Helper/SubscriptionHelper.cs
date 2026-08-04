@@ -8,7 +8,7 @@ public static class SubscriptionHelper
         {
             AccountProduct.Basic => new BasicRestrictions(),
             AccountProduct.Premium => new PremiumRestrictions(),
-            _ => new BasicRestrictions()
+            _ => new BasicRestrictions(),
         };
     }
 

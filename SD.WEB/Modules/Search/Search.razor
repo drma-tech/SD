@@ -181,14 +181,12 @@
 
         if (AppStateStatic.Index == 0)
         {
-            var result = await TmdbSearch.GetList(Items, Actions, null, ParametersQuery, cancellationToken: Cts.Token);
-            Items = result.list;
+            _ = await TmdbSearch.GetList(Items, Actions, null, ParametersQuery, cancellationToken: Cts.Token);
         }
         else if (AppStateStatic.Index == 1)
         {
             ParametersKeyword["with_keywords"] = keywordId!;
-            var result = await TmdbDiscoveryApi.GetList(Items, Actions, null, ParametersKeyword, cancellationToken: Cts.Token);
-            Items = result.list;
+            _ = await TmdbDiscoveryApi.GetList(Items, Actions, null, ParametersKeyword, cancellationToken: Cts.Token);
         }
         else if (AppStateStatic.Index == 2)
         {
@@ -200,8 +198,7 @@
             {
                 ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString();
             }
-            var result = await TmdbDiscoveryApi.GetList(Items, Actions, AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
-            Items = result.list;
+            _ = await TmdbDiscoveryApi.GetList(Items, Actions, AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
         }
 
         await Actions.FinishLoading.Invoke(Items);

@@ -6,5 +6,5 @@ public enum AccountCycle
     Monthly = 2,
 
     [FieldSettings(nameof(Translations.Enum.AccountCycle.Yearly), Description = nameof(Translations.Enum.AccountCycle.Year), ResourceType = typeof(Translations.Enum.AccountCycle))]
-    Yearly = 3
+    Yearly = 3,
 }

@@ -6,5 +6,5 @@ public enum AccountProduct
     Basic = 1,
 
     [FieldSettings("Premium")] 
-    Premium = 2
+    Premium = 2,
 }
