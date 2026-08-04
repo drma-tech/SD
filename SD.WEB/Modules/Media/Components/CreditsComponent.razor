@@ -16,7 +16,7 @@
                     @Translations.Module.Media.Directing
                 </MudText>
                 <MudDivider Class="mb-2"></MudDivider>
-                <MudGrid Spacing="@Css.SpaceSmall" Class="mb-2">
+                <MudGrid Spacing="@CssHelper.SpaceSmall" Class="mb-2">
                     @foreach (var item in directors)
                     {
                         <MudItem xs="6" sm="4" md="3" lg="2">
@@ -44,7 +44,7 @@
                     @Translations.Module.Media.Writing
                 </MudText>
                 <MudDivider Class="mb-2"></MudDivider>
-                <MudGrid Spacing="@Css.SpaceSmall" Class="mb-2">
+                <MudGrid Spacing="@CssHelper.SpaceSmall" Class="mb-2">
                     @foreach (var item in writers)
                     {
                         <MudItem xs="6" sm="4" md="3" lg="2">
@@ -69,7 +69,7 @@
             @Translations.Module.Media.Cast
         </MudText>
         <MudDivider Class="mb-2"></MudDivider>
-        <MudGrid Spacing="@Css.SpaceSmall" Class="mb-2">
+        <MudGrid Spacing="@CssHelper.SpaceSmall" Class="mb-2">
             @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
             {
                 <MudItem xs="6" sm="4" md="3" lg="2">
@@ -97,7 +97,7 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public ComponentActions<Credits?> Actions { get; set; } = new(obj => obj == null);
+    public ComponentActions<Credits> Actions { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
 
     protected override List<string?> GetParameterKey()
@@ -111,14 +111,14 @@
 
     protected override async Task LoadParameterDataAsync()
     {
-        Credits = await TmdbCreditApi.GetList(Type, TmdbId, Actions, cts.Token);
+        Credits = await TmdbCreditApi.GetList(Type, TmdbId, Actions, Cts.Token);
     }
 
     private async Task OpenCompleteList(Crew crew)
     {
         try
         {
-            var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString(), cts.Token);
+            var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString(), Cts.Token);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.crew.Where(w => w.job == crew.job) ?? [])
@@ -149,7 +149,7 @@
     {
         try
         {
-            var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString(), cts.Token);
+            var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString(), Cts.Token);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.cast ?? [])

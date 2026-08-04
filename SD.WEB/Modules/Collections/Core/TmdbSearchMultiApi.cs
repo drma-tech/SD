@@ -1,39 +1,40 @@
 ﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Collections.Interface;
+using System.Globalization;
 
 namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
-    public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, ComponentActions<HashSet<MediaDetail>>? actions,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
+    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, ComponentActions<ICollection<MediaDetail>>? actions,
+        MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (actions != null && currentList.Empty()) await actions.StartLoading(null);
 
-        var parameter = new Dictionary<string, string>
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(false).Name ?? "en-US" },
-            { "page", page.ToString() },
-            { "include_adult", "false" }
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(translate: false).Name ?? "en-US" },
+            { "page", page.ToString(CultureInfo.InvariantCulture) },
+            { "include_adult", "false" },
         };
 
         if (stringParameters != null)
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter), false, null, cancellationToken);
+        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
         if (result != null)
             foreach (var item in result.results.OrderByDescending(o => o.popularity))
             {
-                if (item.media_type == "collection") continue;
+                if (string.Equals(item.media_type, "collection", StringComparison.OrdinalIgnoreCase)) continue;
 
                 var mediaType = item.media_type.ParseToEnum<MediaType>();
 
                 currentList.Add(new MediaDetail
                 {
-                    tmdb_id = item.id.ToString(),
+                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
                     title = mediaType == MediaType.movie ? item.title : item.name,
                     plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                     release_date = mediaType == MediaType.tv
@@ -45,12 +46,12 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
                         : TmdbOptions.LargePosterPath + item.poster_path,
                     rating = item.vote_count > 10 ? item.vote_average : 0,
                     MediaType = mediaType,
-                    comments = GetComments(item, mediaType)
+                    comments = GetComments(item, mediaType),
                 });
             }
 
         if (actions != null) await actions.FinishLoading(currentList);
-        return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
+        return new ValueTuple<ICollection<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 
     private static string? GetPoster(TmdbResult? item, MediaType type)
@@ -72,7 +73,7 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
             MediaType.movie => MediaType.movie.GetFieldSettings().Name,
             MediaType.tv => MediaType.tv.GetFieldSettings().Name,
             MediaType.person => $"{MediaType.person.GetFieldSettings().Name},{item.known_for_department}",
-            _ => null
+            _ => null,
         };
     }
 }

@@ -18,23 +18,27 @@ public class Ids
 {
     public string? AllMovie { get; set; }
 
-    [JsonPropertyName("Amazon Prime")] public string? AmazonPrime { get; set; }
+    [JsonPropertyName("Amazon Prime")]
+    public string? AmazonPrime { get; set; }
 
     [JsonPropertyName("American Film Institute")]
     public string? AmericanFilmInstitute { get; set; }
 
-    [JsonPropertyName("Apple TV")] public string? AppleTV { get; set; }
+    [JsonPropertyName("Apple TV")]
+    public string? AppleTV { get; set; }
 
     public string? Britannica { get; set; }
 
-    [JsonPropertyName("Comic Vine")] public string? ComicVine { get; set; }
+    [JsonPropertyName("Comic Vine")]
+    public string? ComicVine { get; set; }
 
     public string? FilmAffinity { get; set; }
 
     [JsonPropertyName("Google Knowledge Graph")]
     public string? GoogleKnowledgeGraph { get; set; }
 
-    [JsonPropertyName("Google Play")] public string? GooglePlay { get; set; }
+    [JsonPropertyName("Google Play")]
+    public string? GooglePlay { get; set; }
 
     public string? IMDb { get; set; }
     public string? Letterboxd { get; set; }
@@ -46,14 +50,17 @@ public class Ids
     public string? Netflix { get; set; }
     public string? Plex { get; set; }
 
-    [JsonPropertyName("Rotten Tomatoes")] public string? RottenTomatoes { get; set; }
+    [JsonPropertyName("Rotten Tomatoes")]
+    public string? RottenTomatoes { get; set; }
 
     public string? TCM { get; set; }
     public string? TMDB { get; set; }
 
-    [JsonPropertyName("TV Tropes")] public string? TVTropes { get; set; }
+    [JsonPropertyName("TV Tropes")]
+    public string? TVTropes { get; set; }
 
-    [JsonPropertyName("The Numbers")] public string? TheNumbers { get; set; }
+    [JsonPropertyName("The Numbers")]
+    public string? TheNumbers { get; set; }
 
     public string? Trakt { get; set; }
     public string? Wikidata { get; set; }
@@ -75,23 +82,27 @@ public class Links
 {
     public string? AllMovie { get; set; }
 
-    [JsonPropertyName("Amazon Prime")] public string? AmazonPrime { get; set; }
+    [JsonPropertyName("Amazon Prime")]
+    public string? AmazonPrime { get; set; }
 
     [JsonPropertyName("American Film Institute")]
     public string? AmericanFilmInstitute { get; set; }
 
-    [JsonPropertyName("Apple TV")] public string? AppleTV { get; set; }
+    [JsonPropertyName("Apple TV")]
+    public string? AppleTV { get; set; }
 
     public string? Britannica { get; set; }
 
-    [JsonPropertyName("Comic Vine")] public string? ComicVine { get; set; }
+    [JsonPropertyName("Comic Vine")]
+    public string? ComicVine { get; set; }
 
     public string? FilmAffinity { get; set; }
 
     [JsonPropertyName("Google Knowledge Graph")]
     public string? GoogleKnowledgeGraph { get; set; }
 
-    [JsonPropertyName("Google Play")] public string? GooglePlay { get; set; }
+    [JsonPropertyName("Google Play")]
+    public string? GooglePlay { get; set; }
 
     public string? IMDb { get; set; }
     public string? Letterboxd { get; set; }
@@ -102,18 +113,22 @@ public class Links
 
     public string? Netflix { get; set; }
 
-    [JsonPropertyName("Official site")] public string? Officialsite { get; set; }
+    [JsonPropertyName("Official site")]
+    public string? Officialsite { get; set; }
 
     public string? Plex { get; set; }
 
-    [JsonPropertyName("Rotten Tomatoes")] public string? RottenTomatoes { get; set; }
+    [JsonPropertyName("Rotten Tomatoes")]
+    public string? RottenTomatoes { get; set; }
 
     public string? TCM { get; set; }
     public string? TMDB { get; set; }
 
-    [JsonPropertyName("TV Tropes")] public string? TVTropes { get; set; }
+    [JsonPropertyName("TV Tropes")]
+    public string? TVTropes { get; set; }
 
-    [JsonPropertyName("The Numbers")] public string? TheNumbers { get; set; }
+    [JsonPropertyName("The Numbers")]
+    public string? TheNumbers { get; set; }
 
     public string? Trakt { get; set; }
     public string? Wikidata { get; set; }
@@ -141,7 +156,8 @@ public class RatingsApi
 
 public class Result
 {
-    [JsonPropertyName("Ratings")] public RatingsApi? ratings { get; set; }
+    [JsonPropertyName("Ratings")]
+    public RatingsApi? ratings { get; set; }
 
     public Ids? ids { get; set; }
     public Links? links { get; set; }

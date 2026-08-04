@@ -4,7 +4,7 @@ namespace SD.Shared.Core.Models;
 
 public readonly record struct MainIdentity(MainType Type, string? DocId) : ICosmosIdentity
 {
-    public string Id => $"{Type}:{DocId.RemovePrefix()}";
+    public string Id => $"{Type}:{DocId?.RemovePrefix()}";
     public string? RawId => DocId?.RemovePrefix();
     public object Key => Id;
 }

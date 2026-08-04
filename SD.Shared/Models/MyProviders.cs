@@ -4,9 +4,9 @@ namespace SD.Shared.Models;
 
 public class MyProviders(string? id) : MainDocument(new MainIdentity(MainType.MyProvider, id))
 {
-    public HashSet<MyProvidersItem> Items { get; set; } = [];
+    public ISet<MyProvidersItem> Items { get; set; } = new HashSet<MyProvidersItem>();
 
-    public void AddItem(HashSet<MyProvidersItem> items)
+    public void AddItem(ISet<MyProvidersItem> items)
     {
         foreach (var item in items) Items.Add(item);
     }
@@ -15,6 +15,8 @@ public class MyProviders(string? id) : MainDocument(new MainIdentity(MainType.My
     {
         Items.Remove(item);
     }
+
+    protected override object?[] EqualityValues => [Id];
 }
 
 public class MyProvidersItem : EqualityBase<MyProvidersItem>

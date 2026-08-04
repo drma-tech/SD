@@ -15,7 +15,7 @@ namespace SD.API.Core
 
             var parts = decoded.Split(';')
                 .Select(x => x.Split('=', 2))
-                .ToDictionary(x => x[0], x => x[1]);
+                .ToDictionary(x => x[0], x => x[1], StringComparer.OrdinalIgnoreCase);
 
             if (!parts.TryGetValue("ts", out var ts))
                 return false;
@@ -23,11 +23,11 @@ namespace SD.API.Core
             if (!parts.TryGetValue("s", out var receivedSignature))
                 return false;
 
-            if (!parts.TryGetValue("s-algorithm", out var algorithm))
+            if (!parts.ContainsKey("s-algorithm"))
                 return false;
 
             // replay protection
-            var timestamp = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(ts));
+            var timestamp = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(ts, System.Globalization.CultureInfo.InvariantCulture));
             var age = DateTimeOffset.UtcNow - timestamp;
 
             if (age > TimeSpan.FromMinutes(5))

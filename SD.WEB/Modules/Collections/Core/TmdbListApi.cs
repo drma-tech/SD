@@ -1,37 +1,38 @@
 ﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Collections.Interface;
+using System.Globalization;
 
 namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null, [], ApiContext.Default.CustomListNew), IMediaListApi
 {
-    public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, ComponentActions<HashSet<MediaDetail>>? actions,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
+    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, ComponentActions<ICollection<MediaDetail>>? actions,
+        MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
-        if (list == null) throw new ArgumentException(null, nameof(list));
+        if (list == null) throw new ArgumentException(message: null, nameof(list));
         if (actions != null && currentList.Empty()) await actions.StartLoading(null);
 
-        var parameter = new Dictionary<string, string>
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(false).Name ?? "en-US" },
-            { "page", page.ToString() }
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(translate: false).Name ?? "en-US" },
+            { "page", page.ToString(CultureInfo.InvariantCulture) },
         };
 
-        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64(), false, null, cancellationToken);
+        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}".ConvertFromStringToBase64(), setNewVersion: false, actions: null, cancellationToken);
 
         if (result != null)
         {
             foreach (var item in result.results)
             {
-                var tv = item.media_type == "tv";
+                var tv = string.Equals(item.media_type, "tv", StringComparison.OrdinalIgnoreCase);
 
                 string? value = null;
-                result.comments?.TryGetValue($"{(tv ? "tv" : "movie")}:{item.id}", out value);
+                result.comments?.TryGetValue(string.Create(CultureInfo.InvariantCulture, $"{(tv ? "tv" : "movie")}:{item.id}"), out value);
 
                 currentList.Add(new MediaDetail
                 {
-                    tmdb_id = item.id.ToString(),
+                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
                     title = tv ? item.name : item.title,
                     plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                     release_date = tv ? item.first_air_date?.GetDate() : item.release_date?.GetDate(),
@@ -43,12 +44,12 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(
                         : TmdbOptions.LargePosterPath + item.poster_path,
                     rating = item.vote_count > 10 ? item.vote_average : 0,
                     MediaType = tv ? MediaType.tv : MediaType.movie,
-                    comments = value
+                    comments = value,
                 });
             }
         }
 
         if (actions != null) await actions.FinishLoading(currentList);
-        return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
+        return new ValueTuple<ICollection<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 }

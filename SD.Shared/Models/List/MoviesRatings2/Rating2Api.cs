@@ -20,7 +20,7 @@
         public string? homepage { get; set; }
         public int id { get; set; }
         public string? imdb_id { get; set; }
-        public List<string>? origin_country { get; set; }
+        public IReadOnlyCollection<string>? origin_country { get; set; }
         public string? original_language { get; set; }
         public string? original_title { get; set; }
         public string? overview { get; set; }

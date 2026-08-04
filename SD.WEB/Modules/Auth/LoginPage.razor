@@ -9,33 +9,33 @@
 
 <HeadComponent Title="@Translations.Module.Auth.SignInSignUp" Description="@Translations.Module.Auth.SignInSignUp" Url=@($"/{Culture}/auth/login") Index="false"></HeadComponent>
 
-<MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
+<MudContainer MaxWidth="MaxWidth.Small" Class="@CssHelper.Build().Raw("mb-20")">
     <MudPaper Elevation="0" Outlined="true" Class="pa-3" Style="position: relative;">
-        <MudStack Spacing="@Css.SpaceSmall">
-            <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Medium("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
+        <MudStack Spacing="@CssHelper.SpaceSmall">
+            <MudText Typo="Typo.h1" Color="Color.Primary" Class="@CssHelper.Build().Medium("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
                 @Translations.Module.Auth.SignInSignUp
             </MudText>
 
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "google")" Content="@(Translations.Button.Recent)" Overlap="true">
                 <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@Icons.Custom.Brands.Google" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processingInProgress)"
                            FullWidth="true" Color="Color.Primary">
-                    <MudText>@Translations.Module.Auth.ContinueWith.Format("Google")</MudText>
+                    <MudText>@Translations.Module.Auth.ContinueWith.CustomFormat("Google")</MudText>
                 </MudButton>
             </MudBadge>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "apple")" Content="@(Translations.Button.Recent)" Overlap="true">
                 <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@Icons.Custom.Brands.Apple" Disabled="@_processingInProgress" FullWidth="true" Color="Color.Primary">
-                    <MudText>@Translations.Module.Auth.ContinueWith.Format("Apple")</MudText>
+                    <MudText>@Translations.Module.Auth.ContinueWith.CustomFormat("Apple")</MudText>
                 </MudButton>
             </MudBadge>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "microsoft")" Content="@(Translations.Button.Recent)" Overlap="true">
                 <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@Icons.Custom.Brands.Microsoft" Disabled="@_processingInProgress" FullWidth="true" Color="Color.Primary">
-                    <MudText>@Translations.Module.Auth.ContinueWith.Format("Microsoft")</MudText>
+                    <MudText>@Translations.Module.Auth.ContinueWith.CustomFormat("Microsoft")</MudText>
                 </MudButton>
             </MudBadge>
-            <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
+            <MudDivider Class="@CssHelper.Build().Medium("my")"></MudDivider>
             <MudToolBar Gutters="false" Style="height: auto;">
                 <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Translations.Button.Recent)" Overlap="true" Style="width: 100%;" Class="me-5">
-                    <MudTextField @bind-Value="@email" Label="@Translations.Module.Auth.ContinueWith.Format(SD.WEB.Translations.Module.Auth.Email)" Placeholder="@Translations.Module.Auth.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
+                    <MudTextField @bind-Value="@email" Label="@Translations.Module.Auth.ContinueWith.CustomFormat(SD.WEB.Translations.Module.Auth.Email)" Placeholder="@Translations.Module.Auth.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
                                   Immediate="true" InputType="InputType.Email" HelperText="@Translations.Module.Auth.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
                 </MudBadge>
                 <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => LoginWithEmail(email)"
@@ -54,7 +54,7 @@
                                Style="align-self: start; margin-top: 8px;" Disabled="@(!emailProbablySent)" />
             </MudToolBar>
         </MudStack>
-        <div style="text-align: center;" class="@Css.Build().Large("mt").Medium("mb")">
+        <div style="text-align: center;" class="@CssHelper.Build().Large("mt").Medium("mb")">
             <MudIcon Icon="@Icons.Material.Filled.CheckBox" Size="Size.Small" Style="vertical-align: sub;" />
             <MudText Inline="true">
                 @((MarkupString)string.Format(Translations.Module.Auth.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.PrivacyPolicy}</a>"))
@@ -94,8 +94,8 @@
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
-        lastUsedProvider = await JsRuntime.Utils().GetStorage("auth-last-used", JavascriptContext.Default.String, cts.Token);
+        Platform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);
+        lastUsedProvider = await JsRuntime.Utils().GetStorage("auth-last-used", JavascriptContext.Default.String, Cts.Token);
         return true;
     }
 
@@ -108,8 +108,8 @@
         {
             _processingInProgress = true;
 
-            await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase, JavascriptContext.Default.AuthProvider, cts.Token);
-            await JsRuntime.Utils().SetStorage("auth-last-used", provider, JavascriptContext.Default.String, cts.Token);
+            await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase, JavascriptContext.Default.AuthProvider, Cts.Token);
+            await JsRuntime.Utils().SetStorage("auth-last-used", provider, JavascriptContext.Default.String, Cts.Token);
 
             if (provider == "email")
             {
@@ -120,13 +120,13 @@
                     return;
                 }
 
-                await PublicLoginApi.SendEmail(email, reference, cts.Token);
+                await PublicLoginApi.SendEmail(email, reference, Cts.Token);
                 success = true;
             }
             else
             {
                 if (provider == "microsoft") provider = "azure";
-                await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl, cts.Token);
+                await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl, Cts.Token);
                 success = true;
             }
         }
@@ -148,7 +148,7 @@
 
             if (provider == "email" && success)
             {
-                await ShowInfo(Translations.Module.Auth.CodeSent.Format(email));
+                await ShowInfo(Translations.Module.Auth.CodeSent.CustomFormat(email));
                 await txtOTP!.FocusAsync();
                 _ = MonitorEmailStatus(reference);
             }
@@ -161,7 +161,7 @@
         {
             for (int i = 0; i < 12 && !_processingInProgress; i++)
             {
-                var message = await PublicLoginApi.StatusEmail(reference, cts.Token);
+                var message = await PublicLoginApi.StatusEmail(reference, Cts.Token);
 
                 if (message.NotEmpty())
                 {
@@ -171,7 +171,7 @@
                     break;
                 }
 
-                if (_processingInProgress || cts.IsCancellationRequested) break;
+                if (_processingInProgress || Cts.IsCancellationRequested) break;
 
                 await Task.Delay(5000);
             }
@@ -204,7 +204,7 @@
                 return;
             }
 
-            await JsRuntime.Supabase().ConfirmCode(email!, code!, cts.Token);
+            await JsRuntime.Supabase().ConfirmCode(email!, code!, Cts.Token);
 
             Navigation.NavigateTo($"/{Culture}");
         }
@@ -238,7 +238,7 @@
 
         // Find closest match
         var closest = KnownDomains
-            .Select(d => new { Domain = d, Distance = StringHelper.Levenshtein(domain, d) })
+            .Select(d => new { Domain = d, Distance = SD.Shared.Core.Helper.StringHelper.Levenshtein(domain, d) })
             .OrderBy(x => x.Distance)
             .First();
 

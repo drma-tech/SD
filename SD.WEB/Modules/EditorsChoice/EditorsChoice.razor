@@ -8,10 +8,10 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<EditorsChoice>
 
-<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Description="@Translations.Description.EditorsChoice.Format(MediaType.GetFieldSettings().Name)"
+<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Description="@Translations.Description.EditorsChoice.CustomFormat(MediaType.GetFieldSettings().Name)"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Subtitle="Top-rated titles for all audiences"
-                      Description="@Translations.Description.EditorsChoice.Format(MediaType.GetFieldSettings().Name)"
+                      Description="@Translations.Description.EditorsChoice.CustomFormat(MediaType.GetFieldSettings().Name)"
                       UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
 @if (MediaType == MediaType.movie)

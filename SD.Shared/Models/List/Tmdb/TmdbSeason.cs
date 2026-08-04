@@ -14,15 +14,15 @@ public class Episode
     public string? still_path { get; set; }
     public double? vote_average { get; set; }
     public int? vote_count { get; set; }
-    public List<object> crew { get; set; } = [];
-    public List<object> guest_stars { get; set; } = [];
+    public IReadOnlyCollection<object> crew { get; set; } = [];
+    public IReadOnlyCollection<object> guest_stars { get; set; } = [];
 }
 
 public class TmdbSeason
 {
     public string? _id { get; set; }
     public string? air_date { get; set; }
-    public List<Episode> episodes { get; set; } = [];
+    public IReadOnlyCollection<Episode> episodes { get; set; } = [];
     public string? name { get; set; }
     public string? overview { get; set; }
     public int? id { get; set; }

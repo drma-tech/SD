@@ -4,13 +4,13 @@
     {
         None = 0,
         Adsense = 1,
-        Yandex = 2
+        Yandex = 2,
     }
 
     public enum AdSlot
     {
         Header,
         Middle,
-        Footer
+        Footer,
     }
 }

@@ -6,9 +6,9 @@
 @inject CacheFlixsterApi CacheFlixsterApi
 
 <HeadComponent Title="@($"{Translations.Title.News} ({MediaType.GetFieldSettings().Name})")"
-               Description="@Translations.Description.News.Format(MediaType.GetFieldSettings().Name)" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
+               Description="@Translations.Description.News.CustomFormat(MediaType.GetFieldSettings().Name)" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.News} ({MediaType.GetFieldSettings().Name})")"
-                      Description="@Translations.Description.News.Format(MediaType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/news/{category}")" />
+                      Description="@Translations.Description.News.CustomFormat(MediaType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/news/{category}")" />
 
 <RenderControl Actions="Actions">
     <div class="grid-relative-container-news">
@@ -55,6 +55,6 @@
 
     protected override async Task LoadParameterDataAsync()
     {
-        NewsList = await CacheFlixsterApi.GetNews("full", category, Actions, cts.Token);
+        NewsList = await CacheFlixsterApi.GetNews("full", category, Actions, Cts.Token);
     }
 }

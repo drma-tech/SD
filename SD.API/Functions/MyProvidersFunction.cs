@@ -29,7 +29,7 @@ public class MyProvidersFunction(CosmosMainRepository repo)
         obj ??= new MyProviders(userId);
 
         var item = await req.GetBody<MyProvidersItem>(cancellationToken);
-        obj.AddItem([item]);
+        obj.AddItem(new HashSet<MyProvidersItem>([item]));
 
         return await repo.UpsertItemAsync(obj);
     }

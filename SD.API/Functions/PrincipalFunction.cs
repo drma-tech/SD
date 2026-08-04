@@ -58,7 +58,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
         await req.ValidateUser(body.UserId, cancellationToken);
 
         //check if user ip is blocked for insert
-        var ip = req.GetUserIP(false) ?? throw new UnhandledException("Failed to retrieve IP");
+        var ip = req.GetUserIP(includePort: false) ?? throw new UnhandledException("Failed to retrieve IP");
         var blockedIp = await repoCache.ReadItemAsync<DataBlockedCache>(new CacheIdentity($"block-{ip}"), cancellationToken);
         if (blockedIp?.Data != null)
         {
@@ -90,7 +90,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
             AuthProviders = body.AuthProviders,
             DisplayName = body.DisplayName,
             Email = body.Email,
-            Events = body.Events
+            Events = body.Events,
         };
 
         principal = await repo.CreateItemAsync(principal);
@@ -100,7 +100,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
             var newLogin = new AuthLogin(userId)
             {
                 UserId = userId,
-                Accesses = [new Access { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip, Country = country?.ToLower() }]
+                Accesses = new HashSet<Access> { new() { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip, Country = country } },
             };
 
             await repo.CreateItemAsync(newLogin);
@@ -130,7 +130,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        var ip = req.GetUserIP(true);
+        var ip = req.GetUserIP(includePort: true);
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
 

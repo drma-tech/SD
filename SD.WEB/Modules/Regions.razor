@@ -16,7 +16,7 @@
         </MudSelect>
     </ActionsFragment>
     <BodyFragment>
-        <MudGrid Spacing="@Css.SpaceSmall">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
             @foreach (var item in GetRegions())
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
@@ -44,7 +44,7 @@
 </PageSectionComponent>
 
 @code {
-    public List<EnumFieldObject<Country>> RegionsList { get; set; } = [];
+    public IEnumerable<EnumFieldObject<Country>> RegionsList { get; set; } = [];
 
     private List<string?> Options { get; set; } = [];
     private string? filter;
@@ -60,7 +60,7 @@
         Options.Add("es");
     }
 
-    public List<EnumFieldObject<Country>> GetRegions()
+    public IEnumerable<EnumFieldObject<Country>> GetRegions()
     {
         if (filter == "en")
         {

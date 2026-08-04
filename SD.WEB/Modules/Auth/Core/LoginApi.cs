@@ -6,7 +6,7 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
 {
     public async Task<AuthLogin?> Get(CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Get, true, null, cancellationToken);
+        return await GetAsync(Endpoint.Get, setNewVersion: true, actions: null, cancellationToken);
     }
 
     public async Task Add(SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)

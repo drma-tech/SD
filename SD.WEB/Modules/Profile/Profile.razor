@@ -18,9 +18,9 @@
 @inject WatchingListApi WatchingListApi
 @inject IpInfoApi IpInfoApi
 
-<HeadComponent Title="@Translations.Title.Profile" Description="@Translations.Description.Profile" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Title.Profile" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
 
-<MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Large("mb")">
+<MudGrid Spacing="@CssHelper.SpaceSmall" Class="@CssHelper.Build().Large("mb")">
     <MudItem xs="6" md="4">
         <MudPaper Outlined="true" Class="pa-1">
             <div class="d-flex" style="align-self: center;">
@@ -70,7 +70,7 @@
 
 <MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture" Actions="ProviderActions"></MyProviderComponent>
 
-<MudGrid Spacing="@Css.SpaceSmall">
+<MudGrid Spacing="@CssHelper.SpaceSmall">
     <MudItem xs="12" md="6">
         <WishlistComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv" Culture="@Culture">
         </WishlistComponent>
@@ -122,16 +122,16 @@
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        Reviewed = await JsRuntime.Utils().GetStorage("reviewed", JavascriptContext.Default.Boolean, cts.Token);
+        Reviewed = await JsRuntime.Utils().GetStorage("reviewed", JavascriptContext.Default.Boolean, Cts.Token);
 
         if (AppStateStatic.IsAuthenticated)
         {
-            var subscriptionPopup = await JsRuntime.Utils().GetStorage("subscription-popup", JavascriptContext.Default.Boolean, cts.Token);
+            var subscriptionPopup = await JsRuntime.Utils().GetStorage("subscription-popup", JavascriptContext.Default.Boolean, Cts.Token);
 
             if (!subscriptionPopup)
             {
                 await DialogService.SubscriptionPopup();
-                await JsRuntime.Utils().SetStorage("subscription-popup", true, JavascriptContext.Default.Boolean, cts.Token);
+                await JsRuntime.Utils().SetStorage("subscription-popup", true, JavascriptContext.Default.Boolean, Cts.Token);
             }
         }
         
@@ -161,7 +161,7 @@
             {
                 var item = new WishListItem(media.tmdb_id, media.title, media.poster_small, media.runtime);
 
-                Wish = await WishApi.Add(SD.Shared.Enums.MediaType.movie, Wish, item, null, cts.Token);
+                Wish = await WishApi.Add(SD.Shared.Enums.MediaType.movie, Wish, item, null, Cts.Token);
 
                 demo = true;
             }
@@ -185,13 +185,13 @@
 
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-            var AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
-            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+            var AllProviders = await AllProvidersApi.GetAll(null, Cts.Token);
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
             var provider = AllProviders?.Items.Where(p => p.regions.Contains(region)).OrderBy(o => o.priority).FirstOrDefault();
 
             var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
             demo = true;
 

@@ -108,7 +108,7 @@ public static class ExternalApiHelper
         //hard limit: 500 / Month
         //there is a language/country filter, but its not working
 
-        using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/news/v2/get-by-category?category={category?.ToUpper() ?? "MOVIE"}&first=30&language=en-US");
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/news/v2/get-by-category?category={category?.ToUpperInvariant() ?? "MOVIE"}&first=30&language=en-US");
 
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", ApiStartup.Configurations.RapidAPI?.Key);
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "imdb8.p.rapidapi.com");

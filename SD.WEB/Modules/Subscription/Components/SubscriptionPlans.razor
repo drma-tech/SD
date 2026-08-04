@@ -116,7 +116,7 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        Config = await ConfigurationApi.GetConfigurations(Provider, cts.Token);
+        Config = await ConfigurationApi.GetConfigurations(Provider, Cts.Token);
     }
 
     public string? GetPrice(AccountProduct product, AccountCycle cycle)
@@ -153,21 +153,21 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    await JsRuntime.Payments().AppleOpenCheckout(priceId, cts.Token);
+                    await JsRuntime.Payments().AppleOpenCheckout(priceId, Cts.Token);
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
-                    await JsRuntime.Payments().GoogleOpenCheckout(priceId, "type", cts.Token);
+                    await JsRuntime.Payments().GoogleOpenCheckout(priceId, "type", Cts.Token);
                 }
                 else if (Provider == PaymentProvider.Stripe)
                 {
                     if (Client != null && Client.StripeCustomerId.Empty())
                     {
-                        Client = await PaymentAuthApi.StripeCustomer(cts.Token);
+                        Client = await PaymentAuthApi.StripeCustomer(Cts.Token);
                     }
 
                     //create session and redirect to checkout
-                    await JsRuntime.Payments().StripeOpenCheckout(priceId, cts.Token);
+                    await JsRuntime.Payments().StripeOpenCheckout(priceId, Cts.Token);
                 }
                 else
                 {

@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace SD.API.Core
 {
-    public class ZeptoMailClient(string apiKey)
+    public class ZeptoMailClient(string apiKey) : IDisposable
     {
         private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
@@ -12,8 +12,10 @@ namespace SD.API.Core
         private const string domain = "streamingdiscovery";
         private const string appName = "Streaming Discovery";
         private const string supportEmail = $"support@{domain}.com";
-        private static string year => DateTime.Now.Year.ToString();
-        
+        private const string noreplyEmail = "noreply@drma-tech.com";
+
+        private static string year => DateTime.Now.Year.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
         //todo: img css must be inside img tag
 
         private static readonly string CssBase = @"
@@ -161,7 +163,7 @@ namespace SD.API.Core
         {
             var payload = new
             {
-                from = new { address = "noreply@drma-tech.com", name = "DRMA Tech" },
+                from = new { address = noreplyEmail, name = "DRMA Tech" },
                 to = new[] { new { email_address = new { address = toEmail, name = "" } } },
                 subject = "DRMA Tech - Your OTP Code",
                 htmlbody = @$"
@@ -213,7 +215,7 @@ namespace SD.API.Core
                     </div>
                 </body>
                 </html>",
-                client_reference = reference
+                client_reference = reference,
             };
 
             var json = JsonSerializer.Serialize(payload);
@@ -237,7 +239,7 @@ namespace SD.API.Core
         {
             var payload = new
             {
-                from = new { address = "noreply@drma-tech.com", name = "DRMA Tech" },
+                from = new { address = noreplyEmail, name = "DRMA Tech" },
                 to = new[] { new { email_address = new { address = toEmail, name = "" } } },
                 subject = $"DRMA Tech - Welcome to {appName}",
                 htmlbody = @$"
@@ -320,7 +322,7 @@ namespace SD.API.Core
                     </div>
                 </body>
                 </html>",
-                client_reference = reference
+                client_reference = reference,
             };
 
             var json = JsonSerializer.Serialize(payload);
@@ -338,6 +340,26 @@ namespace SD.API.Core
             {
                 throw new NotificationException($"ZeptoMail error: {response.StatusCode} - {body}");
             }
+        }
+
+        private bool isDisposed;
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (isDisposed) return;
+
+            if (disposing)
+            {
+                _httpClient.Dispose();
+            }
+
+            isDisposed = true;
         }
     }
 }

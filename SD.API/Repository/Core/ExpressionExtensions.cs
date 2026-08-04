@@ -35,7 +35,7 @@ internal static class ExpressionExtensions
     }
 }
 
-internal class ParameterRebinder : ExpressionVisitor
+internal sealed class ParameterRebinder : ExpressionVisitor
 {
     private readonly IDictionary<ParameterExpression, ParameterExpression> _map;
 

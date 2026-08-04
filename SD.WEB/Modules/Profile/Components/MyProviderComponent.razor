@@ -40,7 +40,7 @@
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    [Parameter] public ComponentActions<MyProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+    [Parameter] public ComponentActions<MyProviders> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
     private AllProviders? AllProviders { get; set; }
     private MyProviders? MyProviders { get; set; }
     private bool ProvidersChanged { get; set; }
@@ -62,12 +62,12 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        AllProviders ??= await AllProvidersApi.GetAll(null, cts.Token);
+        AllProviders ??= await AllProvidersApi.GetAll(null, Cts.Token);
     }
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
         return true;
     }
@@ -76,9 +76,9 @@
     {
         MyProviders = await MyProvidersApi.Get(Actions, token);
 
-        foreach (var item in MyProviders?.Items ?? [])
+        foreach (var item in MyProviders?.Items ?? new HashSet<MyProvidersItem>())
         {
-            var provider = AllProviders?.Items.Find(f => f.id == item.id);
+            var provider = AllProviders?.Items.FirstOrDefault(f => f.id == item.id);
 
             if (provider?.name != item.name || provider?.logo_path != item.logo)
             {
@@ -96,7 +96,7 @@
 
                     if (provider != null)
                     {
-                        item.region = provider.regions.Contains(Region) ? Region : provider.regions[0];
+                        item.region = provider.regions.Contains(Region) ? Region : provider.regions.FirstOrDefault();
                     }
                 }
             }
@@ -110,23 +110,23 @@
 
     public async Task ShowProviderPopup(MyProvidersItem item)
     {
-        AllProviders ??= await AllProvidersApi.GetAll(null, cts.Token);
+        AllProviders ??= await AllProvidersApi.GetAll(null, Cts.Token);
 
         await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchingList, WishList, item.region?.ToString(), item.id, Culture);
     }
 
     private async Task UpdateProviders()
     {
-        foreach (var item in MyProviders?.Items ?? [])
+        foreach (var item in MyProviders?.Items ?? new HashSet<MyProvidersItem>())
         {
-            var provider = AllProviders?.Items.Find(f => f.id == item.id);
+            var provider = AllProviders?.Items.FirstOrDefault(f => f.id == item.id);
 
             if (provider == null) continue;
             item.name = provider.name;
             item.logo = provider.logo_path;
         }
 
-        MyProviders = await MyProvidersApi.Update(MyProviders, null, false, cts.Token);
+        MyProviders = await MyProvidersApi.Update(MyProviders, null, false, Cts.Token);
         ProvidersChanged = false;
     }
 

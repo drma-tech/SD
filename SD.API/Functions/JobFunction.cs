@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace SD.API.Functions;
 
-public class JobFunction(CosmosJobRepository repo, IHttpClientFactory factory)
+public class JobFunction(IHttpClientFactory factory)
 {
     [Function("ClearExpectedMovies")]
     public async Task ClearExpectedMovies([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/clear-expected-movies")] HttpRequestData req, CancellationToken cancellationToken)

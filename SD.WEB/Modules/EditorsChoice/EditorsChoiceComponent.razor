@@ -3,9 +3,9 @@
 
 @inject TmdbListApi TmdbListApi
 
-<PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@Translations.Description.EditorsChoice.Format(TypeSelected.GetFieldSettings().Name)">
+<PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@Translations.Description.EditorsChoice.CustomFormat(TypeSelected.GetFieldSettings().Name)">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">

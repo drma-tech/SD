@@ -4,18 +4,18 @@ namespace SD.Shared.Models;
 
 public class WishList(string? id) : MainDocument(new MainIdentity(MainType.WishList, id))
 {
-    public HashSet<WishListItem> Movies { get; init; } = [];
+    public ISet<WishListItem> Movies { get; init; } = new HashSet<WishListItem>();
 
-    public HashSet<WishListItem> Shows { get; init; } = [];
+    public ISet<WishListItem> Shows { get; init; } = new HashSet<WishListItem>();
 
     public WishListItem? GetItem(MediaType? type, string? id)
     {
-        return Items(type).FirstOrDefault(f => f.id == id);
+        return Items(type).FirstOrDefault(f => string.Equals(f.id, id, StringComparison.Ordinal));
     }
 
     public bool Contains(MediaType? type, string? id)
     {
-        return id != null && Items(type).Contains(new WishListItem(id, null, null, null));
+        return id != null && Items(type).Contains(new WishListItem(id, name: null, logo: null, runtime: null));
     }
 
     public void AddItem(MediaType? type, WishListItem item)
@@ -31,10 +31,12 @@ public class WishList(string? id) : MainDocument(new MainIdentity(MainType.WishL
         if (item != null) Items(type).Remove(item);
     }
 
-    public HashSet<WishListItem> Items(MediaType? type)
+    public ISet<WishListItem> Items(MediaType? type)
     {
         return type == MediaType.movie ? Movies : Shows;
     }
+
+    protected override object?[] EqualityValues => [Id];
 }
 
 public class WishListItem : EqualityBase<WishListItem>

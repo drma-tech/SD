@@ -161,13 +161,13 @@
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
     private string menuClass => AppStateStatic.IsMobile ? "icon-text-button" : "px-3";
 
-    protected readonly CancellationTokenSource cts = new();
+    protected readonly CancellationTokenSource Cts = new();
 
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += delegate { StateHasChanged(); };
 
-        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
+        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), Cts.Token);
 
         //avoid - Object reference not set to an instance of an object.
         //commit: breakpoint refactorer / ActionDispatcher and TaskDispatcher (2026-05-25)
@@ -177,14 +177,14 @@
             {
                 Interlocked.Increment(ref _processingCount);
                 await InvokeAsync(StateHasChanged);
-            }, cts.Token);
+            }, Cts.Token);
 
             AppStateStatic.ProcessingFinished.Subscribe(async () =>
             {
                 Interlocked.Decrement(ref _processingCount);
                 await Task.Delay(200);
                 await InvokeAsync(StateHasChanged);
-            }, cts.Token);
+            }, Cts.Token);
         }
     }
 
@@ -194,7 +194,7 @@
         {
             if (stripe_session_id.NotEmpty())
             {
-                var success = await PaymentPublicApi.StripeValidateSession(stripe_session_id, cts.Token);
+                var success = await PaymentPublicApi.StripeValidateSession(stripe_session_id, Cts.Token);
 
                 if (success)
                 {
@@ -219,7 +219,7 @@
     private async Task Logout()
     {
         _openMenu = false;
-        await JsRuntime.Supabase().SignOutAsync(cts.Token);
+        await JsRuntime.Supabase().SignOutAsync(Cts.Token);
     }
 
     private async Task OpenConfigurations()
@@ -261,16 +261,16 @@
     {
         Snackbar.Add(message, Severity.Success);
 
-        await JsRuntime.Utils().PlayBeep(880, 100, "sine", cts.Token);
-        await JsRuntime.Utils().Vibrate([40], cts.Token);
+        await JsRuntime.Utils().PlayBeep(880, 100, "sine", Cts.Token);
+        await JsRuntime.Utils().Vibrate([40], Cts.Token);
     }
 
     protected async Task ShowError(string message)
     {
         Snackbar.Add(message, Severity.Error);
 
-        await JsRuntime.Utils().PlayBeep(220, 400, "square", cts.Token);
-        await JsRuntime.Utils().Vibrate([200, 100, 200], cts.Token);
+        await JsRuntime.Utils().PlayBeep(220, 400, "square", Cts.Token);
+        await JsRuntime.Utils().Vibrate([200, 100, 200], Cts.Token);
     }
 
     private void AppsClick()
@@ -285,8 +285,8 @@
 
     void IDisposable.Dispose()
     {
-        cts.Cancel();
-        cts.Dispose();
+        Cts.Cancel();
+        Cts.Dispose();
         GC.SuppressFinalize(this);
     }
 }

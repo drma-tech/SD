@@ -5,9 +5,9 @@
 @inject PaymentConfigurationApi ConfigurationApi
 @inject PaymentAuthApi PaymentAuthApi
 
-<MudCard Outlined="true" Elevation="4" Class="@Css.Build().Large("mb")">
-    <MudCardContent Class="@Css.Build().Small("pa")">
-        <MudGrid Spacing="@Css.SpaceSmall">
+<MudCard Outlined="true" Elevation="4" Class="@CssHelper.Build().Large("mb")">
+    <MudCardContent Class="@CssHelper.Build().Small("pa")">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
             <MudItem xs="12" sm="6">
                 <MudTextField T="string" Label="@Translations.Module.Subscription.Product" Text="@Client?.GetActiveSubscription()?.Product?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
             </MudItem>
@@ -29,7 +29,7 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
-<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="@Css.Build().Small("mb")" Href="@CustomerPortalUrl" Target="_blank" Rel="nofollow, noopener" Disabled="CustomerPortalUrl.Empty()">
+<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="@CssHelper.Build().Small("mb")" Href="@CustomerPortalUrl" Target="_blank" Rel="nofollow, noopener" Disabled="CustomerPortalUrl.Empty()">
     Change/Cancel my subscription
 </MudButton>
 
@@ -40,6 +40,6 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        CustomerPortalUrl = await PaymentAuthApi.StripePortalLink(cts.Token);
+        CustomerPortalUrl = await PaymentAuthApi.StripePortalLink(Cts.Token);
     }
 }

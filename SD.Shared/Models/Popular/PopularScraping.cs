@@ -15,21 +15,21 @@
         public string? type { get; set; }
         public string? description { get; set; }
         public string? primaryImage { get; set; }
-        public List<Thumbnail>? thumbnails { get; set; }
+        public Thumbnail[]? thumbnails { get; set; }
         public string? trailer { get; set; }
         public string? contentRating { get; set; }
         public long? startYear { get; set; }
         public long? endYear { get; set; }
         public string? releaseDate { get; set; }
-        public List<string>? interests { get; set; }
-        public List<string>? countriesOfOrigin { get; set; }
-        public List<string>? externalLinks { get; set; }
-        public List<string>? spokenLanguages { get; set; }
-        public List<string>? filmingLocations { get; set; }
-        public List<ProductionCompany>? productionCompanies { get; set; }
+        public IReadOnlyCollection<string>? interests { get; set; }
+        public IReadOnlyCollection<string>? countriesOfOrigin { get; set; }
+        public IReadOnlyCollection<string>? externalLinks { get; set; }
+        public IReadOnlyCollection<string>? spokenLanguages { get; set; }
+        public IReadOnlyCollection<string>? filmingLocations { get; set; }
+        public IReadOnlyCollection<ProductionCompany>? productionCompanies { get; set; }
         public long? budget { get; set; }
         public long? grossWorldwide { get; set; }
-        public List<string>? genres { get; set; }
+        public IReadOnlyCollection<string>? genres { get; set; }
         public bool isAdult { get; set; }
         public long? runtimeMinutes { get; set; }
         public double? averageRating { get; set; }

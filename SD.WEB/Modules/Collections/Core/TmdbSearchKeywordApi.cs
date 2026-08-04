@@ -1,56 +1,54 @@
 ﻿using SD.Shared.Models.List.Tmdb;
+using System.Globalization;
 
 namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbSearchKeywordApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<(HashSet<TmdbResultKeyword> list, bool lastPage)> GetKeywords(HashSet<TmdbResultKeyword> currentList, Dictionary<string, string>? stringParameters, int page, CancellationToken cancellationToken)
+    public async Task<(IReadOnlyCollection<TmdbResultKeyword> list, bool lastPage)> GetKeywords(IReadOnlyCollection<TmdbResultKeyword> currentList, IReadOnlyDictionary<string, string>? stringParameters, int page, CancellationToken cancellationToken)
     {
-        var parameter = new Dictionary<string, string>
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "page", page.ToString() },
+            { "page", page.ToString(CultureInfo.InvariantCulture) },
         };
 
         if (stringParameters != null)
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result = await GetAsync<TmdbSearchKeyword>(TmdbOptions.BaseUri + "search/keyword".ConfigureParameters(parameter), false, null, cancellationToken);
+        var result = await GetAsync<TmdbSearchKeyword>(TmdbOptions.BaseUri + "search/keyword".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
         if (result != null)
-            foreach (var item in result.results)
+            currentList = [.. result.results.Select(r => new TmdbResultKeyword
             {
-                currentList.Add(new TmdbResultKeyword
-                {
-                    id = item.id,
-                    name = item.name,
-                });
-            }
+                id = r.id,
+                name = r.name,
+            })];
 
-        return new ValueTuple<HashSet<TmdbResultKeyword>, bool>(currentList, page >= result?.total_pages);
+        return new ValueTuple<IReadOnlyCollection<TmdbResultKeyword>, bool>(currentList, page >= result?.total_pages);
     }
 
-    public async Task<List<TmdbResultKeyword>> GetMovieKeywords(string? id, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<TmdbResultKeyword>> GetMovieKeywords(string? id, CancellationToken cancellationToken)
     {
-        var parameter = new Dictionary<string, string>
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "api_key", TmdbOptions.ApiKey },
         };
 
-        var result = await GetAsync<TmdbMovieKeyword>(TmdbOptions.BaseUri + $"movie/{id}/keywords".ConfigureParameters(parameter), false, null, cancellationToken);
+        var result = await GetAsync<TmdbMovieKeyword>(TmdbOptions.BaseUri + $"movie/{id}/keywords".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
         return result?.keywords ?? [];
     }
 
-    public async Task<List<TmdbResultKeyword>> GetSerieKeywords(string? id, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<TmdbResultKeyword>> GetSerieKeywords(string? id, CancellationToken cancellationToken)
     {
-        var parameter = new Dictionary<string, string>
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "api_key", TmdbOptions.ApiKey },
         };
 
-        var result = await GetAsync<TmdbSerieKeyword>(TmdbOptions.BaseUri + $"tv/{id}/keywords".ConfigureParameters(parameter), false, null, cancellationToken);
+        var result = await GetAsync<TmdbSerieKeyword>(TmdbOptions.BaseUri + $"tv/{id}/keywords".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
         return result?.results ?? [];
     }

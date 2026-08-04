@@ -12,31 +12,31 @@
 
 @if (AppStateStatic.IsAuthenticated)
 {
-    <MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="@CssHelper.Build().Raw("mb-20")">
         @if (AppStateStatic.Principal == null)
         {
             <MudPaper Elevation="0" Outlined="true" Class="pa-3">
-                <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Large("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
+                <MudText Typo="Typo.h1" Color="Color.Primary" Class="@CssHelper.Build().Large("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
                     @Translations.Module.Auth.CreateAccount
                 </MudText>
 
-                <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
+                <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@CssHelper.Build().Small("mb")">
                     <MudText Inline="true">
                         @((MarkupString)string.Format(Translations.Module.Auth.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.PrivacyPolicy}</a>"))
                     </MudText>
                 </MudCheckBox>
-                <MudCheckBox @bind-Value="_terms2" Color="Color.Primary" Class="@Css.Build().Small("mb")">
+                <MudCheckBox @bind-Value="_terms2" Color="Color.Primary" Class="@CssHelper.Build().Small("mb")">
                     <MudText Inline="true">
                         @Translations.Module.Auth.Terms2
                     </MudText>
                 </MudCheckBox>
 
                 <div style="display: flex;">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Large("mt").Raw("me-2")">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@CssHelper.Build().Large("mt").Raw("me-2")">
                         @Translations.Button.Confirm
                     </MudButton>
                     <MudSpacer></MudSpacer>
-                    <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Logout" Class="@Css.Build().Large("mt")">
+                    <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Logout" Class="@CssHelper.Build().Large("mt")">
                         @Translations.Button.Cancel / @Translations.Button.Logout
                     </MudButton>
                 </div>
@@ -102,10 +102,10 @@
                 AppStateStatic.Principal.Events.Add(new Event(AppInfo.Title, "Terms of use accepted.", null));
             }
 
-            var platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
-            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+            var platform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);
+            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, Cts.Token);
 
-            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal, platform, country, cts.Token);
+            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal, platform, country, Cts.Token);
 
             if (AppStateStatic.Principal == null) throw new InvalidOperationException("Failed to create principal.");
 
@@ -121,16 +121,16 @@
     {
         if (!firstAccess)
         {
-            var platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
-            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+            var platform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);
+            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, Cts.Token);
 
-            await LoginApi.Add(platform, country, cts.Token);
+            await LoginApi.Add(platform, country, Cts.Token);
         }
         
         if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
             AppStateStatic.Principal.AuthProviders = AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
-            await PrincipalApi.Update(AppStateStatic.Principal, cts.Token);
+            await PrincipalApi.Update(AppStateStatic.Principal, Cts.Token);
         }
 
         Navigation.NavigateTo($"/{Culture}/profile");
@@ -138,7 +138,7 @@
 
     private async Task Logout()
     {
-        await JsRuntime.Supabase().SignOutAsync(cts.Token);
+        await JsRuntime.Supabase().SignOutAsync(Cts.Token);
 
         Navigation.NavigateTo($"/{Culture}");
 

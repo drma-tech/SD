@@ -9,8 +9,8 @@ public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.W
     public DateTime? MovieSyncDate { get; set; }
     public DateTime? ShowSyncDate { get; set; }
 
-    public HashSet<WatchingListItem> Movies { get; init; } = [];
-    public HashSet<WatchingListItem> Shows { get; init; } = [];
+    public ISet<WatchingListItem> Movies { get; init; } = new HashSet<WatchingListItem>();
+    public ISet<WatchingListItem> Shows { get; init; } = new HashSet<WatchingListItem>();
 
     [JsonIgnore]
     [NotMapped]
@@ -20,7 +20,7 @@ public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.W
     [NotMapped]
     public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-14);
 
-    public HashSet<WatchingListItem> Items(MediaType? type)
+    public ISet<WatchingListItem> Items(MediaType? type)
     {
         return type == MediaType.movie ? Movies : Shows;
     }
@@ -32,12 +32,12 @@ public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.W
 
     public WatchingListItem? GetItem(MediaType? type, string? id)
     {
-        return Items(type).FirstOrDefault(f => f.id == id);
+        return Items(type).FirstOrDefault(f => string.Equals(f.id, id, StringComparison.Ordinal));
     }
 
-    public HashSet<string> GetWatchingItems(MediaType? type, string? collectionId)
+    public ISet<string> GetWatchingItems(MediaType? type, string? collectionId)
     {
-        return Items(type).FirstOrDefault(f => f.id == collectionId)?.watched ?? [];
+        return Items(type).FirstOrDefault(f => string.Equals(f.id, collectionId, StringComparison.Ordinal))?.watched ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     }
 
     public bool Contains(MediaType? type, WatchingListItem? item)
@@ -54,7 +54,7 @@ public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.W
             var item = GetItem(type, newItem.id)!;
 
             item.maxItems = newItem.maxItems;
-            foreach (var id in newItem.watched) item.watched.Add(id);
+            foreach (var _id in newItem.watched) item.watched.Add(_id);
         }
         else
         {
@@ -66,7 +66,7 @@ public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.W
     {
         ArgumentNullException.ThrowIfNull(collectionId);
 
-        var collection = Items(type).FirstOrDefault(f => f.id == collectionId);
+        var collection = Items(type).FirstOrDefault(f => string.Equals(f.id, collectionId, StringComparison.Ordinal));
 
         if (collection != null)
         {
@@ -81,6 +81,8 @@ public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.W
             }
         }
     }
+
+    protected override object?[] EqualityValues => [Id];
 }
 
 public sealed class WatchingListItem : EqualityBase<WatchingListItem>
@@ -89,7 +91,7 @@ public sealed class WatchingListItem : EqualityBase<WatchingListItem>
     {
     }
 
-    public WatchingListItem(string? id, string? name, string? logo, int maxItems, HashSet<string> watched)
+    public WatchingListItem(string? id, string? name, string? logo, int maxItems, ISet<string> watched)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
         if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
@@ -108,7 +110,7 @@ public sealed class WatchingListItem : EqualityBase<WatchingListItem>
     public string? logo { get; init; }
     public string? name { get; init; }
     public int maxItems { get; set; }
-    public HashSet<string> watched { get; init; } = [];
+    public ISet<string> watched { get; init; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     protected override object?[] EqualityValues => [id];
 }

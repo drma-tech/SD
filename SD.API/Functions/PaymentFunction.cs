@@ -16,7 +16,9 @@ namespace SD.API.Functions;
 
 public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory factory)
 {
-    private const string APP = "sd";
+    private const string APP_CODE = "sd";
+    private const string APP = "app";
+    private const string USERID = "userId";
 
     [Function("PaymentConfigurations")]
     public static PaymentConfigurations PaymentConfigurations(
@@ -30,21 +32,20 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             return new PaymentConfigurations
             {
                 PricePremiumMonth = ApiStartup.Configurations.Apple?.Premium?.PriceMonth,
-                PricePremiumYear = ApiStartup.Configurations.Apple?.Premium?.PriceYear
+                PricePremiumYear = ApiStartup.Configurations.Apple?.Premium?.PriceYear,
             };
         }
-        else if (provider == PaymentProvider.Stripe)
+
+        if (provider == PaymentProvider.Stripe)
         {
             return new PaymentConfigurations
             {
                 PricePremiumMonth = ApiStartup.Configurations.Stripe?.Premium?.PriceMonth,
-                PricePremiumYear = ApiStartup.Configurations.Stripe?.Premium?.PriceYear
+                PricePremiumYear = ApiStartup.Configurations.Stripe?.Premium?.PriceYear,
             };
         }
-        else
-        {
-            throw new UnhandledException("provider not implemented");
-        }
+
+        throw new UnhandledException("provider not implemented");
     }
 
     [Function("PostAppleVerify")]
@@ -55,7 +56,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         try
         {
             var userId = await req.GetUserIdAsync(cancellationToken);
-            var ip = req.GetUserIP(true);
+            var ip = req.GetUserIP(includePort: true);
 
             client = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
@@ -71,16 +72,16 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
                 result = await VerifyReceipt("https://sandbox.itunes.apple.com/", receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
             }
 
-            if (result.status != 0) throw new UnhandledException($"invalid status: {result.status}");
-            if (result.receipt!.bundle_id != bundleId) throw new UnhandledException("invalid receipt");
+            if (result.status != 0) throw new UnhandledException(string.Create(CultureInfo.InvariantCulture, $"invalid status: {result.status}"));
+            if (!string.Equals(result.receipt!.bundle_id, bundleId, StringComparison.OrdinalIgnoreCase)) throw new UnhandledException("invalid receipt");
 
-            var purchase = result.latest_receipt_info[result.latest_receipt_info.Count - 1];
+            var purchase = result.latest_receipt_info[^1];
 
             var sub = new AuthSubscription
             {
                 Provider = PaymentProvider.Apple,
                 Product = AccountProduct.Premium,
-                Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly,
+                Cycle = purchase.product_id!.Contains("yearly", StringComparison.OrdinalIgnoreCase) ? AccountCycle.Yearly : AccountCycle.Monthly,
                 SessionId = receipt, //save receipt before cause it may fail
                 SubscriptionId = purchase.original_transaction_id,
                 ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture))
@@ -89,7 +90,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             client.AddSubscription(sub);
 
             //https://developer.apple.com/documentation/appstorereceipts/status
-            client.Events.Add(new Event("Apple", $"Subscription created with status = {result.status} and id = {purchase.original_transaction_id}", ip));
+            client.Events.Add(new Event("Apple", string.Create(CultureInfo.InvariantCulture, $"Subscription created with status = {result.status} and id = {purchase.original_transaction_id}"), ip));
         }
         finally
         {
@@ -110,7 +111,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     public async Task PostAppleWebhook(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/apple/webhook")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var ip = req.GetUserIP(true);
+        var ip = req.GetUserIP(includePort: true);
 
         var body = await req.ReadFromJsonAsync<Dictionary<string, string>>(cancellationToken) ?? throw new UnhandledException("body null");
 
@@ -124,7 +125,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
         var originalTransactionId = transaction.OriginalTransactionId;
 
-        var results = await repo.Query<AuthPrincipal>(MainType.Principal, x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), null, cancellationToken);
+        var results = await repo.Query<AuthPrincipal>(MainType.Principal, x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), transform: null, cancellationToken);
 
         var client = results.LastOrDefault();
 
@@ -136,7 +137,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
         var sub = client.GetSubscription(originalTransactionId, PaymentProvider.Apple);
 
-        if (notification.NotificationType == "REFUND" || notification.NotificationType == "REVOKE")
+        if (string.Equals(notification.NotificationType, "REFUND", StringComparison.OrdinalIgnoreCase) || string.Equals(notification.NotificationType, "REVOKE", StringComparison.OrdinalIgnoreCase))
         {
             sub.ExpiresDate = DateTimeOffset.UtcNow; //disable immediately
         }
@@ -150,7 +151,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         }
 
         var product = transaction.ProductId ?? throw new UnhandledException("product not available");
-        sub.Cycle = product.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
+        sub.Cycle = product.Contains("yearly", StringComparison.OrdinalIgnoreCase) ? AccountCycle.Yearly : AccountCycle.Monthly;
 
         client.UpdateSubscription(sub);
 
@@ -170,15 +171,15 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         {
             Name = principal.DisplayName,
             Email = principal.Email,
-            Metadata = new Dictionary<string, string> {
-                { "app", APP },
-                { "userId", principal.UserId! },
+            Metadata = new Dictionary<string, string>(StringComparer.Ordinal) {
+                { APP, APP_CODE },
+                { USERID, principal.UserId! },
             },
         }, cancellationToken: cancellationToken);
 
         principal.StripeCustomerId = customer.Id;
 
-        var ip = req.GetUserIP(true);
+        var ip = req.GetUserIP(includePort: true);
         principal.Events.Add(new Event("Stripe", $"User registered with id:{customer.Id}", ip));
 
         return await repo.UpsertItemAsync(principal);
@@ -189,7 +190,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "stripe/create-checkout-session/{priceId}")] HttpRequestData req, string priceId, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync(cancellationToken);
-        var ip = req.GetUserIP(true);
+        var ip = req.GetUserIP(includePort: true);
         var url = req.GetQueryParameters()["url"];
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
@@ -199,39 +200,33 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var options = new SessionCreateOptions
         {
             Customer = principal.StripeCustomerId,
-            //CustomerUpdate = new SessionCustomerUpdateOptions
-            //{
-            //    Name = "never",
-            //    Address = "never",
-            //    Shipping = "never"
-            //},
 
             LineItems = [new() { Price = priceId, Quantity = 1, },],
             Mode = "subscription",
             SuccessUrl = url + "?stripe_session_id={CHECKOUT_SESSION_ID}",
-            Metadata = new Dictionary<string, string> {
-                { "app", APP },
-                { "userId", principal.UserId! },
+            Metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+                { APP, APP_CODE },
+                { USERID, principal.UserId! },
             },
             SubscriptionData = new SessionSubscriptionDataOptions
             {
-                Metadata = new Dictionary<string, string> {
-                    { "app", APP },
-                    { "userId", principal.UserId! },
-                }
-            }
+                Metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+                    { APP, APP_CODE },
+                    { USERID, principal.UserId! },
+                },
+            },
         };
 
-        options.AddExtraParam("managed_payments[enabled]", true);
+        options.AddExtraParam("managed_payments[enabled]", value: true);
 
         var service = new SessionService();
         Session session = await service.CreateAsync(options, cancellationToken: cancellationToken);
 
         AccountCycle? cycle = null;
 
-        if (priceId == ApiStartup.Configurations.Stripe!.Premium!.PriceMonth)
+        if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceMonth, StringComparison.OrdinalIgnoreCase))
             cycle = AccountCycle.Monthly;
-        else if (priceId == ApiStartup.Configurations.Stripe.Premium.PriceYear)
+        else if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceYear, StringComparison.OrdinalIgnoreCase))
             cycle = AccountCycle.Yearly;
 
         var sub = new AuthSubscription()
@@ -239,7 +234,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             Provider = PaymentProvider.Stripe,
             Product = AccountProduct.Premium,
             Cycle = cycle,
-            SessionId = session.Id
+            SessionId = session.Id,
         };
 
         principal.AddSubscription(sub);
@@ -261,14 +256,14 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         if (string.IsNullOrEmpty(Signature?.First())) throw new NotificationException("Stripe signature missing");
         var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new NotificationException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
 
-        if (stripeEvent.Type.StartsWith("customer.subscription")) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
+        if (stripeEvent.Type.StartsWith("customer.subscription", StringComparison.OrdinalIgnoreCase)) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
         {
             if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new NotificationException("stripe subscription not available");
 
-            if (!obj.Metadata.TryGetValue("app", out var app) || app != APP)
-                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
+            if (!obj.Metadata.TryGetValue(APP, out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
+                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
 
-            if (!obj.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
+            if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
                 throw new NotificationException("userId metadata missing in session");
 
             var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
@@ -276,7 +271,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             if (principal == null)
             {
                 req.LogError(new NotificationException($"stripe webhook - principal is null - subscriptionId:{obj.Id}"));
-                return await req.CreateResponse(HttpStatusCode.OK, $"stripe webhook - principal is null - subscriptionId:{obj.Id}");
+                return await req.CreateResponse(HttpStatusCode.OK, $"stripe webhook - principal is null - subscriptionId:{obj.Id}", cancellationToken);
             }
 
             var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
@@ -287,38 +282,38 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
             if (obj.CancelAt.HasValue)
             {
-                sub.ExpiresDate = obj.CancelAt.Value;
+                sub.ExpiresDate = new DateTimeOffset(obj.CancelAt.Value);
             }
 
             principal.UpdateSubscription(sub);
 
-            var ip = req.GetUserIP(true);
+            var ip = req.GetUserIP(includePort: true);
             var type = stripeEvent.Type.Split(".")[2];
             principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
 
             await repo.UpsertItemAsync(principal);
         }
-        else if (stripeEvent.Type == "customer.deleted")
+        else if (string.Equals(stripeEvent.Type, "customer.deleted", StringComparison.OrdinalIgnoreCase))
         {
             if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new NotificationException("stripe customer not available");
 
-            if (!obj.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
+            if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
             {
                 //if no metadada, try to find the user with the StripeCustomerId
-                var list = await repo.Query<AuthPrincipal>(MainType.Principal, p => p.StripeCustomerId == obj.Id, null, cancellationToken);
+                var list = await repo.Query<AuthPrincipal>(MainType.Principal, p => p.StripeCustomerId == obj.Id, transform: null, cancellationToken);
 
                 if (list.Count > 0)
                 {
-                    var item = list[0];
+                    var item = list.Single();
                     item.StripeCustomerId = null;
                     await repo.UpsertItemAsync(item);
                 }
 
-                return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing");
+                return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken);
             }
 
-            if (!obj.Metadata.TryGetValue("app", out var app) || app != APP)
-                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
+            if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
+                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
 
             var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
@@ -329,7 +324,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             }
         }
 
-        return await req.CreateResponse(HttpStatusCode.OK, "webhook received");
+        return await req.CreateResponse(HttpStatusCode.OK, "webhook received", cancellationToken);
     }
 
     [Function("StripeGePortalLink")]
@@ -343,7 +338,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var options = new Stripe.BillingPortal.SessionCreateOptions
         {
             Customer = principal.StripeCustomerId,
-            ReturnUrl = url
+            ReturnUrl = url,
         };
         var service = new Stripe.BillingPortal.SessionService();
         var session = await service.CreateAsync(options, cancellationToken: cancellationToken);
@@ -352,17 +347,17 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     }
 
     [Function("StripeValidateSession")]
-    public async Task<HttpResponseData> StripeValidateSession(
+    public static async Task<HttpResponseData> StripeValidateSession(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/stripe/validate-session/{id}")] HttpRequestData req, string id, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(id))
-            return await req.CreateResponse(HttpStatusCode.OK, false);
+            return await req.CreateResponse(HttpStatusCode.OK, value: false, cancellationToken);
 
         var service = new SessionService();
 
         var session = await service.GetAsync(id, cancellationToken: cancellationToken);
 
-        var result = session != null && session.PaymentStatus == "paid" && session.Status == "complete";
-        return await req.CreateResponse(HttpStatusCode.OK, result);
+        var result = session != null && string.Equals(session.PaymentStatus, "paid", StringComparison.OrdinalIgnoreCase) && string.Equals(session.Status, "complete", StringComparison.OrdinalIgnoreCase);
+        return await req.CreateResponse(HttpStatusCode.OK, result, cancellationToken);
     }
 }

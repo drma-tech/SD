@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @using SD.WEB.Modules.Subscription.Core
-@inherits BaseComponentCore<Advertising>
+@inherits ComponentCore<Advertising>
 
 @inject PaymentConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
@@ -12,7 +12,7 @@
         <div style="text-align: center;" class="my-1">
             <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">@Translations.Button.RemoveAdvertising</MudLink>
         </div>
-        <div style="@($"height: 200px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+        <div style="@($"height: 200px; text-align: center; align-content: center;")" class="@CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
             Advertising
         </div>
     }
@@ -27,13 +27,13 @@
         @if (Network == AdNetwork.Adsense)
         {
             <div id="@_containerId" @key="@_containerId" style="text-align: center; align-content: center; max-height: 200px !important;"
-                 class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+                 class="@CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
             </div>
         }
         else if (Network == AdNetwork.Yandex)
         {
             <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")" @key="@_containerId" style="text-align: center; align-content: center; max-height: 200px !important;"
-                 class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+                 class="@CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
             </div>
         }
     }
@@ -120,7 +120,7 @@
             if (firstRender)
             {
                 //detect country
-                country = Country ?? await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+                country = Country ?? await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, Cts.Token);
 
                 //detect network
                 if (Navigation.IsLocalhost() || Printscreen || ActiveSubscription)
@@ -154,12 +154,12 @@
 
                 if (Network == AdNetwork.Adsense)
                 {
-                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, cts.Token);
-                    _ = Task.Run(() => DetectAdBlockAsync(cts.Token));
+                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, Cts.Token);
+                    _ = Task.Run(() => DetectAdBlockAsync(Cts.Token));
                 }
                 else if (Network == AdNetwork.Yandex)
                 {
-                    await JsRuntime.Services().InitYandex(GetYandexSlotId(Slot), cts.Token);
+                    await JsRuntime.Services().InitYandex(GetYandexSlotId(Slot), Cts.Token);
                 }
             }
 

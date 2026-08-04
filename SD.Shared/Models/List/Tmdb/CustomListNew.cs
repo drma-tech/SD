@@ -16,7 +16,7 @@ public class ResultCustomListNew
 
 public class CustomListNew
 {
-    public Dictionary<string, string>? comments { get; set; }
-    public List<ResultCustomListNew> results { get; set; } = [];
+    public IDictionary<string, string>? comments { get; set; }
+    public IReadOnlyCollection<ResultCustomListNew> results { get; set; } = [];
     public int total_pages { get; set; }
 }

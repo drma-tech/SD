@@ -1,12 +1,10 @@
-﻿@inherits BaseComponentCore<AppleSubscriptionManager>
-
-@using SD.WEB.Modules.Subscription.Core
+﻿@using SD.WEB.Modules.Subscription.Core
 
 @inject PaymentConfigurationApi ConfigurationApi
 
 <MudCard Outlined="true" Elevation="4">
     <MudCardContent Class="pa-3">
-        <MudGrid Spacing="@Css.SpaceSmall">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
             <MudItem xs="12" sm="6">
                 <MudTextField T="string" Label="@Translations.Module.Subscription.Product" Text="@Client?.GetActiveSubscription()?.Product?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
             </MudItem>

@@ -1,7 +1,16 @@
 ﻿[*.cs]
 
-# S4457: Parameter validation in "async"/"await" methods should be wrapped
-dotnet_diagnostic.S4457.severity = silent
+# MA0004: Use Task.ConfigureAwait
+dotnet_diagnostic.MA0004.severity = none
+
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
 
 # IDE1006: Naming Styles
-dotnet_diagnostic.IDE1006.severity = silent
+dotnet_diagnostic.IDE1006.severity = none
+
+# MA0048: File name must match type name
+dotnet_diagnostic.MA0048.severity = none
+
+# MA0023: Add RegexOptions.ExplicitCapture
+dotnet_diagnostic.MA0023.severity = none

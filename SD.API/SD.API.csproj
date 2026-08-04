@@ -7,8 +7,14 @@
 		<Nullable>enable</Nullable>
 		<RootNamespace>SD.API</RootNamespace>
 		<UserSecretsId>8e76a79d-32e2-4465-8c7b-c6305b0d5e6f</UserSecretsId>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.138">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.18" />
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.62.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.2.0" />

@@ -18,12 +18,12 @@
 }
 else
 {
-    <HeadComponent Title="@(Translations.Title.Providers.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
-                   Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}")
+    <HeadComponent Title="@(Translations.Title.Providers.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
+                   Description="@Translations.Description.Platforms.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}")
                    Index="@Region.NotEmpty()" Shared="true" FixedAlternateLanguage="@Culture"></HeadComponent>
 
-    <PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.Providers.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
-                          Description="@Translations.Description.Platforms.Format(RegionEnum?.GetFieldSettings().Name ?? "invalid country")">
+    <PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.Providers.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
+                          Description="@Translations.Description.Platforms.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country")">
         <ActionsFragment>
             <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Translations.Module.Media.DeliveryModel" Dense="true" Class="me-2">
                 @foreach (var item in DeliveryModels)
@@ -127,7 +127,7 @@ else
                     </div>
                 }
             </div>
-            <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
+            <div style="text-align: center;" class="@CssHelper.Build().Small("pt").Large("mb")">
                 <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
                            Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
                     @Translations.Button.LoadMore
@@ -137,7 +137,7 @@ else
         else
         {
             <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning"
-                      Class="@Css.Build().Large("mb")" Style="text-align: justify; width: 100%;">
+                      Class="@CssHelper.Build().Large("mb")" Style="text-align: justify; width: 100%;">
                 @Translations.Notification.RenderControlNoData
             </MudAlert>
         }
@@ -180,14 +180,14 @@ else
                ?? [];
     }
 
-    public List<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];
-    public List<EnumFieldObject<MediaType>> MediaTypes { get; set; } = [];
+    public IEnumerable<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];
+    public IEnumerable<EnumFieldObject<MediaType>> MediaTypes { get; set; } = [];
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, cts.Token);
+        AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, Cts.Token);
     }
 
     protected override List<string?> GetParameterKey()
@@ -205,14 +205,14 @@ else
 
         try
         {
-            RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Country>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+            RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Country>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
         }
         catch (Exception)
         {
             isNotFound = true;
         }
 
-        AllProviders = await AllProvidersApi.GetAll(Actions, cts.Token);
+        AllProviders = await AllProvidersApi.GetAll(Actions, Cts.Token);
     }
 
     protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
@@ -232,10 +232,10 @@ else
 
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
             var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
             await ShowSuccess(Translations.Notification.PlatformAdded);
         }
@@ -257,7 +257,7 @@ else
 
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == provider?.id), ApiContext.Default.MyProvidersItem, cts.Token);
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == provider?.id), ApiContext.Default.MyProvidersItem, Cts.Token);
 
             await ShowSuccess(Translations.Notification.PlatformRemoved);
         }

@@ -65,19 +65,19 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Not Found")
+                if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
-                if (ex.Message == "Bad Gateway")
+                if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
                 req.LogError(ex);
 
-                if (ex.Message.Contains("Too Many Requests"))
+                if (ex.Message.Contains("Too Many Requests", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new ApiRateLimitException(ex.Message);
                 }
@@ -107,19 +107,19 @@ namespace SD.API.Core.Scraping
                 var client = factory.CreateClient("rapidapi");
                 var result = await client.GetUnifiedMovie<Shared.Models.List.UnifiedMovie.Root>(ratings.tmdbId, cancellationToken);
 
-                var rating1 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "tmdb")?.score;
+                var rating1 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "tmdb", StringComparison.OrdinalIgnoreCase))?.score;
                 if (rating1.HasValue) rating1 /= 10;
                 ratings.tmdb ??= rating1?.ToString(CultureInfo.InvariantCulture);
 
-                var rating2 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "imdb")?.score;
+                var rating2 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "imdb", StringComparison.OrdinalIgnoreCase))?.score;
                 if (rating2.HasValue) rating2 /= 10;
                 ratings.imdb ??= rating2?.ToString(CultureInfo.InvariantCulture);
 
-                var rating3 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "metacritic")?.score;
+                var rating3 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "metacritic", StringComparison.OrdinalIgnoreCase))?.score;
                 if (rating3.HasValue) rating3 /= 10;
                 ratings.metacritic ??= rating3?.ToString(CultureInfo.InvariantCulture);
 
-                var rating4 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "rottenTomatoes")?.score;
+                var rating4 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "rottenTomatoes", StringComparison.OrdinalIgnoreCase))?.score;
                 if (rating4.HasValue) rating4 /= 10;
                 ratings.rottenTomatoes ??= rating4?.ToString(CultureInfo.InvariantCulture);
             }
@@ -133,19 +133,19 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Not Found")
+                if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
-                if (ex.Message == "Bad Gateway")
+                if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
                 req.LogError(ex);
 
-                if (ex.Message.Contains("Too Many Requests"))
+                if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new ApiRateLimitException(ex.Message);
                 }
@@ -203,19 +203,19 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Not Found")
+                if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
-                if (ex.Message == "Bad Gateway")
+                if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
                 req.LogError(ex);
 
-                if (ex.Message == "Too Many Requests")
+                if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new ApiRateLimitException(ex.Message);
                 }

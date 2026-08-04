@@ -3,7 +3,7 @@
 namespace SD.WEB.Core.Api;
 
 /// <summary>
-/// 
+///
 /// </summary>
 /// <typeparam name="T"></typeparam>
 /// <param name="factory"></param>
@@ -20,7 +20,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return await base.GetAsync<T>(endpoint, setNewVersion, actions, cancellationToken);
     }
 
-    protected async Task<HashSet<T>> GetListAsync(string endpoint, ComponentActions<HashSet<T>>? actions, CancellationToken cancellationToken)
+    protected async Task<IEnumerable<T>> GetListAsync(string endpoint, ComponentActions<IEnumerable<T>>? actions, CancellationToken cancellationToken)
     {
         return await base.GetListAsync<T>(endpoint, actions, cancellationToken);
     }
@@ -30,18 +30,18 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return await PostAsync(endpoint, obj, typeInfo, typeInfo, cancellationToken);
     }
 
-    protected async Task<T> PostAsync<I>(string endpoint, I? obj, JsonTypeInfo<I?> requestTypeInfo, CancellationToken cancellationToken) where I : class
+    protected async Task<T> PostAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, CancellationToken cancellationToken) where TObj : class
     {
-        var result = await base.PostAsync<I, T>(endpoint, obj, requestTypeInfo, typeInfo, cancellationToken);
+        var result = await base.PostAsync<TObj, T>(endpoint, obj, requestTypeInfo, typeInfo, cancellationToken);
 
         DataChanged?.Invoke(result);
 
         return result;
     }
 
-    protected async Task<T> PutAsync<I>(string endpoint, I? obj, JsonTypeInfo<I?> requestTypeInfo, CancellationToken cancellationToken) where I : class
+    protected async Task<T> PutAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, CancellationToken cancellationToken) where TObj : class
     {
-        var result = await base.PutAsync<I, T>(endpoint, obj, requestTypeInfo, typeInfo, cancellationToken);
+        var result = await base.PutAsync<TObj, T>(endpoint, obj, requestTypeInfo, typeInfo, cancellationToken);
 
         DataChanged?.Invoke(result);
 

@@ -49,7 +49,7 @@
     public bool DetectRegions { get; set; }
 
     private EnumLists? List { get; set; }
-    private string Title => TitleHead ?? $"{List?.GetFieldSettings().Name?.Format(DateTime.Now.Year)}" ?? "Title Error";
+    private string Title => TitleHead ?? $"{List?.GetFieldSettings().Name?.CustomFormat(DateTime.Now.Year)}" ?? "Title Error";
     private string Description => DescriptionHead ?? $"{List?.GetFieldSettings().Description}" ?? "Description Error";
 
     protected override async Task OnInitializedAsync()
@@ -75,26 +75,26 @@
     {
         if (Navigation.Uri.Contains("platform"))
         {
-            var providers = await AllProvidersApi.GetAll(null, cts.Token);
+            var providers = await AllProvidersApi.GetAll(null, Cts.Token);
             var provider = providers?.Items.SingleOrDefault(s => s.id == id);
 
             if (Navigation.Uri.Contains("popular"))
             {
                 TitleHead = $"{provider?.name}: {Translations.Module.Media.Popular} ({TypeSelected?.GetFieldSettings().Name})";
-                DescriptionHead = Translations.Module.Media.PopularDesc.Format(provider?.name);
+                DescriptionHead = Translations.Module.Media.PopularDesc.CustomFormat(provider?.name);
                 StringParameters = GetExtraParameters(id, "popularity.desc");
             }
             else if (Navigation.Uri.Contains("new"))
             {
                 TitleHead = $"{provider?.name}: {Translations.Module.Media.Release} ({TypeSelected?.GetFieldSettings().Name})";
-                DescriptionHead = Translations.Module.Media.NewsDesc.Format(provider?.name);
+                DescriptionHead = Translations.Module.Media.NewsDesc.CustomFormat(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "primary_release_date.desc");
             }
             else if (Navigation.Uri.Contains("top"))
             {
                 TitleHead = $"{provider?.name}: {Translations.Module.Media.TopRated} ({TypeSelected?.GetFieldSettings().Name})";
-                DescriptionHead = Translations.Module.Media.RecommendedDesc.Format(provider?.name);
+                DescriptionHead = Translations.Module.Media.RecommendedDesc.CustomFormat(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "vote_average.desc");
             }

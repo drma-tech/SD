@@ -11,21 +11,6 @@ using System.Text.Json.Serialization;
 namespace SD.WEB.Core.Api
 {
     [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
-    [JsonSerializable(typeof(bool?))]
-    [JsonSerializable(typeof(string))]
-    [JsonSerializable(typeof(Platform?))]
-    [JsonSerializable(typeof(AppLanguage?))]
-    [JsonSerializable(typeof(ContentLanguage?))]
-    [JsonSerializable(typeof(Country?))]
-    [JsonSerializable(typeof(AuthProvider))]
-    [JsonSerializable(typeof(AllProviders))]
-    [JsonSerializable(typeof(TMDB_AllProviders))]
-    [JsonSerializable(typeof(HashSet<DateTime>))]
-    internal partial class JavascriptContext : JsonSerializerContext
-    {
-    }
-
-    [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
     [JsonSerializable(typeof(PaymentConfigurations))]
     [JsonSerializable(typeof(AuthPrincipal))]
     [JsonSerializable(typeof(AuthLogin))]
@@ -39,7 +24,7 @@ namespace SD.WEB.Core.Api
     [JsonSerializable(typeof(MetaCriticCache))]
     [JsonSerializable(typeof(MostPopularDataCache))]
     [JsonSerializable(typeof(CustomListNew))]
-    internal partial class ApiContext : JsonSerializerContext
+    internal sealed partial class ApiContext : JsonSerializerContext
     {
     }
 }

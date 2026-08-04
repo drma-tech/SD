@@ -1,6 +1,6 @@
 ﻿namespace SD.Shared.Models;
 
-public class MediaDetail
+public class MediaDetail : EqualityBase<MediaDetail>
 {
     public string? tmdb_id { get; set; }
     public string? title { get; set; }
@@ -19,21 +19,13 @@ public class MediaDetail
     public string? collectionName { get; set; }
     public string? collectionLogo { get; set; }
 
-    public List<Video> Videos { get; set; } = [];
-    public List<string> Genres { get; set; } = [];
-    public List<Collection> Collection { get; set; } = [];
+    public ICollection<Video> Videos { get; set; } = [];
+    public ICollection<string> Genres { get; set; } = [];
+    public ICollection<Collection> Collection { get; set; } = [];
 
     public MediaType MediaType { get; set; }
 
-    public override bool Equals(object? obj)
-    {
-        return obj is MediaDetail q && q.tmdb_id == tmdb_id;
-    }
-
-    public override int GetHashCode()
-    {
-        return tmdb_id?.GetHashCode() ?? 0;
-    }
+    protected override object?[] EqualityValues => [tmdb_id];
 }
 
 public class Video

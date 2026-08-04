@@ -5,12 +5,12 @@
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 
-<HeadComponent Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
-               Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
+<HeadComponent Title="@(Translations.Title.FreeWatchExtended.CustomFormat(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
+               Description="@Translations.Description.FreeWatchExtended.CustomFormat(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
                Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true" FixedAlternateLanguage="@Culture"></HeadComponent>
 
-<PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
-                      Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
+<PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.FreeWatchExtended.CustomFormat(TypeEnum.GetFieldSettings().Name, RegionEnum.GetFieldSettings().Name))"
+                      Description="@Translations.Description.FreeWatchExtended.CustomFormat(TypeEnum.GetFieldSettings().Name?.ToLower(), RegionEnum.GetFieldSettings().Name)"
                       UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
 
 @if (TypeEnum == MediaType.movie)

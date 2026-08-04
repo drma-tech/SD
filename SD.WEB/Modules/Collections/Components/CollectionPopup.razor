@@ -75,7 +75,7 @@
     protected override async Task LoadStaticDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
-        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetFieldSettings(false).Name ?? "en-US";
+        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(false).Name ?? "en-US";
 
         if (Type == MediaType.movie)
         {
@@ -85,11 +85,11 @@
                 { "language", lang }
             };
 
-            Collection = await TmdbApi.GetCollection(CollectionId, parameters, cts.Token);
+            Collection = await TmdbApi.GetCollection(CollectionId, parameters, Cts.Token);
         }
         else
         {
-            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv, lang, null, cts.Token);
+            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv, lang, null, Cts.Token);
 
             Collection = new TmdbCollection
             {
@@ -124,10 +124,10 @@
         await DialogService.SelectItemsCollection(
             Collection?.parts.Select(TmdbApi.ConvertToCollection).ToList() ?? [],
             Watching?.GetWatchingItems(Type, Collection?.id.ToString()).ToHashSet() ?? [],
-            new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(Type, Collection, CollectionId, list, Collection?.parts.Count ?? 0)));
+            new EventCallbackFactory().Create(this, async (ISet<string> list) => await SelectedItemsChanged(Type, Collection, CollectionId, list, Collection?.parts.Count ?? 0)));
     }
 
-    private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdbId, HashSet<string> items, int collectionItemsCount)
+    private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdbId, ISet<string> items, int collectionItemsCount)
     {
         if (type == null) throw new ArgumentNullException(nameof(type));
         if (collection == null) throw new ArgumentNullException(nameof(collection));
@@ -144,20 +144,20 @@
         }
         else
         {
-            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetFieldSettings(false).Name ?? "en-US";
-            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, null, cts.Token);
+            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(false).Name ?? "en-US";
+            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, null, Cts.Token);
 
             item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        Watching = await WatchingListApi.Add(type, Watching, item, AppStateStatic.ActiveProduct, cts.Token);
+        Watching = await WatchingListApi.Add(type, Watching, item, AppStateStatic.ActiveProduct, Cts.Token);
 
         // HideModal(); //error on mudblazor
     }
 
     private async Task RemoveCollection()
     {
-        Watching = await WatchingListApi.Remove(Type, CollectionId, cancellationToken: cts.Token);
+        Watching = await WatchingListApi.Remove(Type, CollectionId, cancellationToken: Cts.Token);
 
         HideModal();
     }

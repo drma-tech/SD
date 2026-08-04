@@ -6,7 +6,7 @@ public class MetaCriticCache(string id, ReviewModel data, TtlCache ttl) : CacheD
 
 public class ReviewModel
 {
-    public List<ReviewModelItem> Items { get; set; } = [];
+    public ICollection<ReviewModelItem> Items { get; set; } = [];
 }
 
 public class ReviewModelItem

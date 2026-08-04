@@ -169,15 +169,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string Profile {
-            get {
-                return ResourceManager.GetString("Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Watch the latest movie trailers and teasers in HD. Stay updated on upcoming films, blockbusters, and must-see releases..
         /// </summary>
         internal static string Trailers {

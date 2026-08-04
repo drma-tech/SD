@@ -35,19 +35,19 @@ public static class AppStateStatic
 
     public static bool IsLocalhost(this NavigationManager navigation)
     {
-        return navigation.BaseUri.Contains("localhost") || navigation.BaseUri.Contains("develop");
+        return navigation.BaseUri.Contains("localhost", StringComparison.OrdinalIgnoreCase) || navigation.BaseUri.Contains("develop", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsPrerendering(this NavigationManager navigation)
     {
-        return navigation.BaseUri.Contains("127.0.0.1");
+        return navigation.BaseUri.Contains("127.0.0.1", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool CanShowSnackbar(this string message)
     {
         var now = DateTime.UtcNow;
 
-        if (LastSnackbarMessage == message && now - LastSnackbarAt < SnackbarDelay)
+        if (string.Equals(LastSnackbarMessage, message, StringComparison.OrdinalIgnoreCase) && now - LastSnackbarAt < SnackbarDelay)
         {
             return false;
         }
@@ -60,13 +60,13 @@ public static class AppStateStatic
 
     #region Search
 
-    public static int Index { get; set; } = 0;
+    public static int Index { get; set; }
     public static string? Query { get; set; }
-    public static HashSet<TmdbResultKeyword> Keywords { get; set; } = [];
-    public static MediaType? Type;
-    public static MovieGenre? MovieGenre;
-    public static TvGenre? TvGenre;
-    public static string SortBy = "popularity.desc";
+    public static IReadOnlyCollection<TmdbResultKeyword> Keywords { get; set; } = [];
+    public static MediaType? Type { get; set; }
+    public static MovieGenre? MovieGenre { get; set; }
+    public static TvGenre? TvGenre { get; set; }
+    public static string SortBy { get; set; } = "popularity.desc";
 
     #endregion Search
 
@@ -178,7 +178,7 @@ public static class AppStateStatic
     {
         if (code.Empty()) return AppLanguage.en;
 
-        if (System.Enum.TryParse<AppLanguage>(code, true, out var language) && System.Enum.IsDefined(language))
+        if (System.Enum.TryParse<AppLanguage>(code, ignoreCase: true, out var language) && System.Enum.IsDefined(language))
         {
             return language;
         }
@@ -333,7 +333,7 @@ public static class AppStateStatic
     {
         if (code.Empty()) return null;
 
-        if (System.Enum.TryParse<Country>(code, true, out var region) && System.Enum.IsDefined(region))
+        if (System.Enum.TryParse<Country>(code, ignoreCase: true, out var region) && System.Enum.IsDefined(region))
             return region;
         else
             return null;
@@ -393,7 +393,7 @@ public static class AppStateStatic
     {
         if (code.Empty()) return null;
 
-        if (System.Enum.TryParse<ContentLanguage>(code, true, out var language) && System.Enum.IsDefined(language))
+        if (System.Enum.TryParse<ContentLanguage>(code, ignoreCase: true, out var language) && System.Enum.IsDefined(language))
             return language;
         else if (code.Length == 2) //few languages have only 2 letter code
         {

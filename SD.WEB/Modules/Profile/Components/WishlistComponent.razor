@@ -52,7 +52,7 @@
         }
         else
         {
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                      ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
                 <Header>
                     <MudTooltip Text="Expand">
@@ -154,7 +154,7 @@
 
     private MediaType _type { get; set; } = MediaType.movie;
 
-    private HashSet<WishListItem> Items(MediaType type) => type == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
+    private ISet<WishListItem> Items(MediaType type) => type == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
 
     private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : 7;
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;

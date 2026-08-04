@@ -15,7 +15,7 @@
     @{
         var hasProvider = false;
 
-        <MudGrid Spacing="@Css.SpaceSmall">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
             @if (Providers?.GetFreeListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
@@ -251,7 +251,7 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
+        AllProviders = await AllProvidersApi.GetAll(null, Cts.Token);
     }
 
     protected override List<string?> GetParameterKey()
@@ -265,13 +265,13 @@
     protected override async Task LoadParameterDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
-        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type, cts.Token);
+        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type, Cts.Token);
         await Actions.FinishLoading.Invoke(Providers);
     }
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
         return true;
     }
@@ -366,7 +366,7 @@
 
     //     if (AllProviders != null)
     //     {
-    //         await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, cts.Token);
+    //         await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, Cts.Token);
     //     }
     // }
 

@@ -5,7 +5,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MudGrid Spacing="@Css.SpaceMedium">
+        <MudGrid Spacing="@CssHelper.SpaceMedium">
             <MudItem xs="12">
                 <MudSelect Value="@Region" ValueChanged="@((Country vl) => RegionValueChanged(vl))" Label="@Translations.Module.Help.Region"
                            HelperText="@Translations.Module.Help.RegionDesc" FullWidth="true">
@@ -60,9 +60,9 @@
 
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    private readonly List<EnumFieldObject<Country>> regions = EnumHelper.GetList<Country>();
-    private readonly List<EnumFieldObject<AppLanguage>> appLanguages = EnumHelper.GetList<AppLanguage>();
-    private readonly List<EnumFieldObject<ContentLanguage>> contentLanguages = EnumHelper.GetList<ContentLanguage>();
+    private readonly IEnumerable<EnumFieldObject<Country>> regions = EnumHelper.GetList<Country>();
+    private readonly IEnumerable<EnumFieldObject<AppLanguage>> appLanguages = EnumHelper.GetList<AppLanguage>();
+    private readonly IEnumerable<EnumFieldObject<ContentLanguage>> contentLanguages = EnumHelper.GetList<ContentLanguage>();
 
     public AppLanguage Language { get; set; } = AppLanguage.en;
     public Country Region { get; set; } = Country.US;
@@ -71,10 +71,10 @@
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        Language = await AppStateStatic.GetAppLanguage(JsRuntime, cts.Token);
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
-        ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token);
-        DarkMode = await AppStateStatic.GetDarkMode(JsRuntime, cts.Token) ?? false;
+        Language = await AppStateStatic.GetAppLanguage(JsRuntime, Cts.Token);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
+        ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token);
+        DarkMode = await AppStateStatic.GetDarkMode(JsRuntime, Cts.Token) ?? false;
 
         return true;
     }
@@ -83,7 +83,7 @@
     {
         Language = value;
 
-        await JsRuntime.Utils().SetStorage("app-language", value, JavascriptContext.Default.AppLanguage, cts.Token);
+        await JsRuntime.Utils().SetStorage("app-language", value, JavascriptContext.Default.AppLanguage, Cts.Token);
 
         if (value == AppLanguage.en)
         {
@@ -121,7 +121,7 @@
     {
         DarkMode = value;
 
-        await JsRuntime.Utils().SetStorage("dark-mode", value, JavascriptContext.Default.Boolean, cts.Token);
+        await JsRuntime.Utils().SetStorage("dark-mode", value, JavascriptContext.Default.Boolean, Cts.Token);
 
         AppStateStatic.ChangeDarkMode(value);
     }
@@ -130,7 +130,7 @@
     {
         Region = value;
 
-        await JsRuntime.Utils().SetStorage("region", value.GetFieldSettings(false).Name ?? "en-US", JavascriptContext.Default.String, cts.Token);
+        await JsRuntime.Utils().SetStorage("region", value.GetFieldSettings(false).Name ?? "en-US", JavascriptContext.Default.String, Cts.Token);
 
         AppStateStatic.ChangeRegion(value);
     }
@@ -139,7 +139,7 @@
     {
         ContentLanguage = value;
 
-        await JsRuntime.Utils().SetStorage("content-language", value, JavascriptContext.Default.ContentLanguage, cts.Token);
+        await JsRuntime.Utils().SetStorage("content-language", value, JavascriptContext.Default.ContentLanguage, Cts.Token);
 
         AppStateStatic.ChangeContentLanguage(value);
     }

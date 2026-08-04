@@ -13,6 +13,8 @@ public class CacheDocument(CacheIdentity identity, TtlCache ttl) : CosmosDocumen
 {
     [Json.JsonInclude]
     public TtlCache Ttl { get; init; } = ttl;
+
+    protected override object?[] EqualityValues => [Id];
 }
 
 public class CacheDocumentData<T>(CacheIdentity identity, T? data, TtlCache ttl) : CacheDocument(identity, ttl) where T : class

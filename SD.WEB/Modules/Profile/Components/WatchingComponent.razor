@@ -43,7 +43,7 @@
         }
         else
         {
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                      ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
                 <Header>
                     @* @if ((Watching?.CanSync(_type) ?? false) && (Watching?.Items(_type).Any() ?? false))
@@ -143,7 +143,7 @@
 
     private MediaType _type { get; set; } = MediaType.movie;
 
-    private HashSet<WatchingListItem> Items(MediaType type) => type == MediaType.movie ? Watching?.Movies ?? [] : Watching?.Shows ?? [];
+    private ISet<WatchingListItem> Items(MediaType type) => type == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
     private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Watching : 7;
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
@@ -177,8 +177,8 @@
     // {
     //     try
     //     {
-    //         var watching = await WatchingApi.Get(type == MediaType.movie ? ActionsMovie : ActionsTv, cts.Token); //get a new one (memory may be compromised/corrupted)
-    //         var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+    //         var watching = await WatchingApi.Get(type == MediaType.movie ? ActionsMovie : ActionsTv, Cts.Token); //get a new one (memory may be compromised/corrupted)
+    //         var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetName(false) ?? "en-US";
 
     //         if (type == MediaType.movie)
     //         {
@@ -191,7 +191,7 @@
     //             {
     //                 try
     //                 {
-    //                     var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, null, cts.Token);
+    //                     var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, null, Cts.Token);
     //                     var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
     //                     if (hasCollection && watching!.DeletedMovies.All(a => a != media.collectionId.ToString()))
@@ -217,7 +217,7 @@
     //                 {
     //                     if (ex.Message.Contains("The resource you requested could not be found"))
     //                     {
-    //                         Watched = await WatchedApi.Remove(MediaType.movie, tmdbId, cts.Token);
+    //                         Watched = await WatchedApi.Remove(MediaType.movie, tmdbId, Cts.Token);
     //                     }
     //                     else
     //                     {
@@ -226,7 +226,7 @@
     //                 }
     //             }
 
-    //             watching = await WatchingApi.Sync(MediaType.movie, watching, cts.Token);
+    //             watching = await WatchingApi.Sync(MediaType.movie, watching, Cts.Token);
 
     //             Updating = false;
     //             StateHasChanged();
@@ -243,7 +243,7 @@
     //             {
     //                 try
     //                 {
-    //                     var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, null, cts.Token);
+    //                     var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, null, Cts.Token);
     //                     var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
     //                     if (hasCollection && watching!.DeletedShows.All(a => a != media.tmdb_id))
@@ -269,7 +269,7 @@
     //                 {
     //                     if (ex.Message.Contains("The resource you requested could not be found"))
     //                     {
-    //                         Watched = await WatchedApi.Remove(MediaType.tv, tmdbId, cts.Token);
+    //                         Watched = await WatchedApi.Remove(MediaType.tv, tmdbId, Cts.Token);
     //                     }
     //                     else
     //                     {
@@ -278,7 +278,7 @@
     //                 }
     //             }
 
-    //             watching = await WatchingApi.Sync(MediaType.tv, watching, cts.Token);
+    //             watching = await WatchingApi.Sync(MediaType.tv, watching, Cts.Token);
 
     //             Updating = false;
     //             StateHasChanged();

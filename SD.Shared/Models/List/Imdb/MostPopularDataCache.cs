@@ -6,7 +6,7 @@ public class MostPopularDataCache(string id, MostPopularData data) : CacheDocume
 
 public class MostPopularData
 {
-    public List<MostPopularDataDetail> Items { get; set; } = [];
+    public ICollection<MostPopularDataDetail> Items { get; set; } = [];
 
     public string? ErrorMessage { get; set; }
 }

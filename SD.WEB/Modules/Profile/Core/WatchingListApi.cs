@@ -2,14 +2,18 @@
 
 public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist", [], ApiContext.Default.WatchingList)
 {
-    public async Task<WatchingList?> Get(ComponentActions<WatchingList?>? actions, CancellationToken cancellationToken)
+    public async Task<WatchingList?> Get(ComponentActions<WatchingList>? actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Get, false, actions, cancellationToken);
+        return await GetAsync(Endpoint.Get, setNewVersion: false, actions, cancellationToken);
     }
 
     public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item, AccountProduct? product, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(mediaType);
+        if (!mediaType.HasValue)
+        {
+            throw new ArgumentNullException(nameof(mediaType));
+        }
+
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateWatching(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
@@ -18,7 +22,11 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 
     public async Task<WatchingList?> Remove(MediaType? mediaType, string? collectionId, string? tmdbId = "null", CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(mediaType);
+        if (!mediaType.HasValue)
+        {
+            throw new ArgumentNullException(nameof(mediaType));
+        }
+
         ArgumentNullException.ThrowIfNull(collectionId);
 
         return await PostAsync(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null, ApiContext.Default.WatchingList, cancellationToken);
@@ -26,7 +34,11 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 
     public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(mediaType);
+        if (!mediaType.HasValue)
+        {
+            throw new ArgumentNullException(nameof(mediaType));
+        }
+
         ArgumentNullException.ThrowIfNull(obj);
 
         return await PostAsync(Endpoint.Sync(mediaType), obj, ApiContext.Default.WatchingList, cancellationToken);

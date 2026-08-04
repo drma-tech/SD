@@ -93,7 +93,7 @@
     public DeliveryModel? DeliveryModel { get; set; }
 
     private AllProviders? AllProviders { get; set; }
-    public List<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];
+    public IEnumerable<EnumFieldObject<DeliveryModel>> DeliveryModels { get; set; } = [];
 
     protected override void OnInitialized()
     {
@@ -103,14 +103,14 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
+        AllProviders = await AllProvidersApi.GetAll(null, Cts.Token);
     }
 
     protected async Task SaveSession()
     {
         if (AllProviders != null)
         {
-            await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, cts.Token);
+            await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, Cts.Token);
         }
     }
 
@@ -136,11 +136,11 @@
 
                     using (var http = new HttpClient())
                     {
-                        var movies = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, cts.Token);
+                        var movies = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, Cts.Token);
                         if (movies != null) movies.results.RemoveAll(r => blocked_providers.Any(k => r.provider_name.NotEmpty() && r.provider_name.Contains(k, StringComparison.InvariantCultureIgnoreCase)));
                         if (movies != null) AddProvider(result, movies.results, details, region, MediaType.movie);
 
-                        var tvs = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, cts.Token);
+                        var tvs = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, Cts.Token);
                         if (tvs != null) tvs.results.RemoveAll(r => blocked_providers.Any(k => r.provider_name.NotEmpty() && r.provider_name.Contains(k, StringComparison.InvariantCultureIgnoreCase)));
                         if (tvs != null) AddProvider(result, tvs.results, details, region, MediaType.tv);
                     }
@@ -159,7 +159,7 @@
         }
     }
 
-    private static void AddProvider(List<ProviderModel> final_list, List<ProviderBase> new_providers, List<ProviderModel> current_providers, Country region, MediaType type)
+    private static void AddProvider(List<ProviderModel> final_list, IEnumerable<ProviderBase> new_providers, IEnumerable<ProviderModel> current_providers, Country region, MediaType type)
     {
         foreach (var item in new_providers)
         {
@@ -178,7 +178,7 @@
                     //own data (manual update)
                     description = detail?.description,
                     link = detail?.link,
-                    models = detail?.models ?? new(),
+                    models = detail?.models ?? [],
                     //api by regions
                     regions = new List<Country> { region },
                     types = new List<MediaType> { type }

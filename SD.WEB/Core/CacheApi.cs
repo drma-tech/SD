@@ -2,6 +2,7 @@
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
+using System.Globalization;
 
 namespace SD.WEB.Core;
 
@@ -19,22 +20,22 @@ public struct Endpoint
 
     public static string GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? date, string? tmdbRating)
     {
-        return $"public/cache/ratings/movie?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
+        return $"public/cache/ratings/movie?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}&tmdb_rating={tmdbRating}";
     }
 
     public static string GetShowRatings(string? id, string? tmdbId, string? title, DateTime? date, string? tmdbRating)
     {
-        return $"public/cache/ratings/show?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
+        return $"public/cache/ratings/show?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}&tmdb_rating={tmdbRating}";
     }
 
     public static string GetMovieReviews(string? id, string? title, DateTime? date)
     {
-        return $"public/cache/reviews/movies?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
+        return $"public/cache/reviews/movies?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}";
     }
 
     public static string GetShowReviews(string? id, string? title, DateTime? date)
     {
-        return $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
+        return $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}";
     }
 }
 
@@ -42,7 +43,7 @@ public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(ht
 {
     public async Task<NewsCache?> GetNews(string mode, string category, ComponentActions<NewsCache> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.News(mode, category), false, actions, cancellationToken);
+        return await GetAsync(Endpoint.News(mode, category), setNewVersion: false, actions, cancellationToken);
     }
 }
 
@@ -50,7 +51,7 @@ public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(
 {
     public async Task<YoutubeCache?> GetTrailers(string mode, ComponentActions<YoutubeCache> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Trailers(mode), false, actions, cancellationToken);
+        return await GetAsync(Endpoint.Trailers(mode), setNewVersion: false, actions, cancellationToken);
     }
 }
 
@@ -58,12 +59,12 @@ public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(
 {
     public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, ComponentActions<RatingsCache> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, actions, cancellationToken);
     }
 
     public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, ComponentActions<RatingsCache> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, actions, cancellationToken);
     }
 }
 
@@ -71,11 +72,11 @@ public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<MetaCriticC
 {
     public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, ComponentActions<MetaCriticCache> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
     }
 
     public async Task<MetaCriticCache?> GetShowReviews(string? id, string? title, DateTime? releaseDate, ComponentActions<MetaCriticCache> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
     }
 }

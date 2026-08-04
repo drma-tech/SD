@@ -39,12 +39,12 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
                 var nodes = obj?.data?.news?.edges?.Select(s => s.node) ?? [];
 
-                foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
+                foreach (var item in nodes.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 10 : 30) ?? [])
                 {
                     if (item == null) continue;
                     compactModels.Items.Add(new NewsModelItem(item.id,
                         item.articleTitle?.plainText,
-                        item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY500_.jpg"), //force height to 500px
+                        item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY500_.jpg", StringComparison.OrdinalIgnoreCase), //force height to 500px
                         item.externalUrl,
                         item.date));
                 }
@@ -58,7 +58,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
     }
 
-    [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled)]
+    [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
     private static partial Regex IsPopular();
 
     [Function("CacheTrailers")]
@@ -81,11 +81,11 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
                 var compactModels = new TrailerModel();
 
-                foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
+                foreach (var item in obj?.contents?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 12 : 100).Select(s => s.video) ?? [])
                 {
                     if (item == null) continue;
                     compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,
-                        mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(),
+                        string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(),
                         IsPopular().IsMatch(item.viewCountText ?? "")));
                 }
 
@@ -118,19 +118,19 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
                 var compactModels = new MostPopularData();
 
-                foreach (var item in obj?.Take(mode == "compact" ? 20 : 50) ?? [])
+                foreach (var item in obj?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 20 : 50) ?? [])
                 {
                     if (item == null) continue;
 
-                    var image = item.thumbnails != null && item.thumbnails.Count > 1 ? item.thumbnails[1].url : null;
+                    var image = item.thumbnails != null && item.thumbnails.Length > 1 ? item.thumbnails[1].url : null;
 
                     compactModels.Items.Add(new MostPopularDataDetail
                     {
                         Id = item.id,
                         Title = item.primaryTitle,
-                        Image = image?.Replace("@._V1_QL75_UX280_CR0,0,280,414_.jpg", "@._V1_QL75_UX130_.jpg"),
-                        Year = item.startYear?.ToString(),
-                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
+                        Image = image?.Replace("@._V1_QL75_UX280_CR0,0,280,414_.jpg", "@._V1_QL75_UX130_.jpg", StringComparison.OrdinalIgnoreCase),
+                        Year = item.startYear?.ToString(CultureInfo.InvariantCulture),
+                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture),
                     });
                 }
 
@@ -163,19 +163,19 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
                 var compactModels = new MostPopularData();
 
-                foreach (var item in obj?.Take(mode == "compact" ? 20 : 50) ?? [])
+                foreach (var item in obj?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 20 : 50) ?? [])
                 {
                     if (item == null) continue;
 
-                    var image = item.thumbnails != null && item.thumbnails.Count > 1 ? item.thumbnails[1].url : null;
+                    var image = item.thumbnails != null && item.thumbnails.Length > 1 ? item.thumbnails[1].url : null;
 
                     compactModels.Items.Add(new MostPopularDataDetail
                     {
                         Id = item.id,
                         Title = item.primaryTitle,
                         Image = image,
-                        Year = item.startYear?.ToString(),
-                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
+                        Year = item.startYear?.ToString(CultureInfo.InvariantCulture),
+                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture),
                     });
                 }
 
@@ -230,13 +230,13 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
                 ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
+                doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId!, ratings, ttl));
             }
 
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }
 
-        await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken, factory);
+        await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, factory, cancellationToken);
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
@@ -246,7 +246,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var id = req.GetQueryParameters()["id"];
-        var tmdbId = req.GetQueryParameters()["tmdb_id"];
+        var tmdbId = req.GetQueryParameters()["tmdb_id"] ?? throw new NotificationException("tmdb_id is required");
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
         var ttl = TtlCache.OneDay;
 
@@ -287,7 +287,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
             await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }
 
-        await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken, factory);
+        await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, factory, cancellationToken);
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
@@ -334,50 +334,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
 
-    [Function("CacheShowReviews")]
-    public async Task<HttpResponseData?> CacheShowReviews(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        var id = req.GetQueryParameters()["id"];
-        //var title = req.GetQueryParameters()["title"];
-        var ttl = TtlCache.OneWeek;
-        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
-        var cacheKey = $"review_{id}";
-
-        var doc = await cache.Get<MetaCriticCache>(cacheKey, cancellationToken);
-
-        if (doc == null)
-        {
-            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
-
-            doc = await cacheRepo.ReadItemAsync<MetaCriticCache>(new CacheIdentity(cacheKey), cancellationToken);
-
-            //todo: find api to get reviews
-
-            //if (doc == null)
-            //{
-            //    var list = ScrapingReview.GetTvReviews(title, releaseDate.Year);
-            //    //if (obj.meta?.title == "undefined critic reviews") return null;
-
-            //    var newModel = new ReviewModel();
-
-            //    foreach (var item in list)
-            //    {
-            //        newModel.Items.Add(new ReviewModelItem(item.Site, item.Url, item.Reviewer, item.Score, item.Quote));
-            //    }
-
-            //    ttl = CalculateTtl(releaseDate);
-
-            //    doc = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
-            //}
-
-            await SaveCache(doc, cacheKey, ttl, cancellationToken);
-        }
-
-        return await req.CreateResponse(doc, ttl, cancellationToken);
-    }
-
-    private static async Task TrySaveCertifiedSd(CacheDocumentData<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token, IHttpClientFactory factory)
+    private static async Task TrySaveCertifiedSd(CacheDocumentData<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, IHttpClientFactory factory, CancellationToken token)
     {
         if (tmdbId.Empty()) return;
 
@@ -385,13 +342,13 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         {
             var rating = doc.Data;
 
-            var imdbOk = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var imdb);
-            var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var tmdb);
-            var metaOk = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var meta);
-            var tracOk = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var trac);
-            var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var roto);
-            var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var fiaf);
-            var lettOk = float.TryParse(rating.letterboxd?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var lett);
+            var imdbOk = float.TryParse(rating.imdb?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var imdb);
+            var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var tmdb);
+            var metaOk = float.TryParse(rating.metacritic?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var meta);
+            var tracOk = float.TryParse(rating.trakt?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var trac);
+            var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var roto);
+            var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var fiaf);
+            var lettOk = float.TryParse(rating.letterboxd?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var lett);
 
             var count = 0;
             if (imdbOk && imdb >= 8) count++;
@@ -408,7 +365,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
                 var client = factory.CreateClient("tmdb");
                 try
                 {
-                    await client.AddTmdbListItem(listId, int.Parse(tmdbId), type, tmdbWriteToken, token);
+                    await client.AddTmdbListItem(listId, int.Parse(tmdbId, CultureInfo.InvariantCulture), type, tmdbWriteToken, token);
                 }
                 catch (Exception)
                 {

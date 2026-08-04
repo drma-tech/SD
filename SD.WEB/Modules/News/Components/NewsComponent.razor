@@ -6,7 +6,7 @@
 
 <PageSectionComponent Title="@($"{Translations.Title.News}")" Description="@Translations.Description.NewsShort">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
@@ -102,11 +102,11 @@
     {
         if (_activeIndex == 0)
         {
-            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", ActionsMovie, cts.Token);
+            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", ActionsMovie, Cts.Token);
         }
         else
         {
-            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", ActionsSerie, cts.Token);
+            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", ActionsSerie, Cts.Token);
         }
     }
 

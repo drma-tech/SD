@@ -4,7 +4,7 @@ namespace SD.Shared.Models;
 
 public class AllProviders
 {
-    public List<ProviderModel> Items { get; set; } = [];
+    public IReadOnlyCollection<ProviderModel> Items { get; set; } = [];
 }
 
 public class ProviderModel
@@ -15,9 +15,9 @@ public class ProviderModel
     public string? description { get; set; }
     public string? link { get; set; }
     public string? logo_path { get; set; }
-    public List<Country> regions { get; set; } = [];
-    public List<MediaType> types { get; set; } = [];
-    public List<DeliveryModel> models { get; set; } = [];
+    public ICollection<Country> regions { get; set; } = [];
+    public ICollection<MediaType> types { get; set; } = [];
+    public ICollection<DeliveryModel> models { get; set; } = [];
 
     [JsonIgnore]
     public string? regions_str => string.Join(", ", regions.Select(r => r.ToString())).Truncate(10);

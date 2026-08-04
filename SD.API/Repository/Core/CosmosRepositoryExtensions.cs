@@ -10,7 +10,7 @@ public static class CosmosRepositoryExtensions
         {
             //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
             MaxItemCount = 250, // - max items per page
-            PartitionKey = key
+            PartitionKey = key,
         };
     }
 
@@ -20,6 +20,6 @@ public static class CosmosRepositoryExtensions
         int i => new PartitionKey(i),
         bool b => new PartitionKey(b),
         double d => new PartitionKey(d),
-        _ => throw new NotSupportedException($"Unsupported partition key type: {key.GetType()}")
+        _ => throw new NotSupportedException($"Unsupported partition key type: {key.GetType()}"),
     };
 }

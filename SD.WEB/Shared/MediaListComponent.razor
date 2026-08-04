@@ -11,7 +11,7 @@
 {
     <PageSectionComponent Title="@Title" Icon="@Icon" Image="@Image" Description="@Description">
         <BodyFragment>
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                      ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
                      ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(TypeSelected); })">
                 <Header>
@@ -101,8 +101,8 @@ else
     private string Title => TitleHead ?? List?.GetFieldSettings().Name ?? "Title Error";
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
-    public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list != null && list.Empty());
-    public HashSet<MediaDetail> Items { get; set; } = [];
+    public ComponentActions<ICollection<MediaDetail>> Actions { get; set; } = new(list => list != null && list.Empty());
+    public ICollection<MediaDetail> Items { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -118,7 +118,7 @@ else
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             // if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async region => await LoadParameterDataAsync(), cts.Token);
+            if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async region => await LoadParameterDataAsync(), Cts.Token);
         }
         catch (Exception ex)
         {
@@ -149,12 +149,12 @@ else
 
             if (MediaListApi != null)
             {
-                var result = await MediaListApi.GetList([], Actions, type, StringParameters, List, 1, cts.Token);
+                var result = await MediaListApi.GetList([], Actions, type, StringParameters, List, 1, Cts.Token);
                 Items = result.list;
 
                 if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
-                    var result2 = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 2, cts.Token);
+                    var result2 = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 2, Cts.Token);
                     foreach (var item in result2.list)
                     {
                         Items.Add(item);
@@ -197,7 +197,7 @@ else
             if (IsImdb)
             {
                 //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - this info is not documented)
-                tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, cts.Token);
+                tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, Cts.Token);
             }
             else
             {
@@ -212,7 +212,7 @@ else
 
             if (media?.MediaType == MediaType.person)
             {
-                var result = await TmdbCreditApi.GetListByPerson(tmdbId, cts.Token);
+                var result = await TmdbCreditApi.GetListByPerson(tmdbId, Cts.Token);
                 var items = new HashSet<MediaDetail>();
 
                 foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())

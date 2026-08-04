@@ -25,7 +25,7 @@
 </RenderControl>
 @if (MediaListApi != null)
 {
-    <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
+    <div style="text-align: center;" class="@CssHelper.Build().Small("pt").Large("mb")">
         <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Filled">
             @Translations.Button.LoadMore
         </MudButton>
@@ -51,9 +51,9 @@
     [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; }
 
-    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
-    [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
-    [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
+    [Parameter] public ComponentActions<ICollection<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
+    [Parameter] public ICollection<MediaDetail> Items { get; set; } = [];
+    [Parameter] public EventCallback<ICollection<MediaDetail>> ItemsChanged { get; set; }
 
     [Parameter] public bool IsImdb { get; set; }
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
@@ -80,7 +80,7 @@
         // AppState.WishListChanged += StateHasChanged;
         // AppState.WatchedListChanged += StateHasChanged;
 
-        if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await LoadParameterDataAsync(), cts.Token);
+        if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await LoadParameterDataAsync(), Cts.Token);
     }
 
     protected override List<string?> GetParameterKey()
@@ -105,14 +105,14 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList([], Actions, TypeSelected, StringParameters, List, 1, cts.Token);
+            var result = await MediaListApi.GetList([], Actions, TypeSelected, StringParameters, List, 1, Cts.Token);
 
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 200;
 
             if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
             {
-                var result2 = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
+                var result2 = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
                 foreach (var item in result2.list)
                 {
                     Items.Add(item);
@@ -133,7 +133,7 @@
 
         if (IsImdb) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, cts.Token);
+            tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, Cts.Token);
         }
         else
         {
@@ -148,7 +148,7 @@
 
         if (media?.MediaType == MediaType.person)
         {
-            var result = await TmdbCreditApi.GetListByPerson(tmdbId, cts.Token);
+            var result = await TmdbCreditApi.GetListByPerson(tmdbId, Cts.Token);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())
@@ -207,7 +207,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
+            var result = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 250;
 

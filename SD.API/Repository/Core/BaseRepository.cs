@@ -9,13 +9,13 @@ namespace SD.API.Repository.Core
         where TData : CosmosDocument
         where TId : ICosmosIdentity
     {
-        protected readonly ILogger<TClass> _logger;
+        protected ILogger<TClass> Logger { get; }
         protected Container Container { get; }
         private const double extra = 1;
 
         protected BaseRepository(CosmosClient CosmosClient, ILogger<TClass> logger, string containerId)
         {
-            _logger = logger;
+            Logger = logger;
 
             var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
@@ -26,10 +26,10 @@ namespace SD.API.Repository.Core
         {
             try
             {
-                var response = await Container.ReadItemAsync<T?>(id.Id, id.Key.ToPartitionKey(), null, cancellationToken);
+                var response = await Container.ReadItemAsync<T?>(id.Id, id.Key.ToPartitionKey(), cancellationToken: cancellationToken);
 
                 if (response.RequestCharge > 1d + extra) //weight: 1
-                    _logger.LogWarning("ReadItemAsync - Id {Id}, RequestCharge {RequestCharge}", id, response.RequestCharge);
+                    LogMessages.RequestCharge(Logger, "ReadItemAsync", id.Id, response.RequestCharge);
 
                 return response.Resource;
             }
@@ -47,10 +47,10 @@ namespace SD.API.Repository.Core
         {
             try
             {
-                var response = await Container.CreateItemAsync(item, item.Identity.Key.ToPartitionKey(), null);
+                var response = await Container.CreateItemAsync(item, item.Identity.Key.ToPartitionKey());
 
                 if (response.RequestCharge > 6d + extra) //weight: 6
-                    _logger.LogWarning("CreateItemAsync - ID {Id}, RequestCharge {Charges}", item.Identity.Id, response.RequestCharge);
+                    LogMessages.RequestCharge(Logger, "CreateItemAsync", item.Identity.Id, response.RequestCharge);
 
                 return response.Resource;
             }
@@ -64,10 +64,10 @@ namespace SD.API.Repository.Core
         {
             try
             {
-                var response = await Container.UpsertItemAsync(item, item.Identity.Key.ToPartitionKey(), null);
+                var response = await Container.UpsertItemAsync(item, item.Identity.Key.ToPartitionKey());
 
                 if (response.RequestCharge > 10d + extra) //weight: 10 (6 if new doc)
-                    _logger.LogWarning("UpsertItemAsync - ID {Id}, RequestCharge {Charges}", item.Identity.Id, response.RequestCharge);
+                    LogMessages.RequestCharge(Logger, "UpsertItemAsync", item.Identity.Id, response.RequestCharge);
 
                 return response.Resource;
             }
@@ -81,10 +81,10 @@ namespace SD.API.Repository.Core
         {
             try
             {
-                var response = await Container.DeleteItemAsync<T>(id.Id, id.Key.ToPartitionKey(), null);
+                var response = await Container.DeleteItemAsync<T>(id.Id, id.Key.ToPartitionKey());
 
                 if (response.RequestCharge > 6d + extra) //weight: 6
-                    _logger.LogWarning("DeleteItemAsync - ID {Id}, RequestCharge {Charges}", id.Id, response.RequestCharge);
+                    LogMessages.RequestCharge(Logger, "DeleteItemAsync", id.Id, response.RequestCharge);
 
                 return true;
             }

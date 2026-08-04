@@ -8,7 +8,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
+        <MediaListFull Items="Items" ItemsChanged="@((ICollection<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" Actions="Actions"
                        StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true" Popup="true"
                        Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage" Culture="@Culture">
@@ -31,9 +31,9 @@
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
 
-    [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
-    [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
-    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
+    [Parameter] public ICollection<MediaDetail> Items { get; set; } = [];
+    [Parameter] public EventCallback<ICollection<MediaDetail>> ItemsChanged { get; set; }
+    [Parameter] public ComponentActions<ICollection<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }

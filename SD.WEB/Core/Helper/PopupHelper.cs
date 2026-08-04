@@ -27,12 +27,12 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };
 
-        await service.ShowAsync<CollectionPopup>(null, parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<CollectionPopup>(title: null, parameters, Options(MaxWidth.Medium));
     }
 
-    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, HashSet<MediaDetail> items, string? culture)
+    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, ICollection<MediaDetail> items, string? culture)
     {
-        ComponentActions<HashSet<MediaDetail>> actions = new(list => list == null || list.Empty());
+        ComponentActions<ICollection<MediaDetail>> actions = new(list => list == null || list.Empty());
 
         actions.StartLoading?.Invoke(null);
 
@@ -44,7 +44,7 @@ public static class PopupHelper
             { x => x.Culture, culture },
             { x => x.Items, items },
             { x => x.Actions, actions },
-            { x => x.ItemsChanged, Factory.Create(new object(), (HashSet<MediaDetail> lst) => { items = lst; }) },
+            { x => x.ItemsChanged, Factory.Create(new object(), (ICollection<MediaDetail> lst) => { items = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };
@@ -67,7 +67,7 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };
 
-        await service.ShowAsync<MediaPopup>(null, parameters, Options(MaxWidth.Large));
+        await service.ShowAsync<MediaPopup>(title: null, parameters, Options(MaxWidth.Large));
     }
 
     public static async Task MyWatchingListPopup(this IDialogService service, ComponentActions<WatchingList?> actions, MediaType type,
@@ -89,7 +89,7 @@ public static class PopupHelper
         var Title = type == MediaType.movie ? Translations.Module.Profile.MyMovieFollowing : Translations.Module.Profile.MySeriesFollowing;
         var Quantity = type == MediaType.movie ? watching?.Movies.Count ?? 0 : watching?.Shows.Count ?? 0;
 
-        await service.ShowAsync<MyWatchingListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
+        await service.ShowAsync<MyWatchingListPopup>(Title.CustomFormat(Quantity), parameters, Options(MaxWidth.Large));
 
         actions.FinishLoading?.Invoke(watching);
     }
@@ -113,7 +113,7 @@ public static class PopupHelper
         var Title = type == MediaType.movie ? Translations.Module.Profile.MyMovieWishlist : Translations.Module.Profile.MySeriesWishlist;
         var Quantity = type == MediaType.movie ? wish?.Movies.Count ?? 0 : wish?.Shows.Count ?? 0;
 
-        await service.ShowAsync<MyWishListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
+        await service.ShowAsync<MyWishListPopup>(Title.CustomFormat(Quantity), parameters, Options(MaxWidth.Large));
 
         actions.FinishLoading?.Invoke(wish);
     }
@@ -143,8 +143,8 @@ public static class PopupHelper
         await service.ShowAsync<PlatformPopup>(provider?.name, parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task SelectItemsCollection(this IDialogService service, List<Collection> items, HashSet<string> selectedItems,
-        EventCallback<HashSet<string>> itemsChanged)
+    public static async Task SelectItemsCollection(this IDialogService service, ICollection<Collection> items, ISet<string> selectedItems,
+        EventCallback<ISet<string>> itemsChanged)
     {
         var parameters = new DialogParameters<SelectItemsCollection>
         {
@@ -186,12 +186,12 @@ public static class PopupHelper
             { x => x.Culture, culture },
         };
 
-        await service.ShowAsync<Onboarding>(string.Format(Translations.Module.Help.WelcomeTo, AppInfo.Title), parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<Onboarding>(Translations.Module.Help.WelcomeTo.CustomFormat(AppInfo.Title), parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task AskReviewPopup(this IDialogService service)
     {
-        await service.ShowAsync<AskReview>(string.Format(Translations.Module.Help.WriteReviewTitle, AppInfo.Title), Options(MaxWidth.Small, false, false));
+        await service.ShowAsync<AskReview>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
     }
 
     public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)
@@ -203,7 +203,7 @@ public static class PopupHelper
             BackdropClick = allowClose,
             NoHeader = !showHeader,
             Position = DialogPosition.Center,
-            MaxWidth = width
+            MaxWidth = width,
         };
     }
 }

@@ -12,7 +12,7 @@ public class ResultMovieNowPlaying
     public bool adult { get; set; }
     public string? overview { get; set; }
     public string? release_date { get; set; }
-    public List<int>? genre_ids { get; set; }
+    public IReadOnlyCollection<int>? genre_ids { get; set; }
     public int id { get; set; }
     public string? original_title { get; set; }
     public string? original_language { get; set; }
@@ -27,7 +27,7 @@ public class ResultMovieNowPlaying
 public class MovieNowPlaying
 {
     public int page { get; set; }
-    public List<ResultMovieNowPlaying>? results { get; set; }
+    public IReadOnlyCollection<ResultMovieNowPlaying>? results { get; set; }
     public Dates? dates { get; set; }
     public int total_pages { get; set; }
     public int total_results { get; set; }

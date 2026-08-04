@@ -46,7 +46,7 @@ public class WatchingListFunction(CosmosMainRepository repo)
 
         obj ??= new WatchingList(userId);
 
-        obj.RemoveItem(mediaType.ParseToEnum<MediaType>(), collectionId, tmdbId == "null" ? null : tmdbId);
+        obj.RemoveItem(mediaType.ParseToEnum<MediaType>(), collectionId, string.Equals(tmdbId, "null", StringComparison.OrdinalIgnoreCase) ? null : tmdbId);
 
         return await repo.UpsertItemAsync(obj);
     }

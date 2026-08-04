@@ -5,7 +5,7 @@
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
 <RenderControl Actions="Actions">
-    <MudGrid Spacing="@Css.SpaceSmall">
+    <MudGrid Spacing="@CssHelper.SpaceSmall">
         @foreach (var item in Model?.Data?.Items ?? [])
         {
             <MudItem xs="12" md="6" Style="text-align: justify;">
@@ -54,11 +54,11 @@
         {
             if (Type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, cts.Token);
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, Cts.Token);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, cts.Token);
+                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, Cts.Token);
             }
         }
     }

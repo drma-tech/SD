@@ -28,7 +28,7 @@ public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
     {
         var platform = req.GetQueryParameters()["platform"] ?? "error";
         var country = req.GetQueryParameters()["country"] ?? "error";
-        var ip = req.GetUserIP(true);
+        var ip = req.GetUserIP(includePort: true);
         var userId = await req.GetUserIdAsync(cancellationToken);
         var login = await repo.ReadItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId), cancellationToken);
         var now = DateTimeOffset.UtcNow;
@@ -38,7 +38,7 @@ public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
             var newLogin = new AuthLogin(userId)
             {
                 UserId = userId,
-                Accesses = [new Access { Date = now, Platform = platform, Ip = ip, Country = country.ToLower() }]
+                Accesses = new HashSet<Access> { new() { Date = now, Platform = platform, Ip = ip, Country = country } },
             };
 
             await repo.CreateItemAsync(newLogin);
@@ -55,17 +55,17 @@ public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
 
             var cutoff = DateTimeOffset.UtcNow.AddMonths(-6); //Keep access history for the last 6 months only.
 
-            login.Accesses = [.. login.Accesses
+            login.Accesses = new HashSet<Access>([.. login.Accesses
                 .Where(a => a.Date >= cutoff)
-                .Union([new Access { Date = now, Platform = platform, Ip = ip, Country = country.ToLower() }])
-                .Take(100)];
+                .Union([new Access { Date = now, Platform = platform, Ip = ip, Country = country }])
+                .Take(100)]);
 
             await repo.UpsertItemAsync(login);
         }
     }
 
     [Function("LoginEmailAuth")]
-    public async Task LoginEmailAuth(
+    public static async Task LoginEmailAuth(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/login/email")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var email = req.GetQueryParameters()["email"];
@@ -103,14 +103,14 @@ public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
 
         if (!valid)
         {
-            return await req.CreateResponse(HttpStatusCode.Unauthorized, "invalid webhook signature");
+            return await req.CreateResponse(HttpStatusCode.Unauthorized, "invalid webhook signature", cancellationToken);
         }
 
         var app = req.Headers.GetValues("app").FirstOrDefault();
 
-        if (app != "sd")
+        if (!string.Equals(app, "sd", StringComparison.OrdinalIgnoreCase))
         {
-            return await req.CreateResponse(HttpStatusCode.NotAcceptable, $"webhook ignored -> app={app ?? "null"}");
+            return await req.CreateResponse(HttpStatusCode.NotAcceptable, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
         }
 
         var body = JsonSerializer.Deserialize<ZeptoMailWebHook>(rawBody);
@@ -124,7 +124,7 @@ public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
 
         await cache.SetAsync($"login:{reference}", bytes, new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) }, cancellationToken);
 
-        return await req.CreateResponse(HttpStatusCode.OK, "webhook received");
+        return await req.CreateResponse(HttpStatusCode.OK, "webhook received", cancellationToken);
     }
 
     [Function("LoginEmailStatus")]
@@ -140,10 +140,8 @@ public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
         {
             return JsonSerializer.Deserialize<string>(cachedBytes);
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     [Function("Test")]

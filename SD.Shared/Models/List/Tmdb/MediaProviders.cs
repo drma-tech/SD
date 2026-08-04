@@ -25,12 +25,12 @@ public class Buy : ProviderBase;
 public class CountryBase
 {
     public string? link { get; set; }
-    public List<Free> free { get; set; } = [];
-    public List<Ads> ads { get; set; } = [];
-    public List<Flatrate> flatrate { get; set; } = [];
-    //public List<FlatrateAndBuy> flatrate_and_buy { get; set; } = [];
-    public List<Rent> rent { get; set; } = [];
-    public List<Buy> buy { get; set; } = [];
+    public IReadOnlyCollection<Free> free { get; set; } = [];
+    public IReadOnlyCollection<Ads> ads { get; set; } = [];
+    public IReadOnlyCollection<Flatrate> flatrate { get; set; } = [];
+    //public IReadOnlyCollection<FlatrateAndBuy> flatrate_and_buy { get; set; } = [];
+    public IReadOnlyCollection<Rent> rent { get; set; } = [];
+    public IReadOnlyCollection<Buy> buy { get; set; } = [];
 }
 
 public class AD : CountryBase;
@@ -528,11 +528,11 @@ public class MediaProviders
             Country.YE => results.YE?.link,
             Country.ZA => results.ZA?.link,
             Country.ZM => results.ZM?.link,
-            _ => null
+            _ => null,
         };
     }
 
-    public List<ProviderBase> GetFreeListProviders(Country? region)
+    public IEnumerable<ProviderBase> GetFreeListProviders(Country? region)
     {
         if (results == null) return [];
 
@@ -658,7 +658,7 @@ public class MediaProviders
             Country.YE => results.YE?.free.Cast<ProviderBase>().ToList() ?? [],
             Country.ZA => results.ZA?.free.Cast<ProviderBase>().ToList() ?? [],
             Country.ZM => results.ZM?.free.Cast<ProviderBase>().ToList() ?? [],
-            _ => []
+            _ => [],
         };
     }
 
@@ -788,7 +788,7 @@ public class MediaProviders
             Country.YE => results.YE?.ads.Cast<ProviderBase>().ToList() ?? [],
             Country.ZA => results.ZA?.ads.Cast<ProviderBase>().ToList() ?? [],
             Country.ZM => results.ZM?.ads.Cast<ProviderBase>().ToList() ?? [],
-            _ => []
+            _ => [],
         };
     }
 
@@ -918,7 +918,7 @@ public class MediaProviders
             Country.YE => results.YE?.flatrate.Cast<ProviderBase>().ToList() ?? [],
             Country.ZA => results.ZA?.flatrate.Cast<ProviderBase>().ToList() ?? [],
             Country.ZM => results.ZM?.flatrate.Cast<ProviderBase>().ToList() ?? [],
-            _ => []
+            _ => [],
         };
     }
 
@@ -1178,7 +1178,7 @@ public class MediaProviders
             Country.YE => results.YE?.rent.Cast<ProviderBase>().ToList() ?? [],
             Country.ZA => results.ZA?.rent.Cast<ProviderBase>().ToList() ?? [],
             Country.ZM => results.ZM?.rent.Cast<ProviderBase>().ToList() ?? [],
-            _ => []
+            _ => [],
         };
     }
 
@@ -1308,7 +1308,7 @@ public class MediaProviders
             Country.YE => results.YE?.buy.Cast<ProviderBase>().ToList() ?? [],
             Country.ZA => results.ZA?.buy.Cast<ProviderBase>().ToList() ?? [],
             Country.ZM => results.ZM?.buy.Cast<ProviderBase>().ToList() ?? [],
-            _ => []
+            _ => [],
         };
     }
 }

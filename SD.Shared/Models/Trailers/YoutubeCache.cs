@@ -6,7 +6,7 @@ public class YoutubeCache(string id, TrailerModel data) : CacheDocumentData<Trai
 
 public class TrailerModel
 {
-    public List<TrailerModelItem> Items { get; set; } = [];
+    public ICollection<TrailerModelItem> Items { get; set; } = [];
 }
 
 public class TrailerModelItem

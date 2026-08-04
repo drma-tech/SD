@@ -15,7 +15,7 @@ public class Metacritic
     public string? __typename { get; set; }
     public Metascore? metascore { get; set; }
     public string? url { get; set; }
-    public Reviews? reviews { get; set; }
+    public ReviewsModel? reviews { get; set; }
 }
 
 public class Metascore
@@ -39,9 +39,9 @@ public class Quote
     public string? value { get; set; }
 }
 
-public class Reviews
+public class ReviewsModel
 {
-    public List<Edge> edges { get; set; } = [];
+    public IReadOnlyCollection<Edge> edges { get; set; } = [];
 }
 
 public class RootMetacritic

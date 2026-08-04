@@ -49,7 +49,7 @@ public class Result
 
 public class Videos
 {
-    public List<Result> results { get; set; } = [];
+    public IReadOnlyCollection<Result> results { get; set; } = [];
 }
 
 public class MovieDetail
@@ -58,7 +58,7 @@ public class MovieDetail
     public string? backdrop_path { get; set; }
     public BelongsToCollection? belongs_to_collection { get; set; }
     public int budget { get; set; }
-    public List<Genre> genres { get; set; } = [];
+    public IReadOnlyCollection<Genre> genres { get; set; } = [];
     public string? homepage { get; set; }
     public int id { get; set; }
     public string? imdb_id { get; set; }
@@ -67,12 +67,12 @@ public class MovieDetail
     public string? overview { get; set; }
     public double popularity { get; set; }
     public string? poster_path { get; set; }
-    public List<ProductionCompany> production_companies { get; set; } = [];
-    public List<ProductionCountry> production_countries { get; set; } = [];
+    public IReadOnlyCollection<ProductionCompany> production_companies { get; set; } = [];
+    public IReadOnlyCollection<ProductionCountry> production_countries { get; set; } = [];
     public string? release_date { get; set; }
     public long revenue { get; set; }
     public int? runtime { get; set; }
-    public List<SpokenLanguage> spoken_languages { get; set; } = [];
+    public IReadOnlyCollection<SpokenLanguage> spoken_languages { get; set; } = [];
     public string? status { get; set; }
     public string? tagline { get; set; }
     public string? title { get; set; }

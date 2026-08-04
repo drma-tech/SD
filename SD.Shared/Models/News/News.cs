@@ -7,7 +7,7 @@
 
     public class Data
     {
-        public News? news { get; set; }
+        public NewsModel2? news { get; set; }
     }
 
     public class Edge
@@ -23,9 +23,9 @@
         public int? width { get; set; }
     }
 
-    public class News
+    public class NewsModel2
     {
-        public List<Edge>? edges { get; set; }
+        public IReadOnlyCollection<Edge>? edges { get; set; }
         public int? total { get; set; }
     }
 

@@ -22,7 +22,7 @@
 
 <PageSectionComponent Title="@Translations.Module.Landing.Search">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
+        <MudTabs MinimumTabWidth="100" TabPanelsClass="@CssHelper.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>
                 <MudTabPanel Text="@Translations.Module.Landing.Title">
                     <MudStack Row="true" AlignItems="AlignItems.Stretch" Spacing="2">
@@ -121,9 +121,9 @@
 
 <Advertising Slot="@AdSlot.Middle"></Advertising>
 
-<PageSectionComponent Title="@Translations.Title.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@Translations.Description.ExpectedMovies.Format(2026)">
+<PageSectionComponent Title="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Description="@Translations.Description.ExpectedMovies.CustomFormat(2026)">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
@@ -131,14 +131,14 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.Title.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Watching="Watching" Wish="Wish" Culture="@Culture" />
+                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Watching="Watching" Wish="Wish" Culture="@Culture" />
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
     </BodyFragment>
 </PageSectionComponent>
 
-<MudGrid Spacing="@Css.SpaceSmall">
+<MudGrid Spacing="@CssHelper.SpaceSmall">
     <MudItem xs="12" sm="6">
         <TrailersComponent Culture="@Culture"></TrailersComponent>
     </MudItem>
@@ -151,9 +151,9 @@
     private WatchingList? Watching { get; set; }
     private WishList? Wish { get; set; }
 
-    public List<EnumFieldObject<MediaType>> Types { get; set; } = [];
-    public List<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
-    public List<EnumFieldObject<TvGenre>> TvGenres { get; set; } = [];
+    public IEnumerable<EnumFieldObject<MediaType>> Types { get; set; } = [];
+    public IEnumerable<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
+    public IEnumerable<EnumFieldObject<TvGenre>> TvGenres { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -202,7 +202,7 @@
         _currentPage = 1;
         Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
 
-        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, cts.Token);
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
         AppStateStatic.Keywords = result.list;
 
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
@@ -212,7 +212,7 @@
     {
         Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
 
-        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, cts.Token);
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
         AppStateStatic.Keywords = result.list;
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
     }

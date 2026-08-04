@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Subscription.Core
     {
         public async Task<bool> StripeValidateSession(string id, CancellationToken cancellationToken)
         {
-            return await GetAsync<bool>(Endpoint.StripeValidateSession(id), true, null, cancellationToken);
+            return await GetAsync<bool>(Endpoint.StripeValidateSession(id), setNewVersion: true, actions: null, cancellationToken);
         }
 
         private struct Endpoint
@@ -24,7 +24,7 @@ namespace SD.WEB.Modules.Subscription.Core
 
         public async Task<AuthPrincipal?> StripeCustomer(CancellationToken cancellationToken)
         {
-            return await GetAsync<AuthPrincipal>(Endpoint.StripeCustomer, true, null, cancellationToken);
+            return await GetAsync<AuthPrincipal>(Endpoint.StripeCustomer, setNewVersion: true, actions: null, cancellationToken);
         }
 
         public async Task<string?> StripePortalLink(CancellationToken cancellationToken)

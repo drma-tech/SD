@@ -6,7 +6,7 @@
 
 <PageSectionComponent Title="@Translations.Title.Trailers" Description="@Translations.Description.TrailersShort">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href=@($"/{Culture}/trailers") />
@@ -74,7 +74,7 @@
     {
         try
         {
-            await JsRuntime.Slider().InitTrailers(_gallerySwiperId, cts.Token);
+            await JsRuntime.Slider().InitTrailers(_gallerySwiperId, Cts.Token);
 
             await base.OnAfterRenderAsync(firstRender);
         }
@@ -86,7 +86,7 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        TrailerModel = await CacheYoutubeApi.GetTrailers("compact", Actions, cts.Token);
+        TrailerModel = await CacheYoutubeApi.GetTrailers("compact", Actions, Cts.Token);
     }
 
     private void VideoClick(TrailerModelItem item)

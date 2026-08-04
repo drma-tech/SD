@@ -45,7 +45,7 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Actions, cts.Token);
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Actions, Cts.Token);
     }
 
 }

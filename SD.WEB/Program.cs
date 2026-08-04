@@ -84,7 +84,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddPWAUpdater();
     collection.AddScoped<AppVersionHandler>();
 
-    var isLocal = baseAddress.Contains("localhost") || baseAddress.Contains("127.0.0.1");
+    var isLocal = baseAddress.Contains("localhost", StringComparison.OrdinalIgnoreCase) || baseAddress.Contains("127.0.0.1", StringComparison.OrdinalIgnoreCase);
     Uri? webUri = null;
     Uri? apiUri = null;
 

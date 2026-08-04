@@ -151,7 +151,7 @@
                             @group
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
-                        <MudStack Row="true" Spacing="@Css.SpaceSmall" Wrap="Wrap.Wrap">
+                        <MudStack Row="true" Spacing="@CssHelper.SpaceSmall" Wrap="Wrap.Wrap">
                             @foreach (var item in Media?.Videos.Where(w => w.type == group).Take(10) ?? [])
                             {
                                 <div>
@@ -217,8 +217,8 @@
     private ComponentActions<RatingsCache> RatingsActions { get; set; } = new(obj => obj?.Data == null);
     private RatingsCache? _ratingsCache;
 
-    private ComponentActions<HashSet<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
-    public HashSet<MediaDetail> Recommendations { get; set; } = [];
+    private ComponentActions<ICollection<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
+    public IEnumerable<MediaDetail> Recommendations { get; set; } = [];
 
     protected override List<string?> GetParameterKey()
     {
@@ -235,8 +235,8 @@
         {
             await Actions.StartLoading.Invoke(null);
 
-            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetFieldSettings(false).Name ?? "en-US";
-            Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, null, cts.Token);
+            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(false).Name ?? "en-US";
+            Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, null, Cts.Token);
             Media.Videos.Reverse();
 
             await Actions.FinishLoading.Invoke(Media);
@@ -246,7 +246,7 @@
             if (Media != null && Media.original_language != "en")
             {
                 //title must be in English
-                var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", null, cts.Token);
+                var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", null, Cts.Token);
                 EnglishTitle = enMedia.title;
             }
 
@@ -261,15 +261,15 @@
 
         try
         {
-            ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, cts.Token);
+            ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, Cts.Token);
 
             if (Media?.MediaType == MediaType.movie)
             {
-                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, cts.Token);
+                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, Cts.Token);
             }
             else
             {
-                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, cts.Token);
+                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, Cts.Token);
             }
         }
         catch (Exception ex)
@@ -279,7 +279,7 @@
 
         try
         {
-            Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId, RecommendationsActions, cts.Token);
+            Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId, RecommendationsActions, Cts.Token);
         }
         catch (Exception ex)
         {
@@ -289,7 +289,7 @@
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
     {
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
         return true;
     }
@@ -338,7 +338,7 @@
 
             var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
 
-            Wish = await WishApi.Add(Media.MediaType, Wish, item, AppStateStatic.ActiveProduct, cts.Token);
+            Wish = await WishApi.Add(Media.MediaType, Wish, item, AppStateStatic.ActiveProduct, Cts.Token);
         }
         catch (Exception ex)
         {
@@ -352,7 +352,7 @@
 
         try
         {
-            Wish = await WishApi.Remove(Media.MediaType, Media?.tmdb_id, cts.Token);
+            Wish = await WishApi.Remove(Media.MediaType, Media?.tmdb_id, Cts.Token);
         }
         catch (Exception ex)
         {
@@ -382,7 +382,7 @@
                 await DialogService.SelectItemsCollection(
                     Media.Collection,
                     watching.GetWatchingItems(Media.MediaType, collectionId),
-                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(Media, list, Media.Collection.Count)));
+                    new EventCallbackFactory().Create(this, async (ISet<string> list) => await SelectedItemsChanged(Media, list, Media.Collection.Count)));
             }
             else
             {
@@ -409,8 +409,8 @@
             {
                 Watching = Media.MediaType switch
                 {
-                    MediaType.movie => await WatchingApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id, cts.Token),
-                    MediaType.tv => await WatchingApi.Remove(Media.MediaType, Media.tmdb_id, null, cts.Token),
+                    MediaType.movie => await WatchingApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id, Cts.Token),
+                    MediaType.tv => await WatchingApi.Remove(Media.MediaType, Media.tmdb_id, null, Cts.Token),
                     _ => Watching
                 };
             }
@@ -421,7 +421,7 @@
         }
     }
 
-    private async Task SelectedItemsChanged(MediaDetail media, HashSet<string> items, int collectionItemsCount)
+    private async Task SelectedItemsChanged(MediaDetail media, ISet<string> items, int collectionItemsCount)
     {
         try
         {
@@ -438,7 +438,7 @@
                 item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
             }
 
-            Watching = await WatchingApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct, cts.Token);
+            Watching = await WatchingApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct, Cts.Token);
         }
         catch (Exception ex)
         {

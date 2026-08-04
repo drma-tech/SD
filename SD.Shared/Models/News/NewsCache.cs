@@ -6,7 +6,7 @@ public class NewsCache(string id, NewsModel data) : CacheDocumentData<NewsModel>
 
 public class NewsModel
 {
-    public List<NewsModelItem> Items { get; set; } = [];
+    public ICollection<NewsModelItem> Items { get; set; } = [];
 }
 
 public class NewsModelItem

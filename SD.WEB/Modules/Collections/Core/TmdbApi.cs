@@ -1,4 +1,5 @@
 ﻿using SD.Shared.Models.List.Tmdb;
+using System.Globalization;
 
 namespace SD.WEB.Modules.Collections.Core;
 
@@ -8,11 +9,11 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         ArgumentNullException.ThrowIfNull(tmdbId);
 
-        var parameter = new Dictionary<string, string>
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "api_key", TmdbOptions.ApiKey },
             { "language", language },
-            { "append_to_response", "videos" }
+            { "append_to_response", "videos" },
         };
 
         if (actions != null) await actions.StartLoading.Invoke(null);
@@ -21,13 +22,13 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == MediaType.movie)
         {
-            var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdbId.ConfigureParameters(parameter), false, null, cancellationToken);
+            var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdbId.ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
             if (item != null)
             {
                 objReturn = new MediaDetail
                 {
-                    tmdb_id = item.id.ToString(),
+                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
                     title = item.title,
                     original_title = item.original_title,
                     original_language = item.original_language,
@@ -44,13 +45,12 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     homepage = item.homepage,
                     Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
                     Genres = item.genres.Select(s => s.name ?? "").ToList(),
-                    MediaType = MediaType.movie
+                    MediaType = MediaType.movie,
                 };
 
                 if (item.belongs_to_collection != null)
                 {
-                    var collection = await GetCollection(item.belongs_to_collection.id.ToString(), parameter, cancellationToken);
-                    // await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + item.belongs_to_collection.id.ToString().ConfigureParameters(parameter), true);
+                    var collection = await GetCollection(item.belongs_to_collection.id.ToString(CultureInfo.InvariantCulture), parameter, cancellationToken);
 
                     if (collection != null)
                     {
@@ -66,13 +66,13 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         }
         else
         {
-            var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdbId.ConfigureParameters(parameter), false, null, cancellationToken);
+            var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdbId.ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
             if (item != null)
             {
                 objReturn = new MediaDetail
                 {
-                    tmdb_id = item.id.ToString(),
+                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
                     title = item.name,
                     original_title = item.original_name,
                     original_language = item.original_language,
@@ -89,7 +89,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     homepage = item.homepage,
                     Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
                     Genres = item.genres.Select(s => s.name ?? "").ToList(),
-                    MediaType = MediaType.tv
+                    MediaType = MediaType.tv,
                 };
 
                 foreach (var season in item.seasons) objReturn.Collection.Add(ConvertToCollection(season));
@@ -104,12 +104,12 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         return new Collection
         {
-            id = part.id.ToString(),
+            id = part.id.ToString(CultureInfo.InvariantCulture),
             title = part.title,
             release_date = part.release_date.GetDate(),
             poster_small = string.IsNullOrEmpty(part.poster_path)
                 ? null
-                : TmdbOptions.SmallPosterPath + part.poster_path
+                : TmdbOptions.SmallPosterPath + part.poster_path,
         };
     }
 
@@ -117,46 +117,49 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         return new Collection
         {
-            id = season.id.ToString(),
+            id = season.id.ToString(CultureInfo.InvariantCulture),
             title = season.name,
             SeasonNumber = season.season_number,
             release_date = season.air_date?.GetDate(),
             poster_small = string.IsNullOrEmpty(season.poster_path)
                 ? null
-                : TmdbOptions.SmallPosterPath + season.poster_path
+                : TmdbOptions.SmallPosterPath + season.poster_path,
         };
     }
 
-    public async Task<TmdbCollection?> GetCollection(string? collectionId, Dictionary<string, string> parameters, CancellationToken cancellationToken)
+    public async Task<TmdbCollection?> GetCollection(string? collectionId, IDictionary<string, string> parameters, CancellationToken cancellationToken)
     {
         if (collectionId == null) return null;
 
-        return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), false, null, cancellationToken);
+        return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), setNewVersion: false, actions: null, cancellationToken);
     }
 
     public async Task<MediaProviders?> GetWatchProvidersList(string? tmdbId, MediaType? type, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(tmdbId);
-        ArgumentNullException.ThrowIfNull(type);
-
-        var parameter = new Dictionary<string, string>
+        if (!type.HasValue)
         {
-            { "api_key", TmdbOptions.ApiKey }
+            throw new ArgumentNullException(nameof(type));
+        }
+
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "api_key", TmdbOptions.ApiKey },
         };
 
         if (type == MediaType.movie)
-            return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter), false, null, cancellationToken);
+            return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
         //tv
-        return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter), false, null, cancellationToken);
+        return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
     }
 
-    public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters, CancellationToken cancellationToken)
+    public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, IDictionary<string, string> parameters, CancellationToken cancellationToken)
     {
         if (tmdbId == null) return null;
         if (seasonNumber == null) return null;
 
-        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), false, null, cancellationToken);
+        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), setNewVersion: false, actions: null, cancellationToken);
     }
 }
 

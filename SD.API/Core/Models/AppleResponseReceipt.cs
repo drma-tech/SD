@@ -35,7 +35,7 @@
         public string? original_purchase_date_ms { get; set; }
         public string? original_purchase_date_pst { get; set; }
         public string? original_application_version { get; set; }
-        public List<InApp> in_app { get; set; } = [];
+        public IReadOnlyList<InApp> in_app { get; set; } = [];
     }
 
     public class LatestReceiptInfo
@@ -70,7 +70,7 @@
     public class AppleResponseReceipt
     {
         public Receipt? receipt { get; set; }
-        public List<LatestReceiptInfo> latest_receipt_info { get; set; } = [];
+        public IReadOnlyList<LatestReceiptInfo> latest_receipt_info { get; set; } = [];
         public string? environment { get; set; }
         public int status { get; set; }
     }

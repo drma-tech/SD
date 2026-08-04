@@ -107,7 +107,7 @@
                 }
             </RenderControl>
         </div>
-        <MudText Typo="Typo.body1" Align="Align.Justify" Class="@Css.Build().Small("my")">
+        <MudText Typo="Typo.body1" Align="Align.Justify" Class="@CssHelper.Build().Small("my")">
             @Media?.plot
         </MudText>
         @if (!string.IsNullOrEmpty(Media?.homepage))

@@ -23,7 +23,7 @@
         public string? source { get; set; }
         public double? score { get; set; }
         public double? voteCount { get; set; }
-        public List<Rating>? ratings { get; set; }
+        public IReadOnlyCollection<Rating>? ratings { get; set; }
     }
 
     public class Root

@@ -8,7 +8,7 @@
     <DialogContent>
         <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
             <MudTabPanel Text="Auth">
-                <MudGrid Spacing="@Css.SpaceSmall">
+                <MudGrid Spacing="@CssHelper.SpaceSmall">
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.Module.Profile.AuthProviders" Text="@(string.Join(", ", AppStateStatic.Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
@@ -24,8 +24,8 @@
                 </MudGrid>
             </MudTabPanel>
             <MudTabPanel Text="Events">
-                <MudGrid Spacing="@Css.SpaceSmall">
-                    @foreach (var item in AppStateStatic.Principal?.Events ?? [])
+                <MudGrid Spacing="@CssHelper.SpaceSmall">
+                    @foreach (var item in AppStateStatic.Principal?.Events ?? new HashSet<Event>())
                     {
                         <MudItem xs="12" Style="text-align: justify;">
                             <MudPaper Outlined="true" Class="pa-2">
@@ -55,7 +55,7 @@
 
     private async Task Logout()
     {
-        await JsRuntime.Supabase().SignOutAsync(cts.Token);
+        await JsRuntime.Supabase().SignOutAsync(Cts.Token);
     }
 
     private void CloseClick()

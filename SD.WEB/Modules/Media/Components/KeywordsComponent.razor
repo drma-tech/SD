@@ -19,9 +19,9 @@
     [Parameter][EditorRequired] public string? TmdbId { get; set; }
     [Parameter][EditorRequired] public MediaType? Type { get; set; }
 
-    private ComponentActions<List<TmdbResultKeyword>> Actions { get; set; } = new(lst => lst == null || lst.Empty());
+    private ComponentActions<IReadOnlyCollection<TmdbResultKeyword>> Actions { get; set; } = new(lst => lst == null || lst.Empty());
 
-    private List<TmdbResultKeyword> List { get; set; } = [];
+    private IReadOnlyCollection<TmdbResultKeyword> List { get; set; } = [];
 
     protected override List<string?> GetParameterKey()
     {
@@ -35,9 +35,9 @@
     {
         await Actions.StartLoading.Invoke(null);
         if (Type == MediaType.movie)
-            List = await TmdbSearchKeywordApi.GetMovieKeywords(TmdbId, cts.Token);
+            List = await TmdbSearchKeywordApi.GetMovieKeywords(TmdbId, Cts.Token);
         else
-            List = await TmdbSearchKeywordApi.GetSerieKeywords(TmdbId, cts.Token);
+            List = await TmdbSearchKeywordApi.GetSerieKeywords(TmdbId, Cts.Token);
         await Actions.FinishLoading.Invoke(List);
     }
 }

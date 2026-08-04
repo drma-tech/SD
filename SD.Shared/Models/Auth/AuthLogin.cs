@@ -6,7 +6,9 @@ public class AuthLogin(string id) : MainDocument(new MainIdentity(MainType.Login
 {
     public string? UserId { get; set; } = id;
 
-    public HashSet<Access> Accesses { get; set; } = [];
+    public ISet<Access> Accesses { get; set; } = new HashSet<Access>();
+
+    protected override object?[] EqualityValues => [Id];
 }
 
 public class Access : EqualityBase<Access>

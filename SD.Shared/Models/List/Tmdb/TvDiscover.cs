@@ -9,8 +9,8 @@ public class ResultTvDiscover
     public double vote_average { get; set; }
     public string? overview { get; set; }
     public string? first_air_date { get; set; }
-    public List<string> origin_country { get; set; } = [];
-    public List<int> genre_ids { get; set; } = [];
+    public IReadOnlyCollection<string> origin_country { get; set; } = [];
+    public IReadOnlyCollection<int> genre_ids { get; set; } = [];
     public string? original_language { get; set; }
     public int vote_count { get; set; }
     public string? name { get; set; }
@@ -20,7 +20,7 @@ public class ResultTvDiscover
 public class TvDiscover
 {
     public int page { get; set; }
-    public List<ResultTvDiscover> results { get; set; } = [];
+    public IReadOnlyCollection<ResultTvDiscover> results { get; set; } = [];
     public int total_results { get; set; }
     public int total_pages { get; set; }
 }

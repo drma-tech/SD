@@ -13,7 +13,7 @@ public static class DataHelper
 
     public static DateTime? GetDate(this string? value)
     {
-        if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, out _))
+        if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, CultureInfo.InvariantCulture, out _))
             return DateTime.Parse(value, CultureInfo.CurrentCulture);
         return null;
     }

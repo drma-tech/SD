@@ -4,9 +4,9 @@
 @inject ImdbPopularApi ImdbPopularApi
 
 <PageSectionComponent Title="@Translations.Module.Media.Popular"
-                      Description="@Translations.Description.PopularIndex.Format(TypeSelected.GetFieldSettings().Name)">
+                      Description="@Translations.Description.PopularIndex.CustomFormat(TypeSelected.GetFieldSettings().Name)">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">

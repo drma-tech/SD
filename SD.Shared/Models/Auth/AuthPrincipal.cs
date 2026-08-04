@@ -13,8 +13,8 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
     public string? StripeCustomerId { get; set; }
 
     public string[] AuthProviders { get; set; } = [];
-    public HashSet<AuthSubscription> Subscriptions { get; set; } = [];
-    public HashSet<Event> Events { get; set; } = [];
+    public ISet<AuthSubscription> Subscriptions { get; set; } = new HashSet<AuthSubscription>();
+    public ISet<Event> Events { get; set; } = new HashSet<Event>();
 
     public AuthSubscription? GetActiveSubscription()
     {
@@ -23,7 +23,7 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
 
     public AuthSubscription GetSubscription(string? id, PaymentProvider provider)
     {
-        var sub = Subscriptions.SingleOrDefault(s => s.SubscriptionId == id);
+        var sub = Subscriptions.SingleOrDefault(s => string.Equals(s.SubscriptionId, id, StringComparison.Ordinal));
         if (sub != null) return sub;
 
         sub = Subscriptions.OrderBy(p => p.CreatedAt).LastOrDefault(p => p.Provider == provider) ?? throw new NotificationException("No subscriptions found.");
@@ -37,36 +37,31 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
         {
             throw new NotificationException("There is already an active subscription. Please deactivate the old one first before creating a new one.");
         }
-        else
-        {
-            Subscriptions.Add(subscription);
-        }
+
+        Subscriptions.Add(subscription);
     }
 
     public void UpdateSubscription(AuthSubscription subscription, bool validateId = true)
     {
         if (validateId && subscription.SubscriptionId.Empty()) throw new UnhandledException("subscription id is null");
 
-        var sub = Subscriptions.SingleOrDefault(sub => sub.SubscriptionId == subscription.SubscriptionId);
+        var sub = Subscriptions.SingleOrDefault(sub => string.Equals(sub.SubscriptionId, subscription.SubscriptionId, StringComparison.Ordinal)) 
+            ?? throw new NotificationException("Subscription not found.");
 
-        if (sub == null)
-        {
-            throw new NotificationException("Subscription not found.");
-        }
-        else if (Subscriptions.Any(p => p.IsActive() && p.SubscriptionId != sub.SubscriptionId))
+        if (Subscriptions.Any(p => p.IsActive() && !string.Equals(p.SubscriptionId, sub.SubscriptionId, StringComparison.Ordinal)))
         {
             throw new NotificationException("There is already an active subscription. Please deactivate the old one first before creating a new one.");
         }
-        else
-        {
-            sub.SessionId = subscription.SessionId;
-            sub.ExpiresDate = subscription.ExpiresDate;
-            sub.Active = subscription.Active;
-            sub.Provider = subscription.Provider;
-            sub.Product = subscription.Product;
-            sub.Cycle = subscription.Cycle;
-        }
+
+        sub.SessionId = subscription.SessionId;
+        sub.ExpiresDate = subscription.ExpiresDate;
+        sub.Active = subscription.Active;
+        sub.Provider = subscription.Provider;
+        sub.Product = subscription.Product;
+        sub.Cycle = subscription.Cycle;
     }
+
+    protected override object?[] EqualityValues => [Id];
 }
 
 public class AuthSubscription : EqualityBase<AuthSubscription>
@@ -75,7 +70,7 @@ public class AuthSubscription : EqualityBase<AuthSubscription>
     public string? SessionId { get; set; }
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? ExpiresDate { get; set; }
-    public bool Active { get; set; } = false;
+    public bool Active { get; set; }
 
     public PaymentProvider? Provider { get; set; }
     public AccountProduct? Product { get; set; }

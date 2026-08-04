@@ -10,9 +10,9 @@
 @inject WishListApi WishApi
 
 <HeadComponent Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetFieldSettings().Name})")"
-               Description="@Translations.Description.PopularIndex.Format(PopularType.GetFieldSettings().Name)" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
+               Description="@Translations.Description.PopularIndex.CustomFormat(PopularType.GetFieldSettings().Name)" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetFieldSettings().Name})")"
-                      Description="@Translations.Description.PopularIndex.Format(PopularType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/popular/{Type}")" />
+                      Description="@Translations.Description.PopularIndex.CustomFormat(PopularType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/popular/{Type}")" />
 
 @if (PopularType == PopularType.Movie)
 {

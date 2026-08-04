@@ -6,7 +6,7 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
 {
     public async Task<AuthPrincipal?> Get(bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
-        return await GetAsync(Endpoint.Get, setNewVersion, null, cancellationToken);
+        return await GetAsync(Endpoint.Get, setNewVersion, actions: null, cancellationToken);
     }
 
     public async Task<AuthPrincipal> Add(AuthPrincipal? obj, SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)
@@ -49,9 +49,9 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
 
 public class PrincipalImportApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Anonymous, "principal_import", [], ApiContext.Default.AuthPrincipal)
 {
-    public async Task<HashSet<AuthPrincipal>> GetAll(CancellationToken cancellationToken)
+    public async Task<IEnumerable<AuthPrincipal>> GetAll(CancellationToken cancellationToken)
     {
-        return await GetListAsync(Endpoint.GetAll, null, cancellationToken);
+        return await GetListAsync(Endpoint.GetAll, actions: null, cancellationToken);
     }
 
     public async Task Migrate(string? oldId, string? newId, CancellationToken cancellationToken)

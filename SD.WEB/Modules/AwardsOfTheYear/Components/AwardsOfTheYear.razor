@@ -8,9 +8,9 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<AwardsOfTheYear>
 
-<HeadComponent Title="@Translations.Title.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@Translations.Description.AwardsYear"
+<HeadComponent Title="@Translations.Title.AwardsOfTheYear.CustomFormat(DateTime.Now.Year)" Description="@Translations.Description.AwardsYear"
                Url=@($"/{Culture}/best-awards-year") Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@Translations.Title.AwardsOfTheYear.Format(DateTime.Now.Year)" Subtitle="Main categories of the most popular awards" Description="@Translations.Description.AwardsYear"
+<PageSectionComponent IsPageHeader="true" Title="@Translations.Title.AwardsOfTheYear.CustomFormat(DateTime.Now.Year)" Subtitle="Main categories of the most popular awards" Description="@Translations.Description.AwardsYear"
                       UrlShare="@($"/{Culture}/best-awards-year")"></PageSectionComponent>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watching="Watching" Wish="Wish" Culture="@Culture"

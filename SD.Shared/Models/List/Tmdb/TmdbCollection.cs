@@ -6,7 +6,7 @@ public class Part
 {
     public bool adult { get; set; }
     public string? backdrop_path { get; set; }
-    public List<int> genre_ids { get; set; } = [];
+    public IReadOnlyCollection<int> genre_ids { get; set; } = [];
     public int id { get; set; }
     public string? original_language { get; set; }
     public string? original_title { get; set; }
@@ -29,5 +29,5 @@ public class TmdbCollection
     public string? overview { get; set; }
     public string? poster_path { get; set; }
     public string? backdrop_path { get; set; }
-    public List<Part> parts { get; set; } = [];
+    public ICollection<Part> parts { get; set; } = [];
 }

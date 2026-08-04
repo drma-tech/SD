@@ -4,7 +4,7 @@ namespace SD.Shared.Core.Models;
 
 public readonly record struct JobIdentity(JobType Type, string? DocId) : ICosmosIdentity
 {
-    public string Id => $"{Type}:{DocId.RemovePrefix()}";
+    public string Id => $"{Type}:{DocId?.RemovePrefix()}";
     public string? RawId => DocId?.RemovePrefix();
     public object Key => (int)Type;
 }
