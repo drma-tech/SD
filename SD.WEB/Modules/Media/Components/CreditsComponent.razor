@@ -1,6 +1,5 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Shared.Core
 @inherits ComponentParameterCore<CreditsComponent>
 
 @inject TmdbCreditApi TmdbCreditApi
@@ -97,7 +96,7 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public ComponentActions<Credits> Actions { get; set; } = new(obj => obj == null);
+    public RenderControlState<Credits> Actions { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
 
     protected override List<string?> GetParameterKey()

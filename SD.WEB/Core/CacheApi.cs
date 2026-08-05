@@ -41,7 +41,7 @@ public struct Endpoint
 
 public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.NewsCache)
 {
-    public async Task<NewsCache?> GetNews(string mode, string category, ComponentActions<NewsCache> actions, CancellationToken cancellationToken)
+    public async Task<NewsCache?> GetNews(string mode, string category, RenderControlState<NewsCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.News(mode, category), setNewVersion: false, actions, cancellationToken);
     }
@@ -49,7 +49,7 @@ public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(ht
 
 public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.YoutubeCache)
 {
-    public async Task<YoutubeCache?> GetTrailers(string mode, ComponentActions<YoutubeCache> actions, CancellationToken cancellationToken)
+    public async Task<YoutubeCache?> GetTrailers(string mode, RenderControlState<YoutubeCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.Trailers(mode), setNewVersion: false, actions, cancellationToken);
     }
@@ -57,12 +57,12 @@ public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(
 
 public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.RatingsCache)
 {
-    public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, ComponentActions<RatingsCache> actions, CancellationToken cancellationToken)
+    public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, actions, cancellationToken);
     }
 
-    public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, ComponentActions<RatingsCache> actions, CancellationToken cancellationToken)
+    public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, actions, cancellationToken);
     }
@@ -70,12 +70,12 @@ public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(
 
 public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<MetaCriticCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.MetaCriticCache)
 {
-    public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, ComponentActions<MetaCriticCache> actions, CancellationToken cancellationToken)
+    public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
     }
 
-    public async Task<MetaCriticCache?> GetShowReviews(string? id, string? title, DateTime? releaseDate, ComponentActions<MetaCriticCache> actions, CancellationToken cancellationToken)
+    public async Task<MetaCriticCache?> GetShowReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
     }

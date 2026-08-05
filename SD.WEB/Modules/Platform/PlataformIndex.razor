@@ -5,7 +5,6 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
-@using SD.WEB.Shared.Core
 @inherits PageParameterCore<PlataformIndex>
 
 @inject AllProvidersApi AllProvidersApi
@@ -152,7 +151,7 @@ else
 }
 
 @code {
-    public ComponentActions<AllProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+    public RenderControlState<AllProviders> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
     private AllProviders? AllProviders { get; set; }
 
     private MyProviders? MyProviders { get; set; }
@@ -187,7 +186,7 @@ else
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, Cts.Token);
+        AppStateStatic.RegionChanged.Subscribe(async region => { RegionEnum = region; await InvokeAsync(StateHasChanged); }, Cts.Token);
     }
 
     protected override List<string?> GetParameterKey()

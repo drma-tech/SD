@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
-    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, ComponentActions<ICollection<MediaDetail>>? actions,
+    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, RenderControlState<ICollection<MediaDetail>>? actions,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (actions != null && currentList.Empty()) await actions.StartLoading(null);
@@ -65,7 +65,6 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     if (movies == null) break;
                     var item = movies.results.Single(s => s.id == ordem.Id);
 
-                    //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
                     currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
@@ -115,7 +114,6 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
             var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), setNewVersion: false, actions: null, cancellationToken);
 
             foreach (var item in result?.results ?? [])
-                //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
                 currentList.Add(new MediaDetail
                 {
                     tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),

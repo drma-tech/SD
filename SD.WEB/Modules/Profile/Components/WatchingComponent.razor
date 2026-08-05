@@ -1,6 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Shared.Core
 @inherits ComponentCore<WatchingComponent>
 
 @inject TmdbApi TmdbApi
@@ -129,8 +128,8 @@
 </PageSectionComponent>
 
 @code {
-    [Parameter][EditorRequired] public ComponentActions<WatchingList?> ActionsMovie { get; set; }
-    [Parameter][EditorRequired] public ComponentActions<WatchingList?> ActionsTv { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<WatchingList> ActionsMovie { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<WatchingList> ActionsTv { get; set; }
 
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }

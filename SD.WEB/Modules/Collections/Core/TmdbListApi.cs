@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null, [], ApiContext.Default.CustomListNew), IMediaListApi
 {
-    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, ComponentActions<ICollection<MediaDetail>>? actions,
+    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, RenderControlState<ICollection<MediaDetail>>? actions,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (list == null) throw new ArgumentException(message: null, nameof(list));

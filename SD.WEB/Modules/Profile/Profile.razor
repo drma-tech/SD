@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
-@using SD.WEB.Shared.Core
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Core
 @inherits PageCore<Profile>
@@ -14,7 +13,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject PaymentConfigurationApi ConfigurationApi
-@inject ImdbPopularApi ImdbPopularApi
+@inject TmdbListApi TmdbListApi
 @inject WatchingListApi WatchingListApi
 @inject IpInfoApi IpInfoApi
 
@@ -82,13 +81,13 @@
 </MudGrid>
 
 @code {
-    public ComponentActions<MyProviders?> ProviderActions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+    public RenderControlState<MyProviders> ProviderActions { get; set; } = new(obj => obj == null || obj.Items.Empty());
 
-    public ComponentActions<WishList?> WishActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
-    public ComponentActions<WishList?> WishActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
+    public RenderControlState<WishList> WishActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
+    public RenderControlState<WishList> WishActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
 
-    public ComponentActions<WatchingList?> WatchingActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
-    public ComponentActions<WatchingList?> WatchingActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
+    public RenderControlState<WatchingList> WatchingActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
+    public RenderControlState<WatchingList> WatchingActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
 
     private MyProviders? MyProviders { get; set; }
     public WatchingList? Watching { get; set; }
@@ -134,14 +133,14 @@
                 await JsRuntime.Utils().SetStorage("subscription-popup", true, JavascriptContext.Default.Boolean, Cts.Token);
             }
         }
-        
+
         return true;
     }
 
     protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         var demo = false;
-       
+
         await WishActionsMovie.StartLoading.Invoke(null);
         await WishActionsTv.StartLoading.Invoke(null);
         await WatchingActionsMovie.StartLoading.Invoke(null);
@@ -150,11 +149,11 @@
         Wish = await WishApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
 
-        if (Wish == null && AppStateStatic.IsAuthenticated)
+        if ((Wish == null || Wish.Items(SD.Shared.Enums.MediaType.movie).Empty()) && AppStateStatic.IsAuthenticated)
         {
             Wish ??= new WishList(AppStateStatic.UserId);
 
-            var result = await ImdbPopularApi.GetList([], null, SD.Shared.Enums.MediaType.movie);
+            var result = await TmdbListApi.GetList([], null, SD.Shared.Enums.MediaType.movie, null, EnumLists.CertifiedStreamingDiscoveryMovies);
             var media = result.list.FirstOrDefault();
 
             if (media != null)

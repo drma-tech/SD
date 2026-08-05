@@ -351,13 +351,15 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
             var lettOk = float.TryParse(rating.letterboxd?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var lett);
 
             var count = 0;
-            if (imdbOk && imdb >= 8) count++;
-            if (tmdbOk && tmdb >= 8) count++;
-            if (metaOk && meta >= 8) count++;
-            if (tracOk && trac >= 8 && trac <= 10) count++; //new scale 0-10
-            if (rotoOk && roto >= 8 && roto <= 10) count++; //new scale 0-10
-            if (fiafOk && fiaf >= 8) count++;
-            if (lettOk && lett >= 8) count++; //scale changed to 0-10
+            var value = 7.95f;
+
+            if (imdbOk && imdb >= value) count++;
+            if (tmdbOk && tmdb >= value) count++;
+            if (metaOk && meta >= value) count++;
+            if (tracOk && trac >= value && trac <= 10) count++; //new scale 0-10
+            if (rotoOk && roto >= value && roto <= 10) count++; //new scale 0-10
+            if (fiafOk && fiaf >= value) count++;
+            if (lettOk && lett >= value) count++; //scale changed to 0-10
 
             if (count >= 4) //if there is at least 4 green ratings
             {

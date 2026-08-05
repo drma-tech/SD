@@ -1,0 +1,82 @@
+﻿@inherits ComponentCore<MediaCollectionComponent>
+
+<div class="grid-relative-container-poster">
+    @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
+    {
+        bool sameTitle = TmdbId == item.id;
+
+        <div>
+            <div @onclick="@(() => CollectionClicked(item))" style=@(sameTitle ? "position: relative;" : "cursor: pointer; position: relative;")>
+                @if (item.release_date.HasValue)
+                {
+                    if (item.release_date.Value < DateTime.Now.AddMonths(-3))
+                    {
+                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
+                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                            @item.release_date.Value.Year
+                        </MudChip>
+                    }
+                    else
+                    {
+                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
+                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                            @item.release_date.Value.ToShortDateString()
+                        </MudChip>
+                    }
+
+                    if (TmdbId == item.id)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Secondary" Class="absolute" Style="top: 6px; right: 5px; z-index: 1;"></MudIcon>
+                    }
+                }
+                @{
+                    if (sameTitle) //you don't put seasons as wishes
+                    {
+                        var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
+                        if (wishedMovie)
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                        }
+                    }
+
+                    <MudImage Src="@(item.poster_small ?? "images/no-image.webp")" Alt="@item.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                }
+            </div>
+            <MudText Align="Align.Center" Typo="Typo.h2" Class="custom-title-list">
+                @item.title
+            </MudText>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public MediaType? Type { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
+    [Parameter] public MediaDetail? Media { get; set; }
+    [Parameter] public WishList? Wish { get; set; }
+    [Parameter] public string? TmdbId { get; set; }
+
+    private async Task CollectionClicked(Collection? item)
+    {
+        if (TmdbId == item?.id) return;
+
+        if (Type == MediaType.movie)
+        {
+            OpenPopupMedia(Type, item?.id);
+        }
+        else
+        {
+            await OpenPopupSeason(item);
+        }
+    }
+
+    private void OpenPopupMedia(MediaType? type, string? tmdb_id)
+    {
+        Navigation.NavigateTo($"/{Culture}/media/{type}/{tmdb_id}");
+    }
+
+    private async Task OpenPopupSeason(Collection? collection)
+    {
+        await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
+    }
+}

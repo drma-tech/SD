@@ -1,6 +1,5 @@
 ﻿@page "/{culture}/trailers"
 @using SD.Shared.Models.Trailers
-@using SD.WEB.Shared.Core
 @inherits PageCore<Trailers>
 
 @inject CacheYoutubeApi CacheYoutubeApi
@@ -40,7 +39,7 @@
 <FloatingButton Template="Template.Back"></FloatingButton>
 
 @code {
-    public ComponentActions<YoutubeCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<YoutubeCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private YoutubeCache? TrailerModel { get; set; }
 
     protected override async Task LoadStaticDataAsync()

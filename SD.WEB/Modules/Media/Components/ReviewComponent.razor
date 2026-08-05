@@ -1,5 +1,4 @@
 ﻿@using SD.Shared.Models.Reviews
-@using SD.WEB.Shared.Core
 @inherits ComponentParameterCore<ReviewComponent>
 
 @inject CacheMetaCriticApi CacheMetaCriticApi
@@ -38,7 +37,7 @@
     [Parameter] public MediaType? Type { get; set; }
 
     public MetaCriticCache? Model { get; set; }
-    private ComponentActions<MetaCriticCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    private RenderControlState<MetaCriticCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
     protected override List<string?> GetParameterKey()
     {

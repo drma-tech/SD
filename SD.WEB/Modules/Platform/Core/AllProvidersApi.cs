@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Platform.Core;
 
 public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null, [], ApiType.Local)
 {
-    public async Task<AllProviders?> GetAll(ComponentActions<AllProviders?>? actions, CancellationToken cancellationToken)
+    public async Task<AllProviders?> GetAll(RenderControlState<AllProviders>? actions, CancellationToken cancellationToken)
     {
         if (actions != null) await actions.StartLoading(null);
         var result = await LocalHttp.GetFromJsonAsync("/data/providers.json", JavascriptContext.Default.AllProviders, cancellationToken);

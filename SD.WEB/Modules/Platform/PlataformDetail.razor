@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
-@using SD.WEB.Shared.Core
 @inherits PageCore<PlataformDetail>
 
 @inject AllProvidersApi AllProvidersApi
@@ -20,7 +19,7 @@
 }
 else
 {
-    <HeadComponent Title="@Translations.Title.PlatformDetail.CustomFormat(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")" 
+    <HeadComponent Title="@Translations.Title.PlatformDetail.CustomFormat(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")"
                    Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" FixedAlternateLanguage="@Culture" />
 
     @if (Provider != null)
@@ -83,7 +82,7 @@ else
     [Parameter] public string? Id { get; set; }
     private bool isNotFound;
 
-    public ComponentActions<ProviderModel?> Actions { get; set; } = new(obj => obj == null);
+    public RenderControlState<ProviderModel> Actions { get; set; } = new(obj => obj == null);
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
     private List<EnumFieldObject<Country>> regions = [];
@@ -161,7 +160,7 @@ else
         {
             await JsRuntime.Utils().SetStorage("region", value.Value.GetFieldSettings(false).Name, JavascriptContext.Default.String, Cts.Token);
 
-            AppStateStatic.ChangeRegion(value.Value);
+            await AppStateStatic.ChangeRegionAsync(value.Value);
         }
     }
 

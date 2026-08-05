@@ -1,6 +1,5 @@
 ﻿@using SD.Shared.Models.List
 @using System.Globalization
-@using SD.WEB.Shared.Core
 
 @inherits ComponentCore<MediaAbout>
 
@@ -138,7 +137,7 @@
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
 
-    [Parameter][EditorRequired] public ComponentActions<RatingsCache> Actions { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<RatingsCache> Actions { get; set; }
     [Parameter] public RatingsCache? RatingsCache { get; set; }
 
     private Color GetColorByRating(string? rating)

@@ -1,7 +1,6 @@
 ﻿@page "/{culture}/search"
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Shared.Core
 @inherits PageParameterCore<Search>
 
 @inject TmdbSearchMultiApi TmdbSearch
@@ -130,7 +129,7 @@
     public WishList? Wish { get; set; }
 
     private ICollection<MediaDetail> Items { get; set; } = [];
-    private ComponentActions<ICollection<MediaDetail>> Actions { get; } = new(list => list == null || list.Empty());
+    private RenderControlState<ICollection<MediaDetail>> Actions { get; } = new(list => list == null || list.Empty());
     private Dictionary<string, string> ParametersQuery => new() { { "query", AppStateStatic.Query ?? "" } };
     private Dictionary<string, string> ParametersKeyword = new() { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
     private Dictionary<string, string> ParametersAdvanced = new() { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };

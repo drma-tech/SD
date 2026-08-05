@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<Credits?> GetList(MediaType? type, string? tmdbId, ComponentActions<Credits>? actions, CancellationToken cancellationToken)
+    public async Task<Credits?> GetList(MediaType? type, string? tmdbId, RenderControlState<Credits>? actions, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(tmdbId)) return null;
 

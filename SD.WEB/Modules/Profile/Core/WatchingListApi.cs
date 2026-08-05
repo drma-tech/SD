@@ -2,7 +2,7 @@
 
 public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist", [], ApiContext.Default.WatchingList)
 {
-    public async Task<WatchingList?> Get(ComponentActions<WatchingList>? actions, CancellationToken cancellationToken)
+    public async Task<WatchingList?> Get(RenderControlState<WatchingList>? actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.Get, setNewVersion: false, actions, cancellationToken);
     }

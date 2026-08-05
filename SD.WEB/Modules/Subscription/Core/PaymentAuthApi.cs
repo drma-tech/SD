@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Subscription.Core
     {
         public async Task<bool> StripeValidateSession(string id, CancellationToken cancellationToken)
         {
-            return await GetAsync<bool>(Endpoint.StripeValidateSession(id), setNewVersion: true, actions: null, cancellationToken);
+            return await GetBoolAsync(Endpoint.StripeValidateSession(id), cancellationToken);
         }
 
         private struct Endpoint

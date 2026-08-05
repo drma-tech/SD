@@ -358,6 +358,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var session = await service.GetAsync(id, cancellationToken: cancellationToken);
 
         var result = session != null && string.Equals(session.PaymentStatus, "paid", StringComparison.OrdinalIgnoreCase) && string.Equals(session.Status, "complete", StringComparison.OrdinalIgnoreCase);
+        
         return await req.CreateResponse(HttpStatusCode.OK, result, cancellationToken);
     }
 }

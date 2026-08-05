@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<MediaDetail> GetMediaDetail(string? tmdbId, MediaType type, string language, ComponentActions<MediaDetail?>? actions, CancellationToken cancellationToken)
+    public async Task<MediaDetail> GetMediaDetail(string? tmdbId, MediaType type, string language, RenderControlState<MediaDetail>? actions, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(tmdbId);
 
@@ -44,7 +44,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     runtime = item.runtime,
                     homepage = item.homepage,
                     Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
-                    Genres = item.genres.Select(s => s.name ?? "").ToList(),
+                    Genres = [.. item.genres.Select(s => s.name ?? "")],
                     MediaType = MediaType.movie,
                 };
 
@@ -59,7 +59,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                         objReturn.collectionLogo = collection.poster_path;
 
                         foreach (var part in collection.parts)
-                            objReturn.Collection.Add(ConvertToCollection(part));
+                            objReturn.Collection.Add(part.ConvertToCollection());
                     }
                 }
             }
@@ -88,43 +88,16 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     runtime = item.episode_run_time.FirstOrDefault(),
                     homepage = item.homepage,
                     Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
-                    Genres = item.genres.Select(s => s.name ?? "").ToList(),
+                    Genres = [.. item.genres.Select(s => s.name ?? "")],
                     MediaType = MediaType.tv,
                 };
 
-                foreach (var season in item.seasons) objReturn.Collection.Add(ConvertToCollection(season));
+                foreach (var season in item.seasons) objReturn.Collection.Add(season.ConvertToCollection());
             }
         }
 
         if (actions != null) await actions.FinishLoading.Invoke(objReturn);
         return objReturn;
-    }
-
-    public static Collection ConvertToCollection(Part part)
-    {
-        return new Collection
-        {
-            id = part.id.ToString(CultureInfo.InvariantCulture),
-            title = part.title,
-            release_date = part.release_date.GetDate(),
-            poster_small = string.IsNullOrEmpty(part.poster_path)
-                ? null
-                : TmdbOptions.SmallPosterPath + part.poster_path,
-        };
-    }
-
-    public static Collection ConvertToCollection(Season season)
-    {
-        return new Collection
-        {
-            id = season.id.ToString(CultureInfo.InvariantCulture),
-            title = season.name,
-            SeasonNumber = season.season_number,
-            release_date = season.air_date?.GetDate(),
-            poster_small = string.IsNullOrEmpty(season.poster_path)
-                ? null
-                : TmdbOptions.SmallPosterPath + season.poster_path,
-        };
     }
 
     public async Task<TmdbCollection?> GetCollection(string? collectionId, IDictionary<string, string> parameters, CancellationToken cancellationToken)
@@ -159,7 +132,37 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         if (tmdbId == null) return null;
         if (seasonNumber == null) return null;
 
-        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), setNewVersion: false, actions: null, cancellationToken);
+        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + string.Create(CultureInfo.InvariantCulture, $"tv/{tmdbId}/season/{seasonNumber}").ConfigureParameters(parameters), setNewVersion: false, actions: null, cancellationToken);
+    }
+}
+
+public static class TmdbApiHelper
+{
+    public static Collection ConvertToCollection(this Part part)
+    {
+        return new Collection
+        {
+            id = part.id.ToString(CultureInfo.InvariantCulture),
+            title = part.title,
+            release_date = part.release_date.GetDate(),
+            poster_small = string.IsNullOrEmpty(part.poster_path)
+                ? null
+                : TmdbOptions.SmallPosterPath + part.poster_path,
+        };
+    }
+
+    public static Collection ConvertToCollection(this Season season)
+    {
+        return new Collection
+        {
+            id = season.id.ToString(CultureInfo.InvariantCulture),
+            title = season.name,
+            SeasonNumber = season.season_number,
+            release_date = season.air_date?.GetDate(),
+            poster_small = string.IsNullOrEmpty(season.poster_path)
+                ? null
+                : TmdbOptions.SmallPosterPath + season.poster_path,
+        };
     }
 }
 

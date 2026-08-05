@@ -4,8 +4,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Subscription.Core
-@using SD.WEB.Shared.Core
-@inherits ComponentParameterCore<MediaStreaming>
+@inherits ComponentParameterCore<MediaWhereToWatch>
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
@@ -243,7 +242,7 @@
     [Parameter] public MediaType? Type { get; set; }
     [Parameter] public DateTime? ReleaseDate { get; set; }
 
-    public ComponentActions<MediaProviders?> Actions { get; set; } = new(obj => obj == null);
+    public RenderControlState<MediaProviders> Actions { get; set; } = new(obj => obj == null);
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 

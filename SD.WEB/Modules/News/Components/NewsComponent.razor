@@ -1,5 +1,4 @@
 ﻿@using SD.Shared.Models.News
-@using SD.WEB.Shared.Core
 @inherits ComponentCore<NewsComponent>
 
 @inject CacheFlixsterApi CacheFlixsterApi
@@ -89,8 +88,8 @@
 @code {
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    public ComponentActions<NewsCache> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
-    public ComponentActions<NewsCache> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
     private NewsCache? NewsMovie { get; set; }
     private NewsCache? NewsSerie { get; set; }

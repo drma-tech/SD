@@ -1,6 +1,5 @@
 ﻿@page "/{culture}/news/{category}"
 @using SD.Shared.Models.News
-@using SD.WEB.Shared.Core
 @inherits PageParameterCore<News>
 
 @inject CacheFlixsterApi CacheFlixsterApi
@@ -41,7 +40,7 @@
 
     public MediaType MediaType => category.ParseToEnum<MediaType>(MediaType.movie);
 
-    public ComponentActions<NewsCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private NewsCache? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 

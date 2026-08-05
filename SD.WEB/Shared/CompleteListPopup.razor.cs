@@ -1,0 +1,52 @@
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using SD.WEB.Modules.Collections.Interface;
+
+namespace SD.WEB.Shared
+{
+    public partial class CompleteListPopup
+    {
+        [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+        [Parameter][EditorRequired] public string? TitleHead { get; set; }
+        [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+        [Parameter][EditorRequired] public WishList? Wish { get; set; }
+        [Parameter][EditorRequired] public string? Culture { get; set; }
+        [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+        [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
+
+        [Parameter] public ICollection<MediaDetail> Items { get; set; } = [];
+        [Parameter] public EventCallback<ICollection<MediaDetail>> ItemsChanged { get; set; }
+        [Parameter] public RenderControlState<ICollection<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
+
+        [Parameter] public IMediaListApi? MediaListApi { get; set; }
+        [Parameter] public EnumLists? List { get; set; }
+        [Parameter] public bool IsImdb { get; set; }
+        [Parameter] public MediaType? TypeSelected { get; set; }
+        [Parameter] public IDictionary<string, string> StringParameters { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        [Parameter] public bool CommentsIsImage { get; set; }
+
+        protected override void OnInitialized()
+        {
+            if (List == null && string.IsNullOrEmpty(TitleHead)) throw new NotificationException("Title is required");
+
+            WatchingListApi.DataChanged += model =>
+            {
+                Watching = model;
+                _ = WatchingChanged.InvokeAsync(model);
+                StateHasChanged();
+            };
+            WishListApi.DataChanged += model =>
+            {
+                Wish = model;
+                _ = WishChanged.InvokeAsync(model);
+                StateHasChanged();
+            };
+        }
+
+        public void HideModal()
+        {
+            MudDialog?.Close();
+        }
+    }
+}

@@ -1,12 +1,10 @@
 ﻿@page "/{culture}/media/{type}/{id}"
 
 @using Microsoft.AspNetCore.Authorization
-@using SD.Shared.Models.List
 @using SD.WEB.Modules.Media.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Subscription.Core
-@using SD.WEB.Shared.Core
 
 @inherits PageParameterCore<MediaPage>
 @implements IDisposable
@@ -69,55 +67,16 @@
         </PageSectionComponent>
         <PageSectionComponent Title="@($"{Translations.Module.Media.WhereToWatch} ({Region?.GetFieldSettings().Name})")" Color="Color.Secondary">
             <BodyFragment>
-                <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
+                <MediaWhereToWatch TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatch>
             </BodyFragment>
         </PageSectionComponent>
 
         <Advertising Slot="@AdSlot.Middle"></Advertising>
 
-        <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.Module.Media.TabCollection1 : Translations.Module.Media.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
+        <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.Module.Media.TabCollection1 : Translations.Module.Media.TabCollection2)" Color="Color.Secondary"
+                              Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
-                <div class="grid-relative-container-poster">
-                    @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
-                    {
-                        <div>
-                            <div @onclick="@(() => CollectionClicked(item))" style="cursor: pointer; position: relative;">
-                                @if (item.release_date.HasValue)
-                                {
-                                    if (item.release_date.Value < DateTime.Now.AddMonths(-3))
-                                    {
-                                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
-                                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                            @item.release_date.Value.Year
-                                        </MudChip>
-                                    }
-                                    else
-                                    {
-                                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
-                                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                            @item.release_date.Value.ToShortDateString()
-                                        </MudChip>
-                                    }
-                                }
-                                @{
-                                    if (Type == MediaType.movie) //you don't put seasons as wishes
-                                    {
-                                        var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
-                                        if (wishedMovie)
-                                        {
-                                            <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
-                                        }
-                                    }
-
-                                    <MudImage Src="@(item.poster_small ?? "images/no-image.webp")" Alt="@item.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                                }
-                            </div>
-                            <MudText Align="Align.Center" Typo="Typo.h2" Class="custom-title-list">
-                                @item.title
-                            </MudText>
-                        </div>
-                    }
-                </div>
+                <MediaCollectionComponent Culture="@Culture" Type="@Type" Media="@Media" Wish="@Wish" TmdbId="@TmdbId"></MediaCollectionComponent>
             </BodyFragment>
         </PageSectionComponent>
 
@@ -131,7 +90,7 @@
             <BodyFragment>
                 <RenderControl Actions="RecommendationsActions" Context="ctx">
                     <Slider List="Recommendations" Context="item">
-                        <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                        <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"
                                              Date="@item.release_date" Rating="@item.rating"
                                              WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments">
@@ -191,264 +150,3 @@
 </RenderControl>
 
 <FloatingButton Template="Template.Back"></FloatingButton>
-
-@code {
-    public WatchingList? Watching { get; set; }
-    public WishList? Wish { get; set; }
-    public Country? Region { get; set; }
-
-    [Parameter] public string? id { get; set; }
-    [Parameter] public string? type { get; set; }
-
-    public string? TmdbId => id;
-    public MediaType? Type => type?.ToLower() switch
-    {
-        "movie" => MediaType.movie,
-        "tv" => MediaType.tv,
-        _ => null
-    };
-    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
-
-    private MediaDetail? Media { get; set; }
-    public string? ImdbId { get; set; }
-    public string? EnglishTitle { get; set; }
-
-    private ComponentActions<MediaDetail?> Actions { get; set; } = new(obj => obj == null);
-    private ComponentActions<RatingsCache> RatingsActions { get; set; } = new(obj => obj?.Data == null);
-    private RatingsCache? _ratingsCache;
-
-    private ComponentActions<ICollection<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
-    public IEnumerable<MediaDetail> Recommendations { get; set; } = [];
-
-    protected override List<string?> GetParameterKey()
-    {
-        return [
-            Culture,
-            TmdbId,
-            Type.ToString()
-        ];
-    }
-
-    protected override async Task LoadParameterDataAsync()
-    {
-        try
-        {
-            await Actions.StartLoading.Invoke(null);
-
-            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(false).Name ?? "en-US";
-            Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, null, Cts.Token);
-            Media.Videos.Reverse();
-
-            await Actions.FinishLoading.Invoke(Media);
-
-            EnglishTitle = Media?.original_title;
-
-            if (Media != null && Media.original_language != "en")
-            {
-                //title must be in English
-                var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", null, Cts.Token);
-                EnglishTitle = enMedia.title;
-            }
-
-            EnglishTitle = EnglishTitle?.Replace("&", "");
-
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            await Actions.ShowError.Invoke(ex.Message);
-        }
-
-        try
-        {
-            ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, Cts.Token);
-
-            if (Media?.MediaType == MediaType.movie)
-            {
-                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, Cts.Token);
-            }
-            else
-            {
-                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, Cts.Token);
-            }
-        }
-        catch (Exception ex)
-        {
-            await RatingsActions.ShowError.Invoke(ex.Message);
-        }
-
-        try
-        {
-            Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId, RecommendationsActions, Cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await RecommendationsActions.ShowError.Invoke(ex.Message);
-        }
-    }
-
-    protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
-    {
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
-
-        return true;
-    }
-
-    protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
-    {
-        Watching = await WatchingApi.Get(null, token);
-        Wish = await WishApi.Get(null, token);
-    }
-
-    private async Task CollectionClicked(Collection? item)
-    {
-        if (Type == MediaType.movie)
-        {
-            OpenPopupMedia(Type, item?.id);
-        }
-        else
-        {
-            await OpenPopupSeason(item);
-        }
-    }
-
-    private void OpenPopupMedia(MediaType? type, string? tmdb_id)
-    {
-        Navigation.NavigateTo($"/{Culture}/media/{type.ToString()!.ToLower()}/{tmdb_id}");
-    }
-
-    private async Task OpenPopupSeason(Collection? collection)
-    {
-        await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
-    }
-
-    private async Task Add()
-    {
-        if (Media == null) throw new ArgumentNullException(nameof(Media));
-
-        try
-        {
-            if (!AppStateStatic.IsAuthenticated)
-            {
-                await ShowWarning(Translations.Notification.YouMustLogged);
-                return;
-            }
-
-            Wish ??= new WishList(AppStateStatic.UserId);
-
-            var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
-
-            Wish = await WishApi.Add(Media.MediaType, Wish, item, AppStateStatic.ActiveProduct, Cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private async Task Remove()
-    {
-        ArgumentNullException.ThrowIfNull(Media);
-
-        try
-        {
-            Wish = await WishApi.Remove(Media.MediaType, Media?.tmdb_id, Cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private async Task IsWatched()
-    {
-        if (Media == null) throw new ArgumentNullException(nameof(Media));
-
-        try
-        {
-            if (!AppStateStatic.IsAuthenticated)
-            {
-                await ShowWarning(Translations.Notification.YouMustLogged);
-                return;
-            }
-
-            var hasCollection = Media.MediaType == MediaType.tv || (Media.Collection.Any() && Media.Collection.Count > 1);
-
-            if (hasCollection)
-            {
-                var watching = Watching ?? new WatchingList(AppStateStatic.UserId);
-                var collectionId = Media.MediaType == MediaType.movie ? Media.collectionId?.ToString() : Media.tmdb_id;
-
-                await DialogService.SelectItemsCollection(
-                    Media.Collection,
-                    watching.GetWatchingItems(Media.MediaType, collectionId),
-                    new EventCallbackFactory().Create(this, async (ISet<string> list) => await SelectedItemsChanged(Media, list, Media.Collection.Count)));
-            }
-            else
-            {
-                await ShowWarning(Translations.Notification.NoFollow);
-            }
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private async Task IsNotWatched()
-    {
-        if (Media == null) throw new ArgumentNullException(nameof(Media));
-
-        try
-        {
-            //watching
-
-            var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
-
-            if (hasCollection)
-            {
-                Watching = Media.MediaType switch
-                {
-                    MediaType.movie => await WatchingApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id, Cts.Token),
-                    MediaType.tv => await WatchingApi.Remove(Media.MediaType, Media.tmdb_id, null, Cts.Token),
-                    _ => Watching
-                };
-            }
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private async Task SelectedItemsChanged(MediaDetail media, ISet<string> items, int collectionItemsCount)
-    {
-        try
-        {
-            //watching list
-
-            WatchingListItem item;
-
-            if (media.MediaType == MediaType.movie)
-            {
-                item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
-            }
-            else
-            {
-                item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
-            }
-
-            Watching = await WatchingApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct, Cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private void VideoClick(Video item)
-    {
-        Navigation.NavigateTo($"/{Culture}/video/{($"{item.key}|{item.name}".SimpleEncrypt())}");
-    }
-
-}

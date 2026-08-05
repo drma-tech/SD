@@ -26,34 +26,3 @@
         </div>
     </div>
 </RenderControl>
-
-@code {
-    [Parameter][EditorRequired] public IEnumerable<T> List { get; set; } = [];
-    [Parameter][EditorRequired] public RenderFragment<T> ChildContent { get; set; } = null!;
-
-    [Parameter] public string? LoadingHeight { get; set; } = "100px";
-
-    private ComponentActions<IEnumerable<T>> Actions { get; set; } = new(list => list == null || list.Empty());
-    private readonly string _id = $"{Guid.NewGuid()}";
-    private bool refreshed = false;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await Actions.FinishLoading.Invoke(List);
-        refreshed = true;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            await Actions.FinishLoading.Invoke(List);
-            await JsRuntime.Slider().InitLists(_id, CancellationToken.None, null, refreshed);
-            refreshed = false;
-        }
-        catch (Exception ex)
-        {
-            await Actions.ShowError(ex.Message);
-        }
-    }
-}

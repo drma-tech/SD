@@ -1,5 +1,4 @@
-﻿@using SD.WEB.Shared.Core
-@inherits ComponentCore<WishlistComponent>
+﻿@inherits ComponentCore<WishlistComponent>
 
 <PageSectionComponent Title="@Translations.Module.Profile.Wishlist" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.Bookmark">
     <BodyFragment>
@@ -141,8 +140,8 @@
 </PageSectionComponent>
 
 @code {
-    [Parameter][EditorRequired] public ComponentActions<WishList?> ActionsMovie { get; set; }
-    [Parameter][EditorRequired] public ComponentActions<WishList?> ActionsTv { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<WishList> ActionsMovie { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<WishList> ActionsTv { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }

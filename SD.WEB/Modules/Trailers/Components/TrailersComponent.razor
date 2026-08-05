@@ -1,5 +1,4 @@
 ﻿@using SD.Shared.Models.Trailers
-@using SD.WEB.Shared.Core
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
@@ -65,7 +64,7 @@
 @code {
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    public ComponentActions<YoutubeCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<YoutubeCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private YoutubeCache? TrailerModel { get; set; }
 
     private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";

@@ -19,8 +19,8 @@ public class MediaDetail : EqualityBase<MediaDetail>
     public string? collectionName { get; set; }
     public string? collectionLogo { get; set; }
 
-    public ICollection<Video> Videos { get; set; } = [];
-    public ICollection<string> Genres { get; set; } = [];
+    public IEnumerable<Video> Videos { get; set; } = [];
+    public IEnumerable<string> Genres { get; set; } = [];
     public ICollection<Collection> Collection { get; set; } = [];
 
     public MediaType MediaType { get; set; }

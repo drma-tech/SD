@@ -7,7 +7,6 @@ using SD.WEB.Modules.Media;
 using SD.WEB.Modules.Platform.Components;
 using SD.WEB.Modules.Profile.Components;
 using SD.WEB.Modules.Subscription.Components;
-using SD.WEB.Shared;
 
 namespace SD.WEB.Core.Helper;
 
@@ -32,7 +31,7 @@ public static class PopupHelper
 
     public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, ICollection<MediaDetail> items, string? culture)
     {
-        ComponentActions<ICollection<MediaDetail>> actions = new(list => list == null || list.Empty());
+        RenderControlState<ICollection<MediaDetail>> actions = new(list => list == null || list.Empty());
 
         actions.StartLoading?.Invoke(null);
 
@@ -70,7 +69,7 @@ public static class PopupHelper
         await service.ShowAsync<MediaPopup>(title: null, parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task MyWatchingListPopup(this IDialogService service, ComponentActions<WatchingList?> actions, MediaType type,
+    public static async Task MyWatchingListPopup(this IDialogService service, RenderControlState<WatchingList> actions, MediaType type,
         WatchingList? watching, WishList? wish, string? culture)
     {
         actions.StartLoading?.Invoke(null);
@@ -94,7 +93,7 @@ public static class PopupHelper
         actions.FinishLoading?.Invoke(watching);
     }
 
-    public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?> actions, WatchingList? watching, WishList? wish,
+    public static async Task MyWishListPopup(this IDialogService service, RenderControlState<WishList> actions, WatchingList? watching, WishList? wish,
         MediaType type, string? culture)
     {
         actions.StartLoading?.Invoke(null);

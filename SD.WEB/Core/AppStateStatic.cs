@@ -182,8 +182,8 @@ public static class AppStateStatic
         {
             return language;
         }
-        else
-            return fallback;
+
+        return fallback;
     }
 
     public static string GetCulture(this NavigationManager navigation)
@@ -289,7 +289,7 @@ public static class AppStateStatic
     private static Country? _region;
     private static readonly SemaphoreSlim _regionSemaphore = new(1, 1);
 
-    public static ActionDispatcher<Country> RegionChanged { get; } = new();
+    public static TaskDispatcher<Country> RegionChanged { get; } = new();
 
     public static async Task<Country> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null, CancellationToken cancellationToken = default)
     {
@@ -335,14 +335,14 @@ public static class AppStateStatic
 
         if (System.Enum.TryParse<Country>(code, ignoreCase: true, out var region) && System.Enum.IsDefined(region))
             return region;
-        else
-            return null;
+
+        return null;
     }
 
-    public static void ChangeRegion(Country value)
+    public static async Task ChangeRegionAsync(Country value)
     {
         _region = value;
-        RegionChanged.Publish(value);
+        await RegionChanged.PublishAsync(value);
     }
 
     #endregion Region
@@ -371,7 +371,7 @@ public static class AppStateStatic
             else
             {
                 var code = js != null ? await js.Window().InvokeAsync<string>("eval", "navigator.language") : "en-US";
-                code = code.Replace("-", "");
+                code = code.Replace("-", "", StringComparison.Ordinal);
 
                 _contentLanguage = ConvertContentLanguage(code) ?? ContentLanguage.enUS;
                 if (js != null) await js.Utils().SetStorage("content-language", _contentLanguage, JavascriptContext.Default.NullableContentLanguage, cancellationToken);
@@ -395,7 +395,8 @@ public static class AppStateStatic
 
         if (System.Enum.TryParse<ContentLanguage>(code, ignoreCase: true, out var language) && System.Enum.IsDefined(language))
             return language;
-        else if (code.Length == 2) //few languages have only 2 letter code
+
+        if (code.Length == 2) //few languages have only 2 letter code
         {
             var languages = System.Enum.GetValues<ContentLanguage>();
             foreach (var lang in languages)
@@ -405,8 +406,8 @@ public static class AppStateStatic
             }
             return null;
         }
-        else
-            return null;
+
+        return null;
     }
 
     public static void ChangeContentLanguage(ContentLanguage value)

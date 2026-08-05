@@ -1,6 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Shared.Core
 @inherits ComponentCore<MyWatchingListPopup>
 
 @inject WatchingListApi WatchingApi
@@ -22,7 +21,7 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    [Parameter][EditorRequired] public ComponentActions<WatchingList?> Actions { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<WatchingList> Actions { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }

@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<IEnumerable<MediaDetail>> GetList(MediaType? type, string? tmdbId, ComponentActions<ICollection<MediaDetail>>? actions, CancellationToken cancellationToken)
+    public async Task<IEnumerable<MediaDetail>> GetList(MediaType? type, string? tmdbId, RenderControlState<ICollection<MediaDetail>>? actions, CancellationToken cancellationToken)
     {
         var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
