@@ -14,7 +14,7 @@ public static class DataHelper
     public static DateTime? GetDate(this string? value)
     {
         if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, CultureInfo.InvariantCulture, out _))
-            return DateTime.Parse(value, CultureInfo.CurrentCulture);
+            return DateTime.Parse(value, CultureInfo.InvariantCulture);
         return null;
     }
 
@@ -22,6 +22,6 @@ public static class DataHelper
     {
         if (!runtime.HasValue || runtime == 0) return "";
         var time = TimeSpan.FromMinutes(runtime.Value);
-        return $"{time.Hours}h {time.Minutes}m";
+        return string.Create(CultureInfo.InvariantCulture, $"{time.Hours}h {time.Minutes}m");
     }
 }
