@@ -146,12 +146,12 @@
 
         float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var val);
 
-        if (val >= 8)
+        if (val >= 7.95f)
         {
             return Color.Success;
         }
 
-        if (val >= 6)
+        if (val >= 5.95f)
         {
             return Color.Warning;
         }

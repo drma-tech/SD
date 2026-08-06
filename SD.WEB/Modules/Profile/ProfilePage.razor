@@ -1,0 +1,81 @@
+﻿@page "/{culture}/profile"
+
+@using SD.Shared.Translations.Enum
+@using SD.WEB.Modules.Profile.Components
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Core
+@inherits PageCore<ProfilePage>
+
+@inject AllProvidersApi AllProvidersApi
+@inject MyProvidersApi MyProvidersApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
+@inject PaymentConfigurationApi ConfigurationApi
+@inject TmdbListApi TmdbListApi
+@inject WatchingListApi WatchingListApi
+@inject IpInfoApi IpInfoApi
+
+<HeadComponent Title="@Translations.Title.Profile" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
+
+<MudGrid Spacing="@CssHelper.SpaceSmall" Class="@CssHelper.Build().Large("mb")">
+    <MudItem xs="6" md="4">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.Movie" Color="Color.Primary" Class="me-2"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Module.Profile.Platforms
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+                @(MyProviders?.Items.Count ?? 0)
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" md="4">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Primary" Class="me-2"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Module.Profile.Wishlist
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+                @(Wish?.Movies.Count ?? 0) @PopularType.MovieName
+            </MudChip>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+                @(Wish?.Shows.Count ?? 0) @PopularType.ShowName
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" md="4">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary" Class="me-2"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Module.Profile.Following
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+                @(Watching?.Movies.Count ?? 0) @PopularType.MovieName
+            </MudChip>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+                @(Watching?.Shows.Count ?? 0) @PopularType.ShowName
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture" Actions="ProviderActions"></MyProviderComponent>
+
+<MudGrid Spacing="@CssHelper.SpaceSmall">
+    <MudItem xs="12" md="6">
+        <WishlistComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv" Culture="@Culture">
+        </WishlistComponent>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <WatchingComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv" Culture="@Culture">
+        </WatchingComponent>
+    </MudItem>
+</MudGrid>
