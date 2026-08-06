@@ -32,14 +32,9 @@ public struct Endpoint
     {
         return $"public/cache/reviews/movies?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}";
     }
-
-    public static string GetShowReviews(string? id, string? title, DateTime? date)
-    {
-        return $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}";
-    }
 }
 
-public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.NewsCache)
+public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.NewsCache)
 {
     public async Task<NewsCache?> GetNews(string mode, string category, RenderControlState<NewsCache> actions, CancellationToken cancellationToken)
     {
@@ -73,10 +68,5 @@ public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<MetaCriticC
     public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> actions, CancellationToken cancellationToken)
     {
         return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
-    }
-
-    public async Task<MetaCriticCache?> GetShowReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> actions, CancellationToken cancellationToken)
-    {
-        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
     }
 }

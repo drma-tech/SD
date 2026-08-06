@@ -85,12 +85,12 @@ static void ConfigureServices(IServiceCollection services)
 
         services.AddHttpClient("apple");
 
-        services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(10); });
+        services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(15); });
 
-        services.AddHttpClient("ipinfo")
+        services.AddHttpClient("ipinfo", client => { client.Timeout = TimeSpan.FromSeconds(15); })
             .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-        services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(10); })
+        services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(15); })
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip })
             .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 

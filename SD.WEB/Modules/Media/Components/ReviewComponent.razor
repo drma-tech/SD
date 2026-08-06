@@ -55,10 +55,6 @@
             {
                 Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, Cts.Token);
             }
-            else
-            {
-                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, Cts.Token);
-            }
         }
     }
 

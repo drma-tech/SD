@@ -111,14 +111,14 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddHttpClient("Local", c => { c.BaseAddress = webUri; });
 
     //Anonymous
-    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(10); })
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(15); })
         .AddHttpMessageHandler<AppVersionHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     //Authenticated
     collection.AddScoped<AuthenticationStateProvider, SupabaseAuthStateProvider>();
     collection.AddScoped<CustomAuthorizationHandler>();
-    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(10); })
+    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(15); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()
         .AddHttpMessageHandler<AppVersionHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
