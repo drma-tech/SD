@@ -126,15 +126,12 @@ public static class AppStateStatic
 
     #region AppLanguage
 
-    public static string[] SupportedLanguages => ["en", "pt", "es", "fr", "it", "de", "zh"];
-    public static string[] SitemapTranslations => ["en", "pt", "es"];
-
     private static AppLanguage? _appLanguage;
     private static readonly SemaphoreSlim _appLanguageSemaphore = new(1, 1);
 
     public static bool IsValidLanguage(this string? lang)
     {
-        return SupportedLanguages.Contains(lang);
+        return ConfigurationsStatic.SupportedLanguages.Contains(lang);
     }
 
     public static async Task<AppLanguage> GetAppLanguage(IJSRuntime js, CancellationToken cancellationToken)

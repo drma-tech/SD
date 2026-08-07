@@ -7,7 +7,7 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.138">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.139">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -59,6 +59,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>TvGenre.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Translations\Validation\Validations.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Validations.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Core\Resources\Translations.resx">
@@ -96,6 +101,10 @@
 		<EmbeddedResource Update="Translations\Enum\Country.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Country.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Translations\Validation\Validations.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Validations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 </Project>

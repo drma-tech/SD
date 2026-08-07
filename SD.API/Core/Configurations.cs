@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core;
+﻿namespace SD.API.Core;
 
 public class Configurations
 {

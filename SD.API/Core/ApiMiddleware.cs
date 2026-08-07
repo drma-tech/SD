@@ -1,12 +1,13 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
+using SD.API.Core.Auth;
 using System.Diagnostics;
 using System.Net;
 
 namespace SD.API.Core;
 
-internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
+internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
 {
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
@@ -18,6 +19,17 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
             if (req is null)
             {
                 await next(context);
+                return;
+            }
+
+            var originalUrl = req.Headers.TryGetValues("X-MS-Original-Url", out var urls) ? urls.FirstOrDefault() : null;
+
+            if (originalUrl?.Contains("www.", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                var culture = req.GetUserCulture();
+                var msg = Shared.Translations.Validation.Validations.ResourceManager.GetString(nameof(Shared.Translations.Validation.Validations.DomainDeactivated), culture);
+
+                await context.SetHttpResponseStatusCode(HttpStatusCode.Gone, msg!);
                 return;
             }
 
@@ -33,14 +45,14 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
                 return;
             }
 
-            var version = req.Headers.TryGetValues("X-App-Version", out var values) ? values.FirstOrDefault() : null;
+            var version = req.Headers.TryGetValues("X-App-Version", out var versions) ? versions.FirstOrDefault() : null;
 
             if (HttpRequestDataExtensions.IsOutdated(version))
             {
-                await context.SetHttpResponseStatusCode(
-                    HttpStatusCode.UpgradeRequired,
-                    $"An outdated version has been detected ({version ?? "error"}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it."
-                );
+                var culture = req.GetUserCulture();
+                var msg = Shared.Translations.Validation.Validations.ResourceManager.GetString(nameof(Shared.Translations.Validation.Validations.OutdatedVersion), culture);
+
+                await context.SetHttpResponseStatusCode(HttpStatusCode.UpgradeRequired, string.Format(culture, msg!, version ?? "error"));
                 return;
             }
 
