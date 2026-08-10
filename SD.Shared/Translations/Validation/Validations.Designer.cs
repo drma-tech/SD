@@ -70,7 +70,7 @@ namespace SD.Shared.Translations.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An outdated version has been detected ({0}}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it..
+        ///   Looks up a localized string similar to An outdated version has been detected ({0}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it..
         /// </summary>
         public static string OutdatedVersion {
             get {
