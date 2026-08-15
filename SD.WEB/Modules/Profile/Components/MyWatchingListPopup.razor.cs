@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Profile.Components
     {
         [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-        [Parameter][EditorRequired] public RenderControlState<WatchingList> Actions { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WatchingList> State { get; set; }
         [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
         [Parameter][EditorRequired] public WishList? Wish { get; set; }
         [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -20,10 +20,10 @@ namespace SD.WEB.Modules.Profile.Components
         {
             WatchingApi.DataChanged += model =>
             {
-                _ = (Actions.StartLoading?.Invoke(null));
+                _ = (State.StartLoading?.Invoke(null));
                 Watching = model;
                 _ = WatchingChanged.InvokeAsync(model);
-                _ = (Actions.FinishLoading?.Invoke(model));
+                _ = (State.FinishLoading?.Invoke(model));
                 StateHasChanged();
             };
             WishApi.DataChanged += model =>

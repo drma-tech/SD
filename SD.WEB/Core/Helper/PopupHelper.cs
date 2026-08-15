@@ -31,9 +31,9 @@ public static class PopupHelper
 
     public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, ICollection<MediaDetail> items, string? culture)
     {
-        RenderControlState<ICollection<MediaDetail>> actions = new(list => list == null || list.Empty());
+        RenderControlState<ICollection<MediaDetail>> State = new(list => list == null || list.Empty());
 
-        actions.StartLoading?.Invoke(null);
+        State.StartLoading?.Invoke(null);
 
         var parameters = new DialogParameters<CompleteListPopup>
         {
@@ -42,7 +42,7 @@ public static class PopupHelper
             { x => x.Wish, wish },
             { x => x.Culture, culture },
             { x => x.Items, items },
-            { x => x.Actions, actions },
+            { x => x.State, State },
             { x => x.ItemsChanged, Factory.Create(new object(), (ICollection<MediaDetail> lst) => { items = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
@@ -50,7 +50,7 @@ public static class PopupHelper
 
         await service.ShowAsync<CompleteListPopup>(titleHead, parameters, Options(MaxWidth.Large));
 
-        actions.FinishLoading?.Invoke(items);
+        State.FinishLoading?.Invoke(items);
     }
 
     public static async Task MediaPopup(this IDialogService service, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId, string? culture)
@@ -76,7 +76,7 @@ public static class PopupHelper
 
         var parameters = new DialogParameters<MyWatchingListPopup>
         {
-            { x => x.Actions, actions },
+            { x => x.State, actions },
             { x => x.MediaType, type },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
@@ -93,14 +93,14 @@ public static class PopupHelper
         actions.FinishLoading?.Invoke(watching);
     }
 
-    public static async Task MyWishListPopup(this IDialogService service, RenderControlState<WishList> actions, WatchingList? watching, WishList? wish,
+    public static async Task MyWishListPopup(this IDialogService service, RenderControlState<WishList> state, WatchingList? watching, WishList? wish,
         MediaType type, string? culture)
     {
-        actions.StartLoading?.Invoke(null);
+        state.StartLoading?.Invoke(null);
 
         var parameters = new DialogParameters<MyWishListPopup>
         {
-            { x => x.Actions, actions },
+            { x => x.State, state },
             { x => x.MediaType, type },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
@@ -114,7 +114,7 @@ public static class PopupHelper
 
         await service.ShowAsync<MyWishListPopup>(Title.CustomFormat(Quantity), parameters, Options(MaxWidth.Large));
 
-        actions.FinishLoading?.Invoke(wish);
+        state.FinishLoading?.Invoke(wish);
     }
 
     public static async Task AccountPopup(this IDialogService service)

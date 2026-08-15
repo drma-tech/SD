@@ -123,12 +123,6 @@
   <data name="CheckOurApps" xml:space="preserve">
     <value>Explora nuestras otras increíbles aplicaciones:</value>
   </data>
-  <data name="RenderControlInvalid" xml:space="preserve">
-    <value>Operación no válida. Por favor, inténtelo de nuevo.</value>
-  </data>
-  <data name="RenderControlNoData" xml:space="preserve">
-    <value>Datos no disponibles</value>
-  </data>
   <data name="ExternalWebsiteNotice" xml:space="preserve">
     <value>Aviso del sitio web externo</value>
   </data>
@@ -137,6 +131,9 @@
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>En desarrollo</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
   </data>
   <data name="NoFollow" xml:space="preserve">
     <value>Esta película no forma parte de una franquicia, por lo tanto no se puede seguir.</value>
@@ -165,13 +162,22 @@
   <data name="PWAUpdaterText" xml:space="preserve">
     <value>Una nueva versión está disponible</value>
   </data>
-  <data name="Version" xml:space="preserve">
-    <value>Versión</value>
-  </data>
-  <data name="YouMustLogged" xml:space="preserve">
-    <value>Debes estar conectado</value>
+  <data name="RenderControlInvalid" xml:space="preserve">
+    <value>Operación no válida. Por favor, inténtelo de nuevo.</value>
   </data>
   <data name="RenderControlLoading" xml:space="preserve">
     <value>Llevar...</value>
+  </data>
+  <data name="RenderControlNoData" xml:space="preserve">
+    <value>Datos no disponibles</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versión</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="YouMustLogged" xml:space="preserve">
+    <value>Debes estar conectado</value>
   </data>
 </root>

@@ -7,8 +7,8 @@ using System.Linq.Expressions;
 
 namespace SD.API.Repository;
 
-public class CosmosJobRepository(CosmosClient CosmosClient, ILogger<CosmosJobRepository> logger)
-     : BaseRepository<CosmosJobRepository, JobDocument, JobIdentity>(CosmosClient, logger, "job")
+public class CosmosJobRepository(CosmosClient client, ILogger<CosmosJobRepository> logger)
+     : BaseRepository<CosmosJobRepository, JobDocument, JobIdentity>(client, logger, "job")
 {
     public async Task<IReadOnlyCollection<T>> Query<T>(JobType type, Expression<Func<T, bool>>? predicate, Func<IQueryable<T>, IQueryable<T>>? transform, CancellationToken cancellationToken)
         where T : JobDocument

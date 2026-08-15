@@ -4,8 +4,8 @@ namespace SD.WEB.Modules.Profile.Components
 {
     public partial class WatchingComponent
     {
-        [Parameter][EditorRequired] public RenderControlState<WatchingList> ActionsMovie { get; set; }
-        [Parameter][EditorRequired] public RenderControlState<WatchingList> ActionsTv { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WatchingList> MovieState { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WatchingList> TvState { get; set; }
 
         [Parameter][EditorRequired] public bool ShowHeader { get; set; }
         [Parameter][EditorRequired] public bool FullScreen { get; set; }
@@ -28,13 +28,13 @@ namespace SD.WEB.Modules.Profile.Components
         {
             base.OnInitialized();
 
-            ActionsMovie.CustomMessageWarning = Translations.Module.Profile.FollowTitle;
-            ActionsTv.CustomMessageWarning = Translations.Module.Profile.FollowTitle;
+            MovieState.CustomMessageWarning = Translations.Module.Profile.FollowTitle;
+            TvState.CustomMessageWarning = Translations.Module.Profile.FollowTitle;
         }
 
         private async Task OpenCompleteList(MediaType type)
         {
-            await DialogService.MyWatchingListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, type, Watching, Wish, Culture);
+            await DialogService.MyWatchingListPopup(type == MediaType.movie ? MovieState : TvState, type, Watching, Wish, Culture);
         }
 
         public async Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)

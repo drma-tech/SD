@@ -84,7 +84,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
                 Cycle = purchase.product_id!.Contains("yearly", StringComparison.OrdinalIgnoreCase) ? AccountCycle.Yearly : AccountCycle.Monthly,
                 SessionId = receipt, //save receipt before cause it may fail
                 SubscriptionId = purchase.original_transaction_id,
-                ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture))
+                ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture)),
             };
 
             client.AddSubscription(sub);

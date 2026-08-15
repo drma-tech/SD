@@ -12,7 +12,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
     </ActionsFragment>
     <BodyFragment>
-        <RenderControl Actions="Actions" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+        <RenderControl State="State" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
             <Slider List="MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().FavoriteProviders) ?? new List<MyProvidersItem>()" Context="item">
                 <div style="@($"width: 95px")">
                     <div style="position: relative; cursor: pointer;" @onclick="@(() => ShowProviderPopup(item))">

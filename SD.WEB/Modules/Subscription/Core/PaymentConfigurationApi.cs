@@ -6,7 +6,7 @@ public class PaymentConfigurationApi(IHttpClientFactory factory) : ApiCosmos<Pay
 {
     public async Task<PaymentConfigurations?> GetConfigurations(PaymentProvider provider, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Configurations(provider), setNewVersion: false, actions: null, cancellationToken);
+        return await GetAsync(Endpoint.Configurations(provider), setNewVersion: false, state: null, cancellationToken);
     }
 
     private struct Endpoint

@@ -15,33 +15,33 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 {
     public Action<T?>? DataChanged { get; set; }
 
-    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, RenderControlState<T>? actions, CancellationToken cancellationToken)
+    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, RenderControlState<T>? state, CancellationToken cancellationToken)
     {
-        return await base.GetAsync<T>(endpoint, setNewVersion, actions, cancellationToken);
+        return await base.GetAsync<T>(endpoint, setNewVersion, state, cancellationToken);
     }
 
-    protected async Task<IEnumerable<T>> GetListAsync(string endpoint, RenderControlState<IEnumerable<T>>? actions, CancellationToken cancellationToken)
+    protected async Task<IEnumerable<T>> GetListAsync(string endpoint, RenderControlState<IEnumerable<T>>? state, CancellationToken cancellationToken)
     {
-        return await base.GetListAsync<T>(endpoint, actions, cancellationToken);
+        return await base.GetListAsync<T>(endpoint, state, cancellationToken);
     }
 
-    protected async Task<T> PostAsync(string endpoint, T? obj, CancellationToken cancellationToken)
+    protected async Task<T> PostAsync(string endpoint, T? obj, RenderControlState<T>? state, CancellationToken cancellationToken)
     {
-        return await PostAsync(endpoint, obj, typeInfo, typeInfo, cancellationToken);
+        return await PostAsync(endpoint, obj, typeInfo, typeInfo, state, cancellationToken);
     }
 
-    protected async Task<T> PostAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, CancellationToken cancellationToken) where TObj : class
+    protected async Task<T> PostAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T>? state, CancellationToken cancellationToken) where TObj : class
     {
-        var result = await base.PostAsync<TObj, T>(endpoint, obj, requestTypeInfo, typeInfo, cancellationToken);
+        var result = await base.PostAsync<TObj, T>(endpoint, obj, requestTypeInfo, typeInfo, state, cancellationToken);
 
         DataChanged?.Invoke(result);
 
         return result;
     }
 
-    protected async Task<T> PutAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, CancellationToken cancellationToken) where TObj : class
+    protected async Task<T> PutAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T>? state, CancellationToken cancellationToken) where TObj : class
     {
-        var result = await base.PutAsync<TObj, T>(endpoint, obj, requestTypeInfo, typeInfo, cancellationToken);
+        var result = await base.PutAsync<TObj, T>(endpoint, obj, requestTypeInfo, typeInfo, state, cancellationToken);
 
         DataChanged?.Invoke(result);
 

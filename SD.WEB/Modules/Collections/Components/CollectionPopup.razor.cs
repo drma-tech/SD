@@ -18,7 +18,7 @@ namespace SD.WEB.Modules.Collections.Components
         [Parameter] public string? CollectionId { get; set; }
         [Parameter] public MediaType? Type { get; set; }
 
-        private RenderControlState<TmdbCollection> Actions { get; } = new(obj => obj == null || obj.parts.Empty());
+        private RenderControlState<TmdbCollection> State { get; } = new(obj => obj == null || obj.parts.Empty());
         private TmdbCollection? Collection { get; set; }
 
         protected override void OnInitialized()
@@ -42,7 +42,7 @@ namespace SD.WEB.Modules.Collections.Components
 
         protected override async Task LoadStaticDataAsync()
         {
-            await Actions.StartLoading.Invoke(null);
+            await State.StartLoading.Invoke(null);
             var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(translate: false).Name ?? "en-US";
 
             if (Type == MediaType.movie)
@@ -79,7 +79,7 @@ namespace SD.WEB.Modules.Collections.Components
             }
 
             await MudDialog!.SetTitleAsync(Collection?.name);
-            await Actions.FinishLoading.Invoke(Collection);
+            await State.FinishLoading.Invoke(Collection);
         }
 
         public void HideModal()

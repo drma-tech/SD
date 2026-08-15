@@ -9,27 +9,27 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
         return await GetAsync(Endpoint.MyProviders, setNewVersion: true, actions, cancellationToken);
     }
 
-    public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, AccountProduct? product, JsonTypeInfo<MyProvidersItem?> requestTypeInfo, CancellationToken cancellationToken)
+    public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, RenderControlState<MyProviders>? state, AccountProduct? product, JsonTypeInfo<MyProvidersItem?> requestTypeInfo, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateFavoriteProviders(product, (obj?.Items.Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.MyProvidersAdd, item, requestTypeInfo, cancellationToken);
+        return await PostAsync(Endpoint.MyProvidersAdd, item, requestTypeInfo, state, cancellationToken);
     }
 
-    public async Task<MyProviders?> Update(MyProviders? obj, AccountProduct? product, bool validatePlan, CancellationToken cancellationToken)
+    public async Task<MyProviders?> Update(MyProviders? obj, RenderControlState<MyProviders>? state, AccountProduct? product, bool validatePlan, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
         if (validatePlan) SubscriptionHelper.ValidateFavoriteProviders(product, obj.Items.Count + 1);
 
-        return await PostAsync(Endpoint.MyProvidersUpdate, obj, cancellationToken);
+        return await PostAsync(Endpoint.MyProvidersUpdate, obj, state, cancellationToken);
     }
 
-    public async Task<MyProviders?> Remove(MyProvidersItem? item, JsonTypeInfo<MyProvidersItem?> requestTypeInfo, CancellationToken cancellationToken)
+    public async Task<MyProviders?> Remove(MyProvidersItem? item, RenderControlState<MyProviders>? state, JsonTypeInfo<MyProvidersItem?> requestTypeInfo, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(item);
 
-        return await PostAsync(Endpoint.MyProvidersRemove, item, requestTypeInfo, cancellationToken);
+        return await PostAsync(Endpoint.MyProvidersRemove, item, requestTypeInfo, state, cancellationToken);
     }
 
     private struct Endpoint

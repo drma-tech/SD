@@ -2,11 +2,11 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null, [], ApiContext.Default.AuthLogin)
+public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, key: null, [], ApiContext.Default.AuthLogin)
 {
     public async Task<AuthLogin?> Get(CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Get, setNewVersion: true, actions: null, cancellationToken);
+        return await GetAsync(Endpoint.Get, setNewVersion: true, state: null, cancellationToken);
     }
 
     public async Task Add(SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
     }
 }
 
-public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, null, [], ApiContext.Default.AuthLogin)
+public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, key: null, [], ApiContext.Default.AuthLogin)
 {
     public async Task SendEmail(string? email, string? reference, CancellationToken cancellationToken)
     {

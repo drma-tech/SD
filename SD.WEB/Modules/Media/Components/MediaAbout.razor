@@ -33,7 +33,7 @@
             </MudChip>
         }
         <div>
-            <RenderControl Actions="Actions" LoadingHeight="40px" HideIfEmpty="true">
+            <RenderControl State="State" LoadingHeight="40px" HideIfEmpty="true">
                 @if (RatingsCache?.Data != null && (RatingsCache.Data.imdb.NotEmpty() || RatingsCache.Data.imdbLink.NotEmpty()))
                 {
                     <MudTooltip Text="IMDb">
@@ -137,7 +137,7 @@
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
 
-    [Parameter][EditorRequired] public RenderControlState<RatingsCache> Actions { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<RatingsCache> State { get; set; }
     [Parameter] public RatingsCache? RatingsCache { get; set; }
 
     private Color GetColorByRating(string? rating)

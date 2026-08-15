@@ -26,11 +26,11 @@ namespace SD.WEB.Modules.Media
         public string? ImdbId { get; set; }
         public string? EnglishTitle { get; set; }
 
-        private RenderControlState<MediaDetail> Actions { get; set; } = new(obj => obj == null);
-        private RenderControlState<RatingsCache> RatingsActions { get; set; } = new(obj => obj?.Data == null);
+        private RenderControlState<MediaDetail> State { get; set; } = new(obj => obj == null);
+        private RenderControlState<RatingsCache> RatingsState { get; set; } = new(obj => obj?.Data == null);
         private RatingsCache? _ratingsCache;
 
-        private RenderControlState<ICollection<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
+        private RenderControlState<ICollection<MediaDetail>> RecommendationsState { get; set; } = new(lst => lst == null || lst.Empty());
         public IEnumerable<MediaDetail> Recommendations { get; set; } = [];
 
         protected override List<string?> GetParameterKey()
@@ -46,13 +46,13 @@ namespace SD.WEB.Modules.Media
         {
             try
             {
-                await Actions.StartLoading.Invoke(null);
+                await State.StartLoading.Invoke(null);
 
                 var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(translate: false).Name ?? "en-US";
                 Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, actions: null, Cts.Token);
                 Media.Videos = Media.Videos.Reverse();
 
-                await Actions.FinishLoading.Invoke(Media);
+                await State.FinishLoading.Invoke(Media);
 
                 EnglishTitle = Media?.original_title;
 
@@ -69,7 +69,7 @@ namespace SD.WEB.Modules.Media
             }
             catch (Exception ex)
             {
-                await Actions.ShowError.Invoke(ex.Message);
+                await State.ShowError.Invoke(ex.Message);
             }
 
             try
@@ -78,25 +78,25 @@ namespace SD.WEB.Modules.Media
 
                 if (Media?.MediaType == MediaType.movie)
                 {
-                    _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsActions, Cts.Token);
+                    _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
                 }
                 else
                 {
-                    _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsActions, Cts.Token);
+                    _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
                 }
             }
             catch (Exception ex)
             {
-                await RatingsActions.ShowError.Invoke(ex.Message);
+                await RatingsState.ShowError.Invoke(ex.Message);
             }
 
             try
             {
-                Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId, RecommendationsActions, Cts.Token);
+                Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId, RecommendationsState, Cts.Token);
             }
             catch (Exception ex)
             {
-                await RecommendationsActions.ShowError.Invoke(ex.Message);
+                await RecommendationsState.ShowError.Invoke(ex.Message);
             }
         }
 

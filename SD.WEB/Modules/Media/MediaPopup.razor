@@ -11,11 +11,11 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <RenderControl Actions="Actions">
+        <RenderControl State="State">
             <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
                 <MudTabPanel Tag="@Translations.Module.Media.TabAbout" Text="@Translations.Module.Media.TabAbout">
                     <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
-                                Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
+                                State="RatingsState" RatingsCache="_ratingsCache"></MediaAbout>
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.Module.Media.TabPlatforms" Text="@Translations.Module.Media.WhereToWatch">
                     <MediaWhereToWatch TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatch>

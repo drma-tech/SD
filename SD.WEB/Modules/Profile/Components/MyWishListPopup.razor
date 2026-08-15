@@ -8,7 +8,7 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watching="Watching" Wish="Wish"
-                           ActionsMovie="Actions" ActionsTv="Actions" Culture="@Culture">
+                           MovieState="State" TvState="State" Culture="@Culture">
         </WishlistComponent>
     </DialogContent>
     <DialogActions>
@@ -21,7 +21,7 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    [Parameter][EditorRequired] public RenderControlState<WishList>? Actions { get; set; }
+    [Parameter][EditorRequired] public RenderControlState<WishList>? State { get; set; }
 
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
@@ -44,10 +44,10 @@
         };
         WishApi.DataChanged += model =>
         {
-            Actions?.StartLoading?.Invoke(null);
+            State?.StartLoading?.Invoke(null);
             Wish = model;
             WishChanged.InvokeAsync(model);
-            Actions?.FinishLoading?.Invoke(model);
+            State?.FinishLoading?.Invoke(model);
             StateHasChanged();
         };
     }

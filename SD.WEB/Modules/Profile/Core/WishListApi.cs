@@ -17,7 +17,7 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateWishList(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.Add(mediaType), item, ApiContext.Default.WishListItem, cancellationToken);
+        return await PostAsync(Endpoint.Add(mediaType), item, ApiContext.Default.WishListItem, state: null, cancellationToken);
     }
 
     public async Task<WishList?> Remove(MediaType? mediaType, string? id, CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         }
         ArgumentNullException.ThrowIfNull(id);
 
-        return await PostAsync(Endpoint.Remove(mediaType, id), null, ApiContext.Default.WishList, cancellationToken);
+        return await PostAsync(Endpoint.Remove(mediaType, id), null, ApiContext.Default.WishList, state: null, cancellationToken);
     }
 
     private struct Endpoint

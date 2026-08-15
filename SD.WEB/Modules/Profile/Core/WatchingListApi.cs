@@ -17,7 +17,7 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateWatching(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.Add(mediaType), item, ApiContext.Default.WatchingListItem, cancellationToken);
+        return await PostAsync(Endpoint.Add(mediaType), item, ApiContext.Default.WatchingListItem, state: null, cancellationToken);
     }
 
     public async Task<WatchingList?> Remove(MediaType? mediaType, string? collectionId, string? tmdbId = "null", CancellationToken cancellationToken = default)
@@ -29,10 +29,10 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 
         ArgumentNullException.ThrowIfNull(collectionId);
 
-        return await PostAsync(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null, ApiContext.Default.WatchingList, cancellationToken);
+        return await PostAsync(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null, ApiContext.Default.WatchingList, state: null, cancellationToken);
     }
 
-    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, CancellationToken cancellationToken)
+    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, RenderControlState<WatchingList>? state, CancellationToken cancellationToken)
     {
         if (!mediaType.HasValue)
         {
@@ -41,7 +41,7 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync(Endpoint.Sync(mediaType), obj, ApiContext.Default.WatchingList, cancellationToken);
+        return await PostAsync(Endpoint.Sync(mediaType), obj, ApiContext.Default.WatchingList, state, cancellationToken);
     }
 
     private struct Endpoint

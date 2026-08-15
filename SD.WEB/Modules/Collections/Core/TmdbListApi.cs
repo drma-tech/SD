@@ -19,7 +19,7 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(
             { "page", page.ToString(CultureInfo.InvariantCulture) },
         };
 
-        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}".ConvertFromStringToBase64(), setNewVersion: false, actions: null, cancellationToken);
+        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}".ConvertFromStringToBase64(), setNewVersion: false, state: null, cancellationToken);
 
         if (result != null)
         {

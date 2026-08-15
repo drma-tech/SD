@@ -7,8 +7,8 @@ using System.Linq.Expressions;
 
 namespace SD.API.Repository;
 
-public class CosmosMainRepository(CosmosClient CosmosClient, ILogger<CosmosMainRepository> logger)
-    : BaseRepository<CosmosMainRepository, MainDocument, MainIdentity>(CosmosClient, logger, "main")
+public class CosmosMainRepository(CosmosClient client, ILogger<CosmosMainRepository> logger)
+    : BaseRepository<CosmosMainRepository, MainDocument, MainIdentity>(client, logger, "main")
 {
     public async Task<IReadOnlyCollection<T>> Query<T>(MainType type, Expression<Func<T, bool>>? predicate, Func<IQueryable<T>, IQueryable<T>>? transform, CancellationToken cancellationToken)
         where T : MainDocument

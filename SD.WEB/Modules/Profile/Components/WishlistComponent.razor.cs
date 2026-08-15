@@ -4,8 +4,8 @@ namespace SD.WEB.Modules.Profile.Components
 {
     public partial class WishlistComponent
     {
-        [Parameter][EditorRequired] public RenderControlState<WishList> ActionsMovie { get; set; }
-        [Parameter][EditorRequired] public RenderControlState<WishList> ActionsTv { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WishList> MovieState { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WishList> TvState { get; set; }
         [Parameter][EditorRequired] public bool ShowHeader { get; set; }
         [Parameter][EditorRequired] public bool FullScreen { get; set; }
         [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
@@ -25,13 +25,13 @@ namespace SD.WEB.Modules.Profile.Components
         {
             base.OnInitialized();
 
-            ActionsMovie.CustomMessageWarning = Translations.Module.Profile.AddTitlesWishlist;
-            ActionsTv.CustomMessageWarning = Translations.Module.Profile.AddTitlesWishlist;
+            MovieState.CustomMessageWarning = Translations.Module.Profile.AddTitlesWishlist;
+            TvState.CustomMessageWarning = Translations.Module.Profile.AddTitlesWishlist;
         }
 
         private async Task OpenCompleteList(MediaType type)
         {
-            await DialogService.MyWishListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, Watching, Wish, type, Culture);
+            await DialogService.MyWishListPopup(type == MediaType.movie ? MovieState : TvState, Watching, Wish, type, Culture);
         }
 
         public async Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)

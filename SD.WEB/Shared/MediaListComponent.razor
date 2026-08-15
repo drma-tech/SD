@@ -20,7 +20,7 @@
                     @if (ShowMovieFilter)
                     {
                         <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
-                            <RenderControl Actions="Actions">
+                            <RenderControl State="State">
                                 <Slider List="Items" Context="item">
                                     <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
@@ -35,7 +35,7 @@
                     @if (ShowTvFilter)
                     {
                         <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
-                            <RenderControl Actions="Actions">
+                            <RenderControl State="State">
                                 <Slider List="Items" Context="item">
                                     <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
@@ -54,7 +54,7 @@
 }
 else
 {
-    <RenderControl Actions="Actions">
+    <RenderControl State="State">
         <Slider List="Items" Context="item">
             <div class="swiper-slide" style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                 <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"

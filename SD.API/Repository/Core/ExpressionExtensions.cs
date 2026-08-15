@@ -8,6 +8,8 @@ namespace SD.API.Repository.Core;
 /// </summary>
 internal static class ExpressionExtensions
 {
+    internal static Expression<Func<T, bool>> CreatePredicate<T>() => _ => true;
+
     internal static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
     {
         IDictionary<ParameterExpression, ParameterExpression> map = first.Parameters
@@ -44,8 +46,7 @@ internal sealed class ParameterRebinder : ExpressionVisitor
         _map = map;
     }
 
-    internal static Expression ReplaceParameters(IDictionary<ParameterExpression, ParameterExpression> map,
-        Expression exp)
+    internal static Expression ReplaceParameters(IDictionary<ParameterExpression, ParameterExpression> map, Expression exp)
     {
         return new ParameterRebinder(map).Visit(exp);
     }

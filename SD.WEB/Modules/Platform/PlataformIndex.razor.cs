@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Platform
 {
     public partial class PlataformIndex
     {
-        public RenderControlState<AllProviders> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+        public RenderControlState<AllProviders> State { get; set; } = new(obj => obj == null || obj.Items.Empty());
         private AllProviders? AllProviders { get; set; }
 
         private MyProviders? MyProviders { get; set; }
@@ -63,7 +63,7 @@ namespace SD.WEB.Modules.Platform
                 isNotFound = true;
             }
 
-            AllProviders = await AllProvidersApi.GetAll(Actions, Cts.Token);
+            AllProviders = await AllProvidersApi.GetAll(State, Cts.Token);
         }
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
@@ -86,7 +86,7 @@ namespace SD.WEB.Modules.Platform
                 var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
                 var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformAdded);
             }
@@ -108,7 +108,7 @@ namespace SD.WEB.Modules.Platform
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, provider?.id, StringComparison.OrdinalIgnoreCase)), ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, provider?.id, StringComparison.OrdinalIgnoreCase)), state: null, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformRemoved);
             }

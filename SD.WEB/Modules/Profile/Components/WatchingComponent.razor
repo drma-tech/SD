@@ -9,7 +9,7 @@
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
-            <RenderControl Actions="@(TypeParam == MediaType.movie ? ActionsMovie : ActionsTv)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+            <RenderControl State="@(TypeParam == MediaType.movie ? MovieState : TvState)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                 @if (FullScreen)
                 {
                     <div class="grid-relative-container-poster">
@@ -58,7 +58,7 @@
                 </Header>
                 <ChildContent>
                     <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
-                        <RenderControl Actions="ActionsMovie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                        <RenderControl State="MovieState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
@@ -90,7 +90,7 @@
                         </RenderControl>
                     </MudTabPanel>
                     <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
-                        <RenderControl Actions="ActionsTv" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                        <RenderControl State="TvState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">

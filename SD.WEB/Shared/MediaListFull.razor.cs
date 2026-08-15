@@ -20,7 +20,7 @@ namespace SD.WEB.Shared
         [Parameter] public bool Popup { get; set; } = false;
         [Parameter] public bool OnlyYear { get; set; }
 
-        [Parameter] public RenderControlState<ICollection<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
+        [Parameter] public RenderControlState<ICollection<MediaDetail>> State { get; set; } = new(list => list == null || list.Empty());
         [Parameter] public ICollection<MediaDetail> Items { get; set; } = [];
         [Parameter] public EventCallback<ICollection<MediaDetail>> ItemsChanged { get; set; }
 
@@ -65,22 +65,22 @@ namespace SD.WEB.Shared
 
         protected override async Task LoadParameterDataAsync()
         {
-            await Actions.StartLoading.Invoke(null);
+            await State.StartLoading.Invoke(null);
             await LoadItems();
-            await Actions.FinishLoading.Invoke(Items);
+            await State.FinishLoading.Invoke(Items);
         }
 
         private async Task LoadItems()
         {
             if (MediaListApi != null)
             {
-                var (_, lastPage) = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, 1, Cts.Token);
+                var (_, lastPage) = await MediaListApi.GetList(Items, State, TypeSelected, StringParameters, List, 1, Cts.Token);
 
                 DisableLoadMore = lastPage || Items.Count >= 200;
 
                 if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
-                    _ = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+                    _ = await MediaListApi.GetList(Items, State, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
                     DisableLoadMore = lastPage || Items.Count >= 200;
                 }
@@ -171,7 +171,7 @@ namespace SD.WEB.Shared
         {
             if (MediaListApi != null)
             {
-                var (_, lastPage) = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+                var (_, lastPage) = await MediaListApi.GetList(Items, State, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
                 DisableLoadMore = lastPage || Items.Count >= 250;
 

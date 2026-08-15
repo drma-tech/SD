@@ -38,7 +38,7 @@ namespace SD.WEB.Shared
 
         private string Title => TitleHead ?? List?.GetFieldSettings().Name ?? "Title Error";
 
-        public RenderControlState<ICollection<MediaDetail>> Actions { get; set; } = new(list => list != null && list.Empty());
+        public RenderControlState<ICollection<MediaDetail>> State { get; set; } = new(list => list != null && list.Empty());
         public ICollection<MediaDetail> Items { get; set; } = [];
 
         protected override async Task OnInitializedAsync()
@@ -81,25 +81,25 @@ namespace SD.WEB.Shared
         {
             try
             {
-                await Actions.StartLoading.Invoke(null);
+                await State.StartLoading.Invoke(null);
 
                 if (MediaListApi != null)
                 {
-                    _ = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 1, Cts.Token);
+                    _ = await MediaListApi.GetList(Items, State, type, StringParameters, List, 1, Cts.Token);
 
                     if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                     {
-                        _ = await MediaListApi.GetList(Items, Actions, type, StringParameters, List, 2, Cts.Token);
+                        _ = await MediaListApi.GetList(Items, State, type, StringParameters, List, 2, Cts.Token);
                     }
 
                     if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", System.Globalization.CultureInfo.InvariantCulture)).ToHashSet();
 
-                    await Actions.FinishLoading.Invoke(Items);
+                    await State.FinishLoading.Invoke(Items);
                 }
             }
             catch (Exception ex)
             {
-                await Actions.ShowError.Invoke(ex.Message);
+                await State.ShowError.Invoke(ex.Message);
             }
         }
 
@@ -198,7 +198,7 @@ namespace SD.WEB.Shared
             }
             catch (Exception ex)
             {
-                await Actions.ShowError.Invoke(ex.Message);
+                await State.ShowError.Invoke(ex.Message);
             }
         }
     }

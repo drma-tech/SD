@@ -18,13 +18,13 @@
         else
         {
             <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
+                                ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
             <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
+                                ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
             <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
+                                ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
         }
     </DialogContent>
@@ -101,7 +101,7 @@
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = await AppStateStatic.GetRegion(null, null, Cts.Token) };
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
             await ShowSuccess(Translations.Notification.OperationCompleted);
         }
@@ -117,7 +117,7 @@
         {
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId), ApiContext.Default.MyProvidersItem, Cts.Token);
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId), state: null, ApiContext.Default.MyProvidersItem, Cts.Token);
 
             await ShowSuccess(Translations.Notification.OperationCompleted);
         }

@@ -7,7 +7,7 @@
 <HeadComponent Title="@Translations.Title.Trailers" Description="@Translations.Description.Trailers" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Translations.Title.Trailers" Description="@Translations.Description.Trailers" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
 
-<RenderControl Actions="Actions">
+<RenderControl State="State">
     <div class="grid-relative-container-trailer">
         @foreach (var item in TrailerModel?.Data?.Items ?? [])
         {
@@ -39,12 +39,12 @@
 <FloatingButton Template="Template.Back"></FloatingButton>
 
 @code {
-    public RenderControlState<YoutubeCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<YoutubeCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private YoutubeCache? TrailerModel { get; set; }
 
     protected override async Task LoadStaticDataAsync()
     {
-        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Actions, Cts.Token);
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full", State, Cts.Token);
     }
 
 }

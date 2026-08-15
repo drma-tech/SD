@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Platform
         [Parameter] public string? Id { get; set; }
         private bool isNotFound;
 
-        public RenderControlState<ProviderModel> Actions { get; set; } = new(obj => obj == null);
+        public RenderControlState<ProviderModel> State { get; set; } = new(obj => obj == null);
         private AllProviders? AllProviders { get; set; }
         public ProviderModel? Provider { get; set; }
         private List<EnumFieldObject<Country>> regions = [];
@@ -32,7 +32,7 @@ namespace SD.WEB.Modules.Platform
 
         protected override async Task LoadStaticDataAsync()
         {
-            Actions.StartLoading?.Invoke(null);
+            State.StartLoading?.Invoke(null);
 
             AllProviders = await AllProvidersApi.GetAll(actions: null, Cts.Token);
             Provider = AllProviders?.Items.SingleOrDefault(s => string.Equals(s.id, Id, StringComparison.OrdinalIgnoreCase));
@@ -59,7 +59,7 @@ namespace SD.WEB.Modules.Platform
                 }
             }
 
-            Actions.FinishLoading?.Invoke(Provider);
+            State.FinishLoading?.Invoke(Provider);
         }
 
         protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
@@ -122,7 +122,7 @@ namespace SD.WEB.Modules.Platform
                 var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
                 var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformAdded);
             }
@@ -144,7 +144,7 @@ namespace SD.WEB.Modules.Platform
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, Provider?.id, StringComparison.OrdinalIgnoreCase)), ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, Provider?.id, StringComparison.OrdinalIgnoreCase)), state: null, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformRemoved);
             }

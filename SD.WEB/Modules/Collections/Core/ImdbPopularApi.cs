@@ -13,7 +13,7 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync("public/cache/imdb-popular-movies".ConfigureParameters(stringParameters), setNewVersion: false, actions: null, cancellationToken);
+            var result = await GetAsync("public/cache/imdb-popular-movies".ConfigureParameters(stringParameters), setNewVersion: false, state: null, cancellationToken);
 
             foreach (var item in result?.Data?.Items ?? [])
             {
@@ -35,7 +35,7 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
         }
         else if (type == MediaType.tv)
         {
-            var result = await GetAsync("public/cache/imdb-popular-tv".ConfigureParameters(stringParameters), setNewVersion: false, actions: null, cancellationToken);
+            var result = await GetAsync("public/cache/imdb-popular-tv".ConfigureParameters(stringParameters), setNewVersion: false, state: null, cancellationToken);
 
             foreach (var item in result?.Data?.Items ?? [])
             {

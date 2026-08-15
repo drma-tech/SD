@@ -10,7 +10,7 @@
 @inject TmdbApi TmdbApi
 @inject IpInfoApi IpInfoApi
 
-<RenderControl Actions="Actions">
+<RenderControl State="State">
     @{
         var hasProvider = false;
 
@@ -242,7 +242,7 @@
     [Parameter] public MediaType? Type { get; set; }
     [Parameter] public DateTime? ReleaseDate { get; set; }
 
-    public RenderControlState<MediaProviders> Actions { get; set; } = new(obj => obj == null);
+    public RenderControlState<MediaProviders> State { get; set; } = new(obj => obj == null);
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
@@ -263,9 +263,9 @@
 
     protected override async Task LoadParameterDataAsync()
     {
-        await Actions.StartLoading.Invoke(null);
+        await State.StartLoading.Invoke(null);
         Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type, Cts.Token);
-        await Actions.FinishLoading.Invoke(Providers);
+        await State.FinishLoading.Invoke(Providers);
     }
 
     protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)

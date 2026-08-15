@@ -9,7 +9,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <RenderControl Actions="Actions">
+        <RenderControl State="State">
             <div class="grid-relative-container-poster mb-2">
                 @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue) ?? Enumerable.Empty<Part>())
                 {

@@ -3,7 +3,7 @@
 
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
-<RenderControl Actions="Actions">
+<RenderControl State="State">
     <MudGrid Spacing="@CssHelper.SpaceSmall">
         @foreach (var item in Model?.Data?.Items ?? [])
         {
@@ -37,7 +37,7 @@
     [Parameter] public MediaType? Type { get; set; }
 
     public MetaCriticCache? Model { get; set; }
-    private RenderControlState<MetaCriticCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    private RenderControlState<MetaCriticCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
     protected override List<string?> GetParameterKey()
     {
@@ -53,7 +53,7 @@
         {
             if (Type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, Cts.Token);
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, State, Cts.Token);
             }
         }
     }

@@ -12,7 +12,7 @@ namespace SD.WEB.Modules.Search
         public WishList? Wish { get; set; }
 
         private ICollection<MediaDetail> Items { get; set; } = [];
-        private RenderControlState<ICollection<MediaDetail>> Actions { get; } = new(list => list == null || list.Empty());
+        private RenderControlState<ICollection<MediaDetail>> State { get; } = new(list => list == null || list.Empty());
         private static Dictionary<string, string> ParametersQuery => new(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" } };
         private static Dictionary<string, string> ParametersKeyword => new(StringComparer.OrdinalIgnoreCase) { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
         private static Dictionary<string, string> ParametersAdvanced => new(StringComparer.OrdinalIgnoreCase) { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };
@@ -23,7 +23,7 @@ namespace SD.WEB.Modules.Search
 
         protected override void OnInitialized()
         {
-            Actions.CustomMessageWarning = Translations.Module.Landing.SearchReturnedNothing;
+            State.CustomMessageWarning = Translations.Module.Landing.SearchReturnedNothing;
 
             WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
             WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
@@ -58,17 +58,17 @@ namespace SD.WEB.Modules.Search
 
         private async Task LoadItems(string? keywordId)
         {
-            await Actions.StartLoading.Invoke(null);
+            await State.StartLoading.Invoke(null);
             Items.Clear();
 
             if (AppStateStatic.Index == 0)
             {
-                _ = await TmdbSearch.GetList(Items, Actions, type: null, ParametersQuery, cancellationToken: Cts.Token);
+                _ = await TmdbSearch.GetList(Items, State, type: null, ParametersQuery, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 1)
             {
                 ParametersKeyword["with_keywords"] = keywordId!;
-                _ = await TmdbDiscoveryApi.GetList(Items, Actions, type: null, ParametersKeyword, cancellationToken: Cts.Token);
+                _ = await TmdbDiscoveryApi.GetList(Items, State, type: null, ParametersKeyword, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 2)
             {
@@ -80,10 +80,10 @@ namespace SD.WEB.Modules.Search
                 {
                     ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString(CultureInfo.InvariantCulture);
                 }
-                _ = await TmdbDiscoveryApi.GetList(Items, Actions, AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
+                _ = await TmdbDiscoveryApi.GetList(Items, State, AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
             }
 
-            await Actions.FinishLoading.Invoke(Items);
+            await State.FinishLoading.Invoke(Items);
         }
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)

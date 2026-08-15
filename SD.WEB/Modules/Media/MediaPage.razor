@@ -57,12 +57,12 @@
     </PageSectionComponent>
 }
 
-<RenderControl Actions="Actions" LoadingHeight="400px">
+<RenderControl State="State" LoadingHeight="400px">
     <ChildContent>
         <PageSectionComponent Title="@Translations.Module.Media.TabAbout" Color="Color.Secondary">
             <BodyFragment>
                 <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
-                            Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
+                            State="RatingsState" RatingsCache="_ratingsCache"></MediaAbout>
             </BodyFragment>
         </PageSectionComponent>
         <PageSectionComponent Title="@($"{Translations.Module.Media.WhereToWatch} ({Region?.GetFieldSettings().Name})")" Color="Color.Secondary">
@@ -88,7 +88,7 @@
 
         <PageSectionComponent Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
-                <RenderControl Actions="RecommendationsActions" Context="ctx">
+                <RenderControl State="RecommendationsState" Context="ctx">
                     <Slider List="Recommendations" Context="item">
                         <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"

@@ -6,28 +6,28 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
 {
     public async Task<AuthPrincipal?> Get(bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
-        return await GetAsync(Endpoint.Get, setNewVersion, actions: null, cancellationToken);
+        return await GetAsync(Endpoint.Get, setNewVersion, state: null, cancellationToken);
     }
 
     public async Task<AuthPrincipal> Add(AuthPrincipal? obj, SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync(Endpoint.Add(platform.ToString(), country), obj, cancellationToken);
+        return await PostAsync(Endpoint.Add(platform.ToString(), country), obj, state: null, cancellationToken);
     }
 
     public async Task<AuthPrincipal> Update(AuthPrincipal? obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PutAsync(Endpoint.Update, obj, ApiContext.Default.AuthPrincipal, cancellationToken);
+        return await PutAsync(Endpoint.Update, obj, ApiContext.Default.AuthPrincipal, state: null, cancellationToken);
     }
 
     public async Task<AuthPrincipal> Event(string app, string msg, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(msg);
 
-        return await PostAsync(Endpoint.Event(app, msg), null, cancellationToken);
+        return await PostAsync(Endpoint.Event(app, msg), null, state: null, cancellationToken);
     }
 
     public async Task Remove(CancellationToken cancellationToken)
@@ -51,12 +51,12 @@ public class PrincipalImportApi(IHttpClientFactory factory) : ApiCosmos<AuthPrin
 {
     public async Task<IEnumerable<AuthPrincipal>> GetAll(CancellationToken cancellationToken)
     {
-        return await GetListAsync(Endpoint.GetAll, actions: null, cancellationToken);
+        return await GetListAsync(Endpoint.GetAll, state: null, cancellationToken);
     }
 
     public async Task Migrate(string? oldId, string? newId, CancellationToken cancellationToken)
     {
-        await PutAsync(Endpoint.Migrate(oldId, newId), null, ApiContext.Default.AuthPrincipal, cancellationToken);
+        await PutAsync(Endpoint.Migrate(oldId, newId), null, ApiContext.Default.AuthPrincipal, state: null, cancellationToken);
     }
 
     private struct Endpoint

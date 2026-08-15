@@ -19,7 +19,7 @@
                 <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
                     @if (_loaded[0])
                     {
-                        <RenderControl Actions="ActionsMovie">
+                        <RenderControl State="MovieState">
                             <MudCarousel Class="mud-width-full" Style="height: 500px;" AutoCycle="true" ShowBullets="false" TData="NewsModelItem" ArrowsColor="Color.Primary">
                                 <PreviousButtonTemplate>
                                     <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-left").Font" Color="Color.Primary" Size="Size.Large" Class="ms-2" Style="cursor: pointer;"></MudIcon>
@@ -51,7 +51,7 @@
                 <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
                     @if (_loaded[1])
                     {
-                        <RenderControl Actions="ActionsSerie">
+                        <RenderControl State="SerieState">
                             <MudCarousel Class="mud-width-full" Style="height: 500px;" AutoCycle="true" ShowBullets="false" TData="NewsModelItem" ArrowsColor="Color.Primary">
                                 <PreviousButtonTemplate>
                                     <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-left").Font" Color="Color.Primary" Size="Size.Large" Class="ms-2" Style="cursor: pointer;"></MudIcon>
@@ -88,8 +88,8 @@
 @code {
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    public RenderControlState<NewsCache> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
-    public RenderControlState<NewsCache> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache> MovieState { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache> SerieState { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
     private NewsCache? NewsMovie { get; set; }
     private NewsCache? NewsSerie { get; set; }
@@ -101,11 +101,11 @@
     {
         if (_activeIndex == 0)
         {
-            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", ActionsMovie, Cts.Token);
+            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", MovieState, Cts.Token);
         }
         else
         {
-            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", ActionsSerie, Cts.Token);
+            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", SerieState, Cts.Token);
         }
     }
 

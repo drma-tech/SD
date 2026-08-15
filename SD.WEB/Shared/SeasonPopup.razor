@@ -4,7 +4,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <RenderControl Actions="Actions">
+        <RenderControl State="State">
             <MudList T="string">
                 @foreach (var item in Season?.episodes ?? [])
                 {

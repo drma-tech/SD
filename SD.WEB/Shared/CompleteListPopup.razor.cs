@@ -17,7 +17,7 @@ namespace SD.WEB.Shared
 
         [Parameter] public ICollection<MediaDetail> Items { get; set; } = [];
         [Parameter] public EventCallback<ICollection<MediaDetail>> ItemsChanged { get; set; }
-        [Parameter] public RenderControlState<ICollection<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
+        [Parameter] public RenderControlState<ICollection<MediaDetail>> State { get; set; } = new(list => list == null || list.Empty());
 
         [Parameter] public IMediaListApi? MediaListApi { get; set; }
         [Parameter] public EnumLists? List { get; set; }

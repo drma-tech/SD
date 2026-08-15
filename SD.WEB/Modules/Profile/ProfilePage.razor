@@ -67,15 +67,15 @@
     </MudItem>
 </MudGrid>
 
-<MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture" Actions="ProviderActions"></MyProviderComponent>
+<MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture" State="ProviderState"></MyProviderComponent>
 
 <MudGrid Spacing="@CssHelper.SpaceSmall">
     <MudItem xs="12" md="6">
-        <WishlistComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv" Culture="@Culture">
+        <WishlistComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" MovieState="WishMovieState" TvState="WishTvState" Culture="@Culture">
         </WishlistComponent>
     </MudItem>
     <MudItem xs="12" md="6">
-        <WatchingComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv" Culture="@Culture">
+        <WatchingComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" MovieState="WatchingMovieState" TvState="WatchingTvState" Culture="@Culture">
         </WatchingComponent>
     </MudItem>
 </MudGrid>

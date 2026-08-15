@@ -2,13 +2,13 @@ namespace SD.WEB.Modules.Profile
 {
     public partial class ProfilePage
     {
-        public RenderControlState<MyProviders> ProviderActions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+        public RenderControlState<MyProviders> ProviderState { get; set; } = new(obj => obj == null || obj.Items.Empty());
 
-        public RenderControlState<WishList> WishActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
-        public RenderControlState<WishList> WishActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
+        public RenderControlState<WishList> WishMovieState { get; set; } = new(list => list == null || list.Movies.Empty());
+        public RenderControlState<WishList> WishTvState { get; set; } = new(list => list == null || list.Shows.Empty());
 
-        public RenderControlState<WatchingList> WatchingActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
-        public RenderControlState<WatchingList> WatchingActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
+        public RenderControlState<WatchingList> WatchingMovieState { get; set; } = new(list => list == null || list.Movies.Empty());
+        public RenderControlState<WatchingList> WatchingTvState { get; set; } = new(list => list == null || list.Shows.Empty());
 
         private MyProviders? MyProviders { get; set; }
         public WatchingList? Watching { get; set; }
@@ -22,20 +22,20 @@ namespace SD.WEB.Modules.Profile
 
             WatchingApi.DataChanged += model =>
             {
-                _ = WatchingActionsMovie.StartLoading.Invoke(null);
-                _ = WatchingActionsTv.StartLoading.Invoke(null);
+                _ = WatchingMovieState.StartLoading.Invoke(null);
+                _ = WatchingTvState.StartLoading.Invoke(null);
                 Watching = model;
-                _ = WatchingActionsMovie.FinishLoading.Invoke(model);
-                _ = WatchingActionsTv.FinishLoading.Invoke(model);
+                _ = WatchingMovieState.FinishLoading.Invoke(model);
+                _ = WatchingTvState.FinishLoading.Invoke(model);
                 StateHasChanged();
             };
             WishApi.DataChanged += model =>
             {
-                _ = WishActionsMovie.StartLoading.Invoke(null);
-                _ = WishActionsTv.StartLoading.Invoke(null);
+                _ = WishMovieState.StartLoading.Invoke(null);
+                _ = WishTvState.StartLoading.Invoke(null);
                 Wish = model;
-                _ = WishActionsMovie.FinishLoading.Invoke(model);
-                _ = WishActionsTv.FinishLoading.Invoke(model);
+                _ = WishMovieState.FinishLoading.Invoke(model);
+                _ = WishTvState.FinishLoading.Invoke(model);
                 StateHasChanged();
             };
         }
@@ -62,10 +62,10 @@ namespace SD.WEB.Modules.Profile
         {
             var demo = false;
 
-            await WishActionsMovie.StartLoading.Invoke(null);
-            await WishActionsTv.StartLoading.Invoke(null);
-            await WatchingActionsMovie.StartLoading.Invoke(null);
-            await WatchingActionsTv.StartLoading.Invoke(null);
+            await WishMovieState.StartLoading.Invoke(null);
+            await WishTvState.StartLoading.Invoke(null);
+            await WatchingMovieState.StartLoading.Invoke(null);
+            await WatchingTvState.StartLoading.Invoke(null);
 
             Wish = await WishApi.Get(actions: null, token);
             Watching = await WatchingApi.Get(actions: null, token);
@@ -92,16 +92,16 @@ namespace SD.WEB.Modules.Profile
                 //todo: generate demo
             }
 
-            await WishActionsMovie.FinishLoading.Invoke(Wish);
-            await WishActionsTv.FinishLoading.Invoke(Wish);
-            await WatchingActionsMovie.FinishLoading.Invoke(Watching);
-            await WatchingActionsTv.FinishLoading.Invoke(Watching);
+            await WishMovieState.FinishLoading.Invoke(Wish);
+            await WishTvState.FinishLoading.Invoke(Wish);
+            await WatchingMovieState.FinishLoading.Invoke(Watching);
+            await WatchingTvState.FinishLoading.Invoke(Watching);
 
             MyProviders = await MyProvidersApi.Get(actions: null, token);
 
             if (MyProviders == null && AppStateStatic.IsAuthenticated)
             {
-                await ProviderActions.StartLoading.Invoke(null);
+                await ProviderState.StartLoading.Invoke(null);
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
@@ -111,11 +111,11 @@ namespace SD.WEB.Modules.Profile
                 var provider = AllProviders?.Items.Where(p => p.regions.Contains(region)).OrderBy(o => o.priority).FirstOrDefault();
 
                 var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 demo = true;
 
-                await ProviderActions.FinishLoading.Invoke(MyProviders);
+                await ProviderState.FinishLoading.Invoke(MyProviders);
             }
 
             if (demo)

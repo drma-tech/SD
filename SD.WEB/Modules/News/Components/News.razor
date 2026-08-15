@@ -9,7 +9,7 @@
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.News} ({MediaType.GetFieldSettings().Name})")"
                       Description="@Translations.Description.News.CustomFormat(MediaType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/news/{category}")" />
 
-<RenderControl Actions="Actions">
+<RenderControl State="State">
     <div class="grid-relative-container-news">
         @foreach (var item in NewsList?.Data?.Items ?? [])
         {
@@ -40,7 +40,7 @@
 
     public MediaType MediaType => category.ParseToEnum<MediaType>(MediaType.movie);
 
-    public RenderControlState<NewsCache> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private NewsCache? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 
@@ -54,6 +54,6 @@
 
     protected override async Task LoadParameterDataAsync()
     {
-        NewsList = await CacheFlixsterApi.GetNews("full", category, Actions, Cts.Token);
+        NewsList = await CacheFlixsterApi.GetNews("full", category, State, Cts.Token);
     }
 }

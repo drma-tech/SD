@@ -8,7 +8,7 @@ namespace SD.WEB.Modules.Profile.Components
         [Parameter][EditorRequired] public WishList? WishList { get; set; }
         [Parameter][EditorRequired] public string? Culture { get; set; }
 
-        [Parameter] public RenderControlState<MyProviders> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+        [Parameter] public RenderControlState<MyProviders> State { get; set; } = new(obj => obj == null || obj.Items.Empty());
         private AllProviders? AllProviders { get; set; }
         private MyProviders? MyProviders { get; set; }
         private bool ProvidersChanged { get; set; }
@@ -17,7 +17,7 @@ namespace SD.WEB.Modules.Profile.Components
 
         protected override void OnInitialized()
         {
-            Actions.CustomMessageWarning = Translations.Module.Profile.MarkPlatforms;
+            State.CustomMessageWarning = Translations.Module.Profile.MarkPlatforms;
 
             MyProvidersApi.DataChanged += model =>
             {
@@ -40,7 +40,7 @@ namespace SD.WEB.Modules.Profile.Components
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            MyProviders = await MyProvidersApi.Get(Actions, token);
+            MyProviders = await MyProvidersApi.Get(State, token);
 
             foreach (var item in MyProviders?.Items ?? new HashSet<MyProvidersItem>())
             {
@@ -68,7 +68,7 @@ namespace SD.WEB.Modules.Profile.Components
                 }
 
                 await ShowInfo(Translations.Module.Profile.RegionsApplied);
-                await MyProvidersApi.Update(MyProviders, AppStateStatic.ActiveProduct, validatePlan: false, token);
+                await MyProvidersApi.Update(MyProviders, state: null, AppStateStatic.ActiveProduct, validatePlan: false, token);
 
                 StateHasChanged();
             }
@@ -92,7 +92,7 @@ namespace SD.WEB.Modules.Profile.Components
                 item.logo = provider.logo_path;
             }
 
-            MyProviders = await MyProvidersApi.Update(MyProviders, product: null, validatePlan: false, Cts.Token);
+            MyProviders = await MyProvidersApi.Update(MyProviders, state: null, product: null, validatePlan: false, Cts.Token);
             ProvidersChanged = false;
         }
     }

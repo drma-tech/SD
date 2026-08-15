@@ -4,7 +4,7 @@
 
 @inject TmdbCreditApi TmdbCreditApi
 
-<RenderControl Actions="Actions">
+<RenderControl State="State">
     @if (Type == MediaType.movie)
     {
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? [];
@@ -96,7 +96,7 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public RenderControlState<Credits> Actions { get; set; } = new(obj => obj == null);
+    public RenderControlState<Credits> State { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
 
     protected override List<string?> GetParameterKey()
@@ -110,7 +110,7 @@
 
     protected override async Task LoadParameterDataAsync()
     {
-        Credits = await TmdbCreditApi.GetList(Type, TmdbId, Actions, Cts.Token);
+        Credits = await TmdbCreditApi.GetList(Type, TmdbId, State, Cts.Token);
     }
 
     private async Task OpenCompleteList(Crew crew)

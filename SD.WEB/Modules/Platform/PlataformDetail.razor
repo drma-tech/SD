@@ -60,7 +60,7 @@ else
         </PageSectionComponent>
     }
 
-    <RenderControl Actions="Actions">
+    <RenderControl State="State">
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/popular/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Translations.Module.Media.PopularDesc.CustomFormat(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
