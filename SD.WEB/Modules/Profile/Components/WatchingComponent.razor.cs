@@ -44,7 +44,7 @@ namespace SD.WEB.Modules.Profile.Components
 
         public async Task ShowCollectionPopup(MediaType type, string? collectionId, string? name)
         {
-            if (collectionId.NotEmpty()) await DialogService.CollectionPopup(Watching, Wish, type, collectionId);
+            if (collectionId.NotEmpty()) await DialogService.CollectionPopup(Watching, Wish, type, collectionId, false);
         }
 
         // private async Task ImportFromWatched(MediaType type)

@@ -124,6 +124,24 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Film franchises.
+        /// </summary>
+        internal static string FilmFranchises {
+            get {
+                return ResourceManager.GetString("FilmFranchises", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Franchises.
+        /// </summary>
+        internal static string Franchises {
+            get {
+                return ResourceManager.GetString("Franchises", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free Streaming Platforms ({0}).
         /// </summary>
         internal static string FreeProviders {

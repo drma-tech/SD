@@ -11,13 +11,6 @@ public static class DataHelper
         return text.Length > count ? string.Concat(text.AsSpan(0, count), "...") : text;
     }
 
-    public static DateTime? GetDate(this string? value)
-    {
-        if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, CultureInfo.InvariantCulture, out _))
-            return DateTime.Parse(value, CultureInfo.InvariantCulture);
-        return null;
-    }
-
     public static string FormatRuntime(this int? runtime)
     {
         if (!runtime.HasValue || runtime == 0) return "";

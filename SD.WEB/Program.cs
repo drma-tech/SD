@@ -148,6 +148,7 @@ static void ConfigureApi(IServiceCollection collection)
     collection.AddScoped<CacheYoutubeApi>();
     collection.AddScoped<CacheRatingsApi>();
     collection.AddScoped<CacheMetaCriticApi>();
+    collection.AddScoped<FranchiseApi>();
 
     collection.AddScoped<TmdbApi>();
 

@@ -14,7 +14,7 @@ public static class PopupHelper
 {
     public static readonly EventCallbackFactory Factory = new();
 
-    public static async Task CollectionPopup(this IDialogService service, WatchingList? watching, WishList? wish, MediaType? type, string? collectionId)
+    public static async Task CollectionPopup(this IDialogService service, WatchingList? watching, WishList? wish, MediaType? type, string? collectionId, bool franchise)
     {
         var parameters = new DialogParameters<CollectionPopup>
         {
@@ -22,6 +22,7 @@ public static class PopupHelper
             { x => x.Type, type },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
+            { x => x.Franchise, franchise },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };

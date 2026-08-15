@@ -3,18 +3,32 @@
 @inject TmdbListApi TmdbListApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
+@inject FranchiseApi FranchiseApi
 
+@using SD.Shared.Models.Franchise
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<EditorsChoice>
 
-<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Description="@Translations.Description.EditorsChoice.CustomFormat(MediaType.GetFieldSettings().Name)"
+<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaTypeName})")"
+               Description="@(Type == "franchise" ? Translations.Description.EditorsChoiceFranchise : Translations.Description.EditorsChoice.CustomFormat(MediaType.GetFieldSettings().Name))"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetFieldSettings().Name})")" Subtitle="Top-rated titles for all audiences"
-                      Description="@Translations.Description.EditorsChoice.CustomFormat(MediaType.GetFieldSettings().Name)"
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.EditorsChoice} ({MediaTypeName})")" Subtitle="Top-rated titles for all audiences"
+                      Description="@(Type == "franchise" ? Translations.Description.EditorsChoiceFranchise :Translations.Description.EditorsChoice.CustomFormat(MediaTypeName))"
                       UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
-@if (MediaType == MediaType.movie)
+@if (Type == "franchise")
+{
+    <div class="grid-relative-container-poster">
+        @foreach (var item in State.CurrentInstance?.Data?.FranchiseItems ?? new HashSet<FranchiseItem>())
+        {
+            <PosterComponent Date="@item.LastReleaseDate" Poster="@item.Poster" Title="@item.Name" OnlyYear="true" FullPage="true"
+                             MediaType="@MediaType.movie" Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.Id, item.Name))" WishList="Wish">
+            </PosterComponent>
+        }
+    </div>
+}
+else if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watching="Watching" Wish="Wish"
                    FullPage="true" ShowHead="false" Culture="@Culture">
@@ -30,7 +44,10 @@ else
 @code {
     [Parameter] public string? Type { get; set; }
 
+    public RenderControlState<FranchiseCache> State { get; set; } = new(obj => obj == null || obj.Data == null || obj.Data.FranchiseItems.Empty());
+
     public MediaType MediaType => Type.ParseToEnum<MediaType>(MediaType.movie);
+    public string MediaTypeName => Type == "franchise" ? Translations.Title.FilmFranchises : MediaType.GetFieldSettings().Name;
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -43,10 +60,22 @@ else
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
+    protected override async Task LoadStaticDataAsync()
+    {
+        if (Type == "franchise")
+        {
+            await FranchiseApi.GetItems(State, Cts.Token);
+        }
+    }
+
     protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }
 
+    public async Task ShowCollectionPopup(MediaType type, string? collectionId, string? name)
+    {
+        if (collectionId.NotEmpty()) await DialogService.CollectionPopup(Watching, Wish, type, collectionId, true);
+    }
 }

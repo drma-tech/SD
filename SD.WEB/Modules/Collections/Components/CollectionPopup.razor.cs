@@ -18,8 +18,11 @@ namespace SD.WEB.Modules.Collections.Components
         [Parameter] public string? CollectionId { get; set; }
         [Parameter] public MediaType? Type { get; set; }
 
+        [Parameter] public bool Franchise { get; set; }
+
         private RenderControlState<TmdbCollection> State { get; } = new(obj => obj == null || obj.parts.Empty());
         private TmdbCollection? Collection { get; set; }
+        private string Culture => Navigation.GetCulture();
 
         protected override void OnInitialized()
         {
@@ -128,6 +131,11 @@ namespace SD.WEB.Modules.Collections.Components
             Watching = await WatchingListApi.Remove(Type, CollectionId, cancellationToken: Cts.Token);
 
             HideModal();
+        }
+
+        private async Task OpenPopupMedia(MediaType? type, string? tmdbId)
+        {
+            Navigation.NavigateTo($"/{Culture}/media/{type}/{tmdbId}");
         }
     }
 }

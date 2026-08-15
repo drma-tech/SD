@@ -1,4 +1,5 @@
-﻿using SD.Shared.Models.List;
+﻿using SD.Shared.Models.Franchise;
+using SD.Shared.Models.List;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
@@ -8,6 +9,11 @@ namespace SD.WEB.Core;
 
 public struct Endpoint
 {
+    public static string Franchise()
+    {
+        return $"public/cache/franchise";
+    }
+
     public static string News(string mode, string category)
     {
         return $"public/cache/news?mode={mode}&category={category}";
@@ -34,39 +40,47 @@ public struct Endpoint
     }
 }
 
+public class FranchiseApi(IHttpClientFactory http) : ApiCosmos<FranchiseCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.FranchiseCache)
+{
+    public async Task<FranchiseCache?> GetItems(RenderControlState<FranchiseCache> state, CancellationToken cancellationToken)
+    {
+        return await GetAsync(Endpoint.Franchise(), setNewVersion: false, state, cancellationToken);
+    }
+}
+
 public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.NewsCache)
 {
-    public async Task<NewsCache?> GetNews(string mode, string category, RenderControlState<NewsCache> actions, CancellationToken cancellationToken)
+    public async Task<NewsCache?> GetNews(string mode, string category, RenderControlState<NewsCache> state, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.News(mode, category), setNewVersion: false, actions, cancellationToken);
+        return await GetAsync(Endpoint.News(mode, category), setNewVersion: false, state, cancellationToken);
     }
 }
 
-public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.YoutubeCache)
+public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.YoutubeCache)
 {
-    public async Task<YoutubeCache?> GetTrailers(string mode, RenderControlState<YoutubeCache> actions, CancellationToken cancellationToken)
+    public async Task<YoutubeCache?> GetTrailers(string mode, RenderControlState<YoutubeCache> state, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Trailers(mode), setNewVersion: false, actions, cancellationToken);
+        return await GetAsync(Endpoint.Trailers(mode), setNewVersion: false, state, cancellationToken);
     }
 }
 
-public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.RatingsCache)
+public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.RatingsCache)
 {
-    public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> actions, CancellationToken cancellationToken)
+    public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> state, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, state, cancellationToken);
     }
 
-    public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> actions, CancellationToken cancellationToken)
+    public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> state, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), setNewVersion: false, state, cancellationToken);
     }
 }
 
-public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<MetaCriticCache>(http, ApiType.Anonymous, null, [], ApiContext.Default.MetaCriticCache)
+public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<MetaCriticCache>(http, ApiType.Anonymous, key: null, [], typeInfo: ApiContext.Default.MetaCriticCache)
 {
-    public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> actions, CancellationToken cancellationToken)
+    public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> state, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), setNewVersion: false, actions, cancellationToken);
+        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), setNewVersion: false, state, cancellationToken);
     }
 }

@@ -15,15 +15,16 @@
                 {
                     var logo = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path;
 
-                    <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()"
-                                     Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchingList="Watching">
+                    <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()" Rating="@item.vote_average"
+                                     Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchingList="Watching"
+                                     Clicked="@(() => OpenPopupMedia(Type, item.id.ToString()))">
                     </PosterComponent>
                 }
             </div>
         </RenderControl>
     </DialogContent>
     <DialogActions>
-        @if (AppStateStatic.IsAuthenticated)
+        @if (AppStateStatic.IsAuthenticated && !Franchise)
         {
             <MudButton Color="Color.Primary" OnClick="@IsWatched">
                 @Translations.Button.Update

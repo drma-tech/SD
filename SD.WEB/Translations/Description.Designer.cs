@@ -97,6 +97,15 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover the Editor&apos;s Choice: film franchises linked to our selection of acclaimed titles from platforms such as IMDb, TMDb, Metacritic, Rotten Tomatoes, Trakt, FilmAffinity, and Letterboxd..
+        /// </summary>
+        internal static string EditorsChoiceFranchise {
+            get {
+                return ResourceManager.GetString("EditorsChoiceFranchise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discover the most anticipated movies of {0}, featuring upcoming blockbusters, fan favorites, and highly awaited releases hitting theaters and streaming..
         /// </summary>
         internal static string ExpectedMovies {

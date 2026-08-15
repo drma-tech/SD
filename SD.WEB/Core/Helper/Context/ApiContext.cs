@@ -1,4 +1,5 @@
 ﻿using SD.Shared.Models.Auth;
+using SD.Shared.Models.Franchise;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.List.Tmdb;
@@ -22,6 +23,7 @@ namespace SD.WEB.Core.Api
     [JsonSerializable(typeof(YoutubeCache))]
     [JsonSerializable(typeof(RatingsCache))]
     [JsonSerializable(typeof(MetaCriticCache))]
+    [JsonSerializable(typeof(FranchiseCache))]
     [JsonSerializable(typeof(MostPopularDataCache))]
     [JsonSerializable(typeof(CustomListNew))]
     internal sealed partial class ApiContext : JsonSerializerContext
