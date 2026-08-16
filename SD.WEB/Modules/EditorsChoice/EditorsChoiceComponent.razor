@@ -5,7 +5,7 @@
 
 <PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@(_activeIndex == 2 ? Translations.Description.EditorsChoiceFranchise : Translations.Description.EditorsChoice.CustomFormat(TypeSelected.GetFieldSettings().Name))">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
+        <MudTabs MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
@@ -31,7 +31,7 @@
                         </MediaListComponent>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@Translations.Title.Franchises">
+                <MudTabPanel Text="@Translations.Title.Franchises" BadgeData="@("New")" BadgeColor="Color.Warning" Style="width: 180px;">
                     @if (_loaded[2])
                     {
                         <FranchiseComponent Watching="Watching" Wish="Wish"></FranchiseComponent>

@@ -22,7 +22,7 @@
 
 <PageSectionComponent Title="@Translations.Module.Landing.Search">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" TabPanelsClass="@CssHelper.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
+        <MudTabs MinimumTabWidth="60px" TabPanelsClass="@CssHelper.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>
                 <MudTabPanel Text="@Translations.Module.Landing.Title">
                     <MudStack Row="true" AlignItems="AlignItems.Stretch" Spacing="2">
@@ -123,7 +123,7 @@
 
 <PageSectionComponent Title="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Description="@Translations.Description.ExpectedMovies.CustomFormat(2026)">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />

@@ -8,7 +8,7 @@
 
 <PageSectionComponent Title="@Translations.Title.AwardsOfTheYear.CustomFormat(DateTime.Now.Year)" Description="@Translations.Description.AwardsYear">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/best-awards-year")" />

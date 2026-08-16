@@ -127,14 +127,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
         var results = await repo.Query<AuthPrincipal>(MainType.Principal, x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), transform: null, cancellationToken);
 
-        var client = results.LastOrDefault();
-
-        if (client == null)
-        {
-            req.LogError(new UnhandledException($"client null - originalTransactionId:{originalTransactionId}"));
-            return;
-        }
-
+        var client = results.LastOrDefault() ?? throw new UnhandledException($"client null - originalTransactionId:{originalTransactionId}");
         var sub = client.GetSubscription(originalTransactionId, PaymentProvider.Apple);
 
         if (string.Equals(notification.NotificationType, "REFUND", StringComparison.OrdinalIgnoreCase) || string.Equals(notification.NotificationType, "REVOKE", StringComparison.OrdinalIgnoreCase))
@@ -266,14 +259,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
                 throw new NotificationException("userId metadata missing in session");
 
-            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
-
-            if (principal == null)
-            {
-                req.LogError(new NotificationException($"stripe webhook - principal is null - subscriptionId:{obj.Id}"));
-                return await req.CreateResponse(HttpStatusCode.OK, $"stripe webhook - principal is null - subscriptionId:{obj.Id}", cancellationToken);
-            }
-
+            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException($"stripe webhook - principal is null - subscriptionId:{obj.Id}");
             var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
 
             sub.Active = obj.Status is "active" or "trialing";
@@ -297,6 +283,9 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         {
             if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new NotificationException("stripe customer not available");
 
+            if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
+                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
+
             if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
             {
                 //if no metadada, try to find the user with the StripeCustomerId
@@ -307,13 +296,12 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
                     var item = list.First();
                     item.StripeCustomerId = null;
                     await repo.UpsertItemAsync(item);
+
+                    return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken);
                 }
 
-                return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken);
+                throw new NotificationException("stripe customer id not available");
             }
-
-            if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
-                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
 
             var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
@@ -358,7 +346,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var session = await service.GetAsync(id, cancellationToken: cancellationToken);
 
         var result = session != null && string.Equals(session.PaymentStatus, "paid", StringComparison.OrdinalIgnoreCase) && string.Equals(session.Status, "complete", StringComparison.OrdinalIgnoreCase);
-        
+
         return await req.CreateResponse(HttpStatusCode.OK, result, cancellationToken);
     }
 }

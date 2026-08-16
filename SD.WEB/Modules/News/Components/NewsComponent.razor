@@ -5,7 +5,7 @@
 
 <PageSectionComponent Title="@($"{Translations.Title.News}")" Description="@Translations.Description.NewsShort">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
+        <MudTabs MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">

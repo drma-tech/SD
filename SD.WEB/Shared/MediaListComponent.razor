@@ -8,7 +8,7 @@
 {
     <PageSectionComponent Title="@Title" Icon="@Icon" Image="@Image" Description="@Description">
         <BodyFragment>
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                      ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
                      ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(TypeSelected); })">
                 <Header>

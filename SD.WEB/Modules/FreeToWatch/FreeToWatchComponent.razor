@@ -7,7 +7,7 @@
 
 <PageSectionComponent Title="@($"{Translations.Title.FreeWatch} ({(Region?.GetFieldSettings().Name ?? "United States")})")" Description="@Translations.Description.FreeWatch">
     <BodyFragment>
-        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
+        <MudTabs MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">

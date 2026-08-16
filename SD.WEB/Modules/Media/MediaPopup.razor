@@ -12,7 +12,7 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <RenderControl State="State">
-            <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
+            <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="60px">
                 <MudTabPanel Tag="@Translations.Module.Media.TabAbout" Text="@Translations.Module.Media.TabAbout">
                     <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
                                 State="RatingsState" RatingsCache="_ratingsCache"></MediaAbout>
