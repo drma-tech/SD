@@ -14,7 +14,7 @@
                 <!--to fill in the sitemap-->
                 <a href="@($"/{Culture}/editors-choice/{MediaType.movie.ToString().ToLower()}")" style="display:none;"></a>
                 <a href="@($"/{Culture}/editors-choice/{MediaType.tv.ToString().ToLower()}")" style="display:none;"></a>
-                <a href="@($"/{Culture}/editors-choice/franchise")" style="display:none;"></a>
+                @* <a href="@($"/{Culture}/editors-choice/franchise")" style="display:none;"></a> *@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
