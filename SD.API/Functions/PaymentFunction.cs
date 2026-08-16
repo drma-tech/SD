@@ -188,7 +188,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
-        if (principal.StripeCustomerId.Empty()) throw new NotificationException("Stripe customer not available");
+        if (principal.StripeCustomerId.Empty()) throw new UnhandledException("Stripe customer not available");
 
         var options = new SessionCreateOptions
         {
@@ -246,18 +246,18 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var json = await new StreamReader(req.Body).ReadToEndAsync(cancellationToken);
 
         req.Headers.TryGetValues("Stripe-Signature", out var Signature);
-        if (string.IsNullOrEmpty(Signature?.First())) throw new NotificationException("Stripe signature missing");
-        var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new NotificationException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
+        if (string.IsNullOrEmpty(Signature?.First())) throw new UnhandledException("Stripe signature missing");
+        var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new UnhandledException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
 
         if (stripeEvent.Type.StartsWith("customer.subscription", StringComparison.OrdinalIgnoreCase)) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
         {
-            if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new NotificationException("stripe subscription not available");
+            if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new UnhandledException("stripe subscription not available");
 
             if (!obj.Metadata.TryGetValue(APP, out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
 
             if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
-                throw new NotificationException("userId metadata missing in session");
+                throw new UnhandledException("userId metadata missing in session");
 
             var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException($"stripe webhook - principal is null - subscriptionId:{obj.Id}");
             var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
@@ -281,7 +281,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         }
         else if (string.Equals(stripeEvent.Type, "customer.deleted", StringComparison.OrdinalIgnoreCase))
         {
-            if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new NotificationException("stripe customer not available");
+            if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new UnhandledException("stripe customer not available");
 
             if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
@@ -300,7 +300,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
                     return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken);
                 }
 
-                throw new NotificationException("stripe customer id not available");
+                throw new UnhandledException("stripe customer id not available");
             }
 
             var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
