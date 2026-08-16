@@ -22,9 +22,9 @@
     <div>
         @if (Media?.runtime != null && Media.runtime > 0)
         {
-            <CustomChip Name="@Translations.Module.Media.Duration" Value="@Media.runtime.FormatRuntime()" Color="Color.Info"></CustomChip>
+            <CustomChip Name="@Translations.Module.Media.Duration" Value="@Media.runtime.FormatRuntime()" ColorName="Color.Info" ColorValue="Color.Info"></CustomChip>
         }
-        <CustomChips Name="@Translations.Module.Media.Genres" Values="@Media?.Genres" Color="Color.Info" Class="ms-2"></CustomChips>
+        <CustomChips Name="@Translations.Module.Media.Genres" Values="@Media?.Genres" ColorName="Color.Info" ColorValue="Color.Info" Class="ms-2"></CustomChips>
         <div>
             <RenderControl State="State" LoadingHeight="40px" HideIfEmpty="true">
                 @if (RatingsCache?.Data != null && (RatingsCache.Data.imdb.NotEmpty() || RatingsCache.Data.imdbLink.NotEmpty()))
