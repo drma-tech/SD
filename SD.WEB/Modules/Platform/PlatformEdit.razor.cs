@@ -119,7 +119,7 @@ namespace SD.WEB.Modules.Platform
 
         protected Task<DataGridEditFormAction> RowUpdated(ProviderModel model)
         {
-            var item = AllProviders?.Items.FirstOrDefault(f => f.id == model.id);
+            var item = AllProviders?.Items.FirstOrDefault(f => string.Equals(f.id, model.id, StringComparison.Ordinal));
 
             item = model;
 
