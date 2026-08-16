@@ -8,22 +8,22 @@
             @Name
         </MudChip>
     }
-    @if (Value is bool resultB)
+    @if (Value != null)
     {
-        <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
-            <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
-                     Style="@($"margin-inline: -{(AppStateStatic.IsMobile ? 4 : 6)}px;")"></MudIcon>
-            @if (IncludeBoolText)
-            {
-                <span class="mud-chip-content ms-2">
-                    @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
-                </span>
-            }
-        </MudChip>
-    }
-    else
-    {
-        @if (Value != null)
+        @if (Value is bool resultB)
+        {
+            <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
+                <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
+                         Style="@($"margin-inline: -{(AppStateStatic.IsMobile ? 4 : 6)}px;")"></MudIcon>
+                @if (IncludeBoolText)
+                {
+                    <span class="mud-chip-content ms-2">
+                        @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
+                    </span>
+                }
+            </MudChip>
+        }
+        else
         {
             <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
                 @Value

@@ -8,19 +8,22 @@
             @Name
         </MudChip>
     }
-    @if (Values.Empty())
+    @if (Values != null)
     {
-        <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
-            @(FallbackValue ?? "N/A")
-        </MudChip>
-    }
-    else
-    {
-        @foreach (var item in Values)
+        @if (Values.Empty())
         {
             <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
-                @(item)
+                @(FallbackValue ?? "N/A")
             </MudChip>
+        }
+        else
+        {
+            @foreach (var item in Values)
+            {
+                <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
+                    @(item)
+                </MudChip>
+            }
         }
     }
 </span>
