@@ -4,8 +4,8 @@ namespace SD.WEB.Modules.Auth
 {
     public partial class RegisterUser
     {
-        private bool _terms1 { get; set; } 
-        private bool _terms2 { get; set; } 
+        private bool _terms1 { get; set; }
+        private bool _terms2 { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

@@ -151,6 +151,24 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        internal static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genres.
+        /// </summary>
+        internal static string Genres {
+            get {
+                return ResourceManager.GetString("Genres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Homepage.
         /// </summary>
         internal static string Homepage {

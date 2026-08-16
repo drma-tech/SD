@@ -1,33 +1,46 @@
 ﻿@inherits FieldBase
 @typeparam TValue
 
-@if (Name.NotEmpty())
-{
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Filled" Class="ms-0 me-1">
-        @Name
-    </MudChip>
-}
-@if (Value is bool resultB)
-{
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1">
-        <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
-                 Style="@($"margin-inline: -{(AppStateStatic.IsMobile ? 4 : 6)}px;")"></MudIcon>
-        @if (IncludeBoolText)
+<span class="@Class" style="@Style">
+    @if (Name.NotEmpty())
+    {
+        <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Filled" Class="ms-0 me-1" Color="ColorName">
+            @Name
+        </MudChip>
+    }
+    @if (Value is bool resultB)
+    {
+        <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
+            <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
+                     Style="@($"margin-inline: -{(AppStateStatic.IsMobile ? 4 : 6)}px;")"></MudIcon>
+            @if (IncludeBoolText)
+            {
+                <span class="mud-chip-content ms-2">
+                    @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
+                </span>
+            }
+        </MudChip>
+    }
+    else
+    {
+        @if (Value != null)
         {
-            <span class="mud-chip-content ms-2">
-                @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
-            </span>
+            <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
+                @Value
+            </MudChip>
         }
-    </MudChip>
-}
-else
-{
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1">
-        @Value
-    </MudChip>
-}
+    }
+</span>
 
 @code {
     [Parameter] public TValue? Value { get; set; }
+    [Parameter] public string? FallbackValue { get; set; } = "N/A";
     [Parameter] public bool IncludeBoolText { get; set; } = true;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public Size? Size { get; set; }
+
+    [Parameter] public Color ColorName { get; set; } = Color.Default;
+    [Parameter] public Color ColorValue { get; set; } = Color.Default;
 }

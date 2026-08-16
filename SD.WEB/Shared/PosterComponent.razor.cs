@@ -14,26 +14,34 @@ namespace SD.WEB.Shared
         [Parameter] public bool ForceShowTitle { get; set; }
         [Parameter] public bool FullPage { get; set; } = false;
         [Parameter] public Typo? ForceTypoTitle { get; set; }
+
         // TOP LEFT
+
         [Parameter] public DateTime? Date { get; set; }
         [Parameter] public bool OnlyYear { get; set; }
         [Parameter] public int? Runtime { get; set; }
         [Parameter] public int? Percent { get; set; }
+
         // TOP RIGHT
+
         [Parameter] public double? Rating { get; set; }
+
         // CENTER LEFT/RIGHT
+
         [Parameter] public string? TmdbId { get; set; }
         [Parameter] public bool ShowWished { get; set; } = true;
         [Parameter][EditorRequired] public WishList? WishList { get; set; }
         [Parameter] public bool ShowWatched { get; set; } = true;
         [Parameter] public string? CollectionId { get; set; }
         [Parameter] public WatchingList? WatchingList { get; set; }
+
         //BOTTOM
+
         [Parameter] public string? Comments { get; set; }
         [Parameter] public string? CommentsSeparator { get; set; } = ",";
         [Parameter] public bool CommentsIsImage { get; set; }
 
-        class PosterBadge
+        private class PosterBadge
         {
             public string? Icon { get; set; }
             public string? Text { get; set; }

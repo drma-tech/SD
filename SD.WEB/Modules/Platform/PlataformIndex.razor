@@ -60,35 +60,17 @@ else
                                 </CardHeaderAvatar>
                                 <CardHeaderContent>
                                     <MudLink Href="@($"/{Culture}/platform/{item.id}")">
-                                        <MudText Typo="Typo.h2" Color="Color.Primary" Style="font-size: 1rem">
-                                            @item.name
-                                        </MudText>
+                                        <CustomChip Name="@item.name" TValue="string" ColorName="Color.Primary"></CustomChip>
                                     </MudLink>
                                 </CardHeaderContent>
                             </MudCardHeader>
                             <MudCardContent Class="py-1 px-2">
-                                <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
-                                    @Translations.Module.Media.DeliveryModel:
-                                </MudText>
-                                <MudText Typo="Typo.body2" Inline="true">
-                                    @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetFieldSettings().Name)) : "N/A")
-                                </MudText>
-                            </MudCardContent>
-                            <MudCardContent Class="py-1 px-2">
-                                <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
-                                    @Translations.Module.Media.MediaType:
-                                </MudText>
-                                <MudText Typo="Typo.body2" Inline="true">
-                                    @(item.types.Any() ? string.Join(", ", item.types.Select(m => m.GetFieldSettings().Name)) : "N/A")
-                                </MudText>
-                            </MudCardContent>
-                            <MudCardContent Class="py-1 px-2">
-                                <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
-                                    @Translations.Module.Media.Countries:
-                                </MudText>
-                                <MudText Typo="Typo.body2" Inline="true">
-                                    @item.regions.Count
-                                </MudText>
+                                <CustomChips Name="@Translations.Module.Media.DeliveryModel" Values="item.models.Select(m => m.GetFieldSettings().Name)"
+                                             Size="Size.Small" Style="display: block;" ColorName="Color.Secondary"></CustomChips>
+                                <CustomChips Name="@Translations.Module.Media.MediaType" Values="item.types.Select(m => m.GetFieldSettings().Name)"
+                                             Size="Size.Small" Style="display: block;" ColorName="Color.Secondary"></CustomChips>
+                                <CustomChip Name="@Translations.Module.Media.Countries" Value="@item.regions.Count"
+                                            Size="Size.Small" Style="display: block;" ColorName="Color.Secondary"></CustomChip>
                             </MudCardContent>
                             <MudCardActions Style="padding: 4px;">
                                 @if (favorite)
@@ -141,11 +123,15 @@ else
             </MudAlert>
         }
     </RenderControl>
-
-    <style>
-        .mud-card-header .mud-card-header-avatar {
-            margin-right: 8px;
-            margin-inline-end: 8px;
-        }
-    </style>
 }
+
+<style>
+    .mud-card-header .mud-card-header-avatar {
+        margin-right: 8px;
+        margin-inline-end: 8px;
+    }
+
+    .mud-chip > .mud-chip-content {
+        white-space: break-spaces;
+    }
+</style>

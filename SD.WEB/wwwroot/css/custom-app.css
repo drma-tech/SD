@@ -64,28 +64,14 @@ body .pwa-updater[b-pwa-updater] {
 
 .grid-relative-container-platform {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 12px;
-}
-
-@media (max-width: 599.95px), (max-height: 599.95px) {
-    .grid-relative-container-platform {
-        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-        gap: 8px;
-    }
 }
 
 .grid-relative-container-poster {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 8px;
-}
-
-@media (max-width: 599.95px), (max-height: 599.95px) {
-    .grid-relative-container-poster {
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
-        gap: 4px;
-    }
 }
 
 .grid-relative-container-trailer {

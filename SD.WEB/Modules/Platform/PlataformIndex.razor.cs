@@ -22,9 +22,9 @@ namespace SD.WEB.Modules.Platform
         public IEnumerable<ProviderModel> GetFilteredProviders(bool all)
         {
             return AllProviders?.Items
-                .Where(p => RegionEnum.HasValue && p.regions.Contains(RegionEnum.Value) 
-                    && (p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel)) 
-                    && (p.types.Empty() || p.types.Any(a => MediaType == null || a == MediaType)) 
+                .Where(p => RegionEnum.HasValue && p.regions.Contains(RegionEnum.Value)
+                    && (p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
+                    && (p.types.Empty() || p.types.Any(a => MediaType == null || a == MediaType))
                     && (name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase)))
                 .OrderBy(o => o.priority)
                 .Take(all ? 1000 : (Region.Empty() ? 45 : 20))
