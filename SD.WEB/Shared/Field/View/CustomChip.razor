@@ -4,7 +4,7 @@
 <span class="@Class" style="@Style">
     @if (Name.NotEmpty())
     {
-        <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Filled" Class="ms-0 me-1" Color="ColorName">
+        <MudChip T="string" Size="Size" Variant="Variant.Filled" Class="mx-0" Color="ColorName" Href="@NameHref" OnClick="NameClick">
             @Name
         </MudChip>
     }
@@ -12,7 +12,7 @@
     {
         @if (Value is bool resultB)
         {
-            <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
+            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Color="ColorValue" Href="@ValueHref">
                 <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
                          Style="@($"margin-inline: -{(AppStateStatic.IsMobile ? 4 : 6)}px;")"></MudIcon>
                 @if (IncludeBoolText)
@@ -23,11 +23,27 @@
                 }
             </MudChip>
         }
+        else if (Value is null)
+        {
+            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Color="ColorValue" Href="@ValueHref" OnClick="ValueClick">
+                @if (Image.NotEmpty())
+                {
+                    <MudImage Src="@Image" Alt="@Image" Class="me-1" Style="@ImageStyle"></MudImage>
+                }
+                @FallbackValue
+            </MudChip>
+        }
         else
         {
-            <MudChip T="string" Size="Size ?? AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1" Color="ColorValue">
-                @Value
-            </MudChip>
+            <MudTooltip Text="@Tooltip">
+                <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Color="ColorValue" Href="@ValueHref" OnClick="ValueClick">
+                    @if (Image.NotEmpty())
+                    {
+                        <MudImage Src="@Image" Alt="@Tooltip" Class="me-1" Style="@ImageStyle"></MudImage>
+                    }
+                    @Value
+                </MudChip>
+            </MudTooltip>
         }
     }
 </span>
@@ -36,11 +52,19 @@
     [Parameter] public TValue? Value { get; set; }
     [Parameter] public string? FallbackValue { get; set; } = "N/A";
     [Parameter] public bool IncludeBoolText { get; set; } = true;
-
-    [Parameter] public string? Class { get; set; }
-    [Parameter] public string? Style { get; set; }
-    [Parameter] public Size? Size { get; set; }
+    [Parameter] public string? Tooltip { get; set; }
 
     [Parameter] public Color ColorName { get; set; } = Color.Default;
     [Parameter] public Color ColorValue { get; set; } = Color.Default;
+
+    [Parameter] public string? NameHref { get; set; }
+    [Parameter] public string? ValueHref { get; set; }
+
+    [Parameter] public EventCallback NameClick { get; set; }
+    [Parameter] public EventCallback ValueClick { get; set; }
+
+    [Parameter] public string? Image { get; set; }
+    [Parameter] public string? ImageStyle { get; set; }
+
+    [Parameter] public string? ValueChipClass { get; set; } = "ms-1 me-0";
 }

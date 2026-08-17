@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace SD.WEB.Shared.Field;
 
@@ -6,6 +7,11 @@ public class FieldBase : ComponentBase
 {
     [Parameter] public string? Name { get; set; }
     [Parameter] public string? Description { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public Size? Size { get; set; }
+
     //[Parameter] public string? Placeholder { get; set; }
 
     //[Parameter] public string? CssIcon { get; set; }

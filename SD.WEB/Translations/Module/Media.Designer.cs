@@ -259,6 +259,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ratings.
+        /// </summary>
+        internal static string Ratings {
+            get {
+                return ResourceManager.GetString("Ratings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discover the highest-rated movies and TV shows on {0}, curated to highlight the best titles you won’t want to miss..
         /// </summary>
         internal static string RecommendedDesc {

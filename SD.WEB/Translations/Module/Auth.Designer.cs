@@ -196,7 +196,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I understand that in the first phase some features of the platform are limited or disabled..
+        ///   Looks up a localized string similar to I understand that this platform is not for watching and/or downloading movies and TV shows..
         /// </summary>
         internal static string Terms2 {
             get {

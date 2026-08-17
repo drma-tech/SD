@@ -27,76 +27,30 @@
         <CustomChips Name="@Translations.Module.Media.Genres" Values="@Media?.Genres" ColorName="Color.Info" ColorValue="Color.Info" Class="ms-2"></CustomChips>
         <div>
             <RenderControl State="State" LoadingHeight="40px" HideIfEmpty="true">
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.imdb.NotEmpty() || RatingsCache.Data.imdbLink.NotEmpty()))
-                {
-                    <MudTooltip Text="IMDb">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.imdbLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.imdb)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.imdb
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.tmdb.NotEmpty() || RatingsCache.Data.tmdbLink.NotEmpty()))
-                {
-                    <MudTooltip Text="TMDB">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.tmdbLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.tmdb)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.tmdb
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.metacritic.NotEmpty() || RatingsCache.Data.metacriticLink.NotEmpty()))
-                {
-                    <MudTooltip Text="Metacritic">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.metacriticLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.metacritic)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.metacritic
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.trakt.NotEmpty() || RatingsCache.Data.traktLink.NotEmpty()))
-                {
-                    <MudTooltip Text="Trakt">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.traktLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.trakt)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.trakt
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.rottenTomatoes.NotEmpty() || RatingsCache.Data.rottenTomatoesLink.NotEmpty()))
-                {
-                    <MudTooltip Text="Rotten Tomatoes">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.rottenTomatoesLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.rottenTomatoes
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.filmAffinity.NotEmpty() || RatingsCache.Data.filmAffinityLink.NotEmpty()))
-                {
-                    <MudTooltip Text="Film Affinity">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.filmAffinityLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.filmAffinity)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.filmAffinity
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
-                @if (RatingsCache?.Data != null && (RatingsCache.Data.letterboxd.NotEmpty() || RatingsCache.Data.letterboxdLink.NotEmpty()))
-                {
-                    <MudTooltip Text="Letterboxd">
-                        <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.letterboxdLink))" rel="nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.letterboxd)" Variant="Variant.Outlined" Size="AppStateStatic.Size" Class="ms-0 me-2">
-                                <MudImage Src="logo/letterboxd.png" Alt="Letterboxd" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.letterboxd
-                            </MudChip>
-                        </MudLink>
-                    </MudTooltip>
-                }
+
+                <CustomChip Name="@Translations.Module.Media.Ratings" TValue="string" ColorName="Color.Info"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.imdb" ColorValue="GetColorByRating(RatingsCache?.Data?.imdb)" Tooltip="IMDb" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.imdbLink))" Image="logo/imdb.png" ImageStyle="height: 20px;"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.tmdb" ColorValue="GetColorByRating(RatingsCache?.Data?.tmdb)" Tooltip="TMDB" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.tmdbLink))" Image="logo/tmdb.png" ImageStyle="height: 20px;"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.metacritic" ColorValue="GetColorByRating(RatingsCache?.Data?.metacritic)" Tooltip="Metacritic" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.metacriticLink))" Image="logo/metacritic.png" ImageStyle="height: 20px;"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.trakt" ColorValue="GetColorByRating(RatingsCache?.Data?.trakt)" Tooltip="Trakt" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.traktLink))" Image="logo/trakt.png" ImageStyle="height: 20px;"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.rottenTomatoes" ColorValue="GetColorByRating(RatingsCache?.Data?.rottenTomatoes)" Tooltip="Rotten Tomatoes" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.rottenTomatoesLink))" Image="logo/rotten-tomatoes.png" ImageStyle="height: 20px;"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.filmAffinity" ColorValue="GetColorByRating(RatingsCache?.Data?.filmAffinity)" Tooltip="Film Affinity" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.filmAffinityLink))" Image="logo/film-affinity.png" ImageStyle="height: 20px;"></CustomChip>
+
+                <CustomChip Value="@RatingsCache?.Data?.letterboxd" ColorValue="GetColorByRating(RatingsCache?.Data?.letterboxd)" Tooltip="Letterboxd" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.letterboxdLink))" Image="logo/letterboxd.png" ImageStyle="height: 20px;"></CustomChip>
+               
             </RenderControl>
         </div>
         <MudText Typo="Typo.body1" Align="Align.Justify" Class="@CssHelper.Build().Small("my")">

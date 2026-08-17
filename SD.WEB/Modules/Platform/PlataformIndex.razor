@@ -59,9 +59,7 @@ else
                                     </MudLink>
                                 </CardHeaderAvatar>
                                 <CardHeaderContent>
-                                    <MudLink Href="@($"/{Culture}/platform/{item.id}")">
-                                        <CustomChip Name="@item.name" TValue="string" ColorName="Color.Primary"></CustomChip>
-                                    </MudLink>
+                                    <CustomChip Name="@item.name" TValue="string" ColorName="Color.Primary" Size="Size.Medium" NameHref="@($"/{Culture}/platform/{item.id}")"></CustomChip>
                                 </CardHeaderContent>
                             </MudCardHeader>
                             <MudCardContent Class="py-1 px-2">
