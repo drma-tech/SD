@@ -87,7 +87,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
                 {
                     if (item == null) continue;
                     compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,
-                        string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(),
+                        string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? item.thumbnails.ElementAtIndex(1)?.url : item.thumbnails.ElementAtIndex(2)?.url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(),
                         IsPopular().IsMatch(item.viewCountText ?? "")));
                 }
 

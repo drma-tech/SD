@@ -37,7 +37,7 @@
                     <MudTextField @bind-Value="@email" Label="@Translations.Module.Auth.ContinueWith.CustomFormat(SD.WEB.Translations.Module.Auth.Email)" Placeholder="@Translations.Module.Auth.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
                                   Immediate="true" InputType="InputType.Email" HelperText="@Translations.Module.Auth.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
                 </MudBadge>
-                <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => LoginWithEmail(email)"
+                <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Variant="Variant.Filled" OnClick="LoginWithEmail"
                                Style="align-self: start; margin-top: 8px;" Disabled="@(_processingInProgress || emailProbablySent)" />
             </MudToolBar>
             @if (SuggestEmailCorrection(email).NotEmpty())
@@ -49,7 +49,7 @@
             <MudToolBar Gutters="false" Style="height: auto;">
                 <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Translations.Module.Auth.OTPCode" Placeholder="@Translations.Module.Auth.EnterCode" Disabled="@(!emailProbablySent)"
                               InputType="InputType.Number" HelperText="@Translations.Module.Auth.EmailDelay" Variant="Variant.Outlined" Margin="Margin.Dense" Class="me-5" />
-                <MudIconButton Icon="@Icons.Material.Filled.Check" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => ConfirmCode(email, otp)"
+                <MudIconButton Icon="@Icons.Material.Filled.Check" Color="Color.Primary" Variant="Variant.Filled" OnClick="ConfirmCode"
                                Style="align-self: start; margin-top: 8px;" Disabled="@(!emailProbablySent)" />
             </MudToolBar>
         </MudStack>

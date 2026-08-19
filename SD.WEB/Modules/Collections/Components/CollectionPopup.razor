@@ -17,7 +17,7 @@
 
                     <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()" Rating="@item.vote_average"
                                      Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchingList="Watching"
-                                     Clicked="@(() => OpenPopupMedia(Type, item.id.ToString()))">
+                                     Clicked="@(() => OpenPopupMedia(item.id.ToString()))">
                     </PosterComponent>
                 }
             </div>

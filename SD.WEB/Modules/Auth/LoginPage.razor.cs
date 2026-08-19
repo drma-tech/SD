@@ -21,7 +21,7 @@ namespace SD.WEB.Modules.Auth
 
         private async Task LoginWithMicrosoft() => await SignIn("microsoft");
 
-        private async Task LoginWithEmail(string? email) => await SignIn("email", email);
+        private async Task LoginWithEmail() => await SignIn("email", email);
 
         private SD.Shared.Enums.Platform? Platform { get; set; }
         private bool _processingInProgress;
@@ -127,20 +127,20 @@ namespace SD.WEB.Modules.Auth
             return EmailRegex().IsMatch(email);
         }
 
-        private async Task ConfirmCode(string? email = null, string? code = null)
+        private async Task ConfirmCode()
         {
             try
             {
                 _processingInProgress = true;
 
-                if (code.Empty())
+                if (otp.Empty())
                 {
                     await ShowError(Translations.Module.Auth.EnterCode);
                     _processingInProgress = false; StateHasChanged();
                     return;
                 }
 
-                await JsRuntime.Supabase().ConfirmCode(email!, code!, Cts.Token);
+                await JsRuntime.Supabase().ConfirmCode(email!, otp!, Cts.Token);
 
                 Navigation.NavigateTo($"/{Culture}");
             }

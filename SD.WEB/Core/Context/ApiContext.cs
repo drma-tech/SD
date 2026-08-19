@@ -9,7 +9,7 @@ using SD.Shared.Models.Subscription;
 using SD.Shared.Models.Trailers;
 using System.Text.Json.Serialization;
 
-namespace SD.WEB.Core.Api
+namespace SD.WEB.Core.Context
 {
     [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
     [JsonSerializable(typeof(PaymentConfigurations))]

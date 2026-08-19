@@ -30,7 +30,7 @@
                                       @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
                                       Variant="Variant.Outlined" HelperText="@Translations.Module.Landing.TypeSomething" InputType="InputType.Text" Clearable="true">
                         </MudTextField>
-                        <MudIconButton OnClick="@(() => { Navigation.NavigateTo($"/{Culture}/search"); })" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
+                        <MudIconButton Href="@($"/{Culture}/search")" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
                                        Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"></MudIconButton>
                     </MudStack>
                 </MudTabPanel>
@@ -41,12 +41,12 @@
                                       Variant="Variant.Outlined" HelperText="@Translations.Module.Landing.SearchKeywords" InputType="InputType.Text" Clearable="true"
                                       OnClearButtonClick="@(() => AppStateStatic.Keywords = [])">
                         </MudTextField>
-                        <MudIconButton OnClick="@(async () => { await SearchKeyWords(); })" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
+                        <MudIconButton OnClick="@SearchKeyWords" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
                                        Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"></MudIconButton>
                     </MudStack>
                     @foreach (var item in AppStateStatic.Keywords)
                     {
-                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/search?keyword={item.id}"))">
+                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Href="@($"/{Culture}/search?keyword={item.id}")">
                             @item.name
                         </MudChip>
                     }
@@ -99,7 +99,7 @@
                             <MudSelectItem Value="@("vote_count.asc")">vote_count.asc</MudSelectItem>
                             <MudSelectItem Value="@("vote_count.desc")">vote_count.desc</MudSelectItem>
                         </MudSelect>
-                        <MudIconButton OnClick="@(() => { Navigation.NavigateTo($"/{Culture}/search"); })" Style="height:56px; width:56px; margin-top: 4px;"
+                        <MudIconButton Href="@($"/{Culture}/search")" Style="height:56px; width:56px; margin-top: 4px;"
                                        Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"
                                        Disabled="@(AppStateStatic.Type == null || (AppStateStatic.Type == MediaType.movie ? AppStateStatic.MovieGenre == null : AppStateStatic.TvGenre == null))"></MudIconButton>
                     </MudToolBar>
@@ -126,7 +126,7 @@
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>

@@ -1,7 +1,7 @@
 ﻿using SD.Shared.Models.List.Tmdb;
 using System.Text.Json.Serialization;
 
-namespace SD.WEB.Core.Api
+namespace SD.WEB.Core.Context
 {
     [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
     [JsonSerializable(typeof(bool?))]

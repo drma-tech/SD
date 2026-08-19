@@ -133,9 +133,9 @@ namespace SD.WEB.Modules.Collections.Components
             HideModal();
         }
 
-        private async Task OpenPopupMedia(MediaType? type, string? tmdbId)
+        private async Task OpenPopupMedia(string? tmdbId)
         {
-            Navigation.NavigateTo($"/{Culture}/media/{type}/{tmdbId}");
+            Navigation.NavigateTo($"/{Culture}/media/{Type}/{tmdbId}");
         }
     }
 }

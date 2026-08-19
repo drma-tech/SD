@@ -32,7 +32,7 @@
                                       AdornmentIcon="@Icons.Material.Filled.Search" Variant="Variant.Outlined" OnKeyDown="@KeyPressKeyboard" Clearable="true"
                                       OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@Translations.Module.Landing.SearchKeywords" InputType="InputType.Text">
                         </MudTextField>
-                        <MudIconButton OnClick="@(async () => { await SearchKeyWords(); })" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
+                        <MudIconButton OnClick="@SearchKeyWords" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
                                        Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"></MudIconButton>
                     </MudStack>
                     @foreach (var item in AppStateStatic.Keywords)

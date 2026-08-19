@@ -10,16 +10,16 @@
     }
     @if (Values == null || Values.Empty())
     {
-        <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Color="ColorValue">
-            @(FallbackValue)
+        <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue">
+            @FallbackValue
         </MudChip>
     }
     else
     {
         @foreach (var item in Values)
         {
-            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Color="ColorValue">
-                @(item)
+            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue">
+                @item
             </MudChip>
         }
     }
@@ -33,4 +33,5 @@
     [Parameter] public Color ColorValue { get; set; } = Color.Default;
 
     [Parameter] public string? ValueChipClass { get; set; } = "ms-1 me-0";
+    [Parameter] public string? ValueChipStyle { get; set; }
 }

@@ -88,7 +88,7 @@
             </MudGrid>
         </MudCardContent>
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(AccountProduct.Premium))" Disabled="_processing">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@OpenCheckout" Disabled="_processing">
                 <MudText Class="me-1">
                     @Translations.Module.Subscription.Select
                 </MudText>
@@ -129,7 +129,7 @@
         };
     }
 
-    protected async Task OpenCheckout(AccountProduct product)
+    protected async Task OpenCheckout()
     {
         try
         {
@@ -137,11 +137,11 @@
 
             if (AppStateStatic.IsAuthenticated)
             {
-                var priceId = Config?.GetPriceId(product, Cycle);
+                var priceId = Config?.GetPriceId(AccountProduct.Premium, Cycle);
 
                 if (priceId.Empty())
                 {
-                    await ShowWarning($"Price not available for {product.GetFieldSettings().Name}");
+                    await ShowWarning($"Price not available for {AccountProduct.Premium.GetFieldSettings().Name}");
                     _processing = false; StateHasChanged();
                     return;
                 }
