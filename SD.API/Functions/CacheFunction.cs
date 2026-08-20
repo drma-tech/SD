@@ -199,7 +199,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
         var ttl = TtlCache.OneDay;
 
-        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
         var doc = await cache.Get<RatingsCache>(cacheKey, cancellationToken);
@@ -252,7 +252,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
         var ttl = TtlCache.OneDay;
 
-        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
         var doc = await cache.Get<RatingsCache>(cacheKey, cancellationToken);
@@ -301,7 +301,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var id = req.GetQueryParameters()["id"];
         var ttl = TtlCache.OneWeek;
 
-        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
         var doc = await cache.Get<MetaCriticCache>(cacheKey, cancellationToken);

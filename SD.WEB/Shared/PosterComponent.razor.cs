@@ -41,13 +41,6 @@ namespace SD.WEB.Shared
         [Parameter] public string? CommentsSeparator { get; set; } = ",";
         [Parameter] public bool CommentsIsImage { get; set; }
 
-        private class PosterBadge
-        {
-            public string? Icon { get; set; }
-            public string? Text { get; set; }
-            public Color Color { get; set; } = Color.Info;
-        }
-
         private PosterBadge? TopLeft { get; set; }
         private PosterBadge? TopRight { get; set; }
         private PosterBadge? CenterLeft { get; set; }

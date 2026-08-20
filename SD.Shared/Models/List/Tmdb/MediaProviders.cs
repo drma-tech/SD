@@ -1315,5 +1315,7 @@ public class MediaProviders
 
 public class TMDB_AllProviders
 {
+#pragma warning disable MA0016 // Prefer using collection abstraction instead of implementation
     public List<ProviderBase> results { get; set; } = [];
+#pragma warning restore MA0016 // Prefer using collection abstraction instead of implementation
 }

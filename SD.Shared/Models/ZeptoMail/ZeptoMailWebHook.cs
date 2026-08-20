@@ -39,13 +39,11 @@
         public IReadOnlyCollection<To>? to { get; set; }
         public string? tag { get; set; }
         public DateTime? processed_time { get; set; }
-        public string? @object { get; set; }
     }
 
     public class EventDatum
     {
         public IReadOnlyCollection<Detail>? details { get; set; }
-        public string? @object { get; set; }
     }
 
     public class EventMessage
