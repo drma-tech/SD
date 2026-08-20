@@ -77,11 +77,11 @@ namespace SD.WEB.Modules.Media
 
             if (Media?.MediaType == MediaType.movie)
             {
-                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", CultureInfo.InvariantCulture), RatingsState, Cts.Token);
+                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", CultureInfo.InvariantCulture), RatingsState, Cts.Token);
             }
             else
             {
-                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", CultureInfo.InvariantCulture), RatingsState, Cts.Token);
+                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", CultureInfo.InvariantCulture), RatingsState, Cts.Token);
             }
         }
 

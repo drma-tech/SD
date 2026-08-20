@@ -20,11 +20,10 @@
 @if (Type == "franchise")
 {
     <div class="grid-relative-container-poster">
-        @foreach (var item in State.CurrentInstance?.Data?.FranchiseItems ?? new HashSet<FranchiseItem>())
+        @foreach (var item in GetMediaDetails())
         {
-            <PosterComponent Date="@item.LastReleaseDate" Poster="@item.Poster" Title="@item.Name" OnlyYear="true" FullPage="true"
-                             MediaType="@MediaType.movie" Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.Id, item.Name))" WishList="Wish">
-            </PosterComponent>
+            <NewPosterComponent MediaDetail="@item" OnlyYear="true" FullPage="true" Clicked="@ShowCollectionPopup" WishList="Wish">
+            </NewPosterComponent>
         }
     </div>
 }
@@ -68,14 +67,34 @@ else
         }
     }
 
+    private IEnumerable<MediaDetail> GetMediaDetails()
+    {
+        if (Type == "franchise")
+        {
+            foreach (var item in State.CurrentInstance?.Data?.FranchiseItems ?? new HashSet<FranchiseItem>())
+            {
+                yield return new MediaDetail
+                {
+                    collectionId = int.Parse(item.Id ?? "0"),
+                    title = item.Name,
+                    poster_small = item.Poster,
+                    release_date = item.LastReleaseDate,
+                    MediaType = MediaType.movie,
+                };
+            }
+        }
+
+        yield return new();
+    }
+
     protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
     {
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }
 
-    public async Task ShowCollectionPopup(MediaType type, string? collectionId, string? name)
+    public async Task ShowCollectionPopup(MediaDetail item)
     {
-        if (collectionId.NotEmpty()) await DialogService.CollectionPopup(Watching, Wish, type, collectionId, true);
+        if (item.collectionId.HasValue) await DialogService.CollectionPopup(Watching, Wish, item.MediaType, item.collectionId.ToString(), true);
     }
 }

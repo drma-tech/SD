@@ -1,5 +1,4 @@
-﻿@using SD.Shared.Models.List.Tmdb
-@using SD.WEB.Modules.Profile.Core
+﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
 @inherits ComponentCore<CollectionPopup>
 
@@ -11,14 +10,10 @@
     <DialogContent>
         <RenderControl State="State">
             <div class="grid-relative-container-poster mb-2">
-                @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue) ?? Enumerable.Empty<Part>())
+                @foreach (var item in GetMediaDetails())
                 {
-                    var logo = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path;
-
-                    <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()" Rating="@item.vote_average"
-                                     Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchingList="Watching"
-                                     Clicked="@(() => OpenPopupMedia(item.id.ToString()))">
-                    </PosterComponent>
+                    <NewPosterComponent MediaDetail="@item" ShowWished="Type == MediaType.movie" WishList="Wish" WatchingList="Watching" Clicked="@OpenPopupMedia">
+                    </NewPosterComponent>
                 }
             </div>
         </RenderControl>

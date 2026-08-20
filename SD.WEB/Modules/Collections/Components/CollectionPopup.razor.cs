@@ -3,6 +3,7 @@ using MudBlazor;
 using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Collections.Core;
 using System.Globalization;
+using static MudBlazor.CategoryTypes;
 
 namespace SD.WEB.Modules.Collections.Components
 {
@@ -85,6 +86,23 @@ namespace SD.WEB.Modules.Collections.Components
             await State.FinishLoading.Invoke(Collection);
         }
 
+        private IEnumerable<MediaDetail> GetMediaDetails()
+        {
+            if (Collection == null) return [];
+            
+            return Collection.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue).Select(p => new MediaDetail
+            {
+                tmdb_id = p.id.ToString(CultureInfo.InvariantCulture),
+                title = p.title,
+                release_date = p.release_date.GetDate(),
+                poster_small = string.IsNullOrEmpty(p.poster_path) ? null : TmdbOptions.SmallPosterPath + p.poster_path,
+                MediaType = Type ?? MediaType.movie,
+                rating = p.vote_average,
+                collectionId = Collection.id,
+            }); 
+        }
+
+
         public void HideModal()
         {
             MudDialog?.Close();
@@ -133,9 +151,9 @@ namespace SD.WEB.Modules.Collections.Components
             HideModal();
         }
 
-        private async Task OpenPopupMedia(string? tmdbId)
+        private async Task OpenPopupMedia(MediaDetail item)
         {
-            Navigation.NavigateTo($"/{Culture}/media/{Type}/{tmdbId}");
+            Navigation.NavigateTo($"/{Culture}/media/{Type}/{item.tmdb_id}");
         }
     }
 }

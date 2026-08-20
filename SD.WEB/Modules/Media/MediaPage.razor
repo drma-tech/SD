@@ -91,10 +91,8 @@
                 <RenderControl State="RecommendationsState" Context="ctx">
                     <Slider List="Recommendations" Context="item">
                         <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
-                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"
-                                             Date="@item.release_date" Rating="@item.rating"
-                                             WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments">
-                            </PosterComponent>
+                            <NewPosterComponent MediaDetail="@item" Clicked="@OpenPopupMedia" WishList="Wish">
+                            </NewPosterComponent>
                         </div>
                     </Slider>
                 </RenderControl>

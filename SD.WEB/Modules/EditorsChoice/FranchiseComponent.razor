@@ -5,14 +5,10 @@
 @inject FranchiseApi FranchiseApi
 
 <RenderControl State="State">
-    <Slider List="context.Data!.FranchiseItems.Take(20)" Context="item">
-        @{
-            var logo = string.IsNullOrEmpty(item.Poster) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.Poster;
-        }
+    <Slider List="GetMediaDetails()" Context="item">
         <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
-            <PosterComponent Poster="@logo" Title="@item.Name" Date="@item.LastReleaseDate" OnlyYear="true" WishList="Wish"
-                             Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.Id, item.Name))">
-            </PosterComponent>
+            <NewPosterComponent MediaDetail="@item" OnlyYear="true" WishList="Wish" Clicked="@ShowCollectionPopup">
+            </NewPosterComponent>
         </div>
     </Slider>
 </RenderControl>
@@ -28,8 +24,23 @@
         await FranchiseApi.GetItems(State, Cts.Token);
     }
 
-    public async Task ShowCollectionPopup(MediaType type, string? collectionId, string? name)
+    private IEnumerable<MediaDetail> GetMediaDetails()
     {
-        if (collectionId.NotEmpty()) await DialogService.CollectionPopup(Watching, Wish, type, collectionId, true);
+        foreach (var item in State.CurrentInstance?.Data?.FranchiseItems.Take(20) ?? new HashSet<FranchiseItem>())
+        {
+            yield return new MediaDetail
+            {
+                collectionId = int.Parse(item.Id ?? "0"),
+                title = item.Name,
+                poster_small = string.IsNullOrEmpty(item.Poster) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.Poster,
+                release_date = item.LastReleaseDate,
+                MediaType = MediaType.movie,
+            };
+        }
+    }
+
+    public async Task ShowCollectionPopup(MediaDetail item)
+    {
+        if (item.collectionId.HasValue) await DialogService.CollectionPopup(Watching, Wish, item.MediaType, item.collectionId.ToString(), true);
     }
 }

@@ -10,7 +10,7 @@ public class MediaDetail : EqualityBase<MediaDetail>
     public DateTime? release_date { get; set; }
     public string? poster_small { get; set; }
     public string? poster_large { get; set; }
-    public double rating { get; set; }
+    public double? rating { get; set; }
     public int? runtime { get; set; }
     public string? homepage { get; set; }
     public string? comments { get; set; }

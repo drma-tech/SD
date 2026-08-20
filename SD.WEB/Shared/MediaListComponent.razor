@@ -23,10 +23,9 @@
                             <RenderControl State="State">
                                 <Slider List="Items" Context="item">
                                     <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
-                                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                         Rating="@item.rating" WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                        </PosterComponent>
+                                        <NewPosterComponent MediaDetail="@item" Clicked="@OpenPopupMedia"
+                                                            OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle" WishList="Wish" CommentsIsImage="CommentsIsImage">
+                                        </NewPosterComponent>
                                     </div>
                                 </Slider>
                             </RenderControl>
@@ -38,10 +37,9 @@
                             <RenderControl State="State">
                                 <Slider List="Items" Context="item">
                                     <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
-                                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                         Rating="@item.rating" WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                        </PosterComponent>
+                                        <NewPosterComponent MediaDetail="@item" Clicked="@OpenPopupMedia"
+                                                            OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle" WishList="Wish" CommentsIsImage="CommentsIsImage">
+                                        </NewPosterComponent>
                                     </div>
                                 </Slider>
                             </RenderControl>
@@ -57,10 +55,9 @@ else
     <RenderControl State="State">
         <Slider List="Items" Context="item">
             <div class="swiper-slide" style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
-                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                 Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                 Rating="@item.rating" WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                </PosterComponent>
+                <NewPosterComponent MediaDetail="@item" Clicked="@OpenPopupMedia"
+                                    OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle" WishList="Wish" CommentsIsImage="CommentsIsImage">
+                </NewPosterComponent>
             </div>
         </Slider>
     </RenderControl>

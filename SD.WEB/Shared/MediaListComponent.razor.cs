@@ -118,7 +118,7 @@ namespace SD.WEB.Shared
             return string.Empty;
         }
 
-        private async Task OpenPopupMedia(MediaDetail? media)
+        private async Task OpenPopupMedia(MediaDetail media)
         {
             try
             {
@@ -127,11 +127,11 @@ namespace SD.WEB.Shared
                 if (IsImdb)
                 {
                     //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - this info is not documented)
-                    tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, Cts.Token);
+                    tmdbId = await ExternalIdApi.GetTmdbId(media.MediaType, media.tmdb_id, Cts.Token);
                 }
                 else
                 {
-                    tmdbId = media?.tmdb_id;
+                    tmdbId = media.tmdb_id;
                 }
 
                 if (tmdbId.Empty())
@@ -140,7 +140,7 @@ namespace SD.WEB.Shared
                     return;
                 }
 
-                if (media?.MediaType == MediaType.person)
+                if (media.MediaType == MediaType.person)
                 {
                     var result = await TmdbCreditApi.GetListByPerson(tmdbId, Cts.Token);
                     var items = new HashSet<MediaDetail>();
@@ -188,11 +188,11 @@ namespace SD.WEB.Shared
                 {
                     if (Popup)
                     {
-                        await DialogService.MediaPopup(Watching, Wish, media?.MediaType, tmdbId, Culture);
+                        await DialogService.MediaPopup(Watching, Wish, media.MediaType, tmdbId, Culture);
                     }
                     else
                     {
-                        Navigation.NavigateTo($"/{Culture}/media/{media?.MediaType.ToString()}/{tmdbId}");
+                        Navigation.NavigateTo($"/{Culture}/media/{media.MediaType}/{tmdbId}");
                     }
                 }
             }

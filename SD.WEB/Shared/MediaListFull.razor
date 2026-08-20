@@ -13,10 +13,9 @@
     <div class="grid-relative-container-poster">
         @foreach (var item in Items)
         {
-            <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" OnlyYear="OnlyYear" FullPage="FullPage"
-                             Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
-                             Clicked="@(() => OpenPopupMedia(item))" WishList="Wish" CommentsIsImage="CommentsIsImage">
-            </PosterComponent>
+            <NewPosterComponent MediaDetail="@item" OnlyYear="OnlyYear" FullPage="FullPage" CommentsSeparator="@CommentsSeparator"
+                                Clicked="@OpenPopupMedia" WishList="Wish" CommentsIsImage="CommentsIsImage">
+            </NewPosterComponent>
         }
     </div>
 </RenderControl>

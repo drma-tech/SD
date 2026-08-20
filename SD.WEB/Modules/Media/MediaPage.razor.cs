@@ -78,11 +78,11 @@ namespace SD.WEB.Modules.Media
 
                 if (Media?.MediaType == MediaType.movie)
                 {
-                    _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
+                    _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
                 }
                 else
                 {
-                    _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
+                    _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
                 }
             }
             catch (Exception ex)
@@ -113,9 +113,9 @@ namespace SD.WEB.Modules.Media
             Wish = await WishApi.Get(actions: null, token);
         }
 
-        private void OpenPopupMedia(MediaType? type, string? tmdb_id)
+        private void OpenPopupMedia(MediaDetail media)
         {
-            Navigation.NavigateTo($"/{Culture}/media/{type}/{tmdb_id}");
+            Navigation.NavigateTo($"/{Culture}/media/{media.MediaType}/{media.tmdb_id}");
         }
 
         private async Task Add()
