@@ -8,7 +8,7 @@
 @using SD.Shared.Models.Franchise
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@inherits PageCore<EditorsChoice>
+@inherits PageCore<EditorsChoicePage>
 
 <HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaTypeName})")"
                Description="@(Type == "franchise" ? Translations.Description.EditorsChoiceFranchise : Translations.Description.EditorsChoice.CustomFormat(MediaType.GetFieldSettings().Name))"
@@ -83,8 +83,6 @@ else
                 };
             }
         }
-
-        yield return new();
     }
 
     protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
