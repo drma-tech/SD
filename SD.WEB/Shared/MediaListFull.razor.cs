@@ -20,9 +20,9 @@ namespace SD.WEB.Shared
         [Parameter] public bool Popup { get; set; } = false;
         [Parameter] public bool OnlyYear { get; set; }
 
-        [Parameter] public RenderControlState<ICollection<MediaDetail>> State { get; set; } = new(list => list == null || list.Empty());
-        [Parameter] public ICollection<MediaDetail> Items { get; set; } = [];
-        [Parameter] public EventCallback<ICollection<MediaDetail>> ItemsChanged { get; set; }
+        [Parameter] public RenderControlState<ISet<MediaDetail>> State { get; set; } = new(list => list == null || list.Empty());
+        [Parameter] public ISet<MediaDetail> Items { get; set; } = new HashSet<MediaDetail>();
+        [Parameter] public EventCallback<ISet<MediaDetail>> ItemsChanged { get; set; }
 
         [Parameter] public bool IsImdb { get; set; }
         [Parameter] public IMediaListApi? MediaListApi { get; set; }

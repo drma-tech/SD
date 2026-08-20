@@ -6,7 +6,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MediaListFull Items="Items" ItemsChanged="@((ICollection<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
+        <MediaListFull Items="Items" ItemsChanged="@(list => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" State="State"
                        StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true" Popup="true"
                        Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage" Culture="@Culture">

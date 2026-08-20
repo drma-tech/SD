@@ -74,7 +74,7 @@ namespace SD.WEB.Modules.Profile
             {
                 Wish ??= new WishList(AppStateStatic.UserId);
 
-                var (list, _) = await TmdbListApi.GetList([], actions: null, MediaType.movie, stringParameters: null, EnumLists.CertifiedStreamingDiscoveryMovies, cancellationToken: token);
+                var (list, _) = await TmdbListApi.GetList(new HashSet<MediaDetail>(), actions: null, MediaType.movie, stringParameters: null, EnumLists.CertifiedStreamingDiscoveryMovies, cancellationToken: token);
                 var media = list.FirstOrDefault();
 
                 if (media != null)

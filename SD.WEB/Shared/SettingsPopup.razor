@@ -7,16 +7,18 @@
     <DialogContent>
         <MudGrid Spacing="@CssHelper.SpaceMedium">
             <MudItem xs="12">
-                <MudSelect Value="@Region" ValueChanged="@((Country vl) => RegionValueChanged(vl))" Label="@Translations.Module.Help.Region"
+                <MudSelect T="Country" Value="@Region" ValueChanged="@RegionValueChanged" Label="@Translations.Module.Help.Region"
                            HelperText="@Translations.Module.Help.RegionDesc" FullWidth="true">
                     @foreach (var item in regions.OrderBy(p => p.Name))
                     {
-                        <MudSelectItem Value="@item.Value">@item.Name</MudSelectItem>
+                        <MudSelectItem Value="@item.Value">
+                            @item.Name
+                        </MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect Value="@Language" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@Translations.Module.Help.AppLanguage"
+                <MudSelect T="AppLanguage" Value="@Language" ValueChanged="@AppLanguageValueChanged" Label="@Translations.Module.Help.AppLanguage"
                            HelperText="@Translations.Module.Help.AppLanguageDesc" FullWidth="true">
                     @foreach (var item in appLanguages.OrderBy(p => p.Name))
                     {
@@ -25,17 +27,19 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect Value="@ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@Translations.Module.Help.ContentLanguage"
+                <MudSelect T="ContentLanguage" Value="@ContentLanguage" ValueChanged="@ContentLanguageValueChanged" Label="@Translations.Module.Help.ContentLanguage"
                            HelperText="@Translations.Module.Help.ContentLanguageDesc" FullWidth="true">
                     @foreach (var item in contentLanguages.OrderBy(p => p.Name))
                     {
-                        <MudSelectItem Value="@item.Value">@item.Name</MudSelectItem>
+                        <MudSelectItem Value="@item.Value">
+                            @item.Name
+                        </MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
                 <MudText Class="mb-1" Style="font-size: 14px;">@Translations.Module.Help.AppTheme</MudText>
-                <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection"
+                <MudToggleGroup T="bool" Value="DarkMode" ValueChanged="@DarkModeChanged" SelectionMode="SelectionMode.SingleSelection"
                                 Vertical="false" Color="Color.Primary">
                     <MudToggleItem Value="false">
                         <MudIcon Icon="@Icons.Material.Filled.LightMode" Title="@Translations.Module.Help.LightMode" Class="me-1"></MudIcon>

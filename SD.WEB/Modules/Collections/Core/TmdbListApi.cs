@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null, [], ApiContext.Default.CustomListNew), IMediaListApi
 {
-    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, RenderControlState<ICollection<MediaDetail>>? actions,
+    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>? actions,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (list == null) throw new ArgumentException(message: null, nameof(list));
@@ -50,6 +50,6 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(
         }
 
         if (actions != null) await actions.FinishLoading(currentList);
-        return new ValueTuple<ICollection<MediaDetail>, bool>(currentList, page >= result?.total_pages);
+        return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 }

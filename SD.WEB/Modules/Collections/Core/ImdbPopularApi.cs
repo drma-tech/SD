@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularDataCache>(factory, ApiType.Anonymous, null, [], ApiContext.Default.MostPopularDataCache), IMediaListApi
 {
-    public async Task<(ICollection<MediaDetail> list, bool lastPage)> GetList(ICollection<MediaDetail> currentList, RenderControlState<ICollection<MediaDetail>>? actions,
+    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>? actions,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (actions != null && currentList.Empty()) await actions.StartLoading(null);

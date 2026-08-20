@@ -30,9 +30,9 @@ public static class PopupHelper
         await service.ShowAsync<CollectionPopup>(title: null, parameters, Options(MaxWidth.Medium));
     }
 
-    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, ICollection<MediaDetail> items, string? culture)
+    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, ISet<MediaDetail> items, string? culture)
     {
-        RenderControlState<ICollection<MediaDetail>> State = new(list => list == null || list.Empty());
+        RenderControlState<ISet<MediaDetail>> State = new(list => list == null || list.Empty());
 
         State.StartLoading?.Invoke(null);
 
@@ -44,7 +44,7 @@ public static class PopupHelper
             { x => x.Culture, culture },
             { x => x.Items, items },
             { x => x.State, State },
-            { x => x.ItemsChanged, Factory.Create(new object(), (ICollection<MediaDetail> lst) => { items = lst; }) },
+            { x => x.ItemsChanged, Factory.Create(new object(), (ISet<MediaDetail> lst) => { items = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };

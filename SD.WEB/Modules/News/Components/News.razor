@@ -23,7 +23,9 @@
                     @Translations.Button.ReadMore
                 </MudButton>
                 <MudCardContent Style="text-align: justify;" Class="pa-2">
-                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Align="Align.Center" Style="line-height: 1.5">@((MarkupString)item.title!)</MudText>
+                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Align="Align.Center" Style="line-height: 1.5">
+                        @((MarkupString)item.title!)
+                    </MudText>
                     @* <div class="mt-2">
                         <MudText Typo="Typo.caption">@item.text</MudText>
                     </div> *@

@@ -11,8 +11,8 @@ namespace SD.WEB.Modules.Search
         public WatchingList? Watching { get; set; }
         public WishList? Wish { get; set; }
 
-        private ICollection<MediaDetail> Items { get; set; } = [];
-        private RenderControlState<ICollection<MediaDetail>> State { get; } = new(list => list == null || list.Empty());
+        private HashSet<MediaDetail> Items { get; set; } = [];
+        private RenderControlState<ISet<MediaDetail>> State { get; } = new(list => list == null || list.Empty());
         private static Dictionary<string, string> ParametersQuery => new(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" } };
         private static Dictionary<string, string> ParametersKeyword => new(StringComparer.OrdinalIgnoreCase) { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
         private static Dictionary<string, string> ParametersAdvanced => new(StringComparer.OrdinalIgnoreCase) { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };

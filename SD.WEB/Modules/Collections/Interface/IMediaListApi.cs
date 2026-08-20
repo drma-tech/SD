@@ -2,7 +2,7 @@
 
 public interface IMediaListApi
 {
-    Task<(ICollection<MediaDetail> list, bool lastPage)>
-        GetList(ICollection<MediaDetail> currentList, RenderControlState<ICollection<MediaDetail>>? actions, MediaType? type = null,
+    Task<(ISet<MediaDetail> list, bool lastPage)>
+        GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>? actions, MediaType? type = null,
             IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default);
 }
