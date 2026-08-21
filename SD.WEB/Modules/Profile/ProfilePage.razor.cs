@@ -97,7 +97,7 @@ namespace SD.WEB.Modules.Profile
             await WatchingMovieState.FinishLoading.Invoke(Watching);
             await WatchingTvState.FinishLoading.Invoke(Watching);
 
-            MyProviders = await MyProvidersApi.Get(actions: null, token);
+            MyProviders = await MyProvidersApi.Get(ProviderState, token);
 
             if (MyProviders == null && AppStateStatic.IsAuthenticated)
             {
@@ -105,7 +105,7 @@ namespace SD.WEB.Modules.Profile
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-                var AllProviders = await AllProvidersApi.GetAll(actions: null, Cts.Token);
+                var AllProviders = await AllProvidersApi.GetAll(state: null, Cts.Token);
                 var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
                 var provider = AllProviders?.Items.Where(p => p.regions.Contains(region)).OrderBy(o => o.priority).FirstOrDefault();

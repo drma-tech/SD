@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using SD.WEB.Modules.Collections.Interface;
 
 namespace SD.WEB.Shared
 {

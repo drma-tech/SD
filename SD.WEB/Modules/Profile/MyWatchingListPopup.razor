@@ -1,0 +1,17 @@
+﻿@inherits ComponentCore<MyWatchingListPopup>
+
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watching="Watching" Wish="Wish"
+                           MovieState="State" TvState="State" Culture="@Culture">
+        </WatchingComponent>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Translations.Button.Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>

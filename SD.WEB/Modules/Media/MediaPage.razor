@@ -1,10 +1,6 @@
 ﻿@page "/{culture}/media/{type}/{id}"
 
 @using Microsoft.AspNetCore.Authorization
-@using SD.WEB.Modules.Media.Components
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Subscription.Core
 
 @inherits PageParameterCore<MediaPage>
 @implements IDisposable
@@ -61,13 +57,13 @@
     <ChildContent>
         <PageSectionComponent Title="@Translations.Module.Media.TabAbout" Color="Color.Secondary">
             <BodyFragment>
-                <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
-                            State="RatingsState" RatingsCache="_ratingsCache"></MediaAbout>
+                <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
+                            State="RatingsState" RatingsCache="_ratingsCache"></MediaAboutComponent>
             </BodyFragment>
         </PageSectionComponent>
         <PageSectionComponent Title="@($"{Translations.Module.Media.WhereToWatch} ({Region?.GetFieldSettings().Name})")" Color="Color.Secondary">
             <BodyFragment>
-                <MediaWhereToWatch TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatch>
+                <MediaWhereToWatchComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatchComponent>
             </BodyFragment>
         </PageSectionComponent>
 

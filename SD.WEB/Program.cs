@@ -6,12 +6,11 @@ using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
+using SD.WEB.Api.Core;
+using SD.WEB.Api.Module.Cosmos.Admin;
+using SD.WEB.Api.Module.Cosmos.Anonymous;
+using SD.WEB.Api.Module.Cosmos.Authenticated;
 using SD.WEB.Core.Auth;
-using SD.WEB.Modules.Auth.Core;
-using SD.WEB.Modules.Collections.Core;
-using SD.WEB.Modules.Platform.Core;
-using SD.WEB.Modules.Profile.Core;
-using SD.WEB.Modules.Subscription.Core;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
@@ -135,7 +134,7 @@ static void ConfigurePrerendering()
 static void ConfigureApi(IServiceCollection collection)
 {
     collection.AddScoped<PrincipalApi>();
-    collection.AddScoped<PrincipalImportApi>();
+    collection.AddScoped<PrincipalAdminApi>();
     collection.AddScoped<LoginApi>();
     collection.AddScoped<PublicLoginApi>();
     collection.AddScoped<WishListApi>();
@@ -161,9 +160,8 @@ static void ConfigureApi(IServiceCollection collection)
 
     collection.AddScoped<ImdbPopularApi>();
 
-    collection.AddScoped<PaymentConfigurationApi>();
-    collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<PaymentPublicApi>();
+    collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<IpInfoApi>();
 }
 

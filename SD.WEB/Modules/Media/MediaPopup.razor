@@ -1,7 +1,4 @@
-﻿@using SD.WEB.Modules.Media.Components
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Collections.Core
-@inherits ComponentParameterCore<MediaPopup>
+﻿@inherits ComponentParameterCore<MediaPopup>
 
 @inject TmdbApi TmdbApi
 @inject CacheRatingsApi CacheRatingsApi
@@ -14,11 +11,11 @@
         <RenderControl State="State">
             <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="60px">
                 <MudTabPanel Tag="@Translations.Module.Media.TabAbout" Text="@Translations.Module.Media.TabAbout">
-                    <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
-                                State="RatingsState" RatingsCache="_ratingsCache"></MediaAbout>
+                    <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
+                                State="RatingsState" RatingsCache="_ratingsCache"></MediaAboutComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.Module.Media.TabPlatforms" Text="@Translations.Module.Media.WhereToWatch">
-                    <MediaWhereToWatch TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatch>
+                    <MediaWhereToWatchComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatchComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.Module.Media.TabCollection1 : Translations.Module.Media.TabCollection2)"
                              Visible="@(Media?.Collection.Any() ?? false)">

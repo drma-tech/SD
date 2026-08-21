@@ -1,0 +1,126 @@
+﻿@inherits ComponentCore<WatchingComponent>
+
+@inject TmdbApi TmdbApi
+@inject WatchingListApi WatchingApi
+
+<PageSectionComponent Title="@Translations.Module.Profile.Following" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.RemoveRedEye" CustomBodyClass="mb-0">
+    <BodyFragment>
+        @if (TypeParam.HasValue)
+        {
+            <RenderControl State="@(TypeParam == MediaType.movie ? MovieState : TvState)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                @if (FullScreen)
+                {
+                    <div class="grid-relative-container-poster">
+                        @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems))
+                        {
+                            var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
+                            var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+
+                            <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WishList="Wish">
+                            </PosterComponent>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <Slider List="Items(TypeParam.Value).Take(GetTotalItems)" Context="item">
+                        @{
+                            var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
+                            var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                        }
+                        <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
+                            <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WishList="Wish">
+                            </PosterComponent>
+                        </div>
+                    </Slider>
+                }
+            </RenderControl>
+        }
+        else
+        {
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")"
+                     ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
+                <Header>
+                    @* @if ((Watching?.CanSync(_type) ?? false) && (Watching?.Items(_type).Any() ?? false))
+                    {
+                        <MudTooltip Text="@Button.Update">
+                            <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" OnClick="() => ImportFromWatched(_type)" Disabled="@Updating">
+                            </MudIconButton>
+                        </MudTooltip>
+                    } *@
+                    <MudTooltip Text="Expand">
+                        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Disabled="false" OnClick="@(async () => await OpenCompleteList(_type))" />
+                    </MudTooltip>
+                </Header>
+                <ChildContent>
+                    <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
+                        <RenderControl State="MovieState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                            @if (FullScreen)
+                            {
+                                <div class="grid-relative-container-poster">
+                                    @foreach (var item in Items(MediaType.movie).Take(GetTotalItems))
+                                    {
+                                        var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
+                                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+
+                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WishList="Wish">
+                                        </PosterComponent>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <Slider List="Items(MediaType.movie).Take(GetTotalItems)" Context="item">
+                                    @{
+                                        var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
+                                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                                    }
+                                    <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
+                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WishList="Wish">
+                                        </PosterComponent>
+                                    </div>
+                                </Slider>
+                            }
+                        </RenderControl>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
+                        <RenderControl State="TvState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                            @if (FullScreen)
+                            {
+                                <div class="grid-relative-container-poster">
+                                    @foreach (var item in Items(MediaType.tv).Take(GetTotalItems))
+                                    {
+                                        var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
+                                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+
+                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WishList="Wish">
+                                        </PosterComponent>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <Slider List="Items(MediaType.tv).Take(GetTotalItems)" Context="item">
+                                    @{
+                                        var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
+                                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                                    }
+                                    <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
+                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WishList="Wish">
+                                        </PosterComponent>
+                                    </div>
+                                </Slider>
+                            }
+                        </RenderControl>
+                    </MudTabPanel>
+                </ChildContent>
+            </MudTabs>
+        }
+    </BodyFragment>
+</PageSectionComponent>

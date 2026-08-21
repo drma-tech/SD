@@ -2,10 +2,10 @@
 @attribute [Authorize(Roles = "administrator")]
 
 @using Microsoft.AspNetCore.Authorization
-@using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Api.Module.Cosmos.Admin
 
 @inherits PageCore<AdminPage>
-@inject PrincipalImportApi PrincipalImportApi
+@inject PrincipalAdminApi PrincipalAdminApi
 
 <MudButton OnClick="ImportHandle">Import Users</MudButton>
 
@@ -14,7 +14,7 @@
     {
         try
         {
-            var list = await PrincipalImportApi.GetAll(Cts.Token);
+            var list = await PrincipalAdminApi.GetAll(Cts.Token);
 
             foreach (var item in list)
             {
@@ -28,7 +28,7 @@
                     {
                         var newid = await JsRuntime.Supabase().CreateUserAsync(null, item.Email, item.DisplayName, Cts.Token);
 
-                        await PrincipalImportApi.Migrate(item.UserId, newid, Cts.Token);
+                        await PrincipalAdminApi.Migrate(item.UserId, newid, Cts.Token);
                     }
                     else
                     {

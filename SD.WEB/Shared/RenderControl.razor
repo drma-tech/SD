@@ -1,22 +1,7 @@
 ﻿@typeparam T where T : class
 
 <div class="@Class">
-    @if (State.CurrentStatus == RenderControlStatus.Loading)
-    {
-        <div style="position: relative;">
-            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
-            <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 500;">
-                @State.MessageLoading
-            </span>
-        </div>
-    }
-    else if (State.CurrentStatus == RenderControlStatus.Error)
-    {
-        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
-            @(State.MessageError ?? Translations.Notification.RenderControlInvalid)
-        </MudAlert>
-    }
-    else if (PremiumFeature && !IsPremium)
+    @if (PremiumFeature && !IsPremium)
     {
         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
             <span class="me-2" style="font-weight: bold;">@Translations.Notification.PremiumFeature</span>
@@ -30,6 +15,21 @@
     {
         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
             @Translations.Module.Auth.UnauthenticatedUser
+        </MudAlert>
+    }
+    else if (State.CurrentStatus == RenderControlStatus.Loading)
+    {
+        <div style="position: relative;">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
+            <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 500;">
+                @State.MessageLoading
+            </span>
+        </div>
+    }
+    else if (State.CurrentStatus == RenderControlStatus.Error)
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
+            @(State.MessageError ?? Translations.Notification.RenderControlInvalid)
         </MudAlert>
     }
     else if (State.CurrentStatus == RenderControlStatus.Warning)

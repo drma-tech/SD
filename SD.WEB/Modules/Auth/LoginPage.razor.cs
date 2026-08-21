@@ -38,6 +38,8 @@ namespace SD.WEB.Modules.Auth
         {
             var success = false;
             var reference = Guid.NewGuid().ToString("N");
+            var isEmail = string.Equals(provider, "email", StringComparison.OrdinalIgnoreCase);
+            var isMicrosoft = string.Equals(provider, "microsoft", StringComparison.OrdinalIgnoreCase);
 
             try
             {
@@ -46,7 +48,7 @@ namespace SD.WEB.Modules.Auth
                 await JsRuntime.Utils().SetStorage("auth", AuthProvider.Supabase, JavascriptContext.Default.AuthProvider, Cts.Token);
                 await JsRuntime.Utils().SetStorage("auth-last-used", provider, JavascriptContext.Default.String, Cts.Token);
 
-                if (string.Equals(provider, "email", StringComparison.OrdinalIgnoreCase))
+                if (isEmail)
                 {
                     if (!IsValidEmail(email ?? ""))
                     {
@@ -60,7 +62,7 @@ namespace SD.WEB.Modules.Auth
                 }
                 else
                 {
-                    if (string.Equals(provider, "microsoft", StringComparison.OrdinalIgnoreCase)) provider = "azure";
+                    if (isMicrosoft) provider = "azure";
                     await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl, Cts.Token);
                     success = true;
                 }
@@ -74,14 +76,14 @@ namespace SD.WEB.Modules.Auth
             {
                 if (success)
                 {
-                    await Task.Delay(string.Equals(provider, "email", StringComparison.OrdinalIgnoreCase) ? 6000 : 20000, Cts.Token);
-                    if (string.Equals(provider, "email", StringComparison.OrdinalIgnoreCase)) emailProbablySent = true;
+                    await Task.Delay(isEmail ? 6000 : 25000, Cts.Token);
+                    if (isEmail) emailProbablySent = true;
                 }
 
                 _processingInProgress = false;
                 StateHasChanged();
 
-                if (string.Equals(provider, "email", StringComparison.OrdinalIgnoreCase) && success)
+                if (isEmail && success)
                 {
                     await ShowInfo(Translations.Module.Auth.CodeSent.CustomFormat(email));
                     await txtOTP!.FocusAsync();

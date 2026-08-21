@@ -1,0 +1,28 @@
+﻿<MudCard Outlined="true" Elevation="4">
+    <MudCardContent Class="pa-3">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.Product" Text="@Client?.GetActiveSubscription()?.Product?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.Cycle" Text="@Client?.GetActiveSubscription()?.Cycle?.GetFieldSettings().Name" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="Created At" Text="@Client?.GetActiveSubscription()?.CreatedAt.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="Expires Date" Text="@Client?.GetActiveSubscription()?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.PaymentProvider" Text="@Client?.GetActiveSubscription()?.Provider?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.IsActive" Text="@Client?.GetActiveSubscription()?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
+}

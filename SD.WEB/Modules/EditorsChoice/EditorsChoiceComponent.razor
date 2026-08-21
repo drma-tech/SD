@@ -1,5 +1,4 @@
-﻿@using SD.WEB.Modules.Collections.Core
-@inherits ComponentCore<EditorsChoiceComponent>
+﻿@inherits ComponentCore<EditorsChoiceComponent>
 
 @inject TmdbListApi TmdbListApi
 
@@ -31,7 +30,7 @@
                         </MediaListComponent>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@Translations.Title.Franchises" BadgeData="@("New")" BadgeColor="Color.Warning" Style="width: 180px;">
+                <MudTabPanel Text="@Translations.Title.Franchises" BadgeDot="true" BadgeColor="Color.Warning">
                     @if (_loaded[2])
                     {
                         <FranchiseComponent Watching="Watching" Wish="Wish"></FranchiseComponent>

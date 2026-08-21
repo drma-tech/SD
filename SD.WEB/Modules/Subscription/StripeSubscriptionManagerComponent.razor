@@ -1,0 +1,42 @@
+﻿@inherits ComponentCore<StripeSubscriptionManagerComponent>
+
+@inject PaymentAuthApi PaymentAuthApi
+
+<MudCard Outlined="true" Elevation="4" Class="@CssHelper.Build().Large("mb")">
+    <MudCardContent Class="@CssHelper.Build().Small("pa")">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.Product" Text="@Client?.GetActiveSubscription()?.Product?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.Cycle" Text="@Client?.GetActiveSubscription()?.Cycle?.GetFieldSettings().Name" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="Created At" Text="@Client?.GetActiveSubscription()?.CreatedAt.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="Expires Date" Text="@Client?.GetActiveSubscription()?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.PaymentProvider" Text="@Client?.GetActiveSubscription()?.Provider?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Module.Subscription.IsActive" Text="@Client?.GetActiveSubscription()?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="@CssHelper.Build().Small("mb")" Href="@CustomerPortalUrl" Target="_blank" Rel="nofollow, noopener" Disabled="CustomerPortalUrl.Empty()">
+    Change/Cancel my subscription
+</MudButton>
+
+@code {
+    [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
+
+    private string? CustomerPortalUrl { get; set; }
+
+    protected override async Task LoadStaticDataAsync()
+    {
+        CustomerPortalUrl = await PaymentAuthApi.StripePortalLink(Cts.Token);
+    }
+}

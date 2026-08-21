@@ -1,6 +1,6 @@
 ﻿<div>
     <div @onclick="@DivClicked" style="@($"{(Clicked.HasDelegate ? "cursor: pointer;" : "")} position: relative;")">
-        <MudImage Src="@(MediaDetail.poster_small ?? "images/no-image.webp")" Alt="@MediaDetail.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" />
+        <MudImage Src="@(MediaDetail?.poster_small ?? "images/no-image.webp")" Alt="@MediaDetail?.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" />
 
         @if (TopLeft != null)
         {
@@ -28,11 +28,11 @@
         {
             <div class="absolute my-1" style="width: 100%; background-color: rgba(255, 255, 255, 0.7); text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                 <MudText Typo="Typo.h6" Color="Color.Dark" Style="line-height: normal;">
-                    @MediaDetail.title
+                    @MediaDetail?.title
                 </MudText>
             </div>
         }
-        @if (MediaDetail.comments.NotEmpty())
+        @if (MediaDetail?.comments.NotEmpty() == true)
         {
             if (CommentsIsImage)
             {
@@ -64,7 +64,7 @@
     </div>
     <div style="text-align: center;" class="mt-1">
         <MudText Typo="@(ForceTypoTitle ?? (FullPage ? Typo.h2 : Typo.h3))" Class="custom-title-list">
-            @MediaDetail.title
+            @MediaDetail?.title
         </MudText>
     </div>
 </div>

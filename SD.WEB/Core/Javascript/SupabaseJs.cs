@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using SD.WEB.Api.Core;
 
 namespace SD.WEB.Core.Javascript
 {

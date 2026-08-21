@@ -6,7 +6,7 @@ namespace SD.WEB.Shared
 {
     public partial class NewPosterComponent
     {
-        [Parameter] public required MediaDetail MediaDetail { get; set; }
+        [Parameter] public MediaDetail? MediaDetail { get; set; }
 
         [Parameter] public EventCallback<MediaDetail> Clicked { get; set; }
         [Parameter] public bool ForceShowTitle { get; set; }

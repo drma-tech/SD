@@ -67,7 +67,7 @@ namespace SD.WEB.Modules.Media
             if (Media != null && !string.Equals(Media.original_language, "en", StringComparison.OrdinalIgnoreCase))
             {
                 //title must be in English
-                var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", actions: null, Cts.Token);
+                var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", state: null, Cts.Token);
                 EnglishTitle = enMedia.title;
             }
 

@@ -1,7 +1,5 @@
-﻿@using SD.WEB.Modules.Subscription.Core
-@inherits ComponentCore<Advertising>
+﻿@inherits ComponentCore<Advertising>
 
-@inject PaymentConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
 
 @if (IgnoreRoutes.All(p => !Navigation.Uri.Contains(p)))

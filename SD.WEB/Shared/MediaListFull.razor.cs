@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using SD.Shared.Models.List.Tmdb;
-using SD.WEB.Modules.Collections.Interface;
 using System.Globalization;
 
 namespace SD.WEB.Shared

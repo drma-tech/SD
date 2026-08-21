@@ -1,20 +1,13 @@
 ﻿@page "/{culture}/profile"
 
 @using SD.Shared.Translations.Enum
-@using SD.WEB.Modules.Profile.Components
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Subscription.Core
-@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Platform.Core
 @inherits PageCore<ProfilePage>
 
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
-@inject PaymentConfigurationApi ConfigurationApi
 @inject TmdbListApi TmdbListApi
-@inject WatchingListApi WatchingListApi
 @inject IpInfoApi IpInfoApi
 
 <HeadComponent Title="@Translations.Title.Profile" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>

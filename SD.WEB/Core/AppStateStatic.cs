@@ -3,7 +3,6 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.List.Tmdb;
-using SD.WEB.Modules.Subscription.Core;
 using System.Security.Claims;
 
 namespace SD.WEB.Core;

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using SD.WEB.Modules.Collections.Core;
-using SD.WEB.Modules.Collections.Interface;
+using SD.WEB.Api.Module.Cosmos.Anonymous;
 
 namespace SD.WEB.Shared
 {
@@ -55,7 +54,7 @@ namespace SD.WEB.Shared
         {
             if (Navigation.Uri.Contains("platform", StringComparison.OrdinalIgnoreCase))
             {
-                var providers = await AllProvidersApi.GetAll(actions: null, Cts.Token);
+                var providers = await AllProvidersApi.GetAll(state: null, Cts.Token);
                 var provider = providers?.Items.SingleOrDefault(s => string.Equals(s.id, id, StringComparison.OrdinalIgnoreCase));
 
                 if (Navigation.Uri.Contains("popular", StringComparison.OrdinalIgnoreCase))

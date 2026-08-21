@@ -1,0 +1,25 @@
+﻿@page "/{culture}/video/{data}"
+@inherits PageCore<TrailerWatchPage>
+
+<HeadComponent Title="@Title" Description="@Title" Url=@($"/{Culture}/trailers") Index="false"></HeadComponent>
+<PageSectionComponent IsPageHeader="true" Title="@Title">
+</PageSectionComponent>
+
+<MudGrid Spacing="@CssHelper.SpaceSmall" Justify="Justify.Center">
+    <MudItem xs="12" md="8">
+        <div style="position: relative; width: 100%; aspect-ratio: 16 / 9;">
+            <iframe width="560" height="315" src="@($"https://www.youtube.com/embed/{Id}")" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </MudItem>
+</MudGrid>
+
+<FloatingButton Template="Template.Back"></FloatingButton>
+
+@code {
+    [Parameter] public string? Data { get; set; }
+
+    private string Id => Data?.SimpleDecrypt().Split('|')[0] ?? string.Empty;
+    private string Title => Data?.SimpleDecrypt().Split('|')[1] ?? string.Empty;
+}

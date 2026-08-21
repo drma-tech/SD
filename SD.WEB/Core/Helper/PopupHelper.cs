@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SD.WEB.Modules.Auth;
-using SD.WEB.Modules.Collections.Components;
+using SD.WEB.Modules.Collections;
 using SD.WEB.Modules.Help;
 using SD.WEB.Modules.Media;
-using SD.WEB.Modules.Platform.Components;
-using SD.WEB.Modules.Profile.Components;
-using SD.WEB.Modules.Subscription.Components;
+using SD.WEB.Modules.Platform;
+using SD.WEB.Modules.Profile;
+using SD.WEB.Modules.Subscription;
 
 namespace SD.WEB.Core.Helper;
 
@@ -181,17 +181,17 @@ public static class PopupHelper
 
     public static async Task OnboardingPopup(this IDialogService service, string culture)
     {
-        var parameters = new DialogParameters<Onboarding>
+        var parameters = new DialogParameters<OnboardingPopup>
         {
             { x => x.Culture, culture },
         };
 
-        await service.ShowAsync<Onboarding>(Translations.Module.Help.WelcomeTo.CustomFormat(AppInfo.Title), parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<OnboardingPopup>(Translations.Module.Help.WelcomeTo.CustomFormat(AppInfo.Title), parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task AskReviewPopup(this IDialogService service)
     {
-        await service.ShowAsync<AskReview>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
+        await service.ShowAsync<AskReviewPopup>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
     }
 
     public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)

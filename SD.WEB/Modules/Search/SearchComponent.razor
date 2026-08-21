@@ -1,0 +1,153 @@
+﻿@inherits ComponentCore<IndexPage>
+
+@inject TmdbSearchKeywordApi TmdbSearchKeywordApi
+
+<PageSectionComponent Title="@Translations.Module.Landing.Search">
+    <BodyFragment>
+        <MudTabs MinimumTabWidth="60px" TabPanelsClass="@CssHelper.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
+            <ChildContent>
+                <MudTabPanel Text="@Translations.Module.Landing.Title">
+                    <MudStack Row="true" AlignItems="AlignItems.Stretch" Spacing="2">
+                        <MudTextField T="string" Label="@Translations.Module.Landing.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio"
+                                      @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
+                                      Variant="Variant.Outlined" HelperText="@Translations.Module.Landing.TypeSomething" InputType="InputType.Text" Clearable="true">
+                        </MudTextField>
+                        <MudIconButton Href="@($"/{Culture}/search")" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
+                                       Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"></MudIconButton>
+                    </MudStack>
+                </MudTabPanel>
+                <MudTabPanel Text="@Translations.Module.Landing.Keywords">
+                    <MudStack Row="true" AlignItems="AlignItems.Stretch" Spacing="2">
+                        <MudTextField T="string" Label="@Translations.Module.Landing.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family"
+                                      @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPressKeyboard"
+                                      Variant="Variant.Outlined" HelperText="@Translations.Module.Landing.SearchKeywords" InputType="InputType.Text" Clearable="true"
+                                      OnClearButtonClick="@(() => AppStateStatic.Keywords = [])">
+                        </MudTextField>
+                        <MudIconButton OnClick="@SearchKeyWords" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
+                                       Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"></MudIconButton>
+                    </MudStack>
+                    @foreach (var item in AppStateStatic.Keywords)
+                    {
+                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Href="@($"/{Culture}/search?keyword={item.id}")">
+                            @item.name
+                        </MudChip>
+                    }
+                    @if (AppStateStatic.Keywords.NotEmpty())
+                    {
+                        <MudChip T="string" Color="Color.Secondary" Size="AppStateStatic.Size" OnClick="@LoadMore" Disabled="@DisableLoadMore">
+                            @Translations.Button.LoadMore
+                        </MudChip>
+                    }
+                </MudTabPanel>
+                <MudTabPanel Text="@Translations.Module.Landing.Advanced">
+                    <MudToolBar Gutters="false" WrapContent="true">
+                        <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Type" Clearable="true" Class="me-2">
+                            @foreach (var item in Types)
+                            {
+                                <MudSelectItem Value="(MediaType?)item.Value">@item.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                        @if (AppStateStatic.Type == MediaType.movie)
+                        {
+                            <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
+                                @foreach (var item in MovieGenres)
+                                {
+                                    <MudSelectItem Value="(MovieGenre?)item.Value">@item.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+                        else
+                        {
+                            <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
+                                @foreach (var item in TvGenres)
+                                {
+                                    <MudSelectItem Value="(TvGenre?)item.Value">@item.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+                        <MudSelect T="string" @bind-Value="AppStateStatic.SortBy" Variant="Variant.Outlined" Label="@Translations.Module.Landing.SortBy" Class="me-2">
+                            <MudSelectItem Value="@("original_title.asc")">original_title.asc</MudSelectItem>
+                            <MudSelectItem Value="@("original_title.desc")">original_title.desc</MudSelectItem>
+                            <MudSelectItem Value="@("popularity.asc")">popularity.asc</MudSelectItem>
+                            <MudSelectItem Value="@("popularity.desc")">popularity.desc</MudSelectItem>
+                            <MudSelectItem Value="@("revenue.asc")">revenue.asc</MudSelectItem>
+                            <MudSelectItem Value="@("revenue.desc")">revenue.desc</MudSelectItem>
+                            <MudSelectItem Value="@("primary_release_date.asc")">primary_release_date.asc</MudSelectItem>
+                            <MudSelectItem Value="@("title.asc")">title.asc</MudSelectItem>
+                            <MudSelectItem Value="@("title.desc")">title.desc</MudSelectItem>
+                            <MudSelectItem Value="@("primary_release_date.desc")">primary_release_date.desc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_average.asc")">vote_average.asc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_average.desc")">vote_average.desc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_count.asc")">vote_count.asc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_count.desc")">vote_count.desc</MudSelectItem>
+                        </MudSelect>
+                        <MudIconButton Href="@($"/{Culture}/search")" Style="height:56px; width:56px; margin-top: 4px;"
+                                       Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"
+                                       Disabled="@(AppStateStatic.Type == null || (AppStateStatic.Type == MediaType.movie ? AppStateStatic.MovieGenre == null : AppStateStatic.TvGenre == null))"></MudIconButton>
+                    </MudToolBar>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
+    </BodyFragment>
+</PageSectionComponent>
+
+@code {
+    private string Culture => Navigation.GetCulture();
+
+    public IEnumerable<EnumFieldObject<MediaType>> Types { get; set; } = [];
+    public IEnumerable<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
+    public IEnumerable<EnumFieldObject<TvGenre>> TvGenres { get; set; } = [];
+
+    private int _currentPage = 1;
+    public bool DisableLoadMore { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Types = EnumHelper.GetList<MediaType>().Where(p => p.Value != MediaType.person);
+        MovieGenres = EnumHelper.GetList<MovieGenre>();
+        TvGenres = EnumHelper.GetList<TvGenre>();
+    }
+
+    private void KeyPress(KeyboardEventArgs args)
+    {
+        if (AppStateStatic.Query.Empty()) return;
+
+        if (string.Equals(args.Key, "Enter", StringComparison.OrdinalIgnoreCase))
+        {
+            Navigation.NavigateTo($"/{Culture}/search");
+        }
+    }
+
+    private async Task KeyPressKeyboard(KeyboardEventArgs args)
+    {
+        if (AppStateStatic.Query.Empty()) return;
+
+        if (string.Equals(args.Key, "Enter", StringComparison.OrdinalIgnoreCase))
+        {
+            await SearchKeyWords();
+        }
+    }
+
+    private async Task SearchKeyWords()
+    {
+        AppStateStatic.Keywords = [];
+        _currentPage = 1;
+        Dictionary<string, string> parameters = new(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
+
+        var (list, lastPage) = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
+        AppStateStatic.Keywords = list;
+
+        DisableLoadMore = lastPage || AppStateStatic.Keywords.Count >= 100;
+    }
+
+    private async Task LoadMore()
+    {
+        Dictionary<string, string> parameters = new(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
+
+        var (list, lastPage) = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
+        AppStateStatic.Keywords = list;
+        DisableLoadMore = lastPage || AppStateStatic.Keywords.Count >= 100;
+    }
+}
