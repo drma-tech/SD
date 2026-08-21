@@ -99,7 +99,7 @@
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = await AppStateStatic.GetRegion(null, null, Cts.Token) };
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, states: [], AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
             await ShowSuccess(Translations.Notification.OperationCompleted);
         }
@@ -115,7 +115,7 @@
         {
             MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId), state: null, ApiContext.Default.MyProvidersItem, Cts.Token);
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId), states: [], ApiContext.Default.MyProvidersItem, Cts.Token);
 
             await ShowSuccess(Translations.Notification.OperationCompleted);
         }

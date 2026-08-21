@@ -9,28 +9,28 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
     {
         if (!AppStateStatic.IsAuthenticated) return default;
 
-        return await GetAsync("principal/get", setNewVersion, state: null, cancellationToken);
+        return await GetAsync("principal/get", setNewVersion, states: [], cancellationToken);
     }
 
     public async Task<AuthPrincipal> Add(AuthPrincipal? obj, Platform platform, string? country, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync($"principal/add?platform={platform}&country={country}", obj, state: null, cancellationToken);
+        return await PostAsync($"principal/add?platform={platform}&country={country}", obj, states: [], cancellationToken);
     }
 
     public async Task<AuthPrincipal> Update(AuthPrincipal? obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PutAsync("principal/update", obj, ApiContext.Default.AuthPrincipal, state: null, cancellationToken);
+        return await PutAsync("principal/update", obj, ApiContext.Default.AuthPrincipal, states: [], cancellationToken);
     }
 
     public async Task<AuthPrincipal> Event(string app, string msg, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(msg);
 
-        return await PostAsync($"principal/event?app={app}&msg={msg}", null, state: null, cancellationToken);
+        return await PostAsync($"principal/event?app={app}&msg={msg}", null, states: [], cancellationToken);
     }
 
     public async Task Remove(CancellationToken cancellationToken)
@@ -40,6 +40,6 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
 
     public async Task<AuthPrincipal?> StripeCustomer(CancellationToken cancellationToken)
     {
-        return await GetAsync("stripe/customer", setNewVersion: true, state: null, cancellationToken);
+        return await GetAsync("stripe/customer", setNewVersion: true, states: [], cancellationToken);
     }
 }

@@ -18,7 +18,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + $"movie/{tmdbId}/recommendations".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+            var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + $"movie/{tmdbId}/recommendations".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
             var currentList = new List<MediaDetail>();
 
@@ -47,7 +47,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
         }
         else //if (type == MediaType.tv)
         {
-            var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + $"tv/{tmdbId}/recommendations".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+            var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + $"tv/{tmdbId}/recommendations".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
             var currentList = new List<MediaDetail>();
 

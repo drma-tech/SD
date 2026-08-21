@@ -71,10 +71,10 @@ namespace SD.WEB.Modules.Platform
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            MyProviders = await MyProvidersApi.Get(actions: null, token);
+            MyProviders = await MyProvidersApi.Get(states: [], token);
 
-            Watching = await WatchingApi.Get(actions: null, token);
-            Wish = await WishApi.Get(actions: null, token);
+            Watching = await WatchingApi.Get(states: [], token);
+            Wish = await WishApi.Get(states: [], token);
         }
 
         private async Task SelectedRegionChanged(Country? value)
@@ -122,7 +122,7 @@ namespace SD.WEB.Modules.Platform
                 var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
                 var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, states: [], AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformAdded);
             }
@@ -144,7 +144,7 @@ namespace SD.WEB.Modules.Platform
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, Provider?.id, StringComparison.OrdinalIgnoreCase)), state: null, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, Provider?.id, StringComparison.OrdinalIgnoreCase)), states: [], ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformRemoved);
             }

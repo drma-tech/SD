@@ -109,7 +109,7 @@
 
     protected override async Task LoadParameterDataAsync()
     {
-        Credits = await TmdbCreditApi.GetList(Type, TmdbId, State, Cts.Token);
+        Credits = await TmdbCreditApi.GetList(Type, TmdbId, [State], Cts.Token);
     }
 
     private async Task OpenCompleteList(Crew crew)

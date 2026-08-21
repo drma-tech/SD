@@ -7,7 +7,7 @@ namespace SD.WEB.Api.Module.Cosmos.Anonymous
     {
         public async Task<PaymentConfigurations?> GetConfigurations(PaymentProvider provider, CancellationToken cancellationToken)
         {
-            return await GetAsync($"public/payment/configurations?provider={provider}", setNewVersion: false, state: null, cancellationToken);
+            return await GetAsync($"public/payment/configurations?provider={provider}", setNewVersion: false, states: [], cancellationToken);
         }
 
         public async Task<bool> StripeValidateSession(string id, CancellationToken cancellationToken)

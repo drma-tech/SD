@@ -7,7 +7,7 @@ namespace SD.WEB.Api.Module.Cosmos.Authenticated
     {
         public async Task AppleVerify(string receipt, CancellationToken cancellationToken)
         {
-            await PostAsync("apple/verify", receipt, ApiContext.Default.String, state: null, cancellationToken);
+            await PostAsync("apple/verify", receipt, ApiContext.Default.String, states: [], cancellationToken);
         }
 
         public async Task<string?> StripePortalLink(CancellationToken cancellationToken)

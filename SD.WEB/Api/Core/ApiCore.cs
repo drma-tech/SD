@@ -72,28 +72,40 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<byte[]> GetBytesAsync(HttpClient http, string uri, RenderControlState<byte[]>? state, CancellationToken cancellationToken)
+    protected async Task<byte[]> GetBytesAsync(HttpClient http, string uri, RenderControlState<byte[]>[] states, CancellationToken cancellationToken)
     {
         try
         {
-            if (state != null) await state.StartLoading(null);
+            foreach (var state in states)
+            {
+                await state.StartLoading(null);
+            }
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
             if (key.NotEmpty()) uri = uri.ConfigureParameters(GetVersion());
             var result = await http.GetByteArrayAsync(uri, cancellationToken);
 
-            if (state != null) await state.FinishLoading(result);
+            foreach (var state in states)
+            {
+                await state.FinishLoading(result);
+            }
 
             return result;
         }
         catch (NotificationException ex)
         {
-            if (state != null) await state.ShowWarning(ex.Message);
+            foreach (var state in states)
+            {
+                await state.ShowWarning(ex.Message);
+            }
             throw;
         }
         catch (Exception ex)
         {
-            if (state != null) await state.ShowError(ex.Message);
+            foreach (var state in states)
+            {
+                await state.ShowError(ex.Message);
+            }
             throw;
         }
         finally
@@ -102,11 +114,14 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<T?> GetAsync<T>(HttpClient http, string uri, bool setNewVersion, RenderControlState<T>? state, CancellationToken cancellationToken) where T : class
+    protected async Task<T?> GetAsync<T>(HttpClient http, string uri, bool setNewVersion, RenderControlState<T>[] states, CancellationToken cancellationToken) where T : class
     {
         try
         {
-            if (state != null) await state.StartLoading(null);
+            foreach (var state in states)
+            {
+                await state.StartLoading(null);
+            }
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
             if (setNewVersion) SetNewVersion();
@@ -118,18 +133,27 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             else
                 result = await http.GetJsonFromApi<T>(uri, cancellationToken);
 
-            if (state != null) await state.FinishLoading(result);
+            foreach (var state in states)
+            {
+                await state.FinishLoading(result);
+            }
 
             return result;
         }
         catch (NotificationException ex)
         {
-            if (state != null) await state.ShowWarning(ex.Message);
+            foreach (var state in states)
+            {
+                await state.ShowWarning(ex.Message);
+            }
             throw;
         }
         catch (Exception ex)
         {
-            if (state != null) await state.ShowError(ex.Message);
+            foreach (var state in states)
+            {
+                await state.ShowError(ex.Message);
+            }
             throw;
         }
         finally
@@ -138,11 +162,14 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<IEnumerable<T>> GetListAsync<T>(HttpClient http, string uri, RenderControlState<IEnumerable<T>>? state, CancellationToken cancellationToken)
+    protected async Task<IEnumerable<T>> GetListAsync<T>(HttpClient http, string uri, RenderControlState<IEnumerable<T>>[] states, CancellationToken cancellationToken)
     {
         try
         {
-            if (state != null) await state.StartLoading(null);
+            foreach (var state in states)
+            {
+                await state.StartLoading(null);
+            }
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
             IEnumerable<T>? result = default;
@@ -152,17 +179,26 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             else
                 result = await http.GetJsonFromApi<IEnumerable<T>>(uri, cancellationToken);
 
-            if (state != null) await state.FinishLoading(result);
+            foreach (var state in states)
+            {
+                await state.FinishLoading(result);
+            }
             return result ?? [];
         }
         catch (NotificationException ex)
         {
-            if (state != null) await state.ShowWarning(ex.Message);
+            foreach (var state in states)
+            {
+                await state.ShowWarning(ex.Message);
+            }
             throw;
         }
         catch (Exception ex)
         {
-            if (state != null) await state.ShowError(ex.Message);
+            foreach (var state in states)
+            {
+                await state.ShowError(ex.Message);
+            }
             throw;
         }
         finally
@@ -196,13 +232,16 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<TOut> PostAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?>? responseTypeInfo, RenderControlState<TOut>? state, CancellationToken cancellationToken)
+    protected async Task<TOut> PostAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?>? responseTypeInfo, RenderControlState<TOut>[] states, CancellationToken cancellationToken)
         where TIn : class
         where TOut : class
     {
         try
         {
-            if (state != null) await state.StartProcessing(null);
+            foreach (var state in states)
+            {
+                await state.StartProcessing(null);
+            }
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
             SetNewVersion();
@@ -222,12 +261,18 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken) ?? throw new NotificationException("Failed to read response content.");
-                if (state != null) await state.FinishProcessing(result);
+                foreach (var state in states)
+                {
+                    await state.FinishProcessing(result);
+                }
                 return result;
             }
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
-            if (state != null) await state.ShowError(content);
+            foreach (var state in states)
+            {
+                await state.ShowError(content);
+            }
 
             throw new NotificationException(content);
         }
@@ -237,13 +282,16 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<TOut> PutAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?> responseTypeInfo, RenderControlState<TOut>? state, CancellationToken cancellationToken)
+    protected async Task<TOut> PutAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?> responseTypeInfo, RenderControlState<TOut>[] states, CancellationToken cancellationToken)
         where TIn : class
         where TOut : class
     {
         try
         {
-            if (state != null) await state.StartProcessing(null);
+            foreach (var state in states)
+            {
+                await state.StartProcessing(null);
+            }
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
             SetNewVersion();
@@ -253,12 +301,18 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken) ?? throw new NotificationException("Failed to read response content.");
-                if (state != null) await state.FinishProcessing(result);
+                foreach (var state in states)
+                {
+                    await state.FinishProcessing(result);
+                }
                 return result;
             }
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
-            if (state != null) await state.ShowError(content);
+            foreach (var state in states)
+            {
+                await state.ShowError(content);
+            }
 
             throw new NotificationException(content);
         }

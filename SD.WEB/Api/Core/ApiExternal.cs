@@ -9,8 +9,8 @@ public abstract class ApiExternal(IHttpClientFactory factory) : ApiCore(key: nul
         return await GetStringAsync(AnonymousHttp, endpoint, cancellationToken);
     }
 
-    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, RenderControlState<T>? state, CancellationToken cancellationToken) where T : class
+    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, RenderControlState<T>[] states, CancellationToken cancellationToken) where T : class
     {
-        return await GetAsync(AnonymousHttp, $"public/external?url=" + uri.ConvertFromStringToBase64(), setNewVersion, state, cancellationToken);
+        return await GetAsync(AnonymousHttp, $"public/external?url=" + uri.ConvertFromStringToBase64(), setNewVersion, states, cancellationToken);
     }
 }

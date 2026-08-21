@@ -63,12 +63,12 @@ namespace SD.WEB.Modules.Search
 
             if (AppStateStatic.Index == 0)
             {
-                _ = await TmdbSearch.GetList(Items, State, type: null, ParametersQuery, cancellationToken: Cts.Token);
+                _ = await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 1)
             {
                 ParametersKeyword["with_keywords"] = keywordId!;
-                _ = await TmdbDiscoveryApi.GetList(Items, State, type: null, ParametersKeyword, cancellationToken: Cts.Token);
+                _ = await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 2)
             {
@@ -80,7 +80,7 @@ namespace SD.WEB.Modules.Search
                 {
                     ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString(CultureInfo.InvariantCulture);
                 }
-                _ = await TmdbDiscoveryApi.GetList(Items, State, AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
+                _ = await TmdbDiscoveryApi.GetList(Items, [State], AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
             }
 
             await State.FinishLoading.Invoke(Items);
@@ -88,8 +88,8 @@ namespace SD.WEB.Modules.Search
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            Watching = await WatchingApi.Get(actions: null, token);
-            Wish = await WishApi.Get(actions: null, token);
+            Watching = await WatchingApi.Get(states: [], token);
+            Wish = await WishApi.Get(states: [], token);
         }
 
         private async Task KeyPress(KeyboardEventArgs args)

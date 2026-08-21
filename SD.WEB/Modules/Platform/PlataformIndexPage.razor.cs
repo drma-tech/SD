@@ -68,7 +68,7 @@ namespace SD.WEB.Modules.Platform
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            MyProviders = await MyProvidersApi.Get(actions: null, token);
+            MyProviders = await MyProvidersApi.Get(states: [], token);
         }
 
         private async Task Add(ProviderModel provider)
@@ -86,7 +86,7 @@ namespace SD.WEB.Modules.Platform
                 var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
 
                 var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, states: [], AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformAdded);
             }
@@ -108,7 +108,7 @@ namespace SD.WEB.Modules.Platform
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, provider?.id, StringComparison.OrdinalIgnoreCase)), state: null, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => string.Equals(f.id, provider?.id, StringComparison.OrdinalIgnoreCase)), states: [], ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 await ShowSuccess(Translations.Notification.PlatformRemoved);
             }

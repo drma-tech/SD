@@ -6,10 +6,16 @@ namespace SD.WEB.Api.Module.External;
 
 public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
-    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>? actions,
+    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>[] states,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
-        if (actions != null && currentList.Empty()) await actions.StartLoading(null);
+        if (currentList.Empty())
+        {
+            foreach (var state in states)
+            {
+                await state.StartLoading(null);
+            }
+        }
 
         var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -23,7 +29,7 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
         if (result != null)
             foreach (var item in result.results.OrderByDescending(o => o.popularity))
@@ -50,7 +56,10 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
                 });
             }
 
-        if (actions != null) await actions.FinishLoading(currentList);
+        foreach (var state in states)
+        {
+            await state.FinishLoading(currentList);
+        }
         return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 

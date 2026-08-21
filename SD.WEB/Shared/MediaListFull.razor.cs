@@ -73,13 +73,13 @@ namespace SD.WEB.Shared
         {
             if (MediaListApi != null)
             {
-                var (_, lastPage) = await MediaListApi.GetList(Items, State, TypeSelected, StringParameters, List, 1, Cts.Token);
+                var (_, lastPage) = await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, 1, Cts.Token);
 
                 DisableLoadMore = lastPage || Items.Count >= 200;
 
                 if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
-                    _ = await MediaListApi.GetList(Items, State, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+                    _ = await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
                     DisableLoadMore = lastPage || Items.Count >= 200;
                 }
@@ -170,7 +170,7 @@ namespace SD.WEB.Shared
         {
             if (MediaListApi != null)
             {
-                var (_, lastPage) = await MediaListApi.GetList(Items, State, TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+                var (_, lastPage) = await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
                 DisableLoadMore = lastPage || Items.Count >= 250;
 

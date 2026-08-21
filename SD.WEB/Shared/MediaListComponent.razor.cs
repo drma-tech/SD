@@ -84,11 +84,11 @@ namespace SD.WEB.Shared
 
                 if (MediaListApi != null)
                 {
-                    _ = await MediaListApi.GetList(Items, State, type, StringParameters, List, 1, Cts.Token);
+                    _ = await MediaListApi.GetList(Items, [State], type, StringParameters, List, 1, Cts.Token);
 
                     if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                     {
-                        _ = await MediaListApi.GetList(Items, State, type, StringParameters, List, 2, Cts.Token);
+                        _ = await MediaListApi.GetList(Items, [State], type, StringParameters, List, 2, Cts.Token);
                     }
 
                     if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", System.Globalization.CultureInfo.InvariantCulture)).ToHashSet();

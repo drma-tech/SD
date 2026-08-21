@@ -25,9 +25,9 @@ namespace SD.WEB.Modules.Help
                 {
                     Principal = AppStateStatic.Principal,
                     Login = await LoginApi.Get(Cts.Token),
-                    Providers = await MyProvidersApi.Get(actions: null, Cts.Token),
-                    WatchingList = await WatchingListApi.Get(actions: null, Cts.Token),
-                    WishList = await WishListApi.Get(actions: null, Cts.Token),
+                    Providers = await MyProvidersApi.Get(states: [], Cts.Token),
+                    WatchingList = await WatchingListApi.Get(states: [], Cts.Token),
+                    WishList = await WishListApi.Get(states: [], Cts.Token),
                 };
 
                 var fileName = string.Create(CultureInfo.InvariantCulture, $"{AppInfo.Title.ToSlug()}_{AppStateStatic.Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json");

@@ -6,10 +6,16 @@ namespace SD.WEB.Api.Module.External;
 
 public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
-    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>? actions,
+    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>[] states,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
-        if (actions != null && currentList.Empty()) await actions.StartLoading(null);
+        if (currentList.Empty())
+        {
+            foreach (var state in states)
+            {
+                await state.StartLoading(null);
+            }
+        }
 
         if (stringParameters != null)
         {
@@ -51,8 +57,8 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == null)
         {
-            var movies = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
-            var shows = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+            var movies = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
+            var shows = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
             var listOrder = new List<Order>();
 
@@ -105,13 +111,16 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     });
                 }
 
-            if (actions != null) await actions.FinishLoading(currentList);
+            foreach (var state in states)
+            {
+                await state.FinishLoading(currentList);
+            }
             return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= movies?.total_pages && page >= shows?.total_pages);
         }
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+            var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
             foreach (var item in result?.results ?? [])
                 currentList.Add(new MediaDetail
@@ -130,12 +139,15 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     MediaType = MediaType.movie,
                 });
 
-            if (actions != null) await actions.FinishLoading(currentList);
+            foreach (var state in states)
+            {
+                await state.FinishLoading(currentList);
+            }
             return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
         }
         else //if (type == MediaType.tv)
         {
-            var result = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+            var result = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
             foreach (var item in result?.results ?? [])
             {
@@ -158,7 +170,10 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                 });
             }
 
-            if (actions != null) await actions.FinishLoading(currentList);
+            foreach (var state in states)
+            {
+                await state.FinishLoading(currentList);
+            }
             return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
         }
     }

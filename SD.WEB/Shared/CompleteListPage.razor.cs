@@ -46,8 +46,8 @@ namespace SD.WEB.Shared
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            Watching = await WatchingApi.Get(actions: null, token);
-            Wish = await WishApi.Get(actions: null, token);
+            Watching = await WatchingApi.Get(states: [], token);
+            Wish = await WishApi.Get(states: [], token);
         }
 
         private async Task ProcessNonList()

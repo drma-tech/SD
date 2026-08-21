@@ -7,12 +7,12 @@ namespace SD.WEB.Api.Module.Cosmos.Admin
     {
         public async Task<IEnumerable<AuthPrincipal>> GetAll(CancellationToken cancellationToken)
         {
-            return await GetListAsync("principal/get-all", state: null, cancellationToken);
+            return await GetListAsync("principal/get-all", states: [], cancellationToken);
         }
 
         public async Task Migrate(string? oldId, string? newId, CancellationToken cancellationToken)
         {
-            await PutAsync($"principal/migrate/{oldId}/{newId}", null, ApiContext.Default.AuthPrincipal, state: null, cancellationToken);
+            await PutAsync($"principal/migrate/{oldId}/{newId}", null, ApiContext.Default.AuthPrincipal, states: [], cancellationToken);
         }
     }
 }

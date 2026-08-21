@@ -6,11 +6,17 @@ namespace SD.WEB.Api.Module.Cosmos.Anonymous;
 
 public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
-    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>? actions,
+    public async Task<(ISet<MediaDetail> list, bool lastPage)> GetList(ISet<MediaDetail> currentList, RenderControlState<ISet<MediaDetail>>[] states,
         MediaType? type = null, IDictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (list == null) throw new ArgumentException(message: null, nameof(list));
-        if (actions != null && currentList.Empty()) await actions.StartLoading(null);
+        if (currentList.Empty())
+        {
+            foreach (var state in states)
+            {
+                await state.StartLoading(null);
+            }
+        }
 
         var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -20,7 +26,7 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
         };
 
         var uri = $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
-        var result = await GetAsync<CustomListNew>(uri, setNewVersion: false, state: null, cancellationToken);
+        var result = await GetAsync<CustomListNew>(uri, setNewVersion: false, states: [], cancellationToken);
 
         if (result != null)
         {
@@ -50,7 +56,10 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
             }
         }
 
-        if (actions != null) await actions.FinishLoading(currentList);
+        foreach (var state in states)
+        {
+            await state.FinishLoading(currentList);
+        }
         return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 }

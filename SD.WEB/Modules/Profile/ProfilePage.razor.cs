@@ -67,14 +67,14 @@ namespace SD.WEB.Modules.Profile
             await WatchingMovieState.StartLoading.Invoke(null);
             await WatchingTvState.StartLoading.Invoke(null);
 
-            Wish = await WishApi.Get(actions: null, token);
-            Watching = await WatchingApi.Get(actions: null, token);
+            Wish = await WishApi.Get(states: [], token);
+            Watching = await WatchingApi.Get(states: [], token);
 
             if ((Wish == null || Wish.Items(MediaType.movie).Empty()) && AppStateStatic.IsAuthenticated)
             {
                 Wish ??= new WishList(AppStateStatic.UserId);
 
-                var (list, _) = await TmdbListApi.GetList(new HashSet<MediaDetail>(), actions: null, MediaType.movie, stringParameters: null, EnumLists.CertifiedStreamingDiscoveryMovies, cancellationToken: token);
+                var (list, _) = await TmdbListApi.GetList(new HashSet<MediaDetail>(), states: [], MediaType.movie, stringParameters: null, EnumLists.CertifiedStreamingDiscoveryMovies, cancellationToken: token);
                 var media = list.FirstOrDefault();
 
                 if (media != null)
@@ -97,7 +97,7 @@ namespace SD.WEB.Modules.Profile
             await WatchingMovieState.FinishLoading.Invoke(Watching);
             await WatchingTvState.FinishLoading.Invoke(Watching);
 
-            MyProviders = await MyProvidersApi.Get(ProviderState, token);
+            MyProviders = await MyProvidersApi.Get([ProviderState], token);
 
             if (MyProviders == null && AppStateStatic.IsAuthenticated)
             {
@@ -111,7 +111,7 @@ namespace SD.WEB.Modules.Profile
                 var provider = AllProviders?.Items.Where(p => p.regions.Contains(region)).OrderBy(o => o.priority).FirstOrDefault();
 
                 var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, state: null, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, states: [], AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
 
                 demo = true;
 

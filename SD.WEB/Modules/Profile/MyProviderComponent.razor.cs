@@ -40,7 +40,7 @@ namespace SD.WEB.Modules.Profile
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            MyProviders = await MyProvidersApi.Get(State, token);
+            MyProviders = await MyProvidersApi.Get([State], token);
 
             foreach (var item in MyProviders?.Items ?? new HashSet<MyProvidersItem>())
             {
@@ -68,7 +68,7 @@ namespace SD.WEB.Modules.Profile
                 }
 
                 await ShowInfo(Translations.Module.Profile.RegionsApplied);
-                await MyProvidersApi.Update(MyProviders, State, AppStateStatic.ActiveProduct, validatePlan: false, token);
+                await MyProvidersApi.Update(MyProviders, [State], AppStateStatic.ActiveProduct, validatePlan: false, token);
 
                 StateHasChanged();
             }
@@ -92,7 +92,7 @@ namespace SD.WEB.Modules.Profile
                 item.logo = provider.logo_path;
             }
 
-            MyProviders = await MyProvidersApi.Update(MyProviders, State, product: null, validatePlan: false, Cts.Token);
+            MyProviders = await MyProvidersApi.Update(MyProviders, [State], product: null, validatePlan: false, Cts.Token);
             ProvidersChanged = false;
         }
     }

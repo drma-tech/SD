@@ -18,7 +18,7 @@ public class TmdbSearchKeywordApi(IHttpClientFactory factory) : ApiExternal(fact
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result = await GetAsync<TmdbSearchKeyword>(TmdbOptions.BaseUri + "search/keyword".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+        var result = await GetAsync<TmdbSearchKeyword>(TmdbOptions.BaseUri + "search/keyword".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
         if (result != null)
             currentList = [.. result.results.Select(r => new TmdbResultKeyword
@@ -37,7 +37,7 @@ public class TmdbSearchKeywordApi(IHttpClientFactory factory) : ApiExternal(fact
             { "api_key", TmdbOptions.ApiKey },
         };
 
-        var result = await GetAsync<TmdbMovieKeyword>(TmdbOptions.BaseUri + $"movie/{id}/keywords".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+        var result = await GetAsync<TmdbMovieKeyword>(TmdbOptions.BaseUri + $"movie/{id}/keywords".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
         return result?.keywords ?? [];
     }
@@ -49,7 +49,7 @@ public class TmdbSearchKeywordApi(IHttpClientFactory factory) : ApiExternal(fact
             { "api_key", TmdbOptions.ApiKey },
         };
 
-        var result = await GetAsync<TmdbSerieKeyword>(TmdbOptions.BaseUri + $"tv/{id}/keywords".ConfigureParameters(parameter), setNewVersion: false, state: null, cancellationToken);
+        var result = await GetAsync<TmdbSerieKeyword>(TmdbOptions.BaseUri + $"tv/{id}/keywords".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
         return result?.results ?? [];
     }
