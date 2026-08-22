@@ -114,7 +114,7 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<T?> GetAsync<T>(HttpClient http, string uri, bool setNewVersion, RenderControlState<T>[] states, CancellationToken cancellationToken) where T : class
+    protected async Task<T?> GetAsync<T>(HttpClient http, string uri, bool setNewVersion, RenderControlState<T?>[] states, CancellationToken cancellationToken) where T : class
     {
         try
         {
@@ -172,12 +172,12 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             }
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            IEnumerable<T>? result = default;
+            IEnumerable<T> result;
 
             if (key.NotEmpty())
-                result = await http.GetJsonFromApi<IEnumerable<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+                result = await http.GetJsonFromApi<IEnumerable<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken) ?? [];
             else
-                result = await http.GetJsonFromApi<IEnumerable<T>>(uri, cancellationToken);
+                result = await http.GetJsonFromApi<IEnumerable<T>>(uri, cancellationToken) ?? [];
 
             foreach (var state in states)
             {
@@ -232,7 +232,8 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<TOut> PostAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?>? responseTypeInfo, RenderControlState<TOut>[] states, CancellationToken cancellationToken)
+    protected async Task<TOut?> PostAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?>? responseTypeInfo,
+        RenderControlState<TOut?>[] states, CancellationToken cancellationToken)
         where TIn : class
         where TOut : class
     {
@@ -282,7 +283,8 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<TOut> PutAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?> responseTypeInfo, RenderControlState<TOut>[] states, CancellationToken cancellationToken)
+    protected async Task<TOut?> PutAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?> responseTypeInfo,
+        RenderControlState<TOut?>[] states, CancellationToken cancellationToken)
         where TIn : class
         where TOut : class
     {

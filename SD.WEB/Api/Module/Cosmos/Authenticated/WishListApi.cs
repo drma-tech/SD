@@ -4,7 +4,7 @@ namespace SD.WEB.Api.Module.Cosmos.Authenticated;
 
 public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, ApiType.Authenticated, "wishlist", [], ApiContext.Default.WishList)
 {
-    public async Task<WishList?> Get(RenderControlState<WishList>[] states, CancellationToken cancellationToken)
+    public async Task<WishList?> Get(RenderControlState<WishList?>[] states, CancellationToken cancellationToken)
     {
         if (!AppStateStatic.IsAuthenticated) return default;
 

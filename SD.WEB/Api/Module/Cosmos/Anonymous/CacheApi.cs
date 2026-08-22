@@ -75,7 +75,7 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
 
 public class FranchiseApi(IHttpClientFactory http) : ApiCosmos<FranchiseCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.FranchiseCache)
 {
-    public async Task<FranchiseCache?> GetItems(RenderControlState<FranchiseCache> state, CancellationToken cancellationToken)
+    public async Task<FranchiseCache?> GetItems(RenderControlState<FranchiseCache?> state, CancellationToken cancellationToken)
     {
         return await GetAsync("public/cache/franchise", setNewVersion: false, [state], cancellationToken);
     }
@@ -83,7 +83,7 @@ public class FranchiseApi(IHttpClientFactory http) : ApiCosmos<FranchiseCache>(h
 
 public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.NewsCache)
 {
-    public async Task<NewsCache?> GetNews(string mode, string category, RenderControlState<NewsCache> state, CancellationToken cancellationToken)
+    public async Task<NewsCache?> GetNews(string mode, string category, RenderControlState<NewsCache?> state, CancellationToken cancellationToken)
     {
         return await GetAsync($"public/cache/news?mode={mode}&category={category}", setNewVersion: false, [state], cancellationToken);
     }
@@ -91,7 +91,7 @@ public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<NewsCache>(ht
 
 public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.YoutubeCache)
 {
-    public async Task<YoutubeCache?> GetTrailers(string mode, RenderControlState<YoutubeCache> state, CancellationToken cancellationToken)
+    public async Task<YoutubeCache?> GetTrailers(string mode, RenderControlState<YoutubeCache?> state, CancellationToken cancellationToken)
     {
         return await GetAsync($"public/cache/trailers?mode={mode}", setNewVersion: false, [state], cancellationToken);
     }
@@ -99,12 +99,12 @@ public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<YoutubeCache>(
 
 public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(http, ApiType.Anonymous, key: null, [], ApiContext.Default.RatingsCache)
 {
-    public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> state, CancellationToken cancellationToken)
+    public async Task<RatingsCache?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache?> state, CancellationToken cancellationToken)
     {
         return await GetAsync($"public/cache/ratings/movie?id={id}&tmdb_id={tmdbId}&title={title}&release_date={releaseDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}&tmdb_rating={tmdbRating}", setNewVersion: false, [state], cancellationToken);
     }
 
-    public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache> state, CancellationToken cancellationToken)
+    public async Task<RatingsCache?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, RenderControlState<RatingsCache?> state, CancellationToken cancellationToken)
     {
         return await GetAsync($"public/cache/ratings/show?id={id}&tmdb_id={tmdbId}&title={title}&release_date={releaseDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}&tmdb_rating={tmdbRating}", setNewVersion: false, [state], cancellationToken);
     }
@@ -112,7 +112,7 @@ public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<RatingsCache>(
 
 public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<MetaCriticCache>(http, ApiType.Anonymous, key: null, [], typeInfo: ApiContext.Default.MetaCriticCache)
 {
-    public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache> state, CancellationToken cancellationToken)
+    public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlState<MetaCriticCache?> state, CancellationToken cancellationToken)
     {
         return await GetAsync($"public/cache/reviews/movies?id={id}&title={title}&release_date={releaseDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}", setNewVersion: false, [state], cancellationToken);
     }

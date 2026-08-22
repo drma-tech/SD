@@ -6,7 +6,7 @@ namespace SD.WEB.Api.Module.External;
 
 public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<IEnumerable<MediaDetail>> GetList(MediaType? type, string? tmdbId, RenderControlState<ICollection<MediaDetail>>? actions, CancellationToken cancellationToken)
+    public async Task<IEnumerable<MediaDetail>> GetList(MediaType? type, string? tmdbId, RenderControlState<ICollection<MediaDetail>>? state, CancellationToken cancellationToken)
     {
         var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -14,7 +14,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
             { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetFieldSettings(translate: false).Name ?? "en-US" },
         };
 
-        if (actions != null) await actions.StartLoading.Invoke(null);
+        if (state != null) await state.StartLoading.Invoke(null);
 
         if (type == MediaType.movie)
         {
@@ -41,7 +41,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
                 });
             }
 
-            if (actions != null) await actions.FinishLoading.Invoke(currentList);
+            if (state != null) await state.FinishLoading.Invoke(currentList);
 
             return currentList;
         }
@@ -70,7 +70,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
                 });
             }
 
-            if (actions != null) await actions.FinishLoading.Invoke(currentList);
+            if (state != null) await state.FinishLoading.Invoke(currentList);
 
             return currentList;
         }

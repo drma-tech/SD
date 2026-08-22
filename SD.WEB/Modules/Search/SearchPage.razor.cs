@@ -12,10 +12,10 @@ namespace SD.WEB.Modules.Search
         public WishList? Wish { get; set; }
 
         private HashSet<MediaDetail> Items { get; set; } = [];
-        private RenderControlState<ISet<MediaDetail>> State { get; } = new(list => list == null || list.Empty());
-        private static Dictionary<string, string> ParametersQuery => new(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" } };
-        private static Dictionary<string, string> ParametersKeyword => new(StringComparer.OrdinalIgnoreCase) { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
-        private static Dictionary<string, string> ParametersAdvanced => new(StringComparer.OrdinalIgnoreCase) { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };
+        private RenderControlState<ISet<MediaDetail>> State { get; } = new(new HashSet<MediaDetail>(), list => list.Empty());
+        private static Dictionary<string, string> ParametersQuery { get; set; } = new(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" } };
+        private static Dictionary<string, string> ParametersKeyword { get; set; } = new(StringComparer.OrdinalIgnoreCase) { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
+        private static Dictionary<string, string> ParametersAdvanced { get; set; } = new(StringComparer.OrdinalIgnoreCase) { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };
 
         public IEnumerable<EnumFieldObject<MediaType>> Types { get; set; } = [];
         public IEnumerable<EnumFieldObject<MovieGenre>> MovieGenres { get; set; } = [];
@@ -63,11 +63,12 @@ namespace SD.WEB.Modules.Search
 
             if (AppStateStatic.Index == 0)
             {
+                ParametersQuery["query"] = AppStateStatic.Query ?? throw new NotificationException("query not present");
                 _ = await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 1)
             {
-                ParametersKeyword["with_keywords"] = keywordId!;
+                ParametersKeyword["with_keywords"] = keywordId ?? throw new NotificationException("keyword not present");
                 _ = await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 2)

@@ -239,7 +239,7 @@
     [Parameter] public MediaType? Type { get; set; }
     [Parameter] public DateTime? ReleaseDate { get; set; }
 
-    public RenderControlState<MediaProviders> State { get; set; } = new(obj => obj == null);
+    public RenderControlState<MediaProviders?> State { get; set; } = new(null, obj => obj == null);
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 

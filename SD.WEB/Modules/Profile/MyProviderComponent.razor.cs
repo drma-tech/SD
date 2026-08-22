@@ -8,7 +8,7 @@ namespace SD.WEB.Modules.Profile
         [Parameter][EditorRequired] public WishList? WishList { get; set; }
         [Parameter][EditorRequired] public string? Culture { get; set; }
 
-        [Parameter] public RenderControlState<MyProviders> State { get; set; } = new(obj => obj == null || obj.Items.Empty());
+        [Parameter] public RenderControlState<MyProviders?> State { get; set; } = new(null, obj => obj == null || obj.Items.Empty());
         private AllProviders? AllProviders { get; set; }
         private MyProviders? MyProviders { get; set; }
         private bool ProvidersChanged { get; set; }

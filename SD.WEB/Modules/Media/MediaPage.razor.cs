@@ -26,11 +26,11 @@ namespace SD.WEB.Modules.Media
         public string? ImdbId { get; set; }
         public string? EnglishTitle { get; set; }
 
-        private RenderControlState<MediaDetail> State { get; set; } = new(obj => obj == null);
-        private RenderControlState<RatingsCache> RatingsState { get; set; } = new(obj => obj?.Data == null);
+        private RenderControlState<MediaDetail?> State { get; set; } = new(null, obj => obj == null);
+        private RenderControlState<RatingsCache?> RatingsState { get; set; } = new(null, obj => obj?.Data == null);
         private RatingsCache? _ratingsCache;
 
-        private RenderControlState<ICollection<MediaDetail>> RecommendationsState { get; set; } = new(lst => lst == null || lst.Empty());
+        private RenderControlState<ICollection<MediaDetail>> RecommendationsState { get; set; } = new([], lst => lst.Empty());
         public IEnumerable<MediaDetail> Recommendations { get; set; } = [];
 
         protected override List<string?> GetParameterKey()
@@ -50,7 +50,7 @@ namespace SD.WEB.Modules.Media
 
                 var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(translate: false).Name ?? "en-US";
                 Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, state: null, Cts.Token);
-                Media.Videos = Media.Videos.Reverse();
+                Media?.Videos = Media.Videos.Reverse();
 
                 await State.FinishLoading.Invoke(Media);
 
@@ -60,7 +60,7 @@ namespace SD.WEB.Modules.Media
                 {
                     //title must be in English
                     var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", state: null, Cts.Token);
-                    EnglishTitle = enMedia.title;
+                    EnglishTitle = enMedia?.title;
                 }
 
                 EnglishTitle = EnglishTitle?.Replace("&", "", StringComparison.Ordinal);

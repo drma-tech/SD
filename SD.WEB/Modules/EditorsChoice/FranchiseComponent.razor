@@ -17,7 +17,7 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
-    public RenderControlState<FranchiseCache> State { get; set; } = new(obj => obj == null || obj.Data == null || obj.Data.FranchiseItems.Empty());
+    public RenderControlState<FranchiseCache?> State { get; set; } = new(null, obj => obj == null || obj.Data == null || obj.Data.FranchiseItems.Empty());
 
     protected override async Task LoadStaticDataAsync()
     {
@@ -26,7 +26,7 @@
 
     private IEnumerable<MediaDetail> GetMediaDetails()
     {
-        foreach (var item in State.CurrentInstance?.Data?.FranchiseItems.Take(20) ?? new HashSet<FranchiseItem>())
+        foreach (var item in State.Instance?.Data?.FranchiseItems.Take(20) ?? new HashSet<FranchiseItem>())
         {
             yield return new MediaDetail
             {

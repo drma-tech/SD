@@ -88,8 +88,8 @@
 @code {
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    public RenderControlState<NewsCache> MovieState { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
-    public RenderControlState<NewsCache> SerieState { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache?> MovieState { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache?> SerieState { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
 
     private NewsCache? NewsMovie { get; set; }
     private NewsCache? NewsSerie { get; set; }

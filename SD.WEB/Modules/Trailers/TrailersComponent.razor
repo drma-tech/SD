@@ -64,7 +64,7 @@
 @code {
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    public RenderControlState<YoutubeCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<YoutubeCache?> State { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
     private YoutubeCache? TrailerModel { get; set; }
 
     private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";

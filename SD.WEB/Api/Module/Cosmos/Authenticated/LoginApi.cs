@@ -12,6 +12,6 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
 
     public async Task Add(Platform platform, string? country, CancellationToken cancellationToken)
     {
-        await PostAsync($"login/add?platform={platform}&country={country ?? "error"}", null, null, cancellationToken);
+        await PostAsync($"login/add?platform={platform}&country={country ?? "error"}", cancellationToken);
     }
 }

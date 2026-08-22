@@ -6,7 +6,7 @@ namespace SD.WEB.Api.Module.External;
 
 public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<MediaDetail> GetMediaDetail(string? tmdbId, MediaType type, string language, RenderControlState<MediaDetail>? state, CancellationToken cancellationToken)
+    public async Task<MediaDetail?> GetMediaDetail(string? tmdbId, MediaType type, string language, RenderControlState<MediaDetail?>? state, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(tmdbId);
 

@@ -37,7 +37,7 @@ namespace SD.WEB.Shared
 
         private string Title => TitleHead ?? List?.GetFieldSettings().Name ?? "Title Error";
 
-        public RenderControlState<ISet<MediaDetail>> State { get; set; } = new(list => list != null && list.Empty());
+        public RenderControlState<ISet<MediaDetail>> State { get; set; } = new(new HashSet<MediaDetail>(), list => list.Empty());
         public ISet<MediaDetail> Items { get; set; } = new HashSet<MediaDetail>();
 
         protected override async Task OnInitializedAsync()

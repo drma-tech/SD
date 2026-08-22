@@ -16,7 +16,7 @@ namespace SD.WEB.Shared
 
         [Parameter] public ISet<MediaDetail> Items { get; set; } = new HashSet<MediaDetail>();
         [Parameter] public EventCallback<ISet<MediaDetail>> ItemsChanged { get; set; }
-        [Parameter] public RenderControlState<ISet<MediaDetail>> State { get; set; } = new(list => list == null || list.Empty());
+        [Parameter] public RenderControlState<ISet<MediaDetail>> State { get; set; } = new(new HashSet<MediaDetail>(), list => list == null || list.Empty());
 
         [Parameter] public IMediaListApi? MediaListApi { get; set; }
         [Parameter] public EnumLists? List { get; set; }

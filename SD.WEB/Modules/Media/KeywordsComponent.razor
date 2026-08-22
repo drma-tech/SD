@@ -17,7 +17,7 @@
     [Parameter][EditorRequired] public string? TmdbId { get; set; }
     [Parameter][EditorRequired] public MediaType? Type { get; set; }
 
-    private RenderControlState<IReadOnlyCollection<TmdbResultKeyword>> State { get; set; } = new(lst => lst == null || lst.Empty());
+    private RenderControlState<IReadOnlyCollection<TmdbResultKeyword>> State { get; set; } = new([], lst => lst.Empty());
 
     private IReadOnlyCollection<TmdbResultKeyword> List { get; set; } = [];
 

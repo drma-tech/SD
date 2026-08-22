@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Platform
         [Parameter] public string? Id { get; set; }
         private bool isNotFound;
 
-        public RenderControlState<ProviderModel> State { get; set; } = new(obj => obj == null);
+        public RenderControlState<ProviderModel?> State { get; set; } = new(null, obj => obj == null);
         private AllProviders? AllProviders { get; set; }
         public ProviderModel? Provider { get; set; }
         private List<EnumFieldObject<Country>> regions = [];

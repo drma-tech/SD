@@ -18,12 +18,12 @@ namespace SD.WEB.Modules.Media
         [Parameter] public string? TmdbId { get; set; }
         [Parameter] public MediaType? Type { get; set; }
 
-        public RenderControlState<MediaDetail> State { get; set; } = new(obj => obj == null);
+        public RenderControlState<MediaDetail?> State { get; set; } = new(null, obj => obj == null);
         private MediaDetail? Media { get; set; }
         public string? ImdbId { get; set; }
         public string? EnglishTitle { get; set; }
 
-        public RenderControlState<RatingsCache> RatingsState { get; set; } = new(obj => obj?.Data == null);
+        public RenderControlState<RatingsCache?> RatingsState { get; set; } = new(null, obj => obj?.Data == null);
         private RatingsCache? _ratingsCache;
 
         protected override void OnInitialized()
@@ -57,7 +57,7 @@ namespace SD.WEB.Modules.Media
         {
             var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(translate: false).Name ?? "en-US";
             Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, State, Cts.Token);
-            Media.Videos = Media.Videos.Reverse();
+            Media?.Videos = Media.Videos.Reverse();
 
             ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, Cts.Token);
 
@@ -68,7 +68,7 @@ namespace SD.WEB.Modules.Media
             {
                 //title must be in English
                 var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", state: null, Cts.Token);
-                EnglishTitle = enMedia.title;
+                EnglishTitle = enMedia?.title;
             }
 
             EnglishTitle = EnglishTitle?.Replace("&", "", StringComparison.Ordinal);

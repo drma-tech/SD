@@ -42,7 +42,7 @@
 
     public MediaType MediaType => category.ParseToEnum<MediaType>(MediaType.movie);
 
-    public RenderControlState<NewsCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<NewsCache?> State { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
     private NewsCache? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 

@@ -95,7 +95,7 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public RenderControlState<Credits> State { get; set; } = new(obj => obj == null);
+    public RenderControlState<Credits?> State { get; set; } = new(null, obj => obj == null);
     private Credits? Credits { get; set; }
 
     protected override List<string?> GetParameterKey()

@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Platform
 {
     public partial class PlataformIndexPage
     {
-        public RenderControlState<AllProviders> State { get; set; } = new(obj => obj == null || obj.Items.Empty());
+        public RenderControlState<AllProviders?> State { get; set; } = new(null, obj => obj == null || obj.Items.Empty());
         private AllProviders? AllProviders { get; set; }
 
         private MyProviders? MyProviders { get; set; }

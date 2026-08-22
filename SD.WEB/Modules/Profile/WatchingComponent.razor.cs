@@ -4,8 +4,8 @@ namespace SD.WEB.Modules.Profile
 {
     public partial class WatchingComponent
     {
-        [Parameter][EditorRequired] public RenderControlState<WatchingList> MovieState { get; set; }
-        [Parameter][EditorRequired] public RenderControlState<WatchingList> TvState { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WatchingList?> MovieState { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WatchingList?> TvState { get; set; }
 
         [Parameter][EditorRequired] public bool ShowHeader { get; set; }
         [Parameter][EditorRequired] public bool FullScreen { get; set; }

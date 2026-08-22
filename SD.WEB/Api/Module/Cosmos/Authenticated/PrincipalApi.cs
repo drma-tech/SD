@@ -12,21 +12,21 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
         return await GetAsync("principal/get", setNewVersion, states: [], cancellationToken);
     }
 
-    public async Task<AuthPrincipal> Add(AuthPrincipal? obj, Platform platform, string? country, CancellationToken cancellationToken)
+    public async Task<AuthPrincipal?> Add(AuthPrincipal? obj, Platform platform, string? country, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
         return await PostAsync($"principal/add?platform={platform}&country={country}", obj, states: [], cancellationToken);
     }
 
-    public async Task<AuthPrincipal> Update(AuthPrincipal? obj, CancellationToken cancellationToken)
+    public async Task<AuthPrincipal?> Update(AuthPrincipal? obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
         return await PutAsync("principal/update", obj, ApiContext.Default.AuthPrincipal, states: [], cancellationToken);
     }
 
-    public async Task<AuthPrincipal> Event(string app, string msg, CancellationToken cancellationToken)
+    public async Task<AuthPrincipal?> Event(string app, string msg, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(msg);
 

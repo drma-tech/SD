@@ -5,7 +5,7 @@ namespace SD.WEB.Api.Module.External;
 
 public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<Credits?> GetList(MediaType? type, string? tmdbId, RenderControlState<Credits>[] states, CancellationToken cancellationToken)
+    public async Task<Credits?> GetList(MediaType? type, string? tmdbId, RenderControlState<Credits?>[] states, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(tmdbId)) return null;
 
@@ -16,9 +16,9 @@ public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
         };
 
         if (type == MediaType.movie)
-            return await GetAsync<Credits>(TmdbOptions.BaseUri + $"movie/{tmdbId}/credits".ConfigureParameters(parameter), setNewVersion: false, states, cancellationToken);
+            return await GetAsync(TmdbOptions.BaseUri + $"movie/{tmdbId}/credits".ConfigureParameters(parameter), setNewVersion: false, states, cancellationToken);
 
-        return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdbId}/credits".ConfigureParameters(parameter), setNewVersion: false, states, cancellationToken);
+        return await GetAsync(TmdbOptions.BaseUri + $"tv/{tmdbId}/credits".ConfigureParameters(parameter), setNewVersion: false, states, cancellationToken);
     }
 
     public async Task<CreditsByPerson?> GetListByPerson(string? personId, CancellationToken cancellationToken)

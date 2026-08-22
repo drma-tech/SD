@@ -39,7 +39,7 @@
 <FloatingButton Template="Template.Back"></FloatingButton>
 
 @code {
-    public RenderControlState<YoutubeCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public RenderControlState<YoutubeCache?> State { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
     private YoutubeCache? TrailerModel { get; set; }
 
     protected override async Task LoadStaticDataAsync()

@@ -4,7 +4,7 @@ namespace SD.WEB.Api.Module.Cosmos.Authenticated;
 
 public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist", [], ApiContext.Default.WatchingList)
 {
-    public async Task<WatchingList?> Get(RenderControlState<WatchingList>[] states, CancellationToken cancellationToken)
+    public async Task<WatchingList?> Get(RenderControlState<WatchingList?>[] states, CancellationToken cancellationToken)
     {
         if (!AppStateStatic.IsAuthenticated) return default;
 
@@ -36,7 +36,7 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
         return await PostAsync($"watchinglist/remove/{mediaType}/{collectionId}/{tmdbId}", null, ApiContext.Default.WatchingList, states: [], cancellationToken);
     }
 
-    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, RenderControlState<WatchingList>[] states, CancellationToken cancellationToken)
+    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, RenderControlState<WatchingList?>[] states, CancellationToken cancellationToken)
     {
         if (!mediaType.HasValue)
         {

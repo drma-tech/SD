@@ -31,7 +31,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return await GetBoolAsync(GetHttp(), endpoint, cancellationToken);
     }
 
-    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, RenderControlState<T>[] states, CancellationToken cancellationToken)
+    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, RenderControlState<T?>[] states, CancellationToken cancellationToken)
     {
         return await GetAsync(GetHttp(), endpoint, setNewVersion, states, cancellationToken);
     }
@@ -41,7 +41,12 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return await GetListAsync(GetHttp(), endpoint, states, cancellationToken);
     }
 
-    protected async Task<T> PostAsync(string endpoint, T? obj, RenderControlState<T>[] states, CancellationToken cancellationToken)
+    protected async Task PostAsync(string endpoint, CancellationToken cancellationToken)
+    {
+        await PostAsync(GetHttp(), endpoint, cancellationToken);
+    }
+
+    protected async Task<T?> PostAsync(string endpoint, T? obj, RenderControlState<T?>[] states, CancellationToken cancellationToken)
     {
         var result = await PostAsync(GetHttp(), endpoint, obj, typeInfo, typeInfo, states, cancellationToken);
 
@@ -50,7 +55,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return result;
     }
 
-    protected async Task<T> PostAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T>[] states, CancellationToken cancellationToken) where TObj : class
+    protected async Task<T?> PostAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T?>[] states, CancellationToken cancellationToken) where TObj : class
     {
         var result = await PostAsync(GetHttp(), endpoint, obj, requestTypeInfo, typeInfo, states, cancellationToken);
 
@@ -59,7 +64,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return result;
     }
 
-    protected async Task<T> PutAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T>[] states, CancellationToken cancellationToken) where TObj : class
+    protected async Task<T?> PutAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T?>[] states, CancellationToken cancellationToken) where TObj : class
     {
         var result = await PutAsync(GetHttp(), endpoint, obj, requestTypeInfo, typeInfo, states, cancellationToken);
 

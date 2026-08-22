@@ -80,7 +80,7 @@
 
     protected override async Task LoadStaticDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(null, Cts.Token);
+        MyProviders = await MyProvidersApi.Get([], Cts.Token);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string? sortBy, string? watchRegion)

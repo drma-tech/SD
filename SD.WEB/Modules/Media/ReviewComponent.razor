@@ -41,7 +41,7 @@
     [Parameter] public MediaType? Type { get; set; }
 
     public MetaCriticCache? Model { get; set; }
-    private RenderControlState<MetaCriticCache> State { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    private RenderControlState<MetaCriticCache?> State { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
 
     protected override List<string?> GetParameterKey()
     {

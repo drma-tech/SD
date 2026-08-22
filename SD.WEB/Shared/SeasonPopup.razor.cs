@@ -11,7 +11,7 @@ namespace SD.WEB.Shared
         [Parameter] public string? TmdbId { get; set; }
         [Parameter] public int? SeasonNumber { get; set; }
 
-        public RenderControlState<TmdbSeason> State { get; set; } = new(obj => obj == null || obj.episodes.Empty());
+        public RenderControlState<TmdbSeason?> State { get; set; } = new(null, obj => obj == null || obj.episodes.Empty());
         public TmdbSeason? Season { get; set; }
 
         protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)

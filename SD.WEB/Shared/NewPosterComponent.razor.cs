@@ -53,6 +53,8 @@ namespace SD.WEB.Shared
 
         private void SetTopLeft()
         {
+            if (MediaDetail == null) return;
+
             if (MediaDetail.runtime.HasValue)
             {
                 TopLeft = new PosterBadge
@@ -79,6 +81,8 @@ namespace SD.WEB.Shared
 
         private void SetTopRight()
         {
+            if (MediaDetail == null) return;
+
             if (MediaDetail.rating.HasValue)
             {
                 if (MediaDetail.rating >= 7.95)
@@ -110,6 +114,8 @@ namespace SD.WEB.Shared
 
         private void SetCenterLeft()
         {
+            if (MediaDetail == null) return;
+
             if (ShowWished)
             {
                 var wished = WishList?.Contains(MediaDetail.MediaType, MediaDetail.tmdb_id) ?? false;
@@ -127,6 +133,8 @@ namespace SD.WEB.Shared
 
         private void SetCenterRight()
         {
+            if (MediaDetail == null) return;
+
             if (ShowWatched)
             {
                 var watched = MediaDetail.collectionId.HasValue &&

@@ -9,7 +9,7 @@ namespace SD.WEB.Shared
 
         [Parameter] public string? LoadingHeight { get; set; } = "100px";
 
-        private RenderControlState<IEnumerable<T>> Actions { get; set; } = new(list => list == null || list.Empty());
+        private RenderControlState<IEnumerable<T>> Actions { get; set; } = new([], list => list.Empty());
         private readonly string _id = $"{Guid.NewGuid()}";
 
         private bool refreshed;

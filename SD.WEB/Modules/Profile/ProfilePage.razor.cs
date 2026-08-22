@@ -2,13 +2,13 @@ namespace SD.WEB.Modules.Profile
 {
     public partial class ProfilePage
     {
-        public RenderControlState<MyProviders> ProviderState { get; set; } = new(obj => obj == null || obj.Items.Empty());
+        public RenderControlState<MyProviders?> ProviderState { get; set; } = new(null, obj => obj == null || obj.Items.Empty());
 
-        public RenderControlState<WishList> WishMovieState { get; set; } = new(list => list == null || list.Movies.Empty());
-        public RenderControlState<WishList> WishTvState { get; set; } = new(list => list == null || list.Shows.Empty());
+        public RenderControlState<WishList?> WishMovieState { get; set; } = new(null, list => list == null || list.Movies.Empty());
+        public RenderControlState<WishList?> WishTvState { get; set; } = new(null, list => list == null || list.Shows.Empty());
 
-        public RenderControlState<WatchingList> WatchingMovieState { get; set; } = new(list => list == null || list.Movies.Empty());
-        public RenderControlState<WatchingList> WatchingTvState { get; set; } = new(list => list == null || list.Shows.Empty());
+        public RenderControlState<WatchingList?> WatchingMovieState { get; set; } = new(null, list => list == null || list.Movies.Empty());
+        public RenderControlState<WatchingList?> WatchingTvState { get; set; } = new(null, list => list == null || list.Shows.Empty());
 
         private MyProviders? MyProviders { get; set; }
         public WatchingList? Watching { get; set; }

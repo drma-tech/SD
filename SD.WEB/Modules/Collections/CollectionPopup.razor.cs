@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Collections
 
         [Parameter] public bool Franchise { get; set; }
 
-        private RenderControlState<TmdbCollection> State { get; } = new(obj => obj == null || obj.parts.Empty());
+        private RenderControlState<TmdbCollection?> State { get; } = new(null, obj => obj == null || obj.parts.Empty());
         private TmdbCollection? Collection { get; set; }
         private string Culture => Navigation.GetCulture();
 
@@ -63,11 +63,11 @@ namespace SD.WEB.Modules.Collections
 
                 Collection = new TmdbCollection
                 {
-                    id = int.Parse(show.tmdb_id ?? "0", CultureInfo.InvariantCulture),
-                    name = show.title ?? "error",
+                    id = int.Parse(show?.tmdb_id ?? "0", CultureInfo.InvariantCulture),
+                    name = show?.title ?? "error",
                 };
 
-                foreach (var season in show.Collection)
+                foreach (var season in show?.Collection ?? [])
                 {
                     Collection.parts.Add(new Part
                     {
@@ -133,7 +133,7 @@ namespace SD.WEB.Modules.Collections
                 var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(translate: false).Name ?? "en-US";
                 var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, state: null, Cts.Token);
 
-                item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, "", StringComparison.Ordinal), collectionItemsCount, items);
+                item = new WatchingListItem(tmdbId, media?.title ?? "error", media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "", StringComparison.Ordinal), collectionItemsCount, items);
             }
 
             Watching = await WatchingListApi.Add(type, Watching, item, AppStateStatic.ActiveProduct, Cts.Token);

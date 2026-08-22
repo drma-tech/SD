@@ -4,8 +4,8 @@ namespace SD.WEB.Modules.Profile
 {
     public partial class WishlistComponent
     {
-        [Parameter][EditorRequired] public RenderControlState<WishList> MovieState { get; set; }
-        [Parameter][EditorRequired] public RenderControlState<WishList> TvState { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WishList?> MovieState { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WishList?> TvState { get; set; }
         [Parameter][EditorRequired] public bool ShowHeader { get; set; }
         [Parameter][EditorRequired] public bool FullScreen { get; set; }
         [Parameter][EditorRequired] public WatchingList? Watching { get; set; }

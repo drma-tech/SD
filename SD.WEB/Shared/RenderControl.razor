@@ -17,7 +17,7 @@
             @Translations.Module.Auth.UnauthenticatedUser
         </MudAlert>
     }
-    else if (State.CurrentStatus == RenderControlStatus.Loading)
+    else if (State.Status == RenderControlStatus.Loading)
     {
         <div style="position: relative;">
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
@@ -26,13 +26,13 @@
             </span>
         </div>
     }
-    else if (State.CurrentStatus == RenderControlStatus.Error)
+    else if (State.Status == RenderControlStatus.Error)
     {
         <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
             @(State.MessageError ?? Translations.Notification.RenderControlInvalid)
         </MudAlert>
     }
-    else if (State.CurrentStatus == RenderControlStatus.Warning)
+    else if (State.Status == RenderControlStatus.Warning)
     {
         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
             @(State.MessageWarning ?? Translations.Notification.RenderControlNoData)
@@ -40,7 +40,7 @@
     }
     else //Content
     {
-        @if (State.CurrentInstance == null || State.ExpressionEmpty(State.CurrentInstance))
+        @if (State.Instance == null || State.ExpressionEmpty(State.Instance))
         {
             if (HideIfEmpty)
             {
@@ -55,7 +55,7 @@
         }
         else
         {
-            @ChildContent(State.CurrentInstance)
+            @ChildContent(State.Instance)
         }
     }
 </div>

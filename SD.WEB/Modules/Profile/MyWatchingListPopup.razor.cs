@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Profile
     {
         [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-        [Parameter][EditorRequired] public RenderControlState<WatchingList> State { get; set; }
+        [Parameter][EditorRequired] public RenderControlState<WatchingList?> State { get; set; }
         [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
         [Parameter][EditorRequired] public WishList? Wish { get; set; }
         [Parameter][EditorRequired] public string? Culture { get; set; }
