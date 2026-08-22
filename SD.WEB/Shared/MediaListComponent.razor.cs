@@ -135,8 +135,7 @@ namespace SD.WEB.Shared
 
                 if (tmdbId.Empty())
                 {
-                    await ShowError("Unable to display this content. Please try again later.");
-                    return;
+                    await ShowError("Unable to display this content. Please try again later."); return;
                 }
 
                 if (media.MediaType == MediaType.person)
@@ -147,17 +146,8 @@ namespace SD.WEB.Shared
                     foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())
                     {
                         var type = string.Equals(item.media_type, "tv", StringComparison.OrdinalIgnoreCase) ? MediaType.tv : MediaType.movie;
-                        items.Add(new MediaDetail
-                        {
-                            tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                            title = type == MediaType.movie ? item.title : item.name,
-                            plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                            release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                            poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                            poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                            rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                            MediaType = type,
-                        });
+
+                        items.Add(BuildMediaDetail(item, type));
                     }
 
                     foreach (var item in result?.cast ?? [])
@@ -167,18 +157,7 @@ namespace SD.WEB.Shared
                         if (type == MediaType.movie && item.order > 24) continue;
                         if (type == MediaType.tv && item.episode_count < 3) continue;
 
-                        items.Add(new MediaDetail
-                        {
-                            tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                            title = type == MediaType.movie ? item.title : item.name,
-                            plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                            release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                            poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                            poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                            rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                            MediaType = type,
-                            comments = type == MediaType.tv ? string.Create(CultureInfo.InvariantCulture, $"{item.episode_count} episodes") : "",
-                        });
+                        items.Add(BuildMediaDetail(item, type));
                     }
 
                     await DialogService.CompleteListPopup($"{media.title}", Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
@@ -199,6 +178,37 @@ namespace SD.WEB.Shared
             {
                 await State.ShowError.Invoke(ex.Message);
             }
+        }
+
+        private static MediaDetail BuildMediaDetail(CrewByPerson item, MediaType type)
+        {
+            return new MediaDetail
+            {
+                tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
+                title = type == MediaType.movie ? item.title : item.name,
+                plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                MediaType = type,
+            };
+        }
+
+        private static MediaDetail BuildMediaDetail(CastByPerson item, MediaType type)
+        {
+            return new MediaDetail
+            {
+                tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
+                title = type == MediaType.movie ? item.title : item.name,
+                plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                MediaType = type,
+                comments = type == MediaType.tv ? string.Create(CultureInfo.InvariantCulture, $"{item.episode_count} episodes") : "",
+            };
         }
     }
 }

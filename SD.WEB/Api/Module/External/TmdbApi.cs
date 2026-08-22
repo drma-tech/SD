@@ -27,27 +27,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
             if (item != null)
             {
-                objReturn = new MediaDetail
-                {
-                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                    title = item.title,
-                    original_title = item.original_title,
-                    original_language = item.original_language,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
-                    release_date = item.release_date?.GetDate(),
-                    poster_small = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.SmallPosterPath + item.poster_path,
-                    poster_large = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.LargePosterPath + item.poster_path,
-                    rating = item.vote_average,
-                    runtime = item.runtime,
-                    homepage = item.homepage,
-                    Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
-                    Genres = [.. item.genres.Select(s => s.name ?? "")],
-                    MediaType = MediaType.movie,
-                };
+                objReturn = BuildMediaDetail(item);
 
                 if (item.belongs_to_collection != null)
                 {
@@ -71,27 +51,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
             if (item != null)
             {
-                objReturn = new MediaDetail
-                {
-                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                    title = item.name,
-                    original_title = item.original_name,
-                    original_language = item.original_language,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
-                    release_date = item.first_air_date?.GetDate(),
-                    poster_small = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.SmallPosterPath + item.poster_path,
-                    poster_large = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.LargePosterPath + item.poster_path,
-                    rating = item.vote_average,
-                    runtime = item.episode_run_time.FirstOrDefault(),
-                    homepage = item.homepage,
-                    Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
-                    Genres = [.. item.genres.Select(s => s.name ?? "")],
-                    MediaType = MediaType.tv,
-                };
+                objReturn = BuildMediaDetail(item);
 
                 foreach (var season in item.seasons) objReturn.Collection.Add(season.ConvertToCollection());
             }
@@ -99,6 +59,56 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (state != null) await state.FinishLoading.Invoke(objReturn);
         return objReturn;
+    }
+
+    private static MediaDetail BuildMediaDetail(MovieDetail item)
+    {
+        return new MediaDetail
+        {
+            tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
+            title = item.title,
+            original_title = item.original_title,
+            original_language = item.original_language,
+            plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
+            release_date = item.release_date?.GetDate(),
+            poster_small = string.IsNullOrEmpty(item.poster_path)
+                                ? null
+                                : TmdbOptions.SmallPosterPath + item.poster_path,
+            poster_large = string.IsNullOrEmpty(item.poster_path)
+                                ? null
+                                : TmdbOptions.LargePosterPath + item.poster_path,
+            rating = item.vote_average,
+            runtime = item.runtime,
+            homepage = item.homepage,
+            Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
+            Genres = [.. item.genres.Select(s => s.name ?? "")],
+            MediaType = MediaType.movie,
+        };
+    }
+
+    private static MediaDetail BuildMediaDetail(TVDetail item)
+    {
+        return new MediaDetail
+        {
+            tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
+            title = item.name,
+            original_title = item.original_name,
+            original_language = item.original_language,
+            plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
+            release_date = item.first_air_date?.GetDate(),
+            poster_small = string.IsNullOrEmpty(item.poster_path)
+                                ? null
+                                : TmdbOptions.SmallPosterPath + item.poster_path,
+            poster_large = string.IsNullOrEmpty(item.poster_path)
+                                ? null
+                                : TmdbOptions.LargePosterPath + item.poster_path,
+            rating = item.vote_average,
+            runtime = item.episode_run_time.FirstOrDefault(),
+            homepage = item.homepage,
+            Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
+            Genres = [.. item.genres.Select(s => s.name ?? "")],
+            MediaType = MediaType.tv,
+        };
     }
 
     public async Task<TmdbCollection?> GetCollection(string? collectionId, IDictionary<string, string> parameters, CancellationToken cancellationToken)

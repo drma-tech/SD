@@ -67,19 +67,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         {
             await context.SetHttpResponseStatusCode(HttpStatusCode.BadRequest, ex.Message);
         }
-        catch (CosmosOperationCanceledException)
-        {
-            // ignored
-        }
-        catch (TaskCanceledException)
-        {
-            // ignored
-        }
-        catch (OperationCanceledException)
-        {
-            // ignored
-        }
-        catch (ObjectDisposedException)
+        catch (Exception ex) when (ex is CosmosOperationCanceledException || ex is TaskCanceledException || ex is OperationCanceledException || ex is ObjectDisposedException)
         {
             // ignored
         }

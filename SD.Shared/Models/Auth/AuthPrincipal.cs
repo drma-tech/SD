@@ -45,7 +45,7 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
     {
         if (validateId && subscription.SubscriptionId.Empty()) throw new UnhandledException("subscription id is null");
 
-        var sub = Subscriptions.SingleOrDefault(sub => string.Equals(sub.SubscriptionId, subscription.SubscriptionId, StringComparison.Ordinal)) 
+        var sub = Subscriptions.SingleOrDefault(sub => string.Equals(sub.SubscriptionId, subscription.SubscriptionId, StringComparison.Ordinal))
             ?? throw new NotificationException("Subscription not found.");
 
         if (Subscriptions.Any(p => p.IsActive() && !string.Equals(p.SubscriptionId, sub.SubscriptionId, StringComparison.Ordinal)))

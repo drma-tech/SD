@@ -5,7 +5,7 @@
 /// </summary>
 public enum Country
 {
-    [FieldSettings(nameof(Translations.Enum.Country.AD), Group = nameof(Translations.Enum.Country.Europe), ResourceType = typeof(Translations.Enum.Country))]    
+    [FieldSettings(nameof(Translations.Enum.Country.AD), Group = nameof(Translations.Enum.Country.Europe), ResourceType = typeof(Translations.Enum.Country))]
     AD = 20,
 
     [FieldSettings(nameof(Translations.Enum.Country.AE), Group = nameof(Translations.Enum.Country.Asia), ResourceType = typeof(Translations.Enum.Country))]

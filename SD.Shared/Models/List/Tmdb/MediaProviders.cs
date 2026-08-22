@@ -402,6 +402,7 @@ public class MediaProviders
     public int id { get; set; }
     public Results? results { get; set; }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>")]
     public string? GetLink(Country region)
     {
         if (results == null) return "";
@@ -532,6 +533,7 @@ public class MediaProviders
         };
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>")]
     public IEnumerable<ProviderBase> GetFreeListProviders(Country? region)
     {
         if (results == null) return [];
@@ -662,6 +664,7 @@ public class MediaProviders
         };
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>")]
     public IEnumerable<ProviderBase> GetAdsListProviders(Country? region)
     {
         if (results == null) return [];
@@ -792,6 +795,7 @@ public class MediaProviders
         };
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>")]
     public IEnumerable<ProviderBase> GetFlatRateListProviders(Country? region)
     {
         if (results == null) return [];
@@ -1052,6 +1056,7 @@ public class MediaProviders
     //    };
     //}
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>")]
     public IEnumerable<ProviderBase> GetRentListProviders(Country? region)
     {
         if (results == null) return [];
@@ -1182,6 +1187,7 @@ public class MediaProviders
         };
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>")]
     public IEnumerable<ProviderBase> GetBuyListProviders(Country? region)
     {
         if (results == null) return [];

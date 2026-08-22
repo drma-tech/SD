@@ -1,7 +1,7 @@
 ﻿namespace SD.Shared.Core;
 
 /// <summary>
-/// this API is free, so it's not a big problem to expose this data///     
+/// this API is free, so it's not a big problem to expose this data///
 /// https://developer.themoviedb.org/reference/configuration-details
 /// </summary>
 public static class TmdbOptions

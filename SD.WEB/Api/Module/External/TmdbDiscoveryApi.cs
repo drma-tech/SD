@@ -71,21 +71,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     if (movies == null) break;
                     var item = movies.results.Single(s => s.id == ordem.Id);
 
-                    currentList.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                        title = item.title,
-                        plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
-                        release_date = item.release_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path)
-                            ? null
-                            : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path)
-                            ? null
-                            : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 5 ? item.vote_average : 0,
-                        MediaType = MediaType.movie,
-                    });
+                    currentList.Add(BuildMediaDetail(item));
                 }
                 else // if (ordem.type == MediaType.tv)
                 {
@@ -94,21 +80,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
 
                     if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                    currentList.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                        title = item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
-                        release_date = item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path)
-                            ? null
-                            : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path)
-                            ? null
-                            : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average : 0,
-                        MediaType = MediaType.tv,
-                    });
+                    currentList.Add(BuildMediaDetail(item));
                 }
 
             foreach (var state in states)
@@ -123,21 +95,9 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
             var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), setNewVersion: false, states: [], cancellationToken);
 
             foreach (var item in result?.results ?? [])
-                currentList.Add(new MediaDetail
-                {
-                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                    title = item.title,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
-                    release_date = item.release_date?.GetDate(),
-                    poster_small = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.SmallPosterPath + item.poster_path,
-                    poster_large = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.LargePosterPath + item.poster_path,
-                    rating = item.vote_count > 5 ? item.vote_average : 0,
-                    MediaType = MediaType.movie,
-                });
+            {
+                currentList.Add(BuildMediaDetail(item));
+            }
 
             foreach (var state in states)
             {
@@ -153,21 +113,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
             {
                 if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                currentList.Add(new MediaDetail
-                {
-                    tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
-                    title = item.name,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
-                    release_date = item.first_air_date?.GetDate(),
-                    poster_small = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.SmallPosterPath + item.poster_path,
-                    poster_large = string.IsNullOrEmpty(item.poster_path)
-                        ? null
-                        : TmdbOptions.LargePosterPath + item.poster_path,
-                    rating = item.vote_count > 10 ? item.vote_average : 0,
-                    MediaType = MediaType.tv,
-                });
+                currentList.Add(BuildMediaDetail(item));
             }
 
             foreach (var state in states)
@@ -176,5 +122,43 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
             }
             return new ValueTuple<ISet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
         }
+    }
+
+    private static MediaDetail BuildMediaDetail(ResultMovieDiscover item)
+    {
+        return new MediaDetail
+        {
+            tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
+            title = item.title,
+            plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
+            release_date = item.release_date?.GetDate(),
+            poster_small = string.IsNullOrEmpty(item.poster_path)
+                                    ? null
+                                    : TmdbOptions.SmallPosterPath + item.poster_path,
+            poster_large = string.IsNullOrEmpty(item.poster_path)
+                                    ? null
+                                    : TmdbOptions.LargePosterPath + item.poster_path,
+            rating = item.vote_count > 5 ? item.vote_average : 0,
+            MediaType = MediaType.movie,
+        };
+    }
+
+    private static MediaDetail BuildMediaDetail(ResultTvDiscover item)
+    {
+        return new MediaDetail
+        {
+            tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
+            title = item.name,
+            plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
+            release_date = item.first_air_date?.GetDate(),
+            poster_small = string.IsNullOrEmpty(item.poster_path)
+                                    ? null
+                                    : TmdbOptions.SmallPosterPath + item.poster_path,
+            poster_large = string.IsNullOrEmpty(item.poster_path)
+                                    ? null
+                                    : TmdbOptions.LargePosterPath + item.poster_path,
+            rating = item.vote_count > 10 ? item.vote_average : 0,
+            MediaType = MediaType.tv,
+        };
     }
 }
