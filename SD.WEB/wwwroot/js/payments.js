@@ -5,9 +5,7 @@ import { storage, notification, interop } from "./utils.js";
 export const apple = {
     openCheckout(productId) {
         if (!window.appConfig.isWebview) {
-            notification.showToast(
-                "It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue."
-            );
+            notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
             return;
         }
 
@@ -16,19 +14,17 @@ export const apple = {
             callback: function (data) {
                 if (data.isSuccess) {
                     if (!data) {
-                        notification.showToast(
-                            "No data returned from purchase"
-                        );
+                        notification.showError("No data returned from purchase");
                         return;
                     }
                     if (!data.isSuccess) {
-                        notification.showToast("Purchase failed or canceled");
+                        notification.showError("Purchase failed or canceled");
                         return;
                     }
 
                     const receiptData = data.receiptData;
                     if (!receiptData) {
-                        notification.showToast("Receipt not found");
+                        notification.showError("Receipt not found");
                         return;
                     }
 
@@ -57,9 +53,7 @@ export const google = {
     openCheckout(productId, type) {
         try {
             if (!window.appConfig.isWebview) {
-                notification.showToast(
-                    "It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue."
-                );
+                notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
                 return;
             }
 
