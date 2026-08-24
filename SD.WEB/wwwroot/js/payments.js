@@ -6,6 +6,7 @@ export const apple = {
     openCheckout(productId) {
         if (!window.appConfig.isWebview) {
             notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
+            Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
             return;
         }
 
@@ -54,6 +55,7 @@ export const google = {
         try {
             if (!window.appConfig.isWebview) {
                 notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
+                Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
                 return;
             }
 
