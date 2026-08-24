@@ -4,6 +4,13 @@ import { storage, notification, interop } from "./utils.js";
 
 export const apple = {
     openCheckout(productId) {
+        if (!window.appConfig.isWebview) {
+            notification.showToast(
+                "It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue."
+            );
+            return;
+        }
+
         window.WTN.inAppPurchase({
             productId: productId,
             callback: function (data) {
@@ -49,6 +56,13 @@ export const apple = {
 export const google = {
     openCheckout(productId, type) {
         try {
+            if (!window.appConfig.isWebview) {
+                notification.showToast(
+                    "It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue."
+                );
+                return;
+            }
+
             window.WTN.inAppPurchase({
                 productId: productId,
                 productType: type,
