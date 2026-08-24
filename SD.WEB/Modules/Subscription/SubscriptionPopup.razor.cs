@@ -48,7 +48,7 @@ namespace SD.WEB.Modules.Subscription
 
         protected override void OnInitialized()
         {
-            BufferedEvent.Register(nameof(RegistrationSuccessful), async () => await RegistrationSuccessful());
+            BufferedEvent.Register(nameof(RegistrationSuccessful), RegistrationSuccessful);
             BufferedEvent.Register(nameof(AppleVerify), async (string receipt) => await AppleVerify(receipt));
         }
 

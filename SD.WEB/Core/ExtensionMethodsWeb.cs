@@ -12,6 +12,12 @@ public static class ExtensionMethodsWeb
         return HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
     }
 
+    public static IReadOnlyCollection<T> ToCollection<T>(this T? item) where T : struct
+    {
+        if (item == null) return [];
+        return [item.Value];
+    }
+
     public static string? GetRouteLanguage(string absolutePath)
     {
         var segments = absolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
