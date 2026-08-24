@@ -31,8 +31,23 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return await GetBoolAsync(GetHttp(), endpoint, cancellationToken);
     }
 
+    protected async Task<byte[]> GetBytesAsync(string endpoint, RenderControlState<byte[]>[] states, CancellationToken cancellationToken)
+    {
+        return await GetBytesAsync(GetHttp(), endpoint, states, cancellationToken);
+    }
+
     protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, RenderControlState<T?>[] states, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            foreach (var state in states)
+            {
+                await state.FinishLoading(default);
+            }
+
+            return default;
+        }
+
         return await GetAsync(GetHttp(), endpoint, setNewVersion, states, cancellationToken);
     }
 

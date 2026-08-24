@@ -6,8 +6,6 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 {
     public async Task<WatchingList?> Get(RenderControlState<WatchingList?>[] states, CancellationToken cancellationToken)
     {
-        if (!AppStateStatic.IsAuthenticated) return default;
-
         return await GetAsync("watchinglist/get", setNewVersion: false, states, cancellationToken);
     }
 

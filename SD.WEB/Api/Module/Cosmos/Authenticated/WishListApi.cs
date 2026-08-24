@@ -6,8 +6,6 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
 {
     public async Task<WishList?> Get(RenderControlState<WishList?>[] states, CancellationToken cancellationToken)
     {
-        if (!AppStateStatic.IsAuthenticated) return default;
-
         return await GetAsync("wishlist/get", setNewVersion: false, states, cancellationToken);
     }
 

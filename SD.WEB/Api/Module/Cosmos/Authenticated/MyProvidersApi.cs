@@ -7,8 +7,6 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
 {
     public async Task<MyProviders?> Get(RenderControlState<MyProviders?>[] states, CancellationToken cancellationToken)
     {
-        if (!AppStateStatic.IsAuthenticated) return default;
-
         return await GetAsync("my-providers", setNewVersion: true, states, cancellationToken);
     }
 

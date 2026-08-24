@@ -66,7 +66,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
             }, Cts.Token);
 
             await LoadStaticDataAsync();
-            await TaskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", context: false, LoadAuthenticatedDataAsync, Cts.Token); //start or route changes
+            await TaskHelper.RunSingleAsync("LoadAuthenticatedDataAsync", AppStateStatic.IsAuthenticated, LoadAuthenticatedDataAsync, Cts.Token); //start or route changes
         }
         catch (Exception ex)
         {

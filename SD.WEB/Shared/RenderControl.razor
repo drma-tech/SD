@@ -1,4 +1,4 @@
-﻿@typeparam T where T : class
+﻿@typeparam T
 
 <div class="@Class">
     @if (PremiumFeature && !IsPremium)
@@ -42,7 +42,11 @@
     {
         @if (State.Instance == null || State.ExpressionEmpty(State.Instance))
         {
-            if (HideIfEmpty)
+            if (EmptyFragment != null)
+            {
+                @EmptyFragment(State.Instance)
+            }
+            else if (HideIfEmpty)
             {
                 <div></div>
             }

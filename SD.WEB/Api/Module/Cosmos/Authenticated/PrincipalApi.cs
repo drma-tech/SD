@@ -7,8 +7,6 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
 {
     public async Task<AuthPrincipal?> Get(bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
-        if (!AppStateStatic.IsAuthenticated) return default;
-
         return await GetAsync("principal/get", setNewVersion, states: [], cancellationToken);
     }
 
