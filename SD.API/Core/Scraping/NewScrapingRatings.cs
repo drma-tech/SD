@@ -93,64 +93,64 @@ namespace SD.API.Core.Scraping
         /// <param name="factory"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task ProcessApiUnifiedMovie(this HttpRequestData req, IHttpClientFactory factory, Ratings ratings, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var canProcess = false;
-                if (ratings.tmdb.Empty()) canProcess = true;
-                if (ratings.imdb.Empty()) canProcess = true;
-                if (ratings.metacritic.Empty()) canProcess = true;
-                if (ratings.rottenTomatoes.Empty()) canProcess = true;
-                if (!canProcess) return;
+        //public static async Task ProcessApiUnifiedMovie(this HttpRequestData req, IHttpClientFactory factory, Ratings ratings, CancellationToken cancellationToken)
+        //{
+        //    try
+        //    {
+        //        var canProcess = false;
+        //        if (ratings.tmdb.Empty()) canProcess = true;
+        //        if (ratings.imdb.Empty()) canProcess = true;
+        //        if (ratings.metacritic.Empty()) canProcess = true;
+        //        if (ratings.rottenTomatoes.Empty()) canProcess = true;
+        //        if (!canProcess) return;
 
-                var client = factory.CreateClient("rapidapi");
-                var result = await client.GetUnifiedMovie<Shared.Models.List.UnifiedMovie.Root>(ratings.tmdbId, cancellationToken);
+        //        var client = factory.CreateClient("rapidapi");
+        //        var result = await client.GetUnifiedMovie<Shared.Models.List.UnifiedMovie.Root>(ratings.tmdbId, cancellationToken);
 
-                var rating1 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "tmdb", StringComparison.OrdinalIgnoreCase))?.score;
-                if (rating1.HasValue) rating1 /= 10;
-                ratings.tmdb ??= rating1?.ToString(CultureInfo.InvariantCulture);
+        //        var rating1 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "tmdb", StringComparison.OrdinalIgnoreCase))?.score;
+        //        if (rating1.HasValue) rating1 /= 10;
+        //        ratings.tmdb ??= rating1?.ToString(CultureInfo.InvariantCulture);
 
-                var rating2 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "imdb", StringComparison.OrdinalIgnoreCase))?.score;
-                if (rating2.HasValue) rating2 /= 10;
-                ratings.imdb ??= rating2?.ToString(CultureInfo.InvariantCulture);
+        //        var rating2 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "imdb", StringComparison.OrdinalIgnoreCase))?.score;
+        //        if (rating2.HasValue) rating2 /= 10;
+        //        ratings.imdb ??= rating2?.ToString(CultureInfo.InvariantCulture);
 
-                var rating3 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "metacritic", StringComparison.OrdinalIgnoreCase))?.score;
-                if (rating3.HasValue) rating3 /= 10;
-                ratings.metacritic ??= rating3?.ToString(CultureInfo.InvariantCulture);
+        //        var rating3 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "metacritic", StringComparison.OrdinalIgnoreCase))?.score;
+        //        if (rating3.HasValue) rating3 /= 10;
+        //        ratings.metacritic ??= rating3?.ToString(CultureInfo.InvariantCulture);
 
-                var rating4 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "rottenTomatoes", StringComparison.OrdinalIgnoreCase))?.score;
-                if (rating4.HasValue) rating4 /= 10;
-                ratings.rottenTomatoes ??= rating4?.ToString(CultureInfo.InvariantCulture);
-            }
-            catch (OperationCanceledException)
-            {
-                //do nothing
-            }
-            catch (ObjectDisposedException)
-            {
-                //do nothing
-            }
-            catch (Exception ex)
-            {
-                if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
+        //        var rating4 = result?.data?.ratings?.ratings?.FirstOrDefault(p => string.Equals(p.source, "rottenTomatoes", StringComparison.OrdinalIgnoreCase))?.score;
+        //        if (rating4.HasValue) rating4 /= 10;
+        //        ratings.rottenTomatoes ??= rating4?.ToString(CultureInfo.InvariantCulture);
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        //do nothing
+        //    }
+        //    catch (ObjectDisposedException)
+        //    {
+        //        //do nothing
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            return;
+        //        }
 
-                if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
+        //        if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            return;
+        //        }
 
-                req.LogError(ex);
+        //        req.LogError(ex);
 
-                if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new ApiRateLimitException(ex.Message);
-                }
-            }
-        }
+        //        if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            throw new ApiRateLimitException(ex.Message);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// https://rapidapi.com/pierregoutheraud/api/movies-ratings2

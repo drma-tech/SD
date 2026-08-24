@@ -158,24 +158,24 @@ public static class ExternalApiHelper
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
 
-    public static async Task<T?> GetUnifiedMovie<T>(this HttpClient http, string? tmdbId, CancellationToken cancellationToken) where T : class
-    {
-        //hard limit: 500 / Month
+    //public static async Task<T?> GetUnifiedMovie<T>(this HttpClient http, string? tmdbId, CancellationToken cancellationToken) where T : class
+    //{
+    //    //hard limit: 500 / Month
 
-        if (string.IsNullOrEmpty(tmdbId)) return null;
+    //    if (string.IsNullOrEmpty(tmdbId)) return null;
 
-        using var request = new HttpRequestMessage();
-        request.Method = HttpMethod.Get;
-        request.RequestUri = new Uri($"https://unified-movie-api.p.rapidapi.com/v1/movies/{tmdbId}?region=US");
-        request.Headers.Add("x-rapidapi-key", ApiStartup.Configurations.RapidAPI?.Key);
-        request.Headers.Add("x-rapidapi-host", "unified-movie-api.p.rapidapi.com");
+    //    using var request = new HttpRequestMessage();
+    //    request.Method = HttpMethod.Get;
+    //    request.RequestUri = new Uri($"https://unified-movie-api.p.rapidapi.com/v1/movies/{tmdbId}?region=US");
+    //    request.Headers.Add("x-rapidapi-key", ApiStartup.Configurations.RapidAPI?.Key);
+    //    request.Headers.Add("x-rapidapi-host", "unified-movie-api.p.rapidapi.com");
 
-        var response = await http.SendAsync(request, cancellationToken);
+    //    var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+    //    if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
-        return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
-    }
+    //    return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+    //}
 
     public static async Task<T?> GetMostPopular<T>(this HttpClient http, string route, CancellationToken cancellationToken) where T : class
     {
