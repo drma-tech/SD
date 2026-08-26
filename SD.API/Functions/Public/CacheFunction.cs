@@ -224,8 +224,6 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
                 await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
-                //await cache.ExecuteWithCooldownAsync("unifiedmovie", () => req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken), cancellationToken);
-
                 //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
                 await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
@@ -274,8 +272,6 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
                 };
 
                 await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
-
-                //await cache.ExecuteWithCooldownAsync("unifiedmovie", () => req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken), cancellationToken);
 
                 //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
