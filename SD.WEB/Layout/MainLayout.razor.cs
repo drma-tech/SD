@@ -155,7 +155,9 @@ namespace SD.WEB.Layout
 
             AppStateStatic.LastAccess = now;
 
-            if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
+            if (AppStateStatic.Principal == null) throw new NotificationException("principal model not available");
+
+            if (AppStateStatic.Principal.AuthProviders.Empty() || !AppStateStatic.Principal.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
             {
                 AppStateStatic.Principal.AuthProviders = [.. AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value], StringComparer.OrdinalIgnoreCase)];
                 await PrincipalApi.Update(AppStateStatic.Principal, CancellationToken.None);
