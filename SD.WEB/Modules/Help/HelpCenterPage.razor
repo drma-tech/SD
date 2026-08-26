@@ -37,6 +37,12 @@
                     @Translations.Title.Compare
                 </MudButton>
             </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/regions")>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Language"></MudIcon>
+                    Browse by Region
+                </MudButton>
+            </MudItem>
         </MudGrid>
     </BodyFragment>
 </PageSectionComponent>
@@ -57,9 +63,10 @@
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/regions")>
-                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Language"></MudIcon>
-                    Browse by Region
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@ShowConsole"
+                           Disabled="@(CurrentPlatform == SD.Shared.Enums.Platform.windows || CurrentPlatform == SD.Shared.Enums.Platform.webapp)">
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.ScreenSearchDesktop"></MudIcon>
+                    Show Console
                 </MudButton>
             </MudItem>
         </MudGrid>
