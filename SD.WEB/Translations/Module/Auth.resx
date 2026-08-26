@@ -141,6 +141,12 @@
   <data name="EnterEmail" xml:space="preserve">
     <value>Enter a valid email address.</value>
   </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>{0} is not a valid email address</value>
+  </data>
+  <data name="LoginSocialFailed" xml:space="preserve">
+    <value>If the social login attempt fails, please try again or use the option to log in with email.</value>
+  </data>
   <data name="MicrosoftEmails" xml:space="preserve">
     <value>Microsoft emails (Outlook, Hotmail, etc.) may not work.</value>
   </data>

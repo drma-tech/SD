@@ -133,6 +133,24 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not a valid email address.
+        /// </summary>
+        internal static string InvalidEmail {
+            get {
+                return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the social login attempt fails, please try again or use the option to log in with email..
+        /// </summary>
+        internal static string LoginSocialFailed {
+            get {
+                return ResourceManager.GetString("LoginSocialFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Microsoft emails (Outlook, Hotmail, etc.) may not work..
         /// </summary>
         internal static string MicrosoftEmails {

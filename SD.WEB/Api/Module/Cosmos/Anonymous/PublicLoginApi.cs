@@ -7,7 +7,7 @@ namespace SD.WEB.Api.Module.Cosmos.Anonymous
     {
         public async Task SendEmail(string? email, string? reference, CancellationToken cancellationToken)
         {
-            await PostAsync($"public/login/email?email={email}&reference={(reference ?? "error")}", cancellationToken);
+            await PostAsync($"public/login/email?email={email}&reference={reference ?? "error"}", cancellationToken);
         }
 
         public async Task<string?> StatusEmail(string? reference, CancellationToken cancellationToken)

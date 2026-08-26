@@ -31,11 +31,14 @@
                     <MudText>@Translations.Module.Auth.ContinueWith.CustomFormat("Microsoft")</MudText>
                 </MudButton>
             </MudBadge>
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Text" Dense="true" NoIcon="true" Style="font-size: 12px;" ContentAlignment="HorizontalAlignment.Center">
+                @Translations.Module.Auth.LoginSocialFailed
+            </MudAlert>
             <MudDivider Class="@CssHelper.Build().Medium("my")"></MudDivider>
             <MudToolBar Gutters="false" Style="height: auto;">
                 <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Translations.Button.Recent)" Overlap="true" Style="width: 100%;" Class="me-5">
                     <MudTextField @bind-Value="@email" Label="@Translations.Module.Auth.ContinueWith.CustomFormat(SD.WEB.Translations.Module.Auth.Email)" Placeholder="@Translations.Module.Auth.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
-                                  Immediate="true" InputType="InputType.Email" HelperText="@Translations.Module.Auth.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                                  Immediate="true" InputType="InputType.Email" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
                 </MudBadge>
                 <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Variant="Variant.Filled" OnClick="LoginWithEmail"
                                Style="align-self: start; margin-top: 8px;" Disabled="@(_processingInProgress || emailProbablySent)" />
@@ -48,7 +51,7 @@
             }
             <MudToolBar Gutters="false" Style="height: auto;">
                 <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Translations.Module.Auth.OTPCode" Placeholder="@Translations.Module.Auth.EnterCode" Disabled="@(!emailProbablySent)"
-                              InputType="InputType.Number" HelperText="@Translations.Module.Auth.EmailDelay" Variant="Variant.Outlined" Margin="Margin.Dense" Class="me-5" />
+                              InputType="InputType.Number" Variant="Variant.Outlined" Margin="Margin.Dense" Class="me-5" />
                 <MudIconButton Icon="@Icons.Material.Filled.Check" Color="Color.Primary" Variant="Variant.Filled" OnClick="ConfirmCode"
                                Style="align-self: start; margin-top: 8px;" Disabled="@(!emailProbablySent)" />
             </MudToolBar>
