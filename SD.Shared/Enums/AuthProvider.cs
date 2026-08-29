@@ -7,5 +7,8 @@
 
         [FieldSettings("Supabase")]
         Supabase = 2,
+
+        [FieldSettings("Clerk")]
+        Clerk = 3,
     }
 }

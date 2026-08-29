@@ -27,11 +27,14 @@
     <script defer src="package/fa/releases/v7.2.0/js/kit.min.js"></script>
     <script src="package/bowser/es5.min.js"></script> <!--https://www.jsdelivr.com/package/npm/bowser - 2.14.1-->
 
+    <script defer crossorigin="anonymous" src="https://central-kiwi-3030.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js" type="text/javascript"></script>
+
     <script src="js/app-version.js"></script>
     <script src="js/main.js"></script>
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/sentry.js"></script>
     <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/clerk.js"></script>
     <script type="module" src="js/events.js"></script>
     <script type="module" src="js/services.js"></script>
     <script type="module" src="js/devices.js"></script>
@@ -70,6 +73,7 @@
         <div class="loading-secondary">
             If loading fails, it's usually due to a slow connection or system/browser restrictions. Try reloading the page or reopening the app.
         </div>
+        <div id="user-profile"></div>
     </div>
 
     <div id="blazor-error-ui">

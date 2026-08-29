@@ -8,6 +8,7 @@ public class Configurations
     public TMDB? TMDB { get; set; }
     public RapidAPI? RapidAPI { get; set; }
     public SupabaseAuth? SupabaseAuth { get; set; }
+    public ClerkAuth? ClerkAuth { get; set; }
     public ZeptoMail? ZeptoMail { get; set; }
 }
 
@@ -67,6 +68,11 @@ public class SupabaseAuth
     public string? Url { get; set; }
     public string? Key { get; set; }
     public string? ServiceKey { get; set; }
+}
+
+public class ClerkAuth
+{
+    public string? SecretKey { get; set; }
 }
 
 public class ZeptoMail

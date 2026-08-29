@@ -72,10 +72,22 @@ namespace SD.WEB.Layout
             Navigation.NavigateTo($"/{Culture}/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri.Split('#')[0])}");
         }
 
+        private async Task LoginNew()
+        {
+            _openMenu = false;
+            await JsRuntime.Clerk().SignInAsync(Cts.Token);
+        }
+
         private async Task Logout()
         {
             _openMenu = false;
             await JsRuntime.Supabase().SignOutAsync(Cts.Token);
+        }
+
+        private async Task NewLogout()
+        {
+            _openMenu = false;
+            await JsRuntime.Clerk().SignOutAsync(Cts.Token);
         }
 
         private async Task OpenConfigurations()
@@ -88,6 +100,12 @@ namespace SD.WEB.Layout
         {
             _openMenu = false;
             await DialogService.AccountPopup();
+        }
+
+        private async Task NewMyAccount()
+        {
+            _openMenu = false;
+            await JsRuntime.Clerk().AccountPopup(Cts.Token);
         }
 
         private Color GetColor(string endpoint)

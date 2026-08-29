@@ -12,7 +12,6 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
     [DataType(DataType.EmailAddress)] public string? Email { get; set; }
     public string? StripeCustomerId { get; set; }
 
-    public string[] AuthProviders { get; set; } = [];
     public ISet<AuthSubscription> Subscriptions { get; set; } = new HashSet<AuthSubscription>();
     public ISet<Event> Events { get; set; } = new HashSet<Event>();
 

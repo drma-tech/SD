@@ -1,6 +1,4 @@
-﻿@using SD.WEB.Modules.Auth.Core
-
-@inherits ComponentCore<AccountPopup>
+﻿@inherits ComponentCore<AccountPopup>
 
 @inject PrincipalApi PrincipalApi
 
@@ -9,9 +7,6 @@
         <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="60px">
             <MudTabPanel Text="Auth">
                 <MudGrid Spacing="@CssHelper.SpaceSmall">
-                    <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Module.Profile.AuthProviders" Text="@(string.Join(", ", AppStateStatic.Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
-                    </MudItem>
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.Module.Profile.Identification" Text="@AppStateStatic.Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>

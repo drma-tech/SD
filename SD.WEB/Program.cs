@@ -62,6 +62,7 @@ AppStateStatic.Version = await AppStateStatic.GetAppVersion(js, CancellationToke
 AppStateStatic.BrowserName = await js.Utils().GetBrowserName(CancellationToken.None);
 AppStateStatic.BrowserVersion = await js.Utils().GetBrowserVersion(CancellationToken.None);
 AppStateStatic.OperatingSystem = await js.Utils().GetOperatingSystem(CancellationToken.None);
+AppStateStatic.IsBeta = await js.Utils().GetStorage("beta", JavascriptContext.Default.Boolean, CancellationToken.None);
 
 await js.Utils().SetStorage("app-version", AppStateStatic.Version, JavascriptContext.Default.String, CancellationToken.None);
 _ = await AppStateStatic.GetPlatform(js, CancellationToken.None);
@@ -110,6 +111,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     //Authenticated
     collection.AddScoped<AuthenticationStateProvider, SupabaseAuthStateProvider>();
+    collection.AddScoped<AuthenticationStateProvider, ClerkAuthStateProvider>();
     collection.AddScoped<CustomAuthorizationHandler>();
     collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(15); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Functions.Worker.Http;
+﻿using Clerk.BackendAPI.Helpers.Jwks;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -80,9 +81,32 @@ public static class AuthUsersHelper
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "supabase"));
             }
         }
-        else
+        else if (req.Headers.TryGetValues("X-Clerk-Token", out var headerClerk))
         {
-            return null;
+            var authHeader = headerClerk.LastOrDefault();
+
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                var token = authHeader.Substring("Bearer ".Length);
+
+                var options = new VerifyTokenOptions(
+                    secretKey: ApiStartup.Configurations.ClerkAuth?.SecretKey,
+                    authorizedParties: [
+                        "https://localhost:7272",
+                        "https://streamingdiscovery.com",
+                    ],
+                    clockSkewInMs: 10_000
+                );
+
+                var result = await VerifyToken.VerifyTokenAsync(token, options);
+
+                var claims = new List<Claim>
+                {
+                    new("user_id", result.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))?.Value ?? ""),
+                };
+
+                return new ClaimsPrincipal(new ClaimsIdentity(claims, "clerk"));
+            }
         }
 
         return null;
@@ -92,7 +116,7 @@ public static class AuthUsersHelper
     private static JsonWebKeySet? _jwksCache;
     private static DateTime _jwksCacheExpiry = DateTime.MinValue;
 
-    public static async Task<ClaimsPrincipal> VerifyTokenAsync(string token, string projectRef, string audience = "authenticated", CancellationToken cancellationToken = default)
+    private static async Task<ClaimsPrincipal> VerifyTokenAsync(string token, string projectRef, string audience = "authenticated", CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(token))
             throw new ArgumentNullException(nameof(token));

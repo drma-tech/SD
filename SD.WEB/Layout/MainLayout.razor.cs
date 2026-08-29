@@ -50,7 +50,20 @@ namespace SD.WEB.Layout
                     try
                     {
                         var provider = (SupabaseAuthStateProvider)AuthStateProvider;
-                        provider.OnSupabaseAuthChanged(token);
+                        provider.OnAuthChanged(token);
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.ProcessException(Snackbar, Logger);
+                    }
+                });
+
+                BufferedEvent.Register(nameof(ClerkAuthChanged), async (string? token) =>
+                {
+                    try
+                    {
+                        var provider = (ClerkAuthStateProvider)AuthStateProvider;
+                        provider.OnAuthChanged(token);
                     }
                     catch (Exception ex)
                     {
@@ -154,14 +167,6 @@ namespace SD.WEB.Layout
             await LoginApi.Add(platform, country, CancellationToken.None);
 
             AppStateStatic.LastAccess = now;
-
-            if (AppStateStatic.Principal == null) throw new NotificationException("principal model not available");
-
-            if (AppStateStatic.Principal.AuthProviders.Empty() || !AppStateStatic.Principal.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
-            {
-                AppStateStatic.Principal.AuthProviders = [.. AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value], StringComparer.OrdinalIgnoreCase)];
-                await PrincipalApi.Update(AppStateStatic.Principal, CancellationToken.None);
-            }
         }
 
         private async Task ApplyDarkMode(CancellationToken cancellationToken)
@@ -300,6 +305,12 @@ namespace SD.WEB.Layout
         public static void SupabaseAuthChanged(string? token)
         {
             _ = BufferedEvent.Invoke(nameof(SupabaseAuthChanged), token);
+        }
+
+        [JSInvokable]
+        public static void ClerkAuthChanged(string? token)
+        {
+            _ = BufferedEvent.Invoke(nameof(ClerkAuthChanged), token);
         }
 
         private bool isDisposed;

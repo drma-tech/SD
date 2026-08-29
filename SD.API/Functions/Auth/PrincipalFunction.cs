@@ -64,7 +64,6 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
 
         var principal = new AuthPrincipal(userId)
         {
-            AuthProviders = body.AuthProviders,
             DisplayName = body.DisplayName,
             Email = body.Email,
             Events = body.Events,
@@ -97,9 +96,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
-        principal!.AuthProviders = body.AuthProviders;
-
-        return await repo.UpsertItemAsync(principal);
+        return principal;
     }
 
     [Function("PrincipalEvent")]

@@ -11,6 +11,7 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Clerk.BackendAPI" Version="3.0.0" />
 		<PackageReference Include="Meziantou.Analyzer" Version="3.0.190">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
