@@ -20,10 +20,10 @@ namespace SD.WEB.Modules.Profile
         {
             WatchingApi.DataChanged += model =>
             {
-                _ = (State.StartLoading?.Invoke(null));
+                _ = (State.StartLoading.Invoke(null));
                 Watching = model;
                 _ = WatchingChanged.InvokeAsync(model);
-                _ = (State.FinishLoading?.Invoke(model));
+                _ = (State.FinishLoading.Invoke(model));
                 StateHasChanged();
             };
             WishApi.DataChanged += model =>

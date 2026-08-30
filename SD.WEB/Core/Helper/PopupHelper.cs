@@ -34,7 +34,7 @@ public static class PopupHelper
     {
         RenderControlState<ISet<MediaDetail>> State = new(new HashSet<MediaDetail>(), list => list.Empty());
 
-        State.StartLoading?.Invoke(null);
+        await State.StartLoading.Invoke(null);
 
         var parameters = new DialogParameters<CompleteListPopup>
         {
@@ -51,7 +51,7 @@ public static class PopupHelper
 
         await service.ShowAsync<CompleteListPopup>(titleHead, parameters, Options(MaxWidth.Large));
 
-        State.FinishLoading?.Invoke(items);
+        await State.FinishLoading.Invoke(items);
     }
 
     public static async Task MediaPopup(this IDialogService service, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId, string? culture)
@@ -73,7 +73,7 @@ public static class PopupHelper
     public static async Task MyWatchingListPopup(this IDialogService service, RenderControlState<WatchingList?> actions, MediaType type,
         WatchingList? watching, WishList? wish, string? culture)
     {
-        actions.StartLoading?.Invoke(null);
+        await actions.StartLoading.Invoke(null);
 
         var parameters = new DialogParameters<MyWatchingListPopup>
         {
@@ -91,13 +91,13 @@ public static class PopupHelper
 
         await service.ShowAsync<MyWatchingListPopup>(Title.CustomFormat(Quantity), parameters, Options(MaxWidth.Large));
 
-        actions.FinishLoading?.Invoke(watching);
+        await actions.FinishLoading.Invoke(watching);
     }
 
     public static async Task MyWishListPopup(this IDialogService service, RenderControlState<WishList?> state, WatchingList? watching, WishList? wish,
         MediaType type, string? culture)
     {
-        state.StartLoading?.Invoke(null);
+        await state.StartLoading.Invoke(null);
 
         var parameters = new DialogParameters<MyWishListPopup>
         {
@@ -115,7 +115,7 @@ public static class PopupHelper
 
         await service.ShowAsync<MyWishListPopup>(Title.CustomFormat(Quantity), parameters, Options(MaxWidth.Large));
 
-        state.FinishLoading?.Invoke(wish);
+        await state.FinishLoading.Invoke(wish);
     }
 
     public static async Task AccountPopup(this IDialogService service)

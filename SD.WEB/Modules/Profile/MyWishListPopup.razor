@@ -37,17 +37,16 @@
         WatchingApi.DataChanged += model =>
         {
             Watching = model;
-            WatchingChanged.InvokeAsync(model);
+            _ = WatchingChanged.InvokeAsync(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>
         {
-            State?.StartLoading?.Invoke(null);
+            _ = State?.StartLoading.Invoke(null);
             Wish = model;
-            WishChanged.InvokeAsync(model);
-            State?.FinishLoading?.Invoke(model);
+            _ = WishChanged.InvokeAsync(model);
+            _ = State?.FinishLoading.Invoke(model);
             StateHasChanged();
         };
     }
-
 }
