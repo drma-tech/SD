@@ -47,9 +47,10 @@ function loadClerkScript() {
     }
 
     clerkLoadPromise = new Promise((resolve, reject) => {
-        const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        const isLocalhost = window.location.hostname === "localhost";
+        const isDev = location.hostname.includes("develop");
 
-        const publishableKey = isLocalhost ? "pk_test_Y2VudHJhbC1raXdpLTMwMzAuY2xlcmsuYWNjb3VudHMuZGV2JA" : "pk_live_Y2xlcmsuc3RyZWFtaW5nZGlzY292ZXJ5LmNvbSQ";
+        const publishableKey = isLocalhost || isDev ? "pk_test_Y2VudHJhbC1raXdpLTMwMzAuY2xlcmsuYWNjb3VudHMuZGV2JA" : "pk_live_Y2xlcmsuc3RyZWFtaW5nZGlzY292ZXJ5LmNvbSQ";
 
         const script = document.createElement("script");
 
