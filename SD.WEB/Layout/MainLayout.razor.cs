@@ -49,8 +49,8 @@ namespace SD.WEB.Layout
                 {
                     try
                     {
-                        var provider = (SupabaseAuthStateProvider)AuthStateProvider;
-                        provider.OnAuthChanged(token);
+                        var provider = (CompositeAuthStateProvider)AuthStateProvider;
+                        provider.OnSupabaseAuthChanged(token);
                     }
                     catch (Exception ex)
                     {
@@ -62,8 +62,8 @@ namespace SD.WEB.Layout
                 {
                     try
                     {
-                        var provider = (ClerkAuthStateProvider)AuthStateProvider;
-                        provider.OnAuthChanged(token);
+                        var provider = (CompositeAuthStateProvider)AuthStateProvider;
+                        provider.OnClerkAuthChanged(token);
                     }
                     catch (Exception ex)
                     {
