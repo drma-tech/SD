@@ -32,7 +32,7 @@ namespace SD.WEB.Modules.Platform
 
         protected override async Task LoadStaticDataAsync()
         {
-            State.StartLoading?.Invoke(null);
+            await State.StartLoading.Invoke(null);
 
             AllProviders = await AllProvidersApi.GetAll(state: null, Cts.Token);
             Provider = AllProviders?.Items.SingleOrDefault(s => string.Equals(s.id, Id, StringComparison.OrdinalIgnoreCase));
@@ -59,7 +59,7 @@ namespace SD.WEB.Modules.Platform
                 }
             }
 
-            State.FinishLoading?.Invoke(Provider);
+            await State.FinishLoading.Invoke(Provider);
         }
 
         protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
@@ -72,7 +72,6 @@ namespace SD.WEB.Modules.Platform
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
             MyProviders = await MyProvidersApi.Get(states: [], token);
-
             Watching = await WatchingApi.Get(states: [], token);
             Wish = await WishApi.Get(states: [], token);
         }
