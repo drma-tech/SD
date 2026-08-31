@@ -15,61 +15,70 @@ public class PrincipalFunction(CosmosMainRepository repo)
     //public async Task PrincipalMigrate(
     //    [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/migrate")] HttpRequestData req, CancellationToken cancellationToken)
     //{
-    //    var principais = await repo.Query<AuthPrincipal>(MainType.Principal, predicate: null, transform: null, cancellationToken);
+    //    var principais = await repo.Query<AuthPrincipal>(MainType.Principal, p => !p.UserId!.StartsWith("user_"), transform: null, cancellationToken);
     //    var sdk = new ClerkBackendApi(bearerAuth: ApiStartup.Configurations.ClerkAuth!.SecretKey);
 
     //    foreach (var principal in principais)
     //    {
-    //        var request = new CreateUserRequestBody()
+    //        try
     //        {
-    //            FirstName = principal.DisplayName?.Split(" ").ElementAtIndex(0),
-    //            LastName = principal.DisplayName?.Split(" ").ElementAtIndex(1),
-    //            EmailAddress = [principal.Email!],
-    //        };
+    //            //if (principal.UserId!.StartsWith("user_", StringComparison.OrdinalIgnoreCase)) continue;
 
-    //        var user = await sdk.Users.CreateAsync(request);
+    //            var request = new CreateUserRequestBody()
+    //            {
+    //                FirstName = principal.DisplayName?.Split(" ").ElementAtIndex(0),
+    //                LastName = principal.DisplayName?.Split(" ").ElementAtIndex(1),
+    //                EmailAddress = [principal.Email!],
+    //            };
 
-    //        var clone = principal.DeepClone() ?? throw new NotificationException(CloneFailed);
-    //        clone.ChangeIdentity(new MainIdentity(MainType.Principal, user.User!.Id));
-    //        clone.UserId = user.User.Id;
-    //        await repo.CreateItemAsync(clone);
-    //        await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, principal.Id));
+    //            var user = await sdk.Users.CreateAsync(request);
 
-    //        var myLogins = await repo.ReadItemAsync<AuthLogin>(new MainIdentity(MainType.Login, principal.Id), cancellationToken);
-    //        if (myLogins != null)
-    //        {
-    //            var model = myLogins.DeepClone() ?? throw new NotificationException(CloneFailed);
-    //            model.ChangeIdentity(new MainIdentity(MainType.Login, user.User.Id));
+    //            var clone = principal.DeepClone() ?? throw new NotificationException(CloneFailed);
+    //            clone.ChangeIdentity(new MainIdentity(MainType.Principal, user.User!.Id));
     //            clone.UserId = user.User.Id;
-    //            await repo.CreateItemAsync(model);
-    //            await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, principal.Id));
-    //        }
+    //            await repo.CreateItemAsync(clone);
+    //            await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, principal.Id));
 
-    //        var myProviders = await repo.ReadItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, principal.Id), cancellationToken);
-    //        if (myProviders != null)
-    //        {
-    //            var model = myProviders.DeepClone() ?? throw new NotificationException(CloneFailed);
-    //            model.ChangeIdentity(new MainIdentity(MainType.MyProvider, user.User.Id));
-    //            await repo.CreateItemAsync(model);
-    //            await repo.DeleteItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, principal.Id));
-    //        }
+    //            var myLogins = await repo.ReadItemAsync<AuthLogin>(new MainIdentity(MainType.Login, principal.Id), cancellationToken);
+    //            if (myLogins != null)
+    //            {
+    //                var model = myLogins.DeepClone() ?? throw new NotificationException(CloneFailed);
+    //                model.ChangeIdentity(new MainIdentity(MainType.Login, user.User.Id));
+    //                clone.UserId = user.User.Id;
+    //                await repo.CreateItemAsync(model);
+    //                await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, principal.Id));
+    //            }
 
-    //        var myWatching = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, principal.Id), cancellationToken);
-    //        if (myWatching != null)
-    //        {
-    //            var model = myWatching.DeepClone() ?? throw new NotificationException(CloneFailed);
-    //            model.ChangeIdentity(new MainIdentity(MainType.WatchingList, user.User.Id));
-    //            await repo.CreateItemAsync(model);
-    //            await repo.DeleteItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, principal.Id));
-    //        }
+    //            var myProviders = await repo.ReadItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, principal.Id), cancellationToken);
+    //            if (myProviders != null)
+    //            {
+    //                var model = myProviders.DeepClone() ?? throw new NotificationException(CloneFailed);
+    //                model.ChangeIdentity(new MainIdentity(MainType.MyProvider, user.User.Id));
+    //                await repo.CreateItemAsync(model);
+    //                await repo.DeleteItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, principal.Id));
+    //            }
 
-    //        var myWish = await repo.ReadItemAsync<WishList>(new MainIdentity(MainType.WishList, principal.Id), cancellationToken);
-    //        if (myWish != null)
+    //            var myWatching = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, principal.Id), cancellationToken);
+    //            if (myWatching != null)
+    //            {
+    //                var model = myWatching.DeepClone() ?? throw new NotificationException(CloneFailed);
+    //                model.ChangeIdentity(new MainIdentity(MainType.WatchingList, user.User.Id));
+    //                await repo.CreateItemAsync(model);
+    //                await repo.DeleteItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, principal.Id));
+    //            }
+
+    //            var myWish = await repo.ReadItemAsync<WishList>(new MainIdentity(MainType.WishList, principal.Id), cancellationToken);
+    //            if (myWish != null)
+    //            {
+    //                var model = myWish.DeepClone() ?? throw new NotificationException(CloneFailed);
+    //                model.ChangeIdentity(new MainIdentity(MainType.WishList, user.User.Id));
+    //                await repo.CreateItemAsync(model);
+    //                await repo.DeleteItemAsync<WishList>(new MainIdentity(MainType.WishList, principal.Id));
+    //            }
+    //        }
+    //        catch (Exception ex)
     //        {
-    //            var model = myWish.DeepClone() ?? throw new NotificationException(CloneFailed);
-    //            model.ChangeIdentity(new MainIdentity(MainType.WishList, user.User.Id));
-    //            await repo.CreateItemAsync(model);
-    //            await repo.DeleteItemAsync<WishList>(new MainIdentity(MainType.WishList, principal.Id));
+    //            throw ex;
     //        }
     //    }
     //}
