@@ -21,6 +21,16 @@ namespace SD.WEB.Modules
             Options.Add("de");
         }
 
+        protected override IReadOnlyList<string?> GetParameterKey()
+        {
+            return [Culture];
+        }
+
+        protected override async Task LoadParameterDataAsync()
+        {
+            filter = Culture;
+        }
+
         public IEnumerable<EnumFieldObject<Country>> GetRegions()
         {
             if (string.Equals(filter, "en", StringComparison.OrdinalIgnoreCase))

@@ -17,7 +17,7 @@
 <HeadComponent Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Title" Description="@Description" UrlShare="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></PageSectionComponent>
 
-@if (MediaListApi != null && TypeSelected != null && StringParameters.NotEmpty())
+@if (MediaListApi != null)
 {
     <MediaListFull IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
                    StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
