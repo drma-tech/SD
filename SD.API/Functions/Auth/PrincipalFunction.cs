@@ -16,7 +16,7 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
         var model = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
-        return await req.CreateResponse(model, TtlCache.OneDay, cancellationToken);
+        return await req.CreateResponse(model, TtlCache.OneHour, cancellationToken);
     }
 
     [Function("PrincipalAdd")]

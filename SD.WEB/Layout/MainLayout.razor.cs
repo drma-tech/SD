@@ -105,7 +105,7 @@ namespace SD.WEB.Layout
             if (!authenticated) AppStateStatic.IsPremiumUser = false;
 
             //principal to be used for all the app
-            AppStateStatic.Principal = await PrincipalApi.Get(setNewVersion: true, Cts.Token);
+            AppStateStatic.Principal = await PrincipalApi.Get(setNewVersion: false, Cts.Token);
 
             var sub = AppStateStatic.Principal?.GetActiveSubscription();
             AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
@@ -189,6 +189,11 @@ namespace SD.WEB.Layout
             }
         }
 
+        /// <summary>
+        /// asks for a review after the third visit, every 24 hours
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private async Task AskUSerForReview(CancellationToken cancellationToken)
         {
             var accesses = await JsRuntime.Utils().GetStorage("session-accesses", JavascriptContext.Default.HashSetDateTime, cancellationToken) ?? [];
@@ -217,6 +222,11 @@ namespace SD.WEB.Layout
             }
         }
 
+        /// <summary>
+        /// log all app access locally (in the browser) with a 2-hour delay
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private async Task RegisterSessionAccesses(CancellationToken cancellationToken)
         {
             var accesses = await JsRuntime.Utils().GetStorage("session-accesses", JavascriptContext.Default.HashSetDateTime, cancellationToken) ?? [];

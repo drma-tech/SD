@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-import { storage, notification, interop } from "./utils.js";
+import { storage, interop } from "./utils.js";
 
 async function getClerkLocalization(language) {
     switch (language) {
@@ -119,19 +119,9 @@ if (!window.appConfig.isBot && !window.appConfig.isPrintScreen) {
 }
 
 function setupAuthListener(clerk) {
-    let lastSessionId = null;
-
     clerk.addListener(async ({ session, user }) => {
         const authProvider = storage.getLocalStorage("auth");
         if (authProvider !== "clerk") return;
-
-        const sessionId = session?.id ?? null;
-
-        if (sessionId === lastSessionId) {
-            return;
-        }
-
-        lastSessionId = sessionId;
 
         setTimeout(async () => {
             if (user && window.Userback?.identify) {
@@ -153,25 +143,6 @@ function setupAuthListener(clerk) {
 }
 
 export const authentication = {
-    // async createUser(id, email, name) {
-    //     const supabase = await ensureAuthReady();
-
-    //     const { data, error } = await supabase.auth.admin.createUser({
-    //         id: id,
-    //         email: email,
-    //         //password: password,
-    //         email_confirm: true,
-    //         user_metadata: {
-    //             name: name,
-    //         },
-    //     });
-
-    //     if (error) {
-    //         throw error.message;
-    //     } else {
-    //         return data.user.id;
-    //     }
-    // },
     async signIn() {
         try {
             storage.setLocalStorage("auth", "clerk");
@@ -202,30 +173,4 @@ export const authentication = {
             throw error.message;
         }
     }
-    // async getUser() {
-    //     try {
-    //         const supabase = await ensureAuthReady();
-    //         const { data, error } = await supabase.auth.getSession();
-    //         let user = data?.session?.user;
-
-    //         if (!user) return null;
-
-    //         if (error) {
-    //             Sentry.captureException(error);
-    //             notification.showError(error.message);
-    //             return null;
-    //         } else {
-    //             return {
-    //                 userId: user.id,
-    //                 name: user.user_metadata.full_name || null,
-    //                 email: user.email || null,
-    //                 avatar: user.user_metadata.avatar_url
-    //             };
-    //         }
-    //     } catch (error) {
-    //         Sentry.captureException(error);
-    //         notification.showError(error.message);
-    //         return null;
-    //     }
-    // },
 };
