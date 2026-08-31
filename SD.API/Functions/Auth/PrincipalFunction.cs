@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using SD.API.Core.Auth;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
-using SD.Shared.Models.Blocked;
 
 namespace SD.API.Functions.Auth;
 
@@ -34,25 +33,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
 
         await req.ValidateUser(body.UserId, cancellationToken);
 
-        //check if user ip is blocked for insert
         var ip = req.GetUserIP(includePort: false) ?? throw new UnhandledException("Failed to retrieve IP");
-        var blockedIp = await repoCache.ReadItemAsync<DataBlockedCache>(new CacheIdentity($"block-{ip}"), cancellationToken);
-        if (blockedIp?.Data != null)
-        {
-            blockedIp.Data.Quantity++;
-            await repoCache.UpsertItemAsync(blockedIp);
-
-            if (blockedIp.Data?.Quantity > 2)
-            {
-                //todo: create a mechanism to increase block time if user persist on this action (first = block one hour, second = block 24 hours)
-                req.LogWarning($"PrincipalAdd blocked IP {ip}");
-                throw new NotificationException("You've reached the limit for creating profiles. Please try again later.");
-            }
-        }
-        else
-        {
-            _ = repoCache.CreateItemAsync(new DataBlockedCache($"block-{ip}", new DataBlocked()));
-        }
 
         foreach (var item in body.Events.Where(w => w.Ip.Empty()))
         {

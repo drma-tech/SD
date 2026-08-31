@@ -50,7 +50,7 @@ function loadClerkScript() {
         const isLocalhost = window.location.hostname === "localhost";
         const isDev = location.hostname.includes("develop");
 
-        const publishableKey = isLocalhost || isDev ? "pk_test_Y2VudHJhbC1raXdpLTMwMzAuY2xlcmsuYWNjb3VudHMuZGV2JA" : "pk_live_Y2xlcmsuc3RyZWFtaW5nZGlzY292ZXJ5LmNvbSQ";
+        const publishableKey = isLocalhost || isDev ? window.appConfig.clerkConfig.devPk : window.appConfig.clerkConfig.prdPk;
 
         const script = document.createElement("script");
 
@@ -119,32 +119,34 @@ if (!window.appConfig.isBot && !window.appConfig.isPrintScreen) {
 }
 
 function setupAuthListener(clerk) {
-    let _lastToken = null;
+    let lastSessionId = null;
 
-    clerk.addListener(async ({ user }) => {
+    clerk.addListener(async ({ session, user }) => {
         const authProvider = storage.getLocalStorage("auth");
         if (authProvider !== "clerk") return;
+
+        const sessionId = session?.id ?? null;
+
+        if (sessionId === lastSessionId) {
+            return;
+        }
+
+        lastSessionId = sessionId;
 
         setTimeout(async () => {
             if (user && window.Userback?.identify) {
                 try {
                     window.Userback.identify(user.id, {
-                        name: user.user_metadata.full_name,
-                        email: user.email,
+                        name: user.fullName,
+                        email: user.primaryEmailAddress?.emailAddress,
                     });
                 } catch {
                     //ignores
                 }
             }
-        }, 1000);
+        }, 5000);
 
-        const token = user ? await clerk.session?.getToken() : null;
-
-        if (token === _lastToken) {
-            return;
-        }
-
-        _lastToken = token;
+        const token = session ? await session.getToken() : null;
 
         await interop.invokeDotNetWhenReady("SD.WEB", "ClerkAuthChanged", token);
     });
