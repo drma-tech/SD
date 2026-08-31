@@ -3,11 +3,10 @@ using System.Text.Json;
 
 namespace SD.API.Core
 {
-    public class ZeptoMailClient(string apiKey) : IDisposable
+    public class ZeptoMailClient(IHttpClientFactory factory, string apiKey)
     {
-        private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
-        private readonly string _uri = "https://api.zeptomail.com/v1.1/email";
+        private const string _uri = "https://api.zeptomail.com/v1.1/email";
 
         private const string domain = "streamingdiscovery";
         private const string appName = "Streaming Discovery";
@@ -61,8 +60,6 @@ namespace SD.API.Core
         private static readonly string CssSections = ".email-section { margin-top: 32px; } .section-title { margin-bottom: 16px; font-size: 18px; font-weight: 700; color: #5a4be2; }";
         private static readonly string CssQuickLinks = ".link-grid { text-align: center; } .link-card { display: inline-block; margin: 4px; padding: 8px 12px; background: #6b728024; border: 1px solid #e5e7eb; border-radius: 999px; color: #ff4081 !important; font-size: 14px; font-weight: 600; transition: 0.2s ease; }";
         private static readonly string CssProducts = ".product-list { margin-top: 12px; } .product-card { display: block; margin-bottom: 10px; padding: 10px; background: #6b728024; border: 1px solid #e5e7eb; border-radius: 12px; text-align: left; } .product-name { margin-bottom: 4px; color: #ff4081; font-size: 15px; font-weight: 700; } .product-name img { height: 20px; margin: 0 6px; vertical-align: bottom; } .product-description { color: #6b7280; font-size: 14px; line-height: 1.5; }";
-
-        private static readonly string CssOtp = ".otp { display: inline-block; padding: 16px; margin: 12px 0; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 14px; font-size: 36px; font-weight: 700; letter-spacing: 4px; color: #5a4be2; }";
 
         private static readonly string HtmlHeader = @$"
         <div class=""email-header"">
@@ -158,82 +155,6 @@ namespace SD.API.Core
                 All rights reserved.
             </div>
         </div>";
-
-        public async Task SendOtpEmail(string toEmail, string reference, string? otp, CancellationToken cancellationToken)
-        {
-            var payload = new
-            {
-                from = new { address = noreplyEmail, name = "DRMA Tech" },
-                to = new[] { new { email_address = new { address = toEmail, name = "" } } },
-                subject = "DRMA Tech - Your OTP Code",
-                htmlbody = @$"
-                 <!DOCTYPE html>
-                <html lang=""en"">
-                <head>
-                    <meta charset=""utf-8"">
-                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-                    <style>
-                        {CssBase}
-                        {CssOtp}
-                    </style>
-                </head>
-                <body>
-                    <div class=""email-wrapper"">
-                        <div class=""email-container"">
-
-                            <!-- HEADER -->
-                            {HtmlHeader}
-
-                            <!-- CONTENT -->
-                            <div class=""email-content"">
-                                <h2 class=""email-title"">
-                                    Verification Code
-                                </h2>
-
-                                <p>Use the code below to confirm your {appName} account.</p>
-                                <div style=""text-align:center"">
-                                    <div class=""otp"">{otp}</div>
-                                </div>
-                                <p>This code expires in <span style=""color: #ff4081; font-weight: bold;"">10 minutes</span>.</p>
-
-                                <hr class=""email-divider"">
-                                <div class=""email-support"">
-                                    Questions? Contact
-                                    <a href=""mailto:{supportEmail}"">
-                                        {supportEmail}
-                                    </a>
-                                </div>
-                                <div class=""email-signature"">
-                                    <small>Have a great day,</small>
-                                    <strong>Team DRMA Tech</strong>
-                                </div>
-                            </div>
-
-                            <!-- FOOTER -->
-                            {HtmlFooter}
-                        </div>
-                    </div>
-                </body>
-                </html>",
-                client_reference = reference,
-            };
-
-            var json = JsonSerializer.Serialize(payload);
-
-            var request = new HttpRequestMessage(HttpMethod.Post, _uri);
-
-            request.Headers.Add("Authorization", _apiKey);
-            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.SendAsync(request, cancellationToken);
-
-            var body = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new NotificationException($"ZeptoMail error: {response.StatusCode} - {body}");
-            }
-        }
 
         public async Task SendWelcomeEmail(string toEmail, string reference, CancellationToken cancellationToken)
         {
@@ -332,7 +253,8 @@ namespace SD.API.Core
             request.Headers.Add("Authorization", _apiKey);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.SendAsync(request, cancellationToken);
+            using var client = factory.CreateClient();
+            var response = await client.SendAsync(request, cancellationToken);
 
             var body = await response.Content.ReadAsStringAsync(cancellationToken);
 
@@ -340,26 +262,6 @@ namespace SD.API.Core
             {
                 throw new NotificationException($"ZeptoMail error: {response.StatusCode} - {body}");
             }
-        }
-
-        private bool isDisposed;
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (isDisposed) return;
-
-            if (disposing)
-            {
-                _httpClient.Dispose();
-            }
-
-            isDisposed = true;
         }
     }
 }

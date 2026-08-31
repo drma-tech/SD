@@ -79,15 +79,6 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
         return result;
     }
 
-    protected async Task<T?> PutAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T?>[] states, CancellationToken cancellationToken) where TObj : class
-    {
-        var result = await PutAsync(GetHttp(), endpoint, obj, requestTypeInfo, typeInfo, states, cancellationToken);
-
-        DataChanged?.Invoke(result);
-
-        return result;
-    }
-
     protected async Task DeleteAsync(string endpoint, CancellationToken cancellationToken)
     {
         await DeleteAsync(GetHttp(), endpoint, cancellationToken);

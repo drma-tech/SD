@@ -283,47 +283,6 @@ public abstract class ApiCore(string? key, string[] extraKeys)
         }
     }
 
-    protected async Task<TOut?> PutAsync<TIn, TOut>(HttpClient http, string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?> responseTypeInfo,
-        RenderControlState<TOut?>[] states, CancellationToken cancellationToken)
-        where TIn : class
-        where TOut : class
-    {
-        try
-        {
-            foreach (var state in states)
-            {
-                await state.StartProcessing(null);
-            }
-            await AppStateStatic.ProcessingStarted.PublishAsync();
-
-            SetNewVersion();
-
-            var response = await http.PutAsJsonAsync(uri, obj, requestTypeInfo, cancellationToken);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken) ?? throw new NotificationException("Failed to read response content.");
-                foreach (var state in states)
-                {
-                    await state.FinishProcessing(result);
-                }
-                return result;
-            }
-
-            var content = await response.Content.ReadAsStringAsync(cancellationToken);
-            foreach (var state in states)
-            {
-                await state.ShowError(content);
-            }
-
-            throw new NotificationException(content);
-        }
-        finally
-        {
-            await AppStateStatic.ProcessingFinished.PublishAsync();
-        }
-    }
-
     protected async Task DeleteAsync(HttpClient http, string uri, CancellationToken cancellationToken)
     {
         try

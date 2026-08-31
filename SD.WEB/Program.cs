@@ -7,7 +7,6 @@ using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
 using SD.WEB.Api.Core;
-using SD.WEB.Api.Module.Cosmos.Admin;
 using SD.WEB.Api.Module.Cosmos.Anonymous;
 using SD.WEB.Api.Module.Cosmos.Authenticated;
 using SD.WEB.Core.Auth;
@@ -135,7 +134,6 @@ static void ConfigurePrerendering()
 static void ConfigureApi(IServiceCollection collection)
 {
     collection.AddScoped<PrincipalApi>();
-    collection.AddScoped<PrincipalAdminApi>();
     collection.AddScoped<LoginApi>();
     collection.AddScoped<WishListApi>();
     collection.AddScoped<WatchingListApi>();

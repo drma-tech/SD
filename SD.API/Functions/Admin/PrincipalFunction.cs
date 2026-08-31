@@ -13,7 +13,7 @@ public class PrincipalFunction(CosmosMainRepository repo)
 
     //[Function("PrincipalMigrate")]
     //public async Task PrincipalMigrate(
-    //    [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/migrate")] HttpRequestData req, CancellationToken cancellationToken)
+    //    [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/migrate")] HttpRequestData req, CancellationToken cancellationToken)
     //{
     //    var principais = await repo.Query<AuthPrincipal>(MainType.Principal, predicate: null, transform: null, cancellationToken);
     //    var sdk = new ClerkBackendApi(bearerAuth: ApiStartup.Configurations.ClerkAuth!.SecretKey);

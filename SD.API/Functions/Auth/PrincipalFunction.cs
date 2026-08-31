@@ -6,7 +6,7 @@ using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions.Auth;
 
-public class PrincipalFunction(CosmosMainRepository repo)
+public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory factory)
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
@@ -39,7 +39,7 @@ public class PrincipalFunction(CosmosMainRepository repo)
             item.Ip = ip;
         }
 
-        var zepto = new ZeptoMailClient(ApiStartup.Configurations.ZeptoMail!.JobApiKey!);
+        var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.JobApiKey!);
         if (body.Email.NotEmpty()) _ = zepto.SendWelcomeEmail(body.Email, userId, cancellationToken);
 
         var principal = new AuthPrincipal(userId)
@@ -84,7 +84,7 @@ public class PrincipalFunction(CosmosMainRepository repo)
 
     [Function("PrincipalRemove")]
     public async Task PrincipalRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req)
     {
         var userId = await req.GetUserIdAsync();
 

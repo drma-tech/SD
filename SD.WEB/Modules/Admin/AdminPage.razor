@@ -2,10 +2,8 @@
 @attribute [Authorize(Roles = "administrator")]
 
 @using Microsoft.AspNetCore.Authorization
-@using SD.WEB.Api.Module.Cosmos.Admin
 
 @inherits PageCore<AdminPage>
-@inject PrincipalAdminApi PrincipalAdminApi
 
 <MudButton OnClick="ImportHandle">Import Users</MudButton>
 
@@ -14,7 +12,7 @@
     {
         try
         {
-            var list = await PrincipalAdminApi.GetAll(Cts.Token);
+            // var list = await PrincipalAdminApi.GetAll(Cts.Token);
 
             // foreach (var item in list)
             // {

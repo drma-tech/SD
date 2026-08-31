@@ -1,13 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Caching.Distributed;
 using SD.API.Core.Auth;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions.Auth;
 
-public class LoginFunction(CosmosMainRepository repo, IDistributedCache cache)
+public class LoginFunction(CosmosMainRepository repo)
 {
     [Function("LoginGet")]
     public async Task<AuthLogin?> LoginGet(
