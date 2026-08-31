@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/video/{data}"
 @inherits PageCore<TrailerWatchPage>
 
-<HeadComponent Title="@Title" Description="@Title" Url=@($"/{Culture}/trailers") Index="false"></HeadComponent>
+<HeadComponent Title="@Title" FixedTitle="true" Description="@Title" Url=@($"/{Culture}/trailers") Index="false"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Title">
 </PageSectionComponent>
 

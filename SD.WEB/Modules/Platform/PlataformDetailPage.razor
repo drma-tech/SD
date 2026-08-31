@@ -15,7 +15,7 @@
 }
 else
 {
-    <HeadComponent Title="@Translations.Title.PlatformDetail.CustomFormat(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")"
+    <HeadComponent Title="@Translations.Title.PlatformDetail.CustomFormat(Provider?.name)" FixedTitle="true" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")"
                    Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" FixedAlternateLanguage="@Culture" />
 
     @if (Provider != null)
