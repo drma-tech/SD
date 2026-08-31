@@ -68,23 +68,13 @@ namespace SD.WEB.Layout
 
         private async Task Login()
         {
-            _openMenu = false;
-            Navigation.NavigateTo($"/{Culture}/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri.Split('#')[0])}");
-        }
-
-        private async Task LoginNew()
-        {
+            //_openMenu = false;
+            //Navigation.NavigateTo($"/{Culture}/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri.Split('#')[0])}");
             _openMenu = false;
             await JsRuntime.Clerk().SignInAsync(Cts.Token);
         }
 
         private async Task Logout()
-        {
-            _openMenu = false;
-            await JsRuntime.Supabase().SignOutAsync(Cts.Token);
-        }
-
-        private async Task NewLogout()
         {
             _openMenu = false;
             await JsRuntime.Clerk().SignOutAsync(Cts.Token);
@@ -97,12 +87,6 @@ namespace SD.WEB.Layout
         }
 
         private async Task MyAccount()
-        {
-            _openMenu = false;
-            await DialogService.AccountPopup();
-        }
-
-        private async Task NewMyAccount()
         {
             _openMenu = false;
             await JsRuntime.Clerk().AccountPopup(Cts.Token);

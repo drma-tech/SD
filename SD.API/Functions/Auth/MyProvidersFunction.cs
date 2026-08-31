@@ -11,7 +11,7 @@ public class MyProvidersFunction(CosmosMainRepository repo)
     public async Task<HttpResponseData?> MyProviders(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "my-providers")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var doc = await repo.ReadItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId), cancellationToken);
 
@@ -22,7 +22,7 @@ public class MyProvidersFunction(CosmosMainRepository repo)
     public async Task<MyProviders?> MyProvidersAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var obj = await repo.ReadItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId), cancellationToken);
 
@@ -47,7 +47,7 @@ public class MyProvidersFunction(CosmosMainRepository repo)
     public async Task<MyProviders?> MyProvidersRemove(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/remove")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var obj = await repo.ReadItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId), cancellationToken);
 

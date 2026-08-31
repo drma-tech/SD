@@ -118,13 +118,6 @@ public static class PopupHelper
         await state.FinishLoading.Invoke(wish);
     }
 
-    public static async Task AccountPopup(this IDialogService service)
-    {
-        var parameters = new DialogParameters<AccountPopup> { };
-
-        await service.ShowAsync<AccountPopup>(Translations.Module.Auth.MyAccount, parameters, Options(MaxWidth.Small));
-    }
-
     public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchingList? watching, WishList? wish,
         string? watchRegion, string? providerId, string? culture)
     {

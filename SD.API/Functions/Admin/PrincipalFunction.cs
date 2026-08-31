@@ -9,16 +9,7 @@ namespace SD.API.Functions.Admin;
 
 public class PrincipalFunction(CosmosMainRepository repo)
 {
-    private const string CloneFailed = "DeepClone failed";
-
-    //[Function("PrincipalGetAll")]
-    //public async Task<HttpResponseData?> PrincipalGetAll(
-    //   [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get-all")] HttpRequestData req, CancellationToken cancellationToken)
-    //{
-    //    var data = await repo.ListAll<AuthPrincipal>(DocumentType.Principal, cancellationToken);
-
-    //    return await req.CreateResponse(data, TtlCache.OneDay, cancellationToken);
-    //}
+    //private const string CloneFailed = "DeepClone failed";
 
     //[Function("PrincipalMigrate")]
     //public async Task PrincipalMigrate(

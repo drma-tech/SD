@@ -4,15 +4,9 @@
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (AppStateStatic.SupabaseToken.Empty() && AppStateStatic.ClerkToken.Empty())
+            if (AppStateStatic.ClerkToken.Empty())
             {
                 throw new InvalidOperationException("unauthenticated user");
-            }
-
-            if (AppStateStatic.SupabaseToken.NotEmpty())
-            {
-                request.Headers.Remove("X-Supabase-Token");
-                request.Headers.Add("X-Supabase-Token", $"Bearer {AppStateStatic.SupabaseToken}");
             }
 
             if (AppStateStatic.ClerkToken.NotEmpty())

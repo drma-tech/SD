@@ -25,7 +25,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         AuthPrincipal? client = null;
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync();
             var ip = req.GetUserIP(includePort: true);
 
             client = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
@@ -81,7 +81,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     public async Task<AuthPrincipal> StripeCreateCustomer(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/customer")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
         var customer = await new Stripe.CustomerService().CreateAsync(new Stripe.CustomerCreateOptions
@@ -106,7 +106,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     public async Task<string> CreateCheckoutSession(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "stripe/create-checkout-session/{priceId}")] HttpRequestData req, string priceId, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
         var ip = req.GetUserIP(includePort: true);
         var url = req.GetQueryParameters()["url"];
 
@@ -168,7 +168,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/portal-link")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var url = req.GetQueryParameters()["url"];
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
         var options = new Stripe.BillingPortal.SessionCreateOptions

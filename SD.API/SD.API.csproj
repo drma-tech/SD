@@ -12,7 +12,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Clerk.BackendAPI" Version="3.0.0" />
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.190">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.197">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -25,7 +25,6 @@
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.11" />
 		<PackageReference Include="Sentry.AspNetCore" Version="6.9.0" />
 		<PackageReference Include="Stripe.net" Version="51.2.0-beta.2" />
-		<PackageReference Include="Supabase" Version="1.6.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\SD.Shared\SD.Shared.csproj" />

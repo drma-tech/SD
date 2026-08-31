@@ -88,18 +88,9 @@
 
         <AuthorizeView>
             <Authorized>
-                @if (AppStateStatic.IsBeta)
-                {
-                    <MudNavLink Icon="@Icons.Material.Filled.VerifiedUser" OnClick="@NewMyAccount">
-                        @Translations.Module.Auth.MyAccount
-                    </MudNavLink>
-                }
-                else
-                {
-                    <MudNavLink Icon="@Icons.Material.Filled.VerifiedUser" OnClick="@MyAccount">
-                        @Translations.Module.Auth.MyAccount
-                    </MudNavLink>
-                }
+                <MudNavLink Icon="@Icons.Material.Filled.VerifiedUser" OnClick="@MyAccount">
+                    @Translations.Module.Auth.MyAccount
+                </MudNavLink>
             </Authorized>
         </AuthorizeView>
         <MudNavLink Icon="@Icons.Material.Filled.Settings" OnClick="@OpenConfigurations">
@@ -113,32 +104,14 @@
 
         <AuthorizeView>
             <Authorized>
-                @if (AppStateStatic.IsBeta)
-                {
-                    <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@NewLogout" Disabled="_blockedActions">
-                        @Translations.Button.Logout
-                    </MudNavLink>
-                }
-                else
-                {
-                    <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@Logout" Disabled="_blockedActions">
-                        @Translations.Button.Logout
-                    </MudNavLink>
-                }
+                <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="@Logout" Disabled="_blockedActions">
+                    @Translations.Button.Logout
+                </MudNavLink>
             </Authorized>
             <NotAuthorized>
-                @if (AppStateStatic.IsBeta)
-                {
-                    <MudNavLink Icon="@Icons.Material.Filled.Login" OnClick="LoginNew" Disabled="_blockedActions" IconColor="Color.Secondary" Style="color: var(--mud-palette-secondary)">
-                        @Translations.Button.Login
-                    </MudNavLink>
-                }
-                else
-                {
-                    <MudNavLink Icon="@Icons.Material.Filled.Login" OnClick="Login" Disabled="_blockedActions" IconColor="Color.Secondary" Style="color: var(--mud-palette-secondary)">
-                        @Translations.Button.Login
-                    </MudNavLink>
-                }
+                <MudNavLink Icon="@Icons.Material.Filled.Login" OnClick="Login" Disabled="_blockedActions" IconColor="Color.Secondary" Style="color: var(--mud-palette-secondary)">
+                    @Translations.Button.Login
+                </MudNavLink>
             </NotAuthorized>
         </AuthorizeView>
     </MudNavMenu>

@@ -99,7 +99,7 @@ namespace SD.WEB.Modules.Help
 
         private async Task Logout()
         {
-            await JsRuntime.Supabase().SignOutAsync(Cts.Token);
+            await JsRuntime.Clerk().SignOutAsync(Cts.Token);
         }
 
         private async Task IsBetaValueChanged(bool value)

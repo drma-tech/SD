@@ -81,7 +81,7 @@ namespace SD.WEB.Modules.Auth
 
         private async Task Logout()
         {
-            await JsRuntime.Supabase().SignOutAsync(Cts.Token);
+            await JsRuntime.Clerk().SignOutAsync(Cts.Token);
 
             Navigation.NavigateTo($"/{Culture}");
 

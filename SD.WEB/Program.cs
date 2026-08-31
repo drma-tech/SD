@@ -137,7 +137,6 @@ static void ConfigureApi(IServiceCollection collection)
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<PrincipalAdminApi>();
     collection.AddScoped<LoginApi>();
-    collection.AddScoped<PublicLoginApi>();
     collection.AddScoped<WishListApi>();
     collection.AddScoped<WatchingListApi>();
     collection.AddScoped<MyProvidersApi>();

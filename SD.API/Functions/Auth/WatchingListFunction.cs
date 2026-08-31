@@ -11,7 +11,7 @@ public class WatchingListFunction(CosmosMainRepository repo)
     public async Task<HttpResponseData?> WatchingListGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var doc = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
 
@@ -23,7 +23,7 @@ public class WatchingListFunction(CosmosMainRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/add/{MediaType}")] HttpRequestData req,
         string mediaType, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
         var newItem = await req.GetBody<WatchingListItem>(cancellationToken);
@@ -40,7 +40,7 @@ public class WatchingListFunction(CosmosMainRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
         string mediaType, string collectionId, string tmdbId, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
 
@@ -56,7 +56,7 @@ public class WatchingListFunction(CosmosMainRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
         string mediaType, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
         var newItem = await req.GetBody<WatchingList>(cancellationToken);

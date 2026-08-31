@@ -1,19 +1,18 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 using SD.API.Core.Auth;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions.Auth;
 
-public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository repoCache)
+public class PrincipalFunction(CosmosMainRepository repo)
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         var model = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
 
@@ -26,7 +25,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
     {
         //note: its called once per user (first access)
 
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
         var body = await req.GetBody<AuthPrincipal>(cancellationToken);
         var platform = req.GetQueryParameters()["platform"];
         var country = req.GetQueryParameters()["country"];
@@ -66,25 +65,11 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
         return principal;
     }
 
-    [Function("PrincipalUpdate")]
-    public async Task<AuthPrincipal?> PrincipalUpdate(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/update")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        var userId = await req.GetUserIdAsync(cancellationToken);
-        var body = await req.GetBody<AuthPrincipal>(cancellationToken);
-
-        await req.ValidateUser(body.UserId, cancellationToken);
-
-        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
-
-        return principal;
-    }
-
     [Function("PrincipalEvent")]
     public async Task<AuthPrincipal> PrincipalEvent(
        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
         var ip = req.GetUserIP(includePort: true);
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
@@ -101,7 +86,7 @@ public class PrincipalFunction(CosmosMainRepository repo, CosmosCacheRepository 
     public async Task PrincipalRemove(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync();
 
         await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId));
         await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId));

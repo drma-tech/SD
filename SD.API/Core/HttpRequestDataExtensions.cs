@@ -16,7 +16,7 @@ public static class HttpRequestDataExtensions
     {
         ArgumentNullException.ThrowIfNull(requestedUserId);
 
-        var currentUserId = await req.GetUserIdAsync(cancellationToken);
+        var currentUserId = await req.GetUserIdAsync();
 
         if (!string.Equals(currentUserId, requestedUserId.RemovePrefix(), StringComparison.OrdinalIgnoreCase)) throw new NotificationException("User not validated");
     }
@@ -190,8 +190,6 @@ public struct Method
     public const string Get = "GET";
 
     public const string Post = "POST";
-
-    public const string Put = "PUT";
 
     public const string Delete = "DELETE";
 }

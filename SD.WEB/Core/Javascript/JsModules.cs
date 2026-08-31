@@ -10,8 +10,6 @@ namespace SD.WEB.Core.Javascript
 
         public static ClerkJs Clerk(this IJSRuntime js) => new(js);
 
-        public static SupabaseJs Supabase(this IJSRuntime js) => new(js);
-
         public static ServicesJs Services(this IJSRuntime js) => new(js);
 
         public static SliderJs Slider(this IJSRuntime js) => new(js);

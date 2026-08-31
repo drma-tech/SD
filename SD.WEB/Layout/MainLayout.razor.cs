@@ -45,19 +45,6 @@ namespace SD.WEB.Layout
                 };
 
                 // 1 = capture the claims
-                BufferedEvent.Register(nameof(SupabaseAuthChanged), async (string? token) =>
-                {
-                    try
-                    {
-                        var provider = (CompositeAuthStateProvider)AuthStateProvider;
-                        provider.OnSupabaseAuthChanged(token);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.ProcessException(Snackbar, Logger);
-                    }
-                });
-
                 BufferedEvent.Register(nameof(ClerkAuthChanged), async (string? token) =>
                 {
                     try
@@ -153,7 +140,7 @@ namespace SD.WEB.Layout
 
         private async Task RegisterLogin()
         {
-            var minInterval = TimeSpan.FromHours(1);
+            var minInterval = TimeSpan.FromHours(12);
             var now = DateTimeOffset.UtcNow;
 
             if (AppStateStatic.LastAccess != null && now - AppStateStatic.LastAccess < minInterval)
@@ -299,12 +286,6 @@ namespace SD.WEB.Layout
         public static void ShowError(string error)
         {
             _ = BufferedEvent.Invoke(nameof(ShowError), error);
-        }
-
-        [JSInvokable]
-        public static void SupabaseAuthChanged(string? token)
-        {
-            _ = BufferedEvent.Invoke(nameof(SupabaseAuthChanged), token);
         }
 
         [JSInvokable]
