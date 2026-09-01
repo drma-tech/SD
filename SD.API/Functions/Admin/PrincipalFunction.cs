@@ -44,7 +44,7 @@ public class PrincipalFunction(CosmosMainRepository repo)
     //            {
     //                var model = myLogins.DeepClone() ?? throw new NotificationException(CloneFailed);
     //                model.ChangeIdentity(new MainIdentity(MainType.Login, user.User.Id));
-    //                clone.UserId = user.User.Id;
+    //                model.UserId = user.User.Id;
     //                await repo.CreateItemAsync(model);
     //                await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, principal.Id));
     //            }
