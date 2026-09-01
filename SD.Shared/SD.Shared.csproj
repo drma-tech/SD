@@ -7,7 +7,7 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.196">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.200">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
