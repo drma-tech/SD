@@ -147,7 +147,7 @@ export const authentication = {
         try {
             storage.setLocalStorage("auth", "clerk");
             const clerk = await ensureAuthReady();
-            clerk.openSignIn();
+            clerk.openSignIn({ withSignUp: true });
         } catch (error) {
             Sentry.captureException(error);
             throw error.message;
