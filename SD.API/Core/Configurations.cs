@@ -9,6 +9,7 @@ public class Configurations
     public RapidAPI? RapidAPI { get; set; }
     public ClerkAuth? ClerkAuth { get; set; }
     public ZeptoMail? ZeptoMail { get; set; }
+    public bool IsMaintenanceMode { get; set; }
 }
 
 public class CosmosDB

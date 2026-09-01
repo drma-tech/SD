@@ -22,6 +22,14 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
                 return;
             }
 
+            if (ApiStartup.Configurations.IsMaintenanceMode)
+            {
+                var culture = req.GetUserCulture();
+                var msg = Shared.Translations.Validation.Validations.ResourceManager.GetString(nameof(Shared.Translations.Validation.Validations.MaintenanceMode), culture);
+                await context.SetHttpResponseStatusCode(HttpStatusCode.ServiceUnavailable, msg!);
+                return;
+            }
+
             var originalUrl = req.Headers.TryGetValues("X-MS-Original-Url", out var urls) ? urls.FirstOrDefault() : null;
 
             if (originalUrl?.Contains("www.", StringComparison.OrdinalIgnoreCase) == true)

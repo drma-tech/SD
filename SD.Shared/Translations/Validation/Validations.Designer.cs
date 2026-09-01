@@ -70,6 +70,15 @@ namespace SD.Shared.Translations.Validation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We are currently undergoing maintenance. Please try again in a few minutes..
+        /// </summary>
+        public static string MaintenanceMode {
+            get {
+                return ResourceManager.GetString("MaintenanceMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An outdated version has been detected ({0}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it..
         /// </summary>
         public static string OutdatedVersion {

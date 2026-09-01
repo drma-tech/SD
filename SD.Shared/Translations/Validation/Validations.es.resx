@@ -120,6 +120,9 @@
   <data name="DomainDeactivated" xml:space="preserve">
     <value>Este dominio ha sido desactivado. Si accede a través de una aplicación (Windows, Android, Apple, etc.), actualícela. Si utiliza un navegador, acceda al sitio sin 'www'.</value>
   </data>
+  <data name="MaintenanceMode" xml:space="preserve">
+    <value>Actualmente estamos en mantenimiento. Inténtelo de nuevo en unos minutos.</value>
+  </data>
   <data name="OutdatedVersion" xml:space="preserve">
     <value>Se ha detectado una versión desactualizada ({0}). Actualice a la última versión para continuar usando la plataforma. Si no puede actualizar, intente borrar el caché de su navegador o aplicación y vuelva a abrirlo.</value>
   </data>
