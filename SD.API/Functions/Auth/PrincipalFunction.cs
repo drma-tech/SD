@@ -39,8 +39,8 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
             item.Ip = ip;
         }
 
-        var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.JobApiKey!);
-        if (body.Email.NotEmpty()) _ = zepto.SendWelcomeEmail(body.Email, userId, cancellationToken);
+        var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.ApiKey!);
+        if (body.Email.NotEmpty()) _ = zepto.SendWelcomeTemplate(userId, body.Email, body.DisplayName, cancellationToken);
 
         var principal = new AuthPrincipal(userId)
         {

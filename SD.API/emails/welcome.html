@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
         body {
             margin: 0;
@@ -59,7 +59,7 @@
 
         .email-tagline {
             margin-top: 10px;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 14px;
         }
 
@@ -274,35 +274,32 @@
         }
     </style>
 </head>
+
 <body>
     <div class="email-wrapper">
         <div class="email-container">
-
             <!-- HEADER -->
             <div class="email-header">
-                <img class="email-logo" src="https://streamingdiscovery.com/icon/icon-71.png" alt="Streaming Discovery Logo">
+                <img class="email-logo" src="https://{{domain}}.com/icon/icon-71.png" alt="{{product_title}}">
                 <h1 class="email-app-name">
-                    Streaming Discovery
+                    {{product_title}}
                 </h1>
                 <div class="email-tagline">
-                    Discover Movies and Series on Streaming Platforms
+                    {{product_subtitle}}
                 </div>
             </div>
-
             <!-- CONTENT -->
             <div class="email-content">
                 <h2 class="email-title">
                     Welcome to Streaming Discovery!
                 </h2>
                 <p class="email-text">
-                    Hello {toEmail}, we are very glad you joined
+                    Hello {{user_name}}, we are very glad you joined
                     <span class="email-highlight">Streaming Discovery</span>.
                 </p>
                 <p class="email-text">
-                    Keep track of your streaming platforms,
-                    manage your viewing progress, and discover
-                    what to watch next with curated lists,
-                    award winners, and critical recommendations.
+                    Keep track of your streaming platforms, manage your viewing progress, and discover
+                    what to watch next with curated lists, award winners, and critical recommendations.
                 </p>
                 <!-- QUICK LINKS -->
                 <div class="email-section">
@@ -310,19 +307,19 @@
                         Explore Streaming Discovery
                     </div>
                     <div class="link-grid">
-                        <a href="https://streamingdiscovery.com/platforms" class="link-card" target="_blank">
+                        <a href="https://streamingdiscovery.com/default/platforms" class="link-card" target="_blank">
                             Streaming Platforms
                         </a>
-                        <a href="https://streamingdiscovery.com/compare" class="link-card" target="_blank">
+                        <a href="https://streamingdiscovery.com/default/compare" class="link-card" target="_blank">
                             Compare Services
                         </a>
-                        <a href="https://streamingdiscovery.com/regions" class="link-card" target="_blank">
+                        <a href="https://streamingdiscovery.com/default/regions" class="link-card" target="_blank">
                             Free Movies to Watch
                         </a>
-                        <a href="https://streamingdiscovery.com/best-awards-year" class="link-card" target="_blank">
+                        <a href="https://streamingdiscovery.com/default/best-awards-year" class="link-card" target="_blank">
                             Best awards of the 2026
                         </a>
-                        <a href="https://streamingdiscovery.com/list/8544544" class="link-card" target="_blank">
+                        <a href="https://streamingdiscovery.com/default/list/8544544" class="link-card" target="_blank">
                             Most Expected Movies of 2026
                         </a>
                         <a href="https://streamingdiscovery.com/help" class="link-card" target="_blank">
@@ -366,63 +363,45 @@
                 <hr class="email-divider">
                 <div class="email-support">
                     Questions? Contact
-                    <a href="mailto:{supportEmail}">
-                        {supportEmail}
+                    <a href="mailto:support@{{domain}}.com">
+                        support@{{domain}}.com
                     </a>
                 </div>
                 <div class="email-signature">
-                    <small>Have a great day,</small>
-                    <strong>Team DRMA Tech</strong>
+                    <small>Have a great day,</small> <strong>Team DRMA Tech</strong>
                 </div>
             </div>
-
             <!-- FOOTER -->
             <div class="email-footer">
                 <!-- SOCIALS -->
                 <div class="footer-socials">
-                    <a href="{instagramUrl}">
-                        <img src="{instagramIcon}" alt="Instagram">
-                    </a>
-                    <a href="{twitterUrl}">
-                        <img src="{twitterIcon}" alt="Twitter">
-                    </a>
-                    <a href="{youtubeUrl}">
-                        <img src="{youtubeIcon}" alt="YouTube">
-                    </a>
+                    <a href="#"> <img src="#" alt="Instagram"> </a> <a href="#"> <img src="#" alt="Twitter"> </a> <a href="#"> <img src="#" alt="YouTube"> </a>
                 </div>
-
                 <!-- APP STORES -->
                 <div class="footer-apps">
                     <a href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" target="_blank">
-                        <img src="https://streamingdiscovery.com/logo/microsoft-store.png" alt="Microsoft Store">Microsoft Store
+                        <img src="https://{{domain}}.com/logo/microsoft-store.png" alt="Microsoft Store">Microsoft Store
                     </a>
                     <a href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" target="_blank">
-                        <img src="https://streamingdiscovery.com/logo/google-play.png" alt="Google Play">Google Play
+                        <img src="https://{{domain}}.com/logo/google-play.png" alt="Google Play">Google Play
                     </a>
                     <a href="https://apps.apple.com/us/app/id6749285238" target="_blank">
-                        <img src="https://streamingdiscovery.com/logo/app-store.png" alt="App Store">App Store
+                        <img src="https://{{domain}}.com/logo/app-store.png" alt="App Store">App Store
                     </a>
-                    <a href="https://streamingdiscovery.com/en/help#get-the-app" target="_blank">
-                        <img src="https://streamingdiscovery.com/logo/website-logo.png" alt="More">More
+                    <a href="https://{{domain}}.com/en/help#get-the-app" target="_blank">
+                        <img src="https://{{domain}}.com/logo/website-logo.png" alt="More">More
                     </a>
                 </div>
-
                 <!-- LINKS -->
                 <div class="footer-links">
-                    <a href="https://streamingdiscovery.com" target="_blank">
-                        Website
-                    </a>
-                    <a href="https://streamingdiscovery.com/legal/terms" target="_blank">
-                        Terms
-                    </a>
-                    <a href="https://streamingdiscovery.com/legal/privacy" target="_blank">
-                        Privacy
-                    </a>
+                    <a href="https://{{domain}}.com" target="_blank"> Website </a>
+                    <a href="https://{{domain}}.com/legal/terms" target="_blank"> Terms </a>
+                    <a href="https://{{domain}}.com/legal/privacy" target="_blank"> Privacy </a>
                 </div>
-
                 <!-- COPYRIGHT -->
                 <div class="footer-copy">
-                    © {year} DRMA Tech.<br>
+                    © {{year}} DRMA Tech.
+                    <br>
                     All rights reserved.
                 </div>
             </div>
