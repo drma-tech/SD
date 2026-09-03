@@ -84,19 +84,26 @@ export const stripe = {
             const auth = storage.getLocalStorage("auth");
             let response;
 
-            if (auth === "supabase") {
-                const { data } = await window.supabase.auth.getSession();
+            if (auth === "clerk") {
+                const session = window.clerk.session;
+                const token = session ? await session.getToken() : null;
 
                 response = await fetch(
                     `${window.appConfig.baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
                     {
                         method: "POST",
                         headers: {
-                            "X-Supabase-Token": `Bearer ${data.session.access_token}`,
+                            "X-Clerk-Token": `Bearer ${token}`,
                             "X-App-Version": window.appVersion,
                         },
                     }
                 );
+            }
+
+            if (!response.ok) {
+                const error = await response.text();
+                notification.showError(error);
+                return;
             }
 
             const checkoutUrl = await response.text();
