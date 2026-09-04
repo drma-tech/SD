@@ -115,6 +115,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Follow franchises and series you’ve started watching and get notified about new releases..
+        /// </summary>
+        internal static string FollowingDesc {
+            get {
+                return ResourceManager.GetString("FollowingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Follow titles so they appear here (if it is a series or a movie that is part of a sequence)..
         /// </summary>
         internal static string FollowTitle {
@@ -169,6 +178,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Follow your favorite streaming platforms to stay informed about their latest releases and updates..
+        /// </summary>
+        internal static string MyPlatformsDesc {
+            get {
+                return ResourceManager.GetString("MyPlatformsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Following - Series.
         /// </summary>
         internal static string MySeriesFollowing {
@@ -219,6 +237,15 @@ namespace SD.WEB.Translations.Module {
         internal static string Wishlist {
             get {
                 return ResourceManager.GetString("Wishlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save movies and series you want to watch in the future..
+        /// </summary>
+        internal static string WishlistDesc {
+            get {
+                return ResourceManager.GetString("WishlistDesc", resourceCulture);
             }
         }
     }

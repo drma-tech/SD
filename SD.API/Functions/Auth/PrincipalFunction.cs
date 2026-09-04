@@ -1,3 +1,4 @@
+using Clerk.BackendAPI;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
@@ -93,5 +94,9 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
         await repo.DeleteItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId));
         await repo.DeleteItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId));
         await repo.DeleteItemAsync<WishList>(new MainIdentity(MainType.WishList, userId));
+
+        var sdk = new ClerkBackendApi(bearerAuth: ApiStartup.Configurations.ClerkAuth!.SecretKey);
+
+        await sdk.Users.DeleteAsync(userId);
     }
 }

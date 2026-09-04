@@ -7,7 +7,7 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
 {
     public async Task<MyProviders?> Get(RenderControlState<MyProviders?>[] states, CancellationToken cancellationToken)
     {
-        return await GetAsync("my-providers", setNewVersion: true, states, cancellationToken);
+        return await GetAsync("my-providers", setNewVersion: false, states, cancellationToken);
     }
 
     public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, RenderControlState<MyProviders?>[] states, AccountProduct? product, JsonTypeInfo<MyProvidersItem?> requestTypeInfo, CancellationToken cancellationToken)

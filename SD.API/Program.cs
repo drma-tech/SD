@@ -45,7 +45,6 @@ var app = new HostBuilder()
             ApiStartup.Configurations = cfg;
 
             StripeConfiguration.ApiKey = ApiStartup.Configurations.Stripe?.ApiKey;
-            StripeConfiguration.AddBetaVersion("managed_payments_preview", "v1");
         }
         catch (Exception ex)
         {

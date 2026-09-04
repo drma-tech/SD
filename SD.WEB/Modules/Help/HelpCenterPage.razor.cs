@@ -53,10 +53,8 @@ namespace SD.WEB.Modules.Help
 
                 if (await DialogService.ShowMessageBoxAsync(AppInfo.Title, Translations.Module.Auth.SureDeleteAccount, Translations.Button.Ok, Translations.Button.Cancel) ?? false)
                 {
-                    //remove data from cosmos db
+                    //remove data from cosmos db and authentication provider
                     await PrincipalApi.Remove(Cts.Token);
-
-                    //TODO: remove data from supabase table
 
                     //close current login session
                     await Logout();
