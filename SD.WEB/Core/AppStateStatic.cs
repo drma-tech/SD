@@ -63,6 +63,7 @@ public static class AppStateStatic
     public static int Index { get; set; }
     public static string? Query { get; set; }
     public static IReadOnlyCollection<TmdbResultKeyword> Keywords { get; set; } = [];
+    public static int? Keyword { get; set; }
     public static MediaType? Type { get; set; }
     public static MovieGenre? MovieGenre { get; set; }
     public static TvGenre? TvGenre { get; set; }

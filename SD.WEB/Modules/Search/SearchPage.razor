@@ -1,5 +1,5 @@
 ﻿@page "/{culture}/search"
-@inherits PageParameterCore<SearchPage>
+@inherits PageCore<SearchPage>
 
 @inject TmdbSearchMultiApi TmdbSearch
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
@@ -17,10 +17,10 @@
                     <MudStack Row="true" AlignItems="AlignItems.Stretch" Spacing="2">
                         <MudTextField T="string" Label="@Translations.Module.Landing.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio"
                                       @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
-                                      Variant="Variant.Outlined" OnAdornmentClick="@OnParametersSetAsync" Clearable="true"
+                                      Variant="Variant.Outlined" OnAdornmentClick="@LoadStaticDataAsync" Clearable="true"
                                       HelperText="@Translations.Module.Landing.TypeSomething" InputType="InputType.Text">
                         </MudTextField>
-                        <MudIconButton OnClick="@OnParametersSetAsync" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
+                        <MudIconButton OnClick="@LoadStaticDataAsync" Disabled="AppStateStatic.Query.Empty()" Style="height:56px; width:56px; margin-top: 8px;"
                                        Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Variant="Variant.Filled"></MudIconButton>
                     </MudStack>
                 </MudTabPanel>
@@ -35,7 +35,7 @@
                     </MudStack>
                     @foreach (var item in AppStateStatic.Keywords)
                     {
-                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" OnClick="@(() => LoadItems(item.id.ToString()))">
+                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" OnClick="@(() => LoadItems(item.id))">
                             @item.name
                         </MudChip>
                     }

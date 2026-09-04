@@ -6,7 +6,7 @@
 <RenderControl State="State" Context="ctx">
     @foreach (var item in List)
     {
-        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Href="@($"/{Culture}/search?keyword={item.id}")">
+        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Href="@($"/{Culture}/search?keyword={item.id}&index=1")">
             @item.name
         </MudChip>
     }

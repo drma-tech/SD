@@ -6,10 +6,12 @@ namespace SD.WEB.Modules.Search
 {
     public partial class SearchPage
     {
-        [Parameter][SupplyParameterFromQuery(Name = "keyword")] public string? keyword { get; set; }
+        [Parameter][SupplyParameterFromQuery(Name = "keyword")] public int? keyword { get; set; }
+        [Parameter][SupplyParameterFromQuery(Name = "index")] public int? index { get; set; }
 
         public WatchingList? Watching { get; set; }
         public WishList? Wish { get; set; }
+        public bool firstAccess { get; set; } = true;
 
         private HashSet<MediaDetail> Items { get; set; } = [];
         private RenderControlState<ISet<MediaDetail>> State { get; } = new(new HashSet<MediaDetail>(), list => list.Empty());
@@ -31,45 +33,26 @@ namespace SD.WEB.Modules.Search
             Types = EnumHelper.GetList<MediaType>().Where(p => p.Value != MediaType.person);
             MovieGenres = EnumHelper.GetList<MovieGenre>();
             TvGenres = EnumHelper.GetList<TvGenre>();
+
+            base.OnInitialized();
         }
 
-        protected override List<string?> GetParameterKey()
+        protected override async Task LoadStaticDataAsync()
         {
-            return [
-                AppStateStatic.Index.ToString(CultureInfo.InvariantCulture),
-                GetDictionaryKey(ParametersQuery),
-                GetDictionaryKey(ParametersKeyword),
-                AppStateStatic.Type.ToString(),
-                AppStateStatic.MovieGenre.ToString(),
-                AppStateStatic.TvGenre.ToString(),
-            ];
-        }
-
-        protected override async Task LoadParameterDataAsync()
-        {
-            if (keyword.NotEmpty())
+            if (index != null && keyword != null && firstAccess)
             {
-                ParametersKeyword["with_keywords"] = keyword;
-                AppStateStatic.Index = 1;
+                AppStateStatic.Index = index.Value;
+                AppStateStatic.Keyword = keyword;
+                firstAccess = false;
             }
-
-            await LoadItems(keyword);
-        }
-
-        private async Task LoadItems(string? keywordId)
-        {
-            await State.StartLoading.Invoke(null);
-            Items.Clear();
 
             if (AppStateStatic.Index == 0)
             {
                 ParametersQuery["query"] = AppStateStatic.Query ?? throw new NotificationException("query not present");
-                _ = await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 1)
             {
-                ParametersKeyword["with_keywords"] = keywordId ?? throw new NotificationException("keyword not present");
-                _ = await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
+                ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
             }
             else if (AppStateStatic.Index == 2)
             {
@@ -81,10 +64,37 @@ namespace SD.WEB.Modules.Search
                 {
                     ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString(CultureInfo.InvariantCulture);
                 }
+            }
+
+            await LoadItems();
+        }
+
+        private async Task LoadItems(int? newKeyword = null)
+        {
+            await State.StartLoading.Invoke(null);
+            Items.Clear();
+
+            if (AppStateStatic.Index == 0)
+            {
+                _ = await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
+            }
+            else if (AppStateStatic.Index == 1)
+            {
+                if (newKeyword != null) AppStateStatic.Keyword = newKeyword;
+                ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
+                _ = await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
+            }
+            else if (AppStateStatic.Index == 2)
+            {
                 _ = await TmdbDiscoveryApi.GetList(Items, [State], AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
             }
 
             await State.FinishLoading.Invoke(Items);
+
+            if (Items.Empty())
+            {
+                await ShowWarning(Translations.Module.Landing.SearchReturnedNothing);
+            }
         }
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
