@@ -74,13 +74,13 @@
         @if (AppStateStatic.IsPremiumUser)
         {
             <MudNavLink Icon="@Icons.Material.Filled.Diamond" OnClick="@OpenSubscription">
-                My Subscription
+                @Translations.Button.MySubscription
             </MudNavLink>
         }
         else
         {
             <MudNavLink Icon="@Icons.Material.Filled.Diamond" OnClick="@OpenSubscription" IconColor="Color.Warning" Style="color: var(--mud-palette-warning)">
-                Unlock Benefits
+                @Translations.Button.UnlockBenefits
             </MudNavLink>
         }
 

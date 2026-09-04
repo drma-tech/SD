@@ -178,6 +178,15 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Subscription.
+        /// </summary>
+        internal static string MySubscription {
+            get {
+                return ResourceManager.GetString("MySubscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         internal static string Next {
@@ -273,6 +282,15 @@ namespace SD.WEB.Translations {
         internal static string Unfollow {
             get {
                 return ResourceManager.GetString("Unfollow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlock Benefits.
+        /// </summary>
+        internal static string UnlockBenefits {
+            get {
+                return ResourceManager.GetString("UnlockBenefits", resourceCulture);
             }
         }
         

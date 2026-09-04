@@ -43,7 +43,7 @@
                                                                 </MudTooltip>
                                                             }
                                                         </MudCardContent>
-                                                        <MudCardContent Style="text-align: center; padding: 4px;" Class="custom-title-list">
+                                                        <MudCardContent Style="text-align: center; padding: 4px;" Class="@($"custom-title-list {(item?.Popular == true ? "mud-secondary-text" : "")}")">
                                                             @item?.title
                                                         </MudCardContent>
                                                     </MudCard>
