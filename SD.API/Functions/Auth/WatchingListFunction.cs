@@ -50,32 +50,4 @@ public class WatchingListFunction(CosmosMainRepository repo)
 
         return await repo.UpsertItemAsync(obj);
     }
-
-    [Function("WatchingListSync")]
-    public async Task<WatchingList?> WatchingListSync(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
-        string mediaType, CancellationToken cancellationToken)
-    {
-        var userId = await req.GetUserIdAsync();
-
-        var obj = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
-        var newItem = await req.GetBody<WatchingList>(cancellationToken);
-
-        obj ??= new WatchingList(userId);
-
-        var type = mediaType.ParseToEnum<MediaType>();
-
-        if (type == MediaType.movie)
-        {
-            foreach (var item in newItem.Movies) obj.AddItem(MediaType.movie, item);
-            obj.MovieSyncDate = DateTime.Now;
-        }
-        else
-        {
-            foreach (var item in newItem.Shows) obj.AddItem(MediaType.tv, item);
-            obj.ShowSyncDate = DateTime.Now;
-        }
-
-        return await repo.UpsertItemAsync(obj);
-    }
 }

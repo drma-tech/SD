@@ -1,33 +1,17 @@
-﻿using Newtonsoft.Json;
-using SD.Shared.Core.Types;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using SD.Shared.Core.Types;
 
 namespace SD.Shared.Models;
 
 public class WatchingList(string? id) : MainDocument(new MainIdentity(MainType.WatchingList, id))
 {
-    public DateTime? MovieSyncDate { get; set; }
-    public DateTime? ShowSyncDate { get; set; }
+    public DateTime? SyncDate { get; set; }
 
     public ISet<WatchingListItem> Movies { get; init; } = new HashSet<WatchingListItem>();
     public ISet<WatchingListItem> Shows { get; init; } = new HashSet<WatchingListItem>();
 
-    [JsonIgnore]
-    [NotMapped]
-    public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-14);
-
-    [JsonIgnore]
-    [NotMapped]
-    public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-14);
-
     public ISet<WatchingListItem> Items(MediaType? type)
     {
         return type == MediaType.movie ? Movies : Shows;
-    }
-
-    public bool CanSync(MediaType? type)
-    {
-        return type == MediaType.movie ? MovieCanSync : ShowCanSync;
     }
 
     public WatchingListItem? GetItem(MediaType? type, string? id)

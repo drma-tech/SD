@@ -33,16 +33,4 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 
         return await PostAsync($"watchinglist/remove/{mediaType}/{collectionId}/{tmdbId}", null, ApiContext.Default.WatchingList, states: [], cancellationToken);
     }
-
-    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, RenderControlState<WatchingList?>[] states, CancellationToken cancellationToken)
-    {
-        if (!mediaType.HasValue)
-        {
-            throw new ArgumentNullException(nameof(mediaType));
-        }
-
-        ArgumentNullException.ThrowIfNull(obj);
-
-        return await PostAsync($"watchinglist/sync/{mediaType}", obj, ApiContext.Default.WatchingList, states, cancellationToken);
-    }
 }
