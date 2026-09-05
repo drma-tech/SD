@@ -81,7 +81,7 @@ namespace SD.WEB.Modules.Profile
                 {
                     var item = new WishListItem(media.tmdb_id, media.title, media.poster_small, media.runtime);
 
-                    Wish = await WishApi.Add(MediaType.movie, Wish, item, product: null, Cts.Token);
+                    Wish = await WishApi.Add(MediaType.movie, Wish, item, product: null, token);
 
                     demo = true;
                 }
@@ -105,13 +105,13 @@ namespace SD.WEB.Modules.Profile
 
                 MyProviders ??= new MyProviders(AppStateStatic.UserId);
 
-                var AllProviders = await AllProvidersApi.GetAll(state: null, Cts.Token);
-                var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, Cts.Token);
+                var AllProviders = await AllProvidersApi.GetAll(state: null, token);
+                var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, token);
 
                 var provider = AllProviders?.Items.Where(p => p.regions.Contains(region)).OrderBy(o => o.priority).FirstOrDefault();
 
                 var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
-                MyProviders = await MyProvidersApi.Add(MyProviders, item, states: [], AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, Cts.Token);
+                MyProviders = await MyProvidersApi.Add(MyProviders, item, states: [], AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, token);
 
                 demo = true;
 

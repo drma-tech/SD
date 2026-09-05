@@ -30,7 +30,7 @@ namespace SD.WEB.Layout
 
                 PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; StateHasChanged(); };
 
-                // 2 = transform claims into useful data (need to register before)
+                // 2 = transform claims into useful data (need to register before ClerkAuthChanged)
                 AuthStateProvider.AuthenticationStateChanged += async (task) =>
                 {
                     try

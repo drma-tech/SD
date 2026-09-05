@@ -9,7 +9,6 @@ namespace SD.WEB.Modules.Profile
 
         [Parameter][EditorRequired] public bool ShowHeader { get; set; }
         [Parameter][EditorRequired] public bool FullScreen { get; set; }
-        [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
         [Parameter][EditorRequired] public WishList? Wish { get; set; }
         [Parameter][EditorRequired] public string? Culture { get; set; }
 
@@ -18,7 +17,7 @@ namespace SD.WEB.Modules.Profile
 
         private MediaType _type { get; set; } = MediaType.movie;
 
-        private ISet<WatchingListItem> Items(MediaType type) => type == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
+        private ISet<WatchingListItem> Items(MediaType type) => type == MediaType.movie ? MovieState.Instance?.Movies ?? new HashSet<WatchingListItem>() : TvState.Instance?.Shows ?? new HashSet<WatchingListItem>();
 
         private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Watching : 7;
 
@@ -34,17 +33,17 @@ namespace SD.WEB.Modules.Profile
 
         private async Task OpenCompleteList(MediaType type)
         {
-            await DialogService.MyWatchingListPopup(type == MediaType.movie ? MovieState : TvState, type, Watching, Wish, Culture);
+            await DialogService.MyWatchingListPopup(type == MediaType.movie ? MovieState : TvState, type, MovieState.Instance, Wish, Culture);
         }
 
         public async Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
         {
-            if (tmdbId.NotEmpty()) await DialogService.MediaPopup(Watching, Wish, type, tmdbId, Culture);
+            if (tmdbId.NotEmpty()) await DialogService.MediaPopup(MovieState.Instance, Wish, type, tmdbId, Culture);
         }
 
         public async Task ShowCollectionPopup(MediaType type, string? collectionId, string? name)
         {
-            if (collectionId.NotEmpty()) await DialogService.CollectionPopup(Watching, Wish, type, collectionId, false);
+            if (collectionId.NotEmpty()) await DialogService.CollectionPopup(MovieState.Instance, Wish, type, collectionId, false);
         }
 
         // private async Task ImportFromWatched(MediaType type)

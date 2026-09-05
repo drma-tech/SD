@@ -9,7 +9,6 @@ namespace SD.WEB.Modules.Profile
         [Parameter][EditorRequired] public bool ShowHeader { get; set; }
         [Parameter][EditorRequired] public bool FullScreen { get; set; }
         [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-        [Parameter][EditorRequired] public WishList? Wish { get; set; }
         [Parameter][EditorRequired] public string? Culture { get; set; }
 
         [Parameter] public MediaType? TypeParam { get; set; }
@@ -17,7 +16,7 @@ namespace SD.WEB.Modules.Profile
 
         private MediaType _type { get; set; } = MediaType.movie;
 
-        private ISet<WishListItem> Items(MediaType type) => type == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
+        private ISet<WishListItem> Items(MediaType type) => type == MediaType.movie ? MovieState.Instance?.Movies ?? new HashSet<WishListItem>() : MovieState.Instance?.Shows ?? new HashSet<WishListItem>();
 
         private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : 7;
 
@@ -31,12 +30,12 @@ namespace SD.WEB.Modules.Profile
 
         private async Task OpenCompleteList(MediaType type)
         {
-            await DialogService.MyWishListPopup(type == MediaType.movie ? MovieState : TvState, Watching, Wish, type, Culture);
+            await DialogService.MyWishListPopup(type == MediaType.movie ? MovieState : TvState, Watching, MovieState.Instance, type, Culture);
         }
 
         public async Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
         {
-            if (tmdbId.NotEmpty()) await DialogService.MediaPopup(Watching, Wish, type, tmdbId, Culture);
+            if (tmdbId.NotEmpty()) await DialogService.MediaPopup(Watching, MovieState.Instance, type, tmdbId, Culture);
         }
     }
 }

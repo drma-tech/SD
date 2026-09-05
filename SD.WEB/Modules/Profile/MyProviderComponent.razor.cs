@@ -10,7 +10,6 @@ namespace SD.WEB.Modules.Profile
 
         [Parameter] public RenderControlState<MyProviders?> State { get; set; } = new(null, obj => obj == null || obj.Items.Empty());
         private AllProviders? AllProviders { get; set; }
-        private MyProviders? MyProviders { get; set; }
         private bool ProvidersChanged { get; set; }
 
         public Country Region { get; set; } = Country.US;
@@ -21,8 +20,7 @@ namespace SD.WEB.Modules.Profile
 
             MyProvidersApi.DataChanged += model =>
             {
-                MyProviders = model;
-                StateHasChanged();
+                _ = State.FinishLoading.Invoke(model);
             };
         }
 
@@ -40,9 +38,7 @@ namespace SD.WEB.Modules.Profile
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)
         {
-            MyProviders = await MyProvidersApi.Get([State], token);
-
-            foreach (var item in MyProviders?.Items ?? new HashSet<MyProvidersItem>())
+            foreach (var item in State.Instance?.Items ?? new HashSet<MyProvidersItem>())
             {
                 var provider = AllProviders?.Items.FirstOrDefault(f => string.Equals(f.id, item.id, StringComparison.OrdinalIgnoreCase));
 
@@ -52,9 +48,9 @@ namespace SD.WEB.Modules.Profile
                 }
             }
 
-            if (MyProviders != null && MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
+            if (State.Instance != null && State.Instance.Items.Any(a => !a.region.HasValue)) //update region (legacy)
             {
-                foreach (var item in MyProviders.Items)
+                foreach (var item in State.Instance.Items)
                 {
                     if (!item.region.HasValue)
                     {
@@ -68,7 +64,7 @@ namespace SD.WEB.Modules.Profile
                 }
 
                 await ShowInfo(Translations.Module.Profile.RegionsApplied);
-                await MyProvidersApi.Update(MyProviders, [State], AppStateStatic.ActiveProduct, validatePlan: false, token);
+                await MyProvidersApi.Update(State.Instance, [State], AppStateStatic.ActiveProduct, validatePlan: false, token);
 
                 StateHasChanged();
             }
@@ -83,7 +79,7 @@ namespace SD.WEB.Modules.Profile
 
         private async Task UpdateProviders()
         {
-            foreach (var item in MyProviders?.Items ?? new HashSet<MyProvidersItem>())
+            foreach (var item in State.Instance?.Items ?? new HashSet<MyProvidersItem>())
             {
                 var provider = AllProviders?.Items.FirstOrDefault(f => string.Equals(f.id, item.id, StringComparison.OrdinalIgnoreCase));
 
@@ -92,7 +88,7 @@ namespace SD.WEB.Modules.Profile
                 item.logo = provider.logo_path;
             }
 
-            MyProviders = await MyProvidersApi.Update(MyProviders, [State], product: null, validatePlan: false, Cts.Token);
+            await MyProvidersApi.Update(State.Instance, [State], product: null, validatePlan: false, Cts.Token);
             ProvidersChanged = false;
         }
     }

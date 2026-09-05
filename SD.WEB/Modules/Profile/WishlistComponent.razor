@@ -4,7 +4,7 @@
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
-            <RenderControl State="@(TypeParam == MediaType.movie ? MovieState : TvState)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+            <RenderControl State="@(TypeParam == MediaType.movie ? MovieState : TvState)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" Context="wish">
                 @if (FullScreen)
                 {
                     <div class="grid-relative-container-poster">
@@ -21,7 +21,7 @@
                             }
 
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="Wish">
+                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="wish">
                             </PosterComponent>
                         }
                     </div>
@@ -42,7 +42,7 @@
                         }
                         <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="Wish">
+                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="wish">
                             </PosterComponent>
                         </div>
                     </Slider>
@@ -60,11 +60,11 @@
                 </Header>
                 <ChildContent>
                     <MudTabPanel Text="@MediaType.movie.GetFieldSettings().Name">
-                        <RenderControl State="MovieState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                        <RenderControl State="MovieState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" Context="wish">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
-                                    @foreach (var item in Wish?.Movies.Take(GetTotalItems) ?? [])
+                                    @foreach (var item in wish?.Movies.Take(GetTotalItems) ?? [])
                                     {
                                         string? logo = null;
                                         if (item.logo.NotEmpty() && item.logo.StartsWith("http"))
@@ -76,14 +76,14 @@
                                             logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                                         }
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="wish">
                                         </PosterComponent>
                                     }
                                 </div>
                             }
                             else
                             {
-                                <Slider List="Wish?.Movies.Take(GetTotalItems) ?? []" Context="item">
+                                <Slider List="wish?.Movies.Take(GetTotalItems) ?? []" Context="item">
                                     @{
                                         string? logo = null;
                                         if (item.logo.NotEmpty() && item.logo.StartsWith("http"))
@@ -97,7 +97,7 @@
                                     }
                                     <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="wish">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -105,28 +105,28 @@
                         </RenderControl>
                     </MudTabPanel>
                     <MudTabPanel Text="@MediaType.tv.GetFieldSettings().Name">
-                        <RenderControl State="TvState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                        <RenderControl State="TvState" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" Context="wish">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
-                                    @foreach (var item in Wish?.Shows.Take(GetTotalItems) ?? [])
+                                    @foreach (var item in wish?.Shows.Take(GetTotalItems) ?? [])
                                     {
                                         var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WishList="wish">
                                         </PosterComponent>
                                     }
                                 </div>
                             }
                             else
                             {
-                                <Slider List="Wish?.Shows.Take(GetTotalItems) ?? []" Context="item">
+                                <Slider List="wish?.Shows.Take(GetTotalItems) ?? []" Context="item">
                                     @{
                                         var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                                     }
                                     <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WishList="wish">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
