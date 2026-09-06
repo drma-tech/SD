@@ -73,6 +73,7 @@ namespace SD.WEB.Shared
 
         private async Task TypeSelectedChangedHandle(MediaType type)
         {
+            Items.Clear();
             await LoadItems(type);
         }
 
