@@ -241,7 +241,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save movies and series you want to watch in the future..
+        ///   Looks up a localized string similar to Save movies and series you want to watch and get notified when they are released..
         /// </summary>
         internal static string WishlistDesc {
             get {

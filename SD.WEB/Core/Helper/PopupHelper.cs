@@ -146,7 +146,7 @@ public static class PopupHelper
             { x => x.SelectedItemsChanged, itemsChanged },
         };
 
-        await service.ShowAsync<SelectItemsCollection>(Translations.Module.Profile.WhatHaveYouWatched, parameters, Options(MaxWidth.ExtraSmall));
+        await service.ShowAsync<SelectItemsCollection>(Translations.Module.Profile.WhatHaveYouWatched, parameters, Options(MaxWidth.Small));
     }
 
     public static async Task SeasonPopup(this IDialogService service, string? showTitle, string? showSeasonName, string? tmdbId, int? seasonNumber)
