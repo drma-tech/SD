@@ -97,22 +97,26 @@ namespace SD.WEB.Layout
 
         private async Task ProcessAuthClaims(ClaimsPrincipal user)
         {
-            AppStateStatic.User = user;
-            AppStateStatic.UserId = user?.FindFirst(c => string.Equals(c.Type, ClaimTypes.NameIdentifier, StringComparison.Ordinal))?.Value;
+            var userId = user?.FindFirst(c => string.Equals(c.Type, ClaimTypes.NameIdentifier, StringComparison.Ordinal))?.Value;
             var authenticated = user?.Identity?.IsAuthenticated ?? false;
 
+            var authenticationChanged = !string.Equals(AppStateStatic.UserId, userId, StringComparison.OrdinalIgnoreCase) || AppStateStatic.IsAuthenticated != authenticated;
+
+            AppStateStatic.User = user;
+            AppStateStatic.UserId = userId;
             AppStateStatic.IsAuthenticated = authenticated;
-            if (!authenticated) AppStateStatic.IsPremiumUser = false;
 
-            //principal to be used for all the app
-            AppStateStatic.Principal = await PrincipalApi.Get(setNewVersion: false, Cts.Token);
+            if (authenticationChanged)
+            {
+                AppStateStatic.Principal = await PrincipalApi.Get(setNewVersion: true, Cts.Token);
 
-            var sub = AppStateStatic.Principal?.GetActiveSubscription();
-            AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
-            AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
+                var sub = AppStateStatic.Principal?.GetActiveSubscription();
+                AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
+                AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
 
-            await ProcessUserAccess();
-            await AppStateStatic.UserStateChanged.PublishAsync();
+                await ProcessUserAccess();
+                await AppStateStatic.UserStateChanged.PublishAsync();
+            }
         }
 
         private async Task ProcessUserAccess()
@@ -176,8 +180,9 @@ namespace SD.WEB.Layout
             if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/legal/", StringComparison.OrdinalIgnoreCase))
             {
                 var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cancellationToken);
+                var platform = await AppStateStatic.GetPlatform(JsRuntime, cancellationToken);
 
-                if (string.Equals(country, "CN", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(country, "CN", StringComparison.OrdinalIgnoreCase) && platform == Platform.huawei)
                 {
                     var consent = await JsRuntime.Utils().GetStorage("consent", JavascriptContext.Default.Boolean, cancellationToken);
 
