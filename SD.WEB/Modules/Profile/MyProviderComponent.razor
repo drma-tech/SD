@@ -6,7 +6,9 @@
 
 <PageSectionComponent Title="@Translations.Module.Profile.MyPlatforms" Description="@Translations.Module.Profile.MyPlatformsDesc" ShowActions="ProvidersChanged" Icon="@Icons.Material.Filled.Movie">
     <ActionsFragment>
-        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
+        <MudButton StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders">
+            @Translations.Button.Update
+        </MudButton>
     </ActionsFragment>
     <BodyFragment>
         <RenderControl State="State" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" Context="providers">
