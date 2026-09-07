@@ -70,11 +70,29 @@ namespace SD.Shared.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explore films and series that won the year’s top awards. Discover main categories, winners, and celebrated titles recognized by critics and audiences..
+        /// </summary>
+        public static string AwardsOfTheYearDesc {
+            get {
+                return ResourceManager.GetString("AwardsOfTheYearDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Most Expected Movies of {0}.
         /// </summary>
         public static string ExpectedMovieOfYear {
             get {
                 return ResourceManager.GetString("ExpectedMovieOfYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover the most anticipated movies of {0}, featuring upcoming blockbusters, fan favorites, and highly awaited releases hitting theaters and streaming..
+        /// </summary>
+        public static string ExpectedMovieOfYearDesc {
+            get {
+                return ResourceManager.GetString("ExpectedMovieOfYearDesc", resourceCulture);
             }
         }
     }

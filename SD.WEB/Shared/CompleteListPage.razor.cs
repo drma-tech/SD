@@ -24,7 +24,7 @@ namespace SD.WEB.Shared
 
         private EnumLists? List { get; set; }
         private string Title => TitleHead ?? $"{List?.GetFieldSettings().Name?.CustomFormat(DateTime.Now.Year)}" ?? "Title Error";
-        private string Description => DescriptionHead ?? $"{List?.GetFieldSettings().Description}" ?? "Description Error";
+        private string Description => DescriptionHead ?? $"{List?.GetFieldSettings().Description?.CustomFormat(DateTime.Now.Year)}" ?? "Description Error";
 
         protected override void OnInitialized()
         {

@@ -61,7 +61,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks..
+        ///   Looks up a localized string similar to Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists and award winners..
         /// </summary>
         internal static string AppDescription {
             get {
@@ -174,6 +174,15 @@ namespace SD.WEB.Translations {
         internal static string PopularIndex {
             get {
                 return ResourceManager.GetString("PopularIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep track of what you want to watch, what you’re following, and your favorite streaming platforms..
+        /// </summary>
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
         
