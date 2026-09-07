@@ -27,7 +27,7 @@
                     </MudCardContent>
                     <MudCardContent Style="text-align: center; padding: 4px;">
                         <MudText Typo="Typo.h2" Class="@($"custom-title-list {(item?.Popular == true ? "mud-secondary-text" : "")}")">
-                            @item.title
+                            @item?.title
                         </MudText>
                     </MudCardContent>
                 </MudCard>
