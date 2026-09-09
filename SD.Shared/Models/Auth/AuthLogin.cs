@@ -5,6 +5,7 @@ namespace SD.Shared.Models.Auth;
 public class AuthLogin(string id) : MainDocument(new MainIdentity(MainType.Login, id))
 {
     public string? UserId { get; set; } = id;
+    public bool Notified { get; set; }
 
     public ISet<Access> Accesses { get; set; } = new HashSet<Access>();
 

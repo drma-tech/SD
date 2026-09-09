@@ -34,8 +34,8 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
     public async Task ProcessFollowingUpdates([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/process-following-updates")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var docs = await repo.Query<WatchingList>(MainType.WatchingList,
-            x => !x.SyncDate.IsDefined() || x.SyncDate == null || x.SyncDate < DateTime.UtcNow.AddDays(-14), 
-            x => x.Take(20),
+            x => !x.SyncDate.IsDefined() || x.SyncDate == null || x.SyncDate < DateTime.UtcNow.AddDays(-14),
+            x => x.Take(100),
             cancellationToken: cancellationToken);
 
         var client = factory.CreateClient("tmdb");
@@ -105,6 +105,31 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
                         _ = zepto.SendFollowingTemplate(userId!, principal.Email, principal.DisplayName, franchises: newMovies.Count != 0 ? string.Join(", ", newMovies) : "No updates", series: newSeasons.Count != 0 ? string.Join(", ", newSeasons) : "No updates", cancellationToken);
                     }
                 }
+            }
+        }
+    }
+
+    [Function("NotifyInactiveUsers")]
+    public async Task NotifyInactiveUsers([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/notify-inactive-users")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        var docs = await repo.Query<AuthLogin>(MainType.Login,
+            p => (!p.Notified.IsDefined() || !p.Notified) && (!p.Accesses.IsDefined() || !p.Accesses.Any() || p.Accesses.Any(a => a.Date < DateTimeOffset.UtcNow.AddMonths(-3))),
+            p => p.Take(100), cancellationToken);
+
+        foreach (var doc in docs)
+        {
+            var userId = doc.Identity.RawId;
+            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
+
+            if (principal.GetActiveSubscription() != null) continue; //ignore premium users
+
+            doc.Notified = true;
+            await repo.UpsertItemAsync(doc);
+
+            var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.ApiKey!);
+            if (principal.Email.NotEmpty())
+            {
+                _ = zepto.SendInactiveTemplate(userId!, principal.Email, principal.DisplayName, cancellationToken);
             }
         }
     }
