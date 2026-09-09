@@ -15,7 +15,7 @@
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="BlazorWasmPreRendering.Build" Version="8.0.2" />
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="10.0.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
 		<PackageReference Include="Humanizer.Core" Version="3.0.10" />
 		<PackageReference Include="Humanizer.Core.es" Version="3.0.10" />
@@ -97,9 +97,9 @@
 			<DependentUpon>Notification.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Translations\Product.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Product.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Product.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Translations\Title.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -149,8 +149,8 @@
 			<LastGenOutput>Notification.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Translations\Product.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Product.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Product.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Translations\Title.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
