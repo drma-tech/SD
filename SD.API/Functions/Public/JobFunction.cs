@@ -1,6 +1,7 @@
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Functions.Admin;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.List.Tmdb;
@@ -113,7 +114,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
     public async Task NotifyInactiveUsers([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/notify-inactive-users")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var docs = await repo.Query<AuthLogin>(MainType.Login,
-            p => (!p.Notified.IsDefined() || !p.Notified) && (!p.Accesses.IsDefined() || !p.Accesses.Any() || p.Accesses.Any(a => a.Date < DateTimeOffset.UtcNow.AddMonths(-3))),
+            p => (!p.Notified.IsDefined() || !p.Notified) && (!p.Accesses.IsDefined() || !p.Accesses.Any() || p.Accesses.Max(a => a.Date) < DateTimeOffset.UtcNow.AddMonths(-3)),
             p => p.Take(100), cancellationToken);
 
         foreach (var doc in docs)
@@ -131,6 +132,28 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
             {
                 _ = zepto.SendInactiveTemplate(userId!, principal.Email, principal.DisplayName, cancellationToken);
             }
+        }
+    }
+
+    [Function("DeleteInactiveUsers")]
+    public async Task DeleteInactiveUsers([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/delete-inactive-users")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        var docs = await repo.Query<AuthLogin>(MainType.Login,
+            p => !p.Accesses.IsDefined() || !p.Accesses.Any() || p.Accesses.Max(a => a.Date) < DateTimeOffset.UtcNow.AddMonths(-6),
+            p => p.Take(100), cancellationToken);
+
+        foreach (var doc in docs)
+        {
+            var userId = doc.Identity.RawId;
+            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
+
+            if (principal.GetActiveSubscription() != null) continue; //ignore premium users
+            if (!doc.Notified)
+            {
+                throw new UnhandledException($"User {userId} has not been notified before deletion.");
+            }
+
+            await Auth.PrincipalFunction.DeleteUser(repo, userId);
         }
     }
 }
