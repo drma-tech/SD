@@ -22,11 +22,25 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 
         foreach (var item in result?.results ?? [])
         {
-            var date = item.release_date.NotEmpty() ? DateTime.ParseExact(item.release_date, "yyyy-MM-dd", CultureInfo.CurrentCulture) : (DateTime?)null;
+            var type = Enum.Parse<MediaType>(item.media_type!);
 
-            if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
+            if (type == MediaType.movie)
             {
-                await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOf2026, item.id, Enum.Parse<MediaType>(item.media_type!), tmdbWriteToken, cancellationToken);
+                var date = item.release_date.NotEmpty() ? DateTime.ParseExact(item.release_date, "yyyy-MM-dd", CultureInfo.CurrentCulture) : (DateTime?)null;
+
+                if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
+                {
+                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOf2026, item.id, type, tmdbWriteToken, cancellationToken);
+                }
+            }
+            else
+            {
+                var date = item.first_air_date.NotEmpty() ? DateTime.ParseExact(item.first_air_date, "yyyy-MM-dd", CultureInfo.CurrentCulture) : (DateTime?)null;
+
+                if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
+                {
+                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOf2026, item.id, type, tmdbWriteToken, cancellationToken);
+                }
             }
         }
     }
