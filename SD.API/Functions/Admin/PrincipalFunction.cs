@@ -22,8 +22,6 @@ public class PrincipalFunction(CosmosMainRepository repo)
     //    {
     //        try
     //        {
-    //            //if (principal.UserId!.StartsWith("user_", StringComparison.OrdinalIgnoreCase)) continue;
-
     //            var request = new CreateUserRequestBody()
     //            {
     //                FirstName = principal.DisplayName?.Split(" ").ElementAtIndex(0),

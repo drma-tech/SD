@@ -147,7 +147,8 @@ export const authentication = {
         try {
             storage.setLocalStorage("auth", "clerk");
             const clerk = await ensureAuthReady();
-            clerk.openSignIn({ withSignUp: true });
+            //clerk.openSignIn({ withSignUp: true });
+            clerk.openSignIn();
         } catch (error) {
             Sentry.captureException(error);
             throw error.message;
@@ -164,10 +165,8 @@ export const authentication = {
     },
     async accountPopup() {
         try {
-            const div = document.getElementById('user-profile');
-
             const clerk = await ensureAuthReady();
-            clerk.openUserProfile(div);
+            clerk.openUserProfile();
         } catch (error) {
             Sentry.captureException(error);
             throw error.message;
