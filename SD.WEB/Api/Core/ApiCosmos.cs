@@ -23,16 +23,36 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 
     protected async Task<string?> GetStringAsync(string endpoint, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            return default;
+        }
+
         return await GetStringAsync(GetHttp(), endpoint, cancellationToken);
     }
 
     protected async Task<bool> GetBoolAsync(string endpoint, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            return default;
+        }
+
         return await GetBoolAsync(GetHttp(), endpoint, cancellationToken);
     }
 
     protected async Task<byte[]> GetBytesAsync(string endpoint, RenderControlState<byte[]>[] states, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            foreach (var state in states)
+            {
+                await state.FinishLoading([]);
+            }
+
+            return [];
+        }
+
         return await GetBytesAsync(GetHttp(), endpoint, states, cancellationToken);
     }
 
@@ -53,16 +73,36 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 
     protected async Task<IEnumerable<T>> GetListAsync(string endpoint, RenderControlState<IEnumerable<T>>[] states, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            foreach (var state in states)
+            {
+                await state.FinishLoading([]);
+            }
+
+            return [];
+        }
+
         return await GetListAsync(GetHttp(), endpoint, states, cancellationToken);
     }
 
     protected async Task PostAsync(string endpoint, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            throw new NotificationException("You must be logged in to perform this action.");
+        }
+
         await PostAsync(GetHttp(), endpoint, cancellationToken);
     }
 
     protected async Task<T?> PostAsync(string endpoint, T? obj, RenderControlState<T?>[] states, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            throw new NotificationException("You must be logged in to perform this action.");
+        }
+
         var result = await PostAsync(GetHttp(), endpoint, obj, typeInfo, typeInfo, states, cancellationToken);
 
         DataChanged?.Invoke(result);
@@ -72,6 +112,11 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 
     protected async Task<T?> PostAsync<TObj>(string endpoint, TObj? obj, JsonTypeInfo<TObj?> requestTypeInfo, RenderControlState<T?>[] states, CancellationToken cancellationToken) where TObj : class
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            throw new NotificationException("You must be logged in to perform this action.");
+        }
+
         var result = await PostAsync(GetHttp(), endpoint, obj, requestTypeInfo, typeInfo, states, cancellationToken);
 
         DataChanged?.Invoke(result);
@@ -81,6 +126,11 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 
     protected async Task DeleteAsync(string endpoint, CancellationToken cancellationToken)
     {
+        if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+        {
+            throw new NotificationException("You must be logged in to perform this action.");
+        }
+
         await DeleteAsync(GetHttp(), endpoint, cancellationToken);
     }
 }
