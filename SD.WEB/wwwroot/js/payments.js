@@ -16,16 +16,19 @@ export const apple = {
                 if (data.isSuccess) {
                     if (!data) {
                         notification.showError("No data returned from purchase");
+                        Sentry.captureMessage("No data returned from purchase", "error");
                         return;
                     }
                     if (!data.isSuccess) {
                         notification.showError("Purchase failed or canceled");
+                        Sentry.captureMessage("Purchase failed or canceled", "error");
                         return;
                     }
 
                     const receiptData = data.receiptData;
                     if (!receiptData) {
                         notification.showError("Receipt not found");
+                        Sentry.captureMessage("Receipt not found", "error");
                         return;
                     }
 
@@ -74,6 +77,7 @@ export const google = {
             });
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
+            Sentry.captureException(e);
         }
     },
 };
@@ -87,6 +91,12 @@ export const stripe = {
             if (auth === "clerk") {
                 const session = window.clerk.session;
                 const token = session ? await session.getToken() : null;
+
+                if (!token) {
+                    notification.showError("Failed to retrieve authentication token.");
+                    Sentry.captureMessage("Failed to retrieve authentication token.", "error");
+                    return;
+                }
 
                 response = await fetch(
                     `${window.appConfig.baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
@@ -103,6 +113,7 @@ export const stripe = {
             if (!response.ok) {
                 const error = await response.text();
                 notification.showError(error);
+                Sentry.captureMessage(error, "error");
                 return;
             }
 
@@ -111,6 +122,7 @@ export const stripe = {
             window.location.href = checkoutUrl;
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
+            Sentry.captureException(e);
         }
     },
 };
