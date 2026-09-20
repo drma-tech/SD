@@ -94,7 +94,6 @@ async function initAuth() {
     });
 
     window.clerk = Clerk;
-    window.clerkUser = Clerk.user;
 
     setupAuthListener(Clerk);
 
@@ -122,6 +121,8 @@ function setupAuthListener(clerk) {
     clerk.addListener(async ({ session, user }) => {
         const authProvider = storage.getLocalStorage("auth");
         if (authProvider !== "clerk") return;
+
+        window.isAuthenticated = !!user;
 
         setTimeout(async () => {
             if (user && window.Userback?.identify) {

@@ -12,12 +12,12 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Clerk.BackendAPI" Version="3.0.0" />
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.257">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.264">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.20" />
-		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.63.0" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.63.1" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.3.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.1.0" />

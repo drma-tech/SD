@@ -29,6 +29,8 @@ window.sentryOnLoad = function () {
             event.tags = {
                 "custom.version": window.appVersion,
                 "custom.platform": storage.getLocalStorage("platform") ?? "error",
+                "custom.isAdBlocked": window.isAdBlocked ?? "unknown",
+                "custom.isAuthenticated": isAuthenticated,
             };
             event.extra = {
                 browser_name: environment.getBrowserName() ?? "error",

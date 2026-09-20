@@ -109,7 +109,7 @@ namespace SD.WEB.Modules.Search
 
             if (string.Equals(args.Key, "Enter", StringComparison.OrdinalIgnoreCase))
             {
-                await OnParametersSetAsync();
+                await LoadStaticDataAsync();
             }
         }
 

@@ -13,35 +13,41 @@ export const apple = {
         window.WTN.inAppPurchase({
             productId: productId,
             callback: function (data) {
-                if (data.isSuccess) {
-                    if (!data) {
-                        notification.showError("No data returned from purchase");
-                        Sentry.captureMessage("No data returned from purchase", "error");
-                        return;
-                    }
-                    if (!data.isSuccess) {
-                        notification.showError("Purchase failed or canceled");
-                        Sentry.captureMessage("Purchase failed or canceled", "error");
-                        return;
-                    }
-
-                    const receiptData = data.receiptData;
-                    if (!receiptData) {
-                        notification.showError("Receipt not found");
-                        Sentry.captureMessage("Receipt not found", "error");
-                        return;
-                    }
-
-                    interop.invokeDotNetWhenReady(
-                        "SD.WEB",
-                        "AppleVerify",
-                        receiptData
-                    );
+                if (!data) {
+                    notification.showError("No data returned from purchase");
+                    Sentry.captureMessage("No data returned from purchase", "error");
+                    return;
                 }
+
+                if (!data.isSuccess) {
+                    notification.showError("Purchase failed or canceled");
+                    Sentry.captureMessage("Purchase failed or canceled", "error");
+                    return;
+                }
+
+                const receiptData = data.receiptData;
+
+                if (!receiptData) {
+                    notification.showError("Receipt not found");
+                    Sentry.captureMessage("Receipt not found", "error");
+                    return;
+                }
+
+                interop.invokeDotNetWhenReady(
+                    "SD.WEB",
+                    "AppleVerify",
+                    receiptData
+                );
             },
         });
     },
     getReceiptData() {
+        if (!window.appConfig.isWebview) {
+            notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
+            Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
+            return;
+        }
+
         window.WTN.getReceiptData({
             callback: function (data) {
                 if (data.receiptData.isSuccess) {
@@ -98,8 +104,10 @@ export const stripe = {
                     return;
                 }
 
+                const url = encodeURIComponent(window.location.href);
+
                 response = await fetch(
-                    `${window.appConfig.baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
+                    `${window.appConfig.baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${url}`,
                     {
                         method: "POST",
                         headers: {
