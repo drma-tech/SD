@@ -30,7 +30,7 @@ window.sentryOnLoad = function () {
                 "custom.version": window.appVersion,
                 "custom.platform": storage.getLocalStorage("platform") ?? "error",
                 "custom.isAdBlocked": window.isAdBlocked ?? "unknown",
-                "custom.isAuthenticated": isAuthenticated,
+                "custom.isAuthenticated": window.isAuthenticated ?? false,
             };
             event.extra = {
                 browser_name: environment.getBrowserName() ?? "error",
