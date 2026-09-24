@@ -26,36 +26,33 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var category = req.GetQueryParameters()["category"];
         var cacheKey = $"news_{mode}_{category}";
 
-        var doc = await cache.Get<NewsCache>(cacheKey, cancellationToken);
-
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<NewsCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<NewsCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            doc = await cacheRepo.ReadItemAsync<NewsCache>(new CacheIdentity(cacheKey), cancellationToken);
+            var client = factory.CreateClient("rapidapi");
+            var obj = await client.GetNewsByImdb8<NewsJson>(category, cancellationToken);
 
-            if (doc == null)
+            var compactModels = new NewsModel();
+
+            var nodes = obj?.data?.news?.edges?.Select(s => s.node) ?? [];
+
+            foreach (var item in nodes.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 10 : 30) ?? [])
             {
-                var client = factory.CreateClient("rapidapi");
-                var obj = await client.GetNewsByImdb8<NewsJson>(category, cancellationToken);
-
-                var compactModels = new NewsModel();
-
-                var nodes = obj?.data?.news?.edges?.Select(s => s.node) ?? [];
-
-                foreach (var item in nodes.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 10 : 30) ?? [])
-                {
-                    if (item == null) continue;
-                    compactModels.Items.Add(new NewsModelItem(item.id,
-                        item.articleTitle?.plainText,
-                        item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY500_.jpg", StringComparison.OrdinalIgnoreCase), //force height to 500px
-                        item.externalUrl,
-                        item.date));
-                }
-
-                doc = await cacheRepo.CreateItemAsync(new NewsCache(cacheKey, compactModels));
+                if (item == null) continue;
+                compactModels.Items.Add(new NewsModelItem(item.id,
+                    item.articleTitle?.plainText,
+                    item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY500_.jpg", StringComparison.OrdinalIgnoreCase), //force height to 500px
+                    item.externalUrl,
+                    item.date));
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.HalfDay, cancellationToken);
-        }
+            return await cacheRepo.CreateItemAsync(new NewsCache(cacheKey, compactModels));
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.HalfDay, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
     }
@@ -70,31 +67,28 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"trailers_{mode}";
 
-        var doc = await cache.Get<YoutubeCache>(cacheKey, cancellationToken);
-
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<YoutubeCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<YoutubeCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            doc = await cacheRepo.ReadItemAsync<YoutubeCache>(new CacheIdentity(cacheKey), cancellationToken);
+            var client = factory.CreateClient("rapidapi");
+            var obj = await client.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
 
-            if (doc == null)
+            var compactModels = new TrailerModel();
+
+            foreach (var item in obj?.contents?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 12 : 100).Select(s => s.video) ?? [])
             {
-                var client = factory.CreateClient("rapidapi");
-                var obj = await client.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
-
-                var compactModels = new TrailerModel();
-
-                foreach (var item in obj?.contents?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 12 : 100).Select(s => s.video) ?? [])
-                {
-                    if (item == null) continue;
-                    compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,
-                        item.thumbnails.ElementAtIndex(0)?.url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(), IsPopular().IsMatch(item.viewCountText ?? "")));
-                }
-
-                doc = await cacheRepo.CreateItemAsync(new YoutubeCache(cacheKey, compactModels));
+                if (item == null) continue;
+                compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,
+                    item.thumbnails.ElementAtIndex(0)?.url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate(), IsPopular().IsMatch(item.viewCountText ?? "")));
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.SixHours, cancellationToken);
-        }
+            return await cacheRepo.CreateItemAsync(new YoutubeCache(cacheKey, compactModels));
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.SixHours, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
     }
@@ -106,40 +100,37 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"popular-movies-{mode}";
 
-        var doc = await cache.Get<MostPopularDataCache>(cacheKey, cancellationToken);
-
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<MostPopularDataCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<MostPopularDataCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            doc = await cacheRepo.ReadItemAsync<MostPopularDataCache>(new CacheIdentity(cacheKey), cancellationToken);
+            var client = factory.CreateClient("rapidapi");
+            var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-movies", cancellationToken);
 
-            if (doc == null)
+            var compactModels = new MostPopularData();
+
+            foreach (var item in obj?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 20 : 50) ?? [])
             {
-                var client = factory.CreateClient("rapidapi");
-                var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-movies", cancellationToken);
+                if (item == null) continue;
 
-                var compactModels = new MostPopularData();
+                var image = item.thumbnails != null && item.thumbnails.Length > 1 ? item.thumbnails[1].url : null;
 
-                foreach (var item in obj?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 20 : 50) ?? [])
+                compactModels.Items.Add(new MostPopularDataDetail
                 {
-                    if (item == null) continue;
-
-                    var image = item.thumbnails != null && item.thumbnails.Length > 1 ? item.thumbnails[1].url : null;
-
-                    compactModels.Items.Add(new MostPopularDataDetail
-                    {
-                        Id = item.id,
-                        Title = item.primaryTitle,
-                        Image = image?.Replace("@._V1_QL75_UX280_CR0,0,280,414_.jpg", "@._V1_QL75_UX130_.jpg", StringComparison.OrdinalIgnoreCase),
-                        Year = item.startYear?.ToString(CultureInfo.InvariantCulture),
-                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture),
-                    });
-                }
-
-                doc = await cacheRepo.CreateItemAsync(new MostPopularDataCache(cacheKey, compactModels));
+                    Id = item.id,
+                    Title = item.primaryTitle,
+                    Image = image?.Replace("@._V1_QL75_UX280_CR0,0,280,414_.jpg", "@._V1_QL75_UX130_.jpg", StringComparison.OrdinalIgnoreCase),
+                    Year = item.startYear?.ToString(CultureInfo.InvariantCulture),
+                    IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture),
+                });
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
-        }
+            return await cacheRepo.CreateItemAsync(new MostPopularDataCache(cacheKey, compactModels));
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.TwoDays, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
     }
@@ -151,40 +142,37 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"popular-tv-{mode}";
 
-        var doc = await cache.Get<MostPopularDataCache>(cacheKey, cancellationToken);
-
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<MostPopularDataCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<MostPopularDataCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            doc = await cacheRepo.ReadItemAsync<MostPopularDataCache>(new CacheIdentity(cacheKey), cancellationToken);
+            var client = factory.CreateClient("rapidapi");
+            var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-tv", cancellationToken);
 
-            if (doc == null)
+            var compactModels = new MostPopularData();
+
+            foreach (var item in obj?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 20 : 50) ?? [])
             {
-                var client = factory.CreateClient("rapidapi");
-                var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-tv", cancellationToken);
+                if (item == null) continue;
 
-                var compactModels = new MostPopularData();
+                var image = item.thumbnails != null && item.thumbnails.Length > 1 ? item.thumbnails[1].url : null;
 
-                foreach (var item in obj?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 20 : 50) ?? [])
+                compactModels.Items.Add(new MostPopularDataDetail
                 {
-                    if (item == null) continue;
-
-                    var image = item.thumbnails != null && item.thumbnails.Length > 1 ? item.thumbnails[1].url : null;
-
-                    compactModels.Items.Add(new MostPopularDataDetail
-                    {
-                        Id = item.id,
-                        Title = item.primaryTitle,
-                        Image = image,
-                        Year = item.startYear?.ToString(CultureInfo.InvariantCulture),
-                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture),
-                    });
-                }
-
-                doc = await cacheRepo.CreateItemAsync(new MostPopularDataCache(cacheKey, compactModels));
+                    Id = item.id,
+                    Title = item.primaryTitle,
+                    Image = image,
+                    Year = item.startYear?.ToString(CultureInfo.InvariantCulture),
+                    IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture),
+                });
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
-        }
+            return await cacheRepo.CreateItemAsync(new MostPopularDataCache(cacheKey, compactModels));
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.TwoDays, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
     }
@@ -201,41 +189,40 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
-        var doc = await cache.Get<RatingsCache>(cacheKey, cancellationToken);
+        if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<RatingsCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<RatingsCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
-
-            doc = await cacheRepo.ReadItemAsync<RatingsCache>(new CacheIdentity(cacheKey), cancellationToken);
-
-            if (doc == null)
+            var ratings = new Ratings()
             {
-                var ratings = new Ratings()
-                {
-                    imdbId = id,
-                    tmdbId = tmdbId,
-                    type = MediaType.movie,
-                    tmdb = tmdbRating,
-                };
+                imdbId = id,
+                tmdbId = tmdbId,
+                type = MediaType.movie,
+                tmdb = tmdbRating,
+            };
 
-                //todo: do scrap only with the right url (no guess anymore)
+            //todo: do scrap only with the right url (no guess anymore)
 
-                await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
+            await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
-                //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
+            //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
-                await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
+            await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
 
-                ttl = CalculateTtl(releaseDate);
+            ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId!, ratings, ttl));
+            var doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId!, ratings, ttl));
 
-                await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, factory, cancellationToken);
-            }
+            await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, factory, cancellationToken);
 
-            await SaveCache(doc, cacheKey, ttl, cancellationToken);
-        }
+            return doc;
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, ttl, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
@@ -252,39 +239,38 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
-        var doc = await cache.Get<RatingsCache>(cacheKey, cancellationToken);
+        if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<RatingsCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<RatingsCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
-
-            doc = await cacheRepo.ReadItemAsync<RatingsCache>(new CacheIdentity(cacheKey), cancellationToken);
-
-            if (doc == null)
+            var ratings = new Ratings()
             {
-                var ratings = new Ratings()
-                {
-                    imdbId = id,
-                    tmdbId = tmdbId,
-                    type = MediaType.tv,
-                    tmdb = tmdbRating,
-                };
+                imdbId = id,
+                tmdbId = tmdbId,
+                type = MediaType.tv,
+                tmdb = tmdbRating,
+            };
 
-                await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
+            await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
-                //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
+            //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
-                await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
+            await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
 
-                ttl = CalculateTtl(releaseDate);
+            ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
+            var doc = await cacheRepo.CreateItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl));
 
-                await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, factory, cancellationToken);
-            }
+            await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, factory, cancellationToken);
 
-            await SaveCache(doc, cacheKey, ttl, cancellationToken);
-        }
+            return doc;
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, ttl, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
@@ -299,34 +285,31 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
-        var doc = await cache.Get<MetaCriticCache>(cacheKey, cancellationToken);
+        if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
 
-        if (doc == null)
+        var doc = await KeyedAsyncLock.GetOrCreateAsync(
+        cacheKey,
+        async cancellationToken => await cache.Get<MetaCriticCache>(cacheKey, cancellationToken),
+        async cancellationToken => await cacheRepo.ReadItemAsync<MetaCriticCache>(new CacheIdentity(cacheKey), cancellationToken),
+        async cancellationToken =>
         {
-            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
+            var client = factory.CreateClient("rapidapi");
+            var obj = await client.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
+            if (obj == null) return null;
 
-            doc = await cacheRepo.ReadItemAsync<MetaCriticCache>(new CacheIdentity(cacheKey), cancellationToken);
+            var newModel = new ReviewModel();
 
-            if (doc == null)
+            foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
             {
-                var client = factory.CreateClient("rapidapi");
-                var obj = await client.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
-                if (obj == null) return null;
-
-                var newModel = new ReviewModel();
-
-                foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
-                {
-                    newModel.Items.Add(new ReviewModelItem(node?.site, node?.url, node?.reviewer, node?.score, node?.quote?.value));
-                }
-
-                ttl = CalculateTtl(releaseDate);
-
-                doc = await cacheRepo.CreateItemAsync(new MetaCriticCache($"review_{id}", newModel, ttl));
+                newModel.Items.Add(new ReviewModelItem(node?.site, node?.url, node?.reviewer, node?.score, node?.quote?.value));
             }
 
-            await SaveCache(doc, cacheKey, ttl, cancellationToken);
-        }
+            ttl = CalculateTtl(releaseDate);
+
+            return await cacheRepo.CreateItemAsync(new MetaCriticCache($"review_{id}", newModel, ttl));
+        },
+        async (value, cancellationToken) => await SaveCache(value, cacheKey, ttl, cancellationToken),
+        cancellationToken);
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
     }
