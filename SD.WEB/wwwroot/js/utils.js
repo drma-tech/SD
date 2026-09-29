@@ -176,7 +176,7 @@ export const environment = {
         }
 
         let isMobileApp = storage.getLocalStorage("is-mobile-app");
-        if (platform && isMobileApp !== undefined) return; //if its already detected, exit
+        if (platform && isMobileApp) return; //if its already detected, exit
 
         const ua = navigator.userAgent.toLowerCase();
         platform = "webapp"; //default value
