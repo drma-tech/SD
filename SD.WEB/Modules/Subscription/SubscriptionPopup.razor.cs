@@ -69,13 +69,23 @@ namespace SD.WEB.Modules.Subscription
 
             if (Platform == SD.Shared.Enums.Platform.ios)
             {
-                if (string.Equals(CurrentCountry, "US", StringComparison.OrdinalIgnoreCase))
+                var isMobileApp = await JsRuntime.Utils().GetStorage("is-mobile-app", JavascriptContext.Default.Boolean, Cts.Token);
+
+                if (isMobileApp)
                 {
-                    Providers.Add(PaymentProvider.Apple);
-                    Providers.Add(PaymentProvider.Stripe);
+                    if (string.Equals(CurrentCountry, "US", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Providers.Add(PaymentProvider.Apple);
+                        Providers.Add(PaymentProvider.Stripe);
+                    }
+                    else
+                    {
+                        Providers.Add(PaymentProvider.Apple);
+                    }
                 }
                 else
                 {
+                    Providers.Add(PaymentProvider.Stripe);
                     Providers.Add(PaymentProvider.Apple);
                 }
             }

@@ -135,7 +135,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
         if (result == true)
         {
-            await JsRuntime.Window().InvokeVoidAsync("open", $"{url}?utm_source={AppInfo.Domain}.com", "_blank");
+            await JsRuntime.Window().InvokeVoidAsync("open", $"{url}?ref={AppInfo.Domain}.com", "_blank");
         }
     }
 

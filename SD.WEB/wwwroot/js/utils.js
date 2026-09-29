@@ -166,15 +166,17 @@ export const notification = {
 export const environment = {
     detectPlatform() {
         let platform = storage.getLocalStorage("platform");
+        let isMobileApp = storage.getLocalStorage("is-mobile-app") === "true";
 
         //for some reason, sometimes platform is not getting the correct value on windows
         if (document.referrer === "app-info://platform/microsoft-store" && platform === "webapp") {
             platform = "windows";
             storage.setLocalStorage("platform", platform);
+            storage.setLocalStorage("is-mobile-app", window.appConfig.isMobileApp ? "true" : "false");
             return;
         }
 
-        if (platform) return; //if its already detected, exit
+        if (platform && isMobileApp !== undefined) return; //if its already detected, exit
 
         const ua = navigator.userAgent.toLowerCase();
         platform = "webapp"; //default value
@@ -200,6 +202,7 @@ export const environment = {
         }
 
         storage.setLocalStorage("platform", platform);
+        storage.setLocalStorage("is-mobile-app", window.appConfig.isMobileApp ? "true" : "false");
     },
     async validateBrowserAndPlatform() {
         if (!window.appConfig.blazorSupported) {
