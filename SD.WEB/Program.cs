@@ -31,6 +31,7 @@ builder.UseSentry(options =>
 
         evt.SetTag("custom.version", AppStateStatic.Version ?? error);
         evt.SetTag("custom.platform", AppStateStatic.GetSavedPlatform()?.ToString() ?? error);
+        evt.SetTag("custom.isAuthenticated", AppStateStatic.IsAuthenticated.ToString() ?? error);
 
         evt.SetExtra("browser_name", AppStateStatic.BrowserName ?? error);
         evt.SetExtra("browser_version", AppStateStatic.BrowserVersion ?? error);
