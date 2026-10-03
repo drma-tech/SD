@@ -2,6 +2,7 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Functions.Admin;
+using SD.API.Functions.Auth;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.List.Tmdb;
@@ -167,7 +168,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
                 throw new UnhandledException($"User {userId} has not been notified before deletion.");
             }
 
-            await Auth.PrincipalFunction.DeleteUser(repo, userId);
+            await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true);
         }
     }
 }
