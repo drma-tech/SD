@@ -30,8 +30,15 @@ public class ExternalFunction(IHttpClientFactory factory)
 
         if (ip.NotEmpty() && !string.Equals(ip, "127.0.0.1", StringComparison.Ordinal))
         {
-            var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
-            return await req.CreateResponse(result.Trim().ToLowerInvariant(), TtlCache.OneMinute, cancellationToken);
+            try
+            {
+                var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+                return await req.CreateResponse(result.Trim().ToLowerInvariant(), TtlCache.OneMinute, cancellationToken);
+            }
+            catch (Exception)
+            {
+                return await req.CreateResponse((string?)null, TtlCache.OneMinute, cancellationToken);
+            }
         }
 
         return await req.CreateResponse((string?)null, TtlCache.OneMinute, cancellationToken);
