@@ -6,16 +6,26 @@
 <MudStack Row="true" Breakpoint="Breakpoint.Xs" Spacing="2" Style="position: relative;">
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetFieldSettings().Name</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@Translations.Module.Subscription.Free</MudText>
-            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
-                <MudItem xs="9">
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                @AccountProduct.Basic.GetFieldSettings().Name
+            </MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">
+                @Translations.Module.Subscription.Free
+            </MudText>
+            <MudGrid Spacing="1" Justify="Justify.SpaceBetween" Class="mt-3">
+                <MudItem xs="10">
+                    <MudText>@Translations.Module.Subscription.ExploreContent</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircleOutline" Color="Color.Success" Size="Size.Small" Label="true" Class="chip-no-text" />
+                </MudItem>
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Subscription.NoAds</MudText>
                 </MudItem>
                 <MudItem>
                     <MudChip T="string" Icon="@Icons.Material.Filled.Block" Color="Color.Error" Size="Size.Small" Label="true" Class="chip-no-text" />
                 </MudItem>
-                <MudItem xs="9">
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Profile.MyPlatforms</MudText>
                 </MudItem>
                 <MudItem>
@@ -23,7 +33,7 @@
                         <MudText>@AccountProduct.Basic.GetRestrictions().FavoriteProviders.ToString()</MudText>
                     </MudChip>
                 </MudItem>
-                <MudItem xs="9">
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Profile.Wishlist</MudText>
                 </MudItem>
                 <MudItem>
@@ -31,14 +41,14 @@
                         <MudText>@AccountProduct.Basic.GetRestrictions().Wishlist.ToString()</MudText>
                     </MudChip>
                 </MudItem>
-                <MudItem xs="9">
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Profile.Following</MudText>
                 </MudItem>
                 <MudItem>
                     <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
                         <MudText>@AccountProduct.Basic.GetRestrictions().Watching.ToString()</MudText>
                     </MudChip>
-                </MudItem>                
+                </MudItem>
             </MudGrid>
         </MudCardContent>
         <MudCardActions>
@@ -49,16 +59,26 @@
     </MudCard>
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetFieldSettings().Name</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetFieldSettings().Description</MudText>
-            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
-                <MudItem xs="9">
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                @AccountProduct.Premium.GetFieldSettings().Name
+            </MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">
+                @GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetFieldSettings().Description
+            </MudText>
+            <MudGrid Spacing="1" Justify="Justify.SpaceBetween" Class="mt-3">
+                <MudItem xs="10">
+                    <MudText>@Translations.Module.Subscription.ExploreContent</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircleOutline" Color="Color.Success" Size="Size.Small" Label="true" Class="chip-no-text" />
+                </MudItem>
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Subscription.NoAds</MudText>
                 </MudItem>
                 <MudItem>
                     <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircleOutline" Color="Color.Success" Size="Size.Small" Label="true" Class="chip-no-text" />
                 </MudItem>
-                <MudItem xs="9">
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Profile.MyPlatforms</MudText>
                 </MudItem>
                 <MudItem>
@@ -66,7 +86,7 @@
                         <MudText>@AccountProduct.Premium.GetRestrictions().FavoriteProviders.ToString()</MudText>
                     </MudChip>
                 </MudItem>
-                <MudItem xs="9">
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Profile.Wishlist</MudText>
                 </MudItem>
                 <MudItem>
@@ -74,14 +94,14 @@
                         <MudText>@AccountProduct.Premium.GetRestrictions().Wishlist.ToString()</MudText>
                     </MudChip>
                 </MudItem>
-                <MudItem xs="9">
+                <MudItem xs="10">
                     <MudText>@Translations.Module.Profile.Following</MudText>
                 </MudItem>
                 <MudItem>
                     <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
                         <MudText>@AccountProduct.Premium.GetRestrictions().Watching.ToString()</MudText>
                     </MudChip>
-                </MudItem>               
+                </MudItem>
             </MudGrid>
         </MudCardContent>
         <MudCardActions>

@@ -70,6 +70,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explore all the content.
+        /// </summary>
+        internal static string ExploreContent {
+            get {
+                return ResourceManager.GetString("ExploreContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free.
         /// </summary>
         internal static string Free {
