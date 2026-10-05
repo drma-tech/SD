@@ -4,7 +4,7 @@ import { storage, notification, interop } from "./utils.js";
 
 export const apple = {
     openCheckout(productId) {
-        if (window.appConfig.isMobileApp === false) {
+        if (window.appConfig?.isMobileApp !== true) {
             notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
             Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
             return;
@@ -42,7 +42,7 @@ export const apple = {
         });
     },
     getReceiptData() {
-        if (window.appConfig?.isMobileApp === false) {
+        if (window.appConfig?.isMobileApp !== true) {
             notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
             Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
             return;
@@ -62,7 +62,7 @@ export const apple = {
 export const google = {
     openCheckout(productId, type) {
         try {
-            if (window.appConfig?.isMobileApp === false) {
+            if (window.appConfig?.isMobileApp !== true) {
                 notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
                 Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
                 return;

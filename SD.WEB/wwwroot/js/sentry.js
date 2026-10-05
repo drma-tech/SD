@@ -16,7 +16,7 @@ const ignoredErrors = [
 window.sentryOnLoad = function () {
     Sentry.init({
         dsn: window.appConfig?.servicesConfig?.SentryDsn,
-        SendDefaultPii: true, // enable ip
+        sendDefaultPii: true, // enable ip
         release: `sd-js@${window.appVersion}`,
         environment: env,
         beforeSend(event) {

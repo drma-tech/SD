@@ -33,11 +33,17 @@ export const services = {
         })(window, document, "clarity", "script", code);
 
         //todo: whem implement tracking consent, modify this to wait for user consent
+        let attempts = 0;
+        const maxAttempts = 12;
         const clarityCheckInterval = setInterval(function () {
             if (window.clarity) {
-                window.clarity("consent");
                 clearInterval(clarityCheckInterval);
+                window.clarity("consent");
+                return;
             }
+
+            attempts++;
+            if (attempts >= maxAttempts) clearInterval(clarityCheckInterval);
         }, 5000);
     },
     initUserBack(version) {

@@ -3,7 +3,7 @@
 const ua = navigator.userAgent;
 window.browser = window.bowser?.getParser ? window.bowser.getParser(ua) : null;
 const botUAs = ["google", "baidu", "bingbot", "duckduckbot", "teoma", "slurp", "yandex", "toutiao", "bytespider", "applebot", "crawler"];
-const isBot = botUAs.some(bot => ua.toLowerCase().includes(bot)) || navigator.webdriver;
+const isBot = botUAs.some(bot => ua.toLowerCase().includes(bot)) || navigator.webdriver === true;
 
 function testBrowserVersion(rules, ignore = false, fallback = false) {
     if (ignore) return false;

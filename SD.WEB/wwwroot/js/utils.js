@@ -56,9 +56,10 @@ export const storage = {
 
 export const notification = {
     showError(message) {
-        if (window.DotNet) {
+        if (window.DotNet?.invokeMethodAsync) {
             try {
-                window.DotNet.invokeMethodAsync("SD.WEB", "ShowError", message);
+                window.DotNet.invokeMethodAsync("SD.WEB", "ShowError", message)
+                    .catch(() => this.showToast(message));
             } catch {
                 this.showToast(message);
             }
@@ -68,7 +69,6 @@ export const notification = {
     },
     showToast(message, attempts = 20) {
         const stack = document.getElementById("toast-stack");
-        if (!stack) return;
 
         if (!stack) {
             if (attempts > 0) {
@@ -277,10 +277,11 @@ export const environment = {
         });
     },
     async isAdBlocked() {
+        if (!window.appConfig) { return false; }
         if (window.appConfig?.isLocalhost === true) { return false; }
         if (window.appConfig?.isBot === true) { return false; }
         if (window.appConfig?.blazorSupported !== true) { return false; }
-        if (window.isAdBlocked !== true) { return false; }
+        if (window.isAdBlocked === false) { return false; }
 
         //detect if adsense exists
         const els = document.querySelectorAll('.adsbygoogle');
