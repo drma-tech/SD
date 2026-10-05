@@ -43,7 +43,7 @@
 
     <!-- Google Adsense -->
     <script>
-        if (window.appConfig?.blazorSupported) {
+        if (window.appConfig?.blazorSupported === true) {
             const script = document.createElement("script");
             script.async = true;
             script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172";
@@ -121,10 +121,10 @@
 
         try {
             if (window.Blazor) {
-                if (window.appConfig?.blazorSupported) {
+                if (window.appConfig?.blazorSupported === true) {
                     Blazor.start({
                         configureRuntime: runtime => runtime.withConfig({
-                            loadAllSatelliteResources: window.appConfig.isPrerendering
+                            loadAllSatelliteResources: window.appConfig?.isPrerendering === true
                         })
                     })
                 }

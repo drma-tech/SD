@@ -50,7 +50,7 @@ function loadClerkScript() {
         const isLocalhost = window.location.hostname === "localhost";
         const isDev = location.hostname.includes("develop");
 
-        const publishableKey = isLocalhost || isDev ? window.appConfig.clerkConfig.devPk : window.appConfig.clerkConfig.prdPk;
+        const publishableKey = isLocalhost || isDev ? window.appConfig?.clerkConfig.devPk : window.appConfig?.clerkConfig.prdPk;
 
         const script = document.createElement("script");
 
@@ -100,7 +100,7 @@ async function initAuth() {
     authReadyResolve(); // any call to ensureAuthReady will now proceed
 }
 
-if (!window.appConfig.isBot && !window.appConfig.isPrintScreen) {
+if (window.appConfig?.isBot === false && window.appConfig?.isPrintScreen === false) {
     setTimeout(async () => {
         try {
             await initAuth();

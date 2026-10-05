@@ -171,7 +171,7 @@ export const environment = {
         if (document.referrer === "app-info://platform/microsoft-store" && platform === "webapp") {
             platform = "windows";
             storage.setLocalStorage("platform", platform);
-            storage.setLocalStorage("is-mobile-app", window.appConfig.isMobileApp ? "true" : "false");
+            storage.setLocalStorage("is-mobile-app", window.appConfig?.isMobileApp === true ? "true" : "false");
             return;
         }
 
@@ -202,10 +202,10 @@ export const environment = {
         }
 
         storage.setLocalStorage("platform", platform);
-        storage.setLocalStorage("is-mobile-app", window.appConfig.isMobileApp ? "true" : "false");
+        storage.setLocalStorage("is-mobile-app", window.appConfig?.isMobileApp === true ? "true" : "false");
     },
     async validateBrowserAndPlatform() {
-        if (!window.appConfig.blazorSupported) {
+        if (window.appConfig?.blazorSupported !== true) {
             notification.showBrowserWarning();
         }
     },
@@ -277,10 +277,10 @@ export const environment = {
         });
     },
     async isAdBlocked() {
-        if (window.appConfig.isLocalhost) { return false; }
-        if (window.appConfig.isBot) { return false; }
-        if (!window.appConfig.blazorSupported) { return false; }
-        if (window.isAdBlocked === false) { return false; }
+        if (window.appConfig?.isLocalhost === true) { return false; }
+        if (window.appConfig?.isBot === true) { return false; }
+        if (window.appConfig?.blazorSupported !== true) { return false; }
+        if (window.isAdBlocked !== true) { return false; }
 
         //detect if adsense exists
         const els = document.querySelectorAll('.adsbygoogle');
@@ -398,7 +398,7 @@ export const interop = {
     },
 };
 
-if (window.appConfig?.isBot === false) {
+if (window.appConfig?.isBot !== true) {
     environment.detectPlatform();
     environment.validateBrowserAndPlatform();
 }

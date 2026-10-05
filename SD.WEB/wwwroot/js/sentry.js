@@ -1,8 +1,8 @@
 ﻿import { storage, environment } from "./utils.js";
 
 const env = (() => {
-    if (window.appConfig.isLocalhost) return "development";
-    if (window.appConfig.isDev) return "staging";
+    if (window.appConfig?.isLocalhost === true) return "development";
+    if (window.appConfig?.isDev === true) return "staging";
     return "production";
 })();
 
@@ -15,7 +15,7 @@ const ignoredErrors = [
 
 window.sentryOnLoad = function () {
     Sentry.init({
-        dsn: window.appConfig.servicesConfig.SentryDsn,
+        dsn: window.appConfig?.servicesConfig?.SentryDsn,
         SendDefaultPii: true, // enable ip
         release: `sd-js@${window.appVersion}`,
         environment: env,
