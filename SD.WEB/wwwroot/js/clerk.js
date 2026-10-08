@@ -69,8 +69,28 @@ function loadClerkScript() {
             resolve(window.Clerk);
         };
 
-        script.onerror = () => {
-            reject(new Error("Failed to load ClerkJS."));
+        script.onerror = (event) => {
+            const error = new Error("Failed to load ClerkJS.");
+            error.name = "ClerkScriptLoadError";
+            try {
+                Sentry.withScope((scope) => {
+                    scope.setContext("clerk_script_load", {
+                        scriptUrl: script.src,
+                        pageOrigin: window.location.origin,
+                        online: navigator.onLine,
+                        publishableKeyConfigured: Boolean(publishableKey),
+                        eventType: event?.type,
+                        eventMessage: event?.message,
+                        eventFilename: event?.filename,
+                        eventLine: event?.lineno,
+                        eventColumn: event?.colno,
+                    });
+                    Sentry.captureException(error);
+                });
+            } catch {
+                // ignore
+            }
+            reject(error);
         };
 
         document.head.appendChild(script);
