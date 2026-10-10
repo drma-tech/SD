@@ -1,4 +1,6 @@
-﻿import { storage, environment } from "./utils.js";
+﻿"use strict";
+
+import { storage, environment } from "./utils.js";
 
 const env = (() => {
     if (window.appConfig?.isLocalhost === true) return "development";
@@ -28,14 +30,17 @@ window.sentryOnLoad = function () {
 
             event.tags = {
                 "custom.version": window.appVersion,
-                "custom.platform": storage.getLocalStorage("platform") ?? "error",
+                "custom.platform": storage.getLocalStorage("platform") ?? "unknown",
                 "custom.isAdBlocked": window.isAdBlocked ?? "unknown",
                 "custom.isAuthenticated": window.isAuthenticated ?? false,
+                "custom.isBot": window.appConfig?.isBot ?? "unknown",
+                "custom.blazorSupported": window.appConfig?.blazorSupported ?? "unknown",
+                "custom.disableServiceWorker": window.appConfig?.disableServiceWorker ?? "unknown",
             };
             event.extra = {
-                browser_name: environment.getBrowserName() ?? "error",
-                browser_version: environment.getBrowserVersion() ?? "error",
-                operation_system: environment.getOperatingSystem() ?? "error",
+                browser_name: environment.getBrowserName() ?? "unknown",
+                browser_version: environment.getBrowserVersion() ?? "unknown",
+                operation_system: environment.getOperatingSystem() ?? "unknown",
             };
 
             return event;
