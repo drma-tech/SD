@@ -115,7 +115,7 @@ async function initAuth() {
     authReadyResolve(); // any call to ensureAuthReady will now proceed
 }
 
-if (window.appConfig?.isBot === false && window.appConfig?.isPrintScreen === false) {
+if (window.appConfig?.isBot === false) {
     setTimeout(async () => {
         try {
             await initAuth();
