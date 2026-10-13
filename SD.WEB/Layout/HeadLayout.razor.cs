@@ -5,9 +5,8 @@ namespace SD.WEB.Layout
 {
     public partial class HeadLayout : IDisposable
     {
-        [Parameter]
-        [SupplyParameterFromQuery(Name = "stripe_session_id")]
-        public string? stripe_session_id { get; set; }
+        [Parameter][SupplyParameterFromQuery(Name = "stripe_session_id")] public string? stripe_session_id { get; set; }
+        [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
 
         private string Culture => Navigation.GetCulture();
 

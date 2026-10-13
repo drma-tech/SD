@@ -27,7 +27,7 @@
 
     <MudSpacer />
 
-    @if (!AppStateStatic.IsPremiumUser)
+    @if (!AppStateStatic.IsPremiumUser && !Printscreen)
     {
         <MudIconButton Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").Animation(IconAnimation.Fade).Font" Style="margin-right: -8px;" OnClick="@OpenSubscription" />
     }

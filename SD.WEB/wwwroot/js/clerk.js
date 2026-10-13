@@ -79,11 +79,6 @@ function loadClerkScript() {
                         pageOrigin: window.location.origin,
                         online: navigator.onLine,
                         publishableKeyConfigured: Boolean(publishableKey),
-                        eventType: event?.type,
-                        eventMessage: event?.message,
-                        eventFilename: event?.filename,
-                        eventLine: event?.lineno,
-                        eventColumn: event?.colno,
                     });
                     Sentry.captureException(error);
                 });

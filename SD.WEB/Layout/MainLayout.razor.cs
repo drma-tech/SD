@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 using SD.WEB.Core.Auth;
@@ -7,6 +8,8 @@ namespace SD.WEB.Layout
 {
     public partial class MainLayout : IDisposable
     {
+        [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
+
         private bool ShowAdvertising { get; set; } = true;
 
         private MudThemeProvider? _mudThemeProvider;
@@ -29,6 +32,11 @@ namespace SD.WEB.Layout
                 AppStateStatic.HideAdvertising.Subscribe(hide => { ShowAdvertising = !hide; _ = InvokeAsync(StateHasChanged); }, Cts.Token);
 
                 PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; StateHasChanged(); };
+
+                if (Printscreen)
+                {
+                    ShowAdvertising = false;
+                }
 
                 // 2 = transform claims into useful data (need to register before ClerkAuthChanged)
                 AuthStateProvider.AuthenticationStateChanged += async (task) =>
@@ -172,6 +180,11 @@ namespace SD.WEB.Layout
                 await JsRuntime.Utils().SetStorage("dark-mode", darkMode ?? false, JavascriptContext.Default.Boolean, cancellationToken);
             }
 
+            if (Printscreen)
+            {
+                darkMode = true;
+            }
+
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
         }
 
@@ -260,7 +273,7 @@ namespace SD.WEB.Layout
 
         private async Task ShowOnBoardingPopup(CancellationToken cancellationToken)
         {
-            if (Navigation.Uri.Contains("printscreen", StringComparison.OrdinalIgnoreCase))
+            if (Printscreen)
             {
                 return;
             }
