@@ -2,22 +2,35 @@
 
 import { storage, interop } from "./utils.js";
 
+async function importClerkLocalization(language, moduleUrl, exportName) {
+    try {
+        return (await import(moduleUrl))[exportName];
+    } catch (cause) {
+        const error = new Error(`Failed to import Clerk localization module for "${language}": ${moduleUrl}`);
+        error.name = "ClerkLocalizationImportError";
+        error.cause = cause;
+        error.moduleUrl = moduleUrl;
+        error.language = language;
+        throw error;
+    }
+}
+
 async function getClerkLocalization(language) {
     switch (language) {
         case "pt":
-            return (await import("https://cdn.jsdelivr.net/npm/@clerk/localizations/pt-BR/+esm")).ptBR;
+            return importClerkLocalization(language, "https://cdn.jsdelivr.net/npm/@clerk/localizations/pt-BR/+esm", "ptBR");
 
         case "es":
-            return (await import("https://cdn.jsdelivr.net/npm/@clerk/localizations/es-ES/+esm")).esES;
+            return importClerkLocalization(language, "https://cdn.jsdelivr.net/npm/@clerk/localizations/es-ES/+esm", "esES");
 
         case "fr":
-            return (await import("https://cdn.jsdelivr.net/npm/@clerk/localizations/fr-FR/+esm")).frFR;
+            return importClerkLocalization(language, "https://cdn.jsdelivr.net/npm/@clerk/localizations/fr-FR/+esm", "frFR");
 
         case "de":
-            return (await import("https://cdn.jsdelivr.net/npm/@clerk/localizations/de-DE/+esm")).deDE;
+            return importClerkLocalization(language, "https://cdn.jsdelivr.net/npm/@clerk/localizations/de-DE/+esm", "deDE");
 
         case "it":
-            return (await import("https://cdn.jsdelivr.net/npm/@clerk/localizations/it-IT/+esm")).itIT;
+            return importClerkLocalization(language, "https://cdn.jsdelivr.net/npm/@clerk/localizations/it-IT/+esm", "itIT");
 
         default:
             return undefined;
@@ -121,7 +134,17 @@ if (window.appConfig?.isBot === false) {
             await initAuth();
         } catch (err) {
             try {
-                Sentry.captureException(err);
+                Sentry.withScope((scope) => {
+                    if (err?.moduleUrl) {
+                        scope.setContext("clerk_init_auth", {
+                            url: err.moduleUrl,
+                            language: err.language,
+                            online: navigator.onLine,
+                            userAgent: navigator.userAgent,
+                        });
+                    }
+                    Sentry.captureException(err);
+                });
             } catch {
                 // ignore
             }
