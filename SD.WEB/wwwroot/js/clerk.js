@@ -46,7 +46,7 @@ async function ensureAuthReady() {
     await authReadyPromise;
 
     if (!window.clerk) {
-        throw new Error("Auth initialization failed");
+        throw new Error("Error loading authentication module");
     }
 
     return window.clerk;
