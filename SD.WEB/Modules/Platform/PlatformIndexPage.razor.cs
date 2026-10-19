@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace SD.WEB.Modules.Platform
 {
-    public partial class PlataformIndexPage
+    public partial class PlatformIndexPage
     {
         public RenderControlState<AllProviders?> State { get; set; } = new(null, obj => obj == null || obj.Items.Empty());
         private AllProviders? AllProviders { get; set; }

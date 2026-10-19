@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace SD.WEB.Modules.Platform
 {
-    public partial class PlataformDetailPage
+    public partial class PlatformDetailPage
     {
         [Parameter] public string? Id { get; set; }
         private bool isNotFound;

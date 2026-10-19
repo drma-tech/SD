@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Core.Models;
 using SD.API.Functions.Auth;
 using Svix.Exceptions;
 using System.Net;
