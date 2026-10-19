@@ -14,7 +14,7 @@ namespace SD.WEB.Core.Javascript
             }
             catch (OperationCanceledException)
             {
-                //ignore
+                // ignore
             }
         }
 

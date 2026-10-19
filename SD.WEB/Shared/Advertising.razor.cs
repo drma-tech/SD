@@ -134,7 +134,7 @@ namespace SD.WEB.Shared
                     if (Network == AdNetwork.Adsense)
                     {
                         await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, Cts.Token);
-                        _ = Task.Run(() => DetectAdBlockAsync(Cts.Token), Cts.Token);
+                        DetectAdBlockAsync(Cts.Token).FireAndForget();
                     }
                     else if (Network == AdNetwork.Yandex)
                     {
