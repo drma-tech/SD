@@ -16,6 +16,16 @@ window.addEventListener("error", function (event) {
         return;
     }
 
+    if (message === "Script error.") {
+        const obj = {
+            script_url: filename || event.target?.src || "unknown",
+            line: event.lineno || "unknown",
+            column: event.colno || "unknown",
+        };
+
+        Sentry.captureMessage(`Script error.: ${JSON.stringify(obj)}`, "error");
+    }
+
     notification.showError(`error: ${message}`);
 });
 

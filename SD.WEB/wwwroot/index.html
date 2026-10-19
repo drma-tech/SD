@@ -43,14 +43,14 @@
 
     <!-- Google Adsense -->
     <script>
-                if (window.appConfig?.blazorSupported === true) {
-                    const script = document.createElement("script");
-                    script.async = true;
-                    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172";
-                    script.crossOrigin = "anonymous";
+        if (window.appConfig?.blazorSupported === true) {
+            const script = document.createElement("script");
+            script.async = true;
+            script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172";
+            script.crossOrigin = "anonymous";
 
-                    document.head.appendChild(script);
-                }
+            document.head.appendChild(script);
+        }
     </script>
 
     <!-- Yandex.RTB -->
@@ -89,16 +89,16 @@
 
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script>
-                if (typeof Promise.withResolvers !== "function") {
-                    Promise.withResolvers = function () {
-                        let resolve, reject;
-                        const promise = new Promise((res, rej) => {
-                            resolve = res;
-                            reject = rej;
-                        });
-                        return { promise, resolve, reject };
-                    };
-                }
+        if (typeof Promise.withResolvers !== "function") {
+            Promise.withResolvers = function () {
+                let resolve, reject;
+                const promise = new Promise((res, rej) => {
+                    resolve = res;
+                    reject = rej;
+                });
+                return { promise, resolve, reject };
+            };
+        }
     </script>
     <script src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
 
