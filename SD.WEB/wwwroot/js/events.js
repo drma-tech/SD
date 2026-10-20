@@ -17,13 +17,30 @@ window.addEventListener("error", function (event) {
     }
 
     if (message === "Script error.") {
-        const obj = {
-            script_url: filename || event.target?.src || "unknown",
-            line: event.lineno || "unknown",
-            column: event.colno || "unknown",
+        const details = {
+            script_url: filename || null,
+            line: lineno || null,
+            column: colno || null,
+            stack: error?.stack || null,
+            page_url: window.location.href,
+            referrer: document.referrer || null,
         };
 
-        Sentry.captureMessage(`Script error.: ${JSON.stringify(obj)}`, "error");
+        const hasDetails = details.script_url || details.stack;
+
+        if (hasDetails) {
+            Sentry.captureMessage(`Script error: ${JSON.stringify(details)}`, "error");
+        } else {
+            Sentry.captureMessage("Script error: details unavailable", {
+                level: "error",
+                tags: {
+                    error_type: "cross_origin_script_error",
+                },
+                extra: details,
+            });
+        }
+
+        return;
     }
 
     notification.showError(`error: ${message}`);
