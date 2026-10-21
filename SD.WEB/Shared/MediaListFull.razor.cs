@@ -79,7 +79,7 @@ namespace SD.WEB.Shared
 
                 if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
-                    _ = await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+                    await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
                     DisableLoadMore = lastPage || Items.Count >= 200;
                 }

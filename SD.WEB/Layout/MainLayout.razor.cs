@@ -232,11 +232,11 @@ namespace SD.WEB.Layout
 
             if (accesses.Count >= 3 && isOddAccess && !reviewed && !isTooSoon)
             {
-                _ = Task.Run(async () =>
+                Task.Run(async () =>
                 {
                     await Task.Delay(5000, cancellationToken); //delay of 5 seconds
                     await DialogService.AskReviewPopup();
-                }, cancellationToken);
+                }, cancellationToken).FireAndForget();
             }
         }
 

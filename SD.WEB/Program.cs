@@ -78,7 +78,7 @@ AppStateStatic.OperatingSystem = await js.Utils().GetOperatingSystem(Cancellatio
 AppStateStatic.IsBeta = await js.Utils().GetStorage("beta", JavascriptContext.Default.Boolean, CancellationToken.None);
 
 await js.Utils().SetStorage("app-version", AppStateStatic.Version, JavascriptContext.Default.String, CancellationToken.None);
-_ = await AppStateStatic.GetPlatform(js, CancellationToken.None);
+await AppStateStatic.GetPlatform(js, CancellationToken.None);
 await js.Services().InitGoogleAnalytics(AppStateStatic.Version, CancellationToken.None);
 await js.Services().InitUserBack(AppStateStatic.Version, CancellationToken.None);
 
@@ -204,7 +204,7 @@ static async Task ConfigureCulture(NavigationManager? nav, IJSRuntime js)
 
     //content language
 
-    _ = await AppStateStatic.GetContentLanguage(js, CancellationToken.None); //force read previously saved
+    await AppStateStatic.GetContentLanguage(js, CancellationToken.None); //force read previously saved
 }
 
 //https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory

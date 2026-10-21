@@ -76,17 +76,17 @@ namespace SD.WEB.Modules.Search
 
             if (AppStateStatic.Index == 0)
             {
-                _ = await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
+                await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 1)
             {
                 if (newKeyword != null) AppStateStatic.Keyword = newKeyword;
                 ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
-                _ = await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
+                await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
             }
             else if (AppStateStatic.Index == 2)
             {
-                _ = await TmdbDiscoveryApi.GetList(Items, [State], AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
+                await TmdbDiscoveryApi.GetList(Items, [State], AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
             }
 
             await State.FinishLoading.Invoke(Items);
