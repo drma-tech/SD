@@ -6,12 +6,14 @@ namespace SD.WEB.Modules.Help
     public partial class HelpCenterPage
     {
         private SD.Shared.Enums.Platform? CurrentPlatform;
+        private bool DarkMode;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);
+                DarkMode = await AppStateStatic.GetDarkMode(JsRuntime, Cts.Token) ?? false;
             }
         }
 
