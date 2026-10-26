@@ -1,4 +1,4 @@
-﻿namespace SD.API.Core;
+namespace SD.API.Core;
 
 public static class ApiStartup
 {

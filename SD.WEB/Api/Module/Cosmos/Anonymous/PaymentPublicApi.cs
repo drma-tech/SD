@@ -1,4 +1,4 @@
-﻿using SD.Shared.Models.Subscription;
+using SD.Shared.Models.Subscription;
 using SD.WEB.Api.Core;
 
 namespace SD.WEB.Api.Module.Cosmos.Anonymous
