@@ -9,8 +9,8 @@ namespace SD.WEB.Modules
         {
             await base.OnInitializedAsync();
 
-            WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
-            WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+            WatchingApi.DataChanged += async model => { Watching = model; await InvokeAsync(StateHasChanged); };
+            WishApi.DataChanged += async model => { Wish = model; await InvokeAsync(StateHasChanged); };
         }
 
         protected override async Task LoadAuthenticatedDataAsync(CancellationToken token)

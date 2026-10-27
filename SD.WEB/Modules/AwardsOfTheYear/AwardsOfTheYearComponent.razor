@@ -29,15 +29,15 @@
 
     protected override void OnInitialized()
     {
-        WatchingListApi.DataChanged += model =>
+        WatchingListApi.DataChanged += async model =>
         {
             Watching = model;
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         };
-        WishListApi.DataChanged += model =>
+        WishListApi.DataChanged += async model =>
         {
             Wish = model;
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         };
     }
 }

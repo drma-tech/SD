@@ -18,19 +18,19 @@ namespace SD.WEB.Modules.Profile
 
         protected override void OnInitialized()
         {
-            WatchingApi.DataChanged += model =>
+            WatchingApi.DataChanged += async model =>
             {
-                _ = State.StartLoading.Invoke(null);
+                await State.StartLoading.Invoke(null);
                 Watching = model;
-                _ = WatchingChanged.InvokeAsync(model);
-                _ = State.FinishLoading.Invoke(model);
+                await WatchingChanged.InvokeAsync(model);
+                await State.FinishLoading.Invoke(model);
                 StateHasChanged();
             };
-            WishApi.DataChanged += model =>
+            WishApi.DataChanged += async model =>
             {
                 Wish = model;
-                _ = WishChanged.InvokeAsync(model);
-                StateHasChanged();
+                await WishChanged.InvokeAsync(model);
+                await InvokeAsync(StateHasChanged);
             };
         }
     }

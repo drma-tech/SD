@@ -28,17 +28,17 @@ namespace SD.WEB.Modules.Collections
             if (string.IsNullOrEmpty(CollectionId)) throw new NotificationException("CollectionId is required");
             if (Type == null) throw new NotificationException("Type is required");
 
-            WatchingListApi.DataChanged += model =>
+            WatchingListApi.DataChanged += async model =>
             {
                 Watching = model;
-                _ = WatchingChanged.InvokeAsync(model);
-                StateHasChanged();
+                await WatchingChanged.InvokeAsync(model);
+                await InvokeAsync(StateHasChanged);
             };
-            WishListApi.DataChanged += model =>
+            WishListApi.DataChanged += async model =>
             {
                 Wish = model;
-                _ = WishChanged.InvokeAsync(model);
-                StateHasChanged();
+                await WishChanged.InvokeAsync(model);
+                await InvokeAsync(StateHasChanged);
             };
         }
 

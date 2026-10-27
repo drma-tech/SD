@@ -18,9 +18,9 @@ namespace SD.WEB.Modules.Profile
         {
             State.CustomMessageWarning = Translations.Module.Profile.MarkPlatforms;
 
-            MyProvidersApi.DataChanged += model =>
+            MyProvidersApi.DataChanged += async model =>
             {
-                _ = State.FinishLoading.Invoke(model);
+                await State.FinishLoading.Invoke(model);
             };
         }
 

@@ -20,23 +20,23 @@ namespace SD.WEB.Modules.Profile
         {
             await base.OnInitializedAsync();
 
-            WatchingApi.DataChanged += model =>
+            WatchingApi.DataChanged += async model =>
             {
-                _ = WatchingMovieState.StartLoading.Invoke(null);
-                _ = WatchingTvState.StartLoading.Invoke(null);
+                await WatchingMovieState.StartLoading.Invoke(null);
+                await WatchingTvState.StartLoading.Invoke(null);
                 Watching = model;
-                _ = WatchingMovieState.FinishLoading.Invoke(model);
-                _ = WatchingTvState.FinishLoading.Invoke(model);
-                StateHasChanged();
+                await WatchingMovieState.FinishLoading.Invoke(model);
+                await WatchingTvState.FinishLoading.Invoke(model);
+                await InvokeAsync(StateHasChanged);
             };
-            WishApi.DataChanged += model =>
+            WishApi.DataChanged += async model =>
             {
-                _ = WishMovieState.StartLoading.Invoke(null);
-                _ = WishTvState.StartLoading.Invoke(null);
+                await WishMovieState.StartLoading.Invoke(null);
+                await WishTvState.StartLoading.Invoke(null);
                 Wish = model;
-                _ = WishMovieState.FinishLoading.Invoke(model);
-                _ = WishTvState.FinishLoading.Invoke(model);
-                StateHasChanged();
+                await WishMovieState.FinishLoading.Invoke(model);
+                await WishTvState.FinishLoading.Invoke(model);
+                await InvokeAsync(StateHasChanged);
             };
         }
 

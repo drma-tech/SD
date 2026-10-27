@@ -33,19 +33,19 @@
 
     protected override void OnInitialized()
     {
-        WatchingApi.DataChanged += model =>
+        WatchingApi.DataChanged += async model =>
         {
             Watching = model;
-            _ = WatchingChanged.InvokeAsync(model);
-            StateHasChanged();
+            await WatchingChanged.InvokeAsync(model);
+            await InvokeAsync(StateHasChanged);
         };
-        WishApi.DataChanged += model =>
+        WishApi.DataChanged += async model =>
         {
-            _ = State?.StartLoading.Invoke(null);
+            await State?.StartLoading.Invoke(null);
             Wish = model;
-            _ = WishChanged.InvokeAsync(model);
-            _ = State?.FinishLoading.Invoke(model);
-            StateHasChanged();
+            await WishChanged.InvokeAsync(model);
+            await State?.FinishLoading.Invoke(model);
+            await InvokeAsync(StateHasChanged);
         };
     }
 }

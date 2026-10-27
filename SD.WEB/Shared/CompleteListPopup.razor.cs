@@ -29,17 +29,17 @@ namespace SD.WEB.Shared
         {
             if (List == null && string.IsNullOrEmpty(TitleHead)) throw new NotificationException("Title is required");
 
-            WatchingListApi.DataChanged += model =>
+            WatchingListApi.DataChanged += async model =>
             {
                 Watching = model;
-                _ = WatchingChanged.InvokeAsync(model);
-                StateHasChanged();
+                await WatchingChanged.InvokeAsync(model);
+                await InvokeAsync(StateHasChanged);
             };
-            WishListApi.DataChanged += model =>
+            WishListApi.DataChanged += async model =>
             {
                 Wish = model;
-                _ = WishChanged.InvokeAsync(model);
-                StateHasChanged();
+                await WishChanged.InvokeAsync(model);
+                await InvokeAsync(StateHasChanged);
             };
         }
 

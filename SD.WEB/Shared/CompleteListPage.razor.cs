@@ -33,8 +33,8 @@ namespace SD.WEB.Shared
             if (id.NotEmpty() && Navigation.Uri.Contains("list", StringComparison.OrdinalIgnoreCase)) List = id.ParseToEnum<EnumLists>();
             if (Type.NotEmpty()) TypeSelected = Type.ParseToEnum<MediaType>();
 
-            WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
-            WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+            WatchingApi.DataChanged += async model => { Watching = model; await InvokeAsync(StateHasChanged); };
+            WishApi.DataChanged += async model => { Wish = model; await InvokeAsync(StateHasChanged); };
         }
 
         protected override async Task LoadStaticDataAsync()

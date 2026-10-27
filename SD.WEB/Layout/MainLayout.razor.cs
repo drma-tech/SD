@@ -29,9 +29,9 @@ namespace SD.WEB.Layout
 
                 AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
                 AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), Cts.Token);
-                AppStateStatic.HideAdvertising.Subscribe(hide => { ShowAdvertising = !hide; _ = InvokeAsync(StateHasChanged); }, Cts.Token);
+                AppStateStatic.HideAdvertising.Subscribe(hide => { ShowAdvertising = !hide; StateHasChanged(); }, Cts.Token);
 
-                PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; StateHasChanged(); };
+                PrincipalApi.DataChanged += async principal => { AppStateStatic.Principal = principal; await InvokeAsync(StateHasChanged); };
 
                 if (Printscreen)
                 {
@@ -301,25 +301,25 @@ namespace SD.WEB.Layout
         [JSInvokable]
         public static void RegistrationSuccessful()
         {
-            _ = BufferedEvent.Invoke(nameof(RegistrationSuccessful));
+            BufferedEvent.Invoke(nameof(RegistrationSuccessful)).FireAndForget();
         }
 
         [JSInvokable]
         public static void AppleVerify(string receipt)
         {
-            _ = BufferedEvent.Invoke(nameof(AppleVerify), receipt);
+            BufferedEvent.Invoke(nameof(AppleVerify), receipt).FireAndForget();
         }
 
         [JSInvokable]
         public static void ShowError(string error)
         {
-            _ = BufferedEvent.Invoke(nameof(ShowError), error);
+            BufferedEvent.Invoke(nameof(ShowError), error).FireAndForget();
         }
 
         [JSInvokable]
         public static void ClerkAuthChanged(string? token)
         {
-            _ = BufferedEvent.Invoke(nameof(ClerkAuthChanged), token);
+            BufferedEvent.Invoke(nameof(ClerkAuthChanged), token).FireAndForget();
         }
 
         private bool isDisposed;
