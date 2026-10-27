@@ -153,7 +153,7 @@ public static class AppStateStatic
             }
             else
             {
-                var code = await js.Window().InvokeAsync<string>("eval", "navigator.language");
+                var code = await js.Window().InvokeAsync<string>("eval", cancellationToken, "navigator.language");
                 code = code[..2].ToLowerInvariant();
 
                 _appLanguage = ConvertAppLanguage(code, AppLanguage.en);
@@ -368,7 +368,7 @@ public static class AppStateStatic
             }
             else
             {
-                var code = js != null ? await js.Window().InvokeAsync<string>("eval", "navigator.language") : "en-US";
+                var code = js != null ? await js.Window().InvokeAsync<string>("eval", cancellationToken, "navigator.language") : "en-US";
                 code = code.Replace("-", "", StringComparison.Ordinal);
 
                 _contentLanguage = ConvertContentLanguage(code) ?? ContentLanguage.enUS;

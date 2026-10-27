@@ -105,7 +105,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 
         var result = await PostAsync(GetHttp(), endpoint, obj, typeInfo, typeInfo, states, cancellationToken);
 
-        DataChanged?.Invoke(result);
+        if (DataChanged != null) await DataChanged.Invoke(result);
 
         return result;
     }
@@ -119,7 +119,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 
         var result = await PostAsync(GetHttp(), endpoint, obj, requestTypeInfo, typeInfo, states, cancellationToken);
 
-        DataChanged?.Invoke(result);
+        if (DataChanged != null) await DataChanged.Invoke(result);
 
         return result;
     }

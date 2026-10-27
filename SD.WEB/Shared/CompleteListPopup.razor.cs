@@ -43,6 +43,13 @@ namespace SD.WEB.Shared
             };
         }
 
+        private async Task OnItemsChanged(ISet<MediaDetail> items)
+        {
+            Items = items;
+            await ItemsChanged.InvokeAsync(items);
+            await InvokeAsync(StateHasChanged);
+        }
+
         public void HideModal()
         {
             MudDialog?.Close();
