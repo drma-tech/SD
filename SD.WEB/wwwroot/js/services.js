@@ -71,7 +71,7 @@ export const services = {
                 position: 'left', // 'left' or 'right'
                 theme: 'auto', // 'auto', 'light', or 'dark'
             },
-            locale: storage.getLocalStorage("language") ?? browserLang.slice(0, 2),
+            locale: storage.getLocalStorage("app-language") ?? browserLang.slice(0, 2),
         });
 
         const script = document.createElement("script");
