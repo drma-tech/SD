@@ -1,9 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Core.Auth;
 using SD.API.Core.Models;
 using SD.API.Functions.Auth;
 using Svix.Exceptions;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace SD.API.Functions.Webhook;
@@ -49,5 +52,44 @@ public class UserWebhookFunction(CosmosMainRepository repo)
         }
 
         return await req.CreateResponse(HttpStatusCode.OK, "webhook received", cancellationToken);
+    }
+
+    [Function("UserJotSignedIdentity")]
+    public async Task<HttpResponseData> CreateSignedIdentity(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/userjot/identity")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        var userId = await req.GetUserIdAsync();
+        var userEmail = await req.GetUserEmailAsync();
+        var projectId = ApiStartup.Configurations.UserJot?.ProjectId;
+        var secret = ApiStartup.Configurations.UserJot?.Secret;
+
+        if (string.IsNullOrWhiteSpace(projectId) || string.IsNullOrWhiteSpace(secret))
+        {
+            throw new InvalidOperationException("UserJot signed identity is not configured.");
+        }
+
+        var now = DateTimeOffset.UtcNow;
+        var payload = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["sub"] = userId,
+            ["iss"] = projectId,
+            ["aud"] = "userjot",
+            ["iat"] = now.ToUnixTimeSeconds(),
+            ["exp"] = now.AddMinutes(10).ToUnixTimeSeconds(),
+        };
+
+        payload["email"] = userEmail;
+
+        var encodedHeader = ExtensionMethods.SimpleEncrypt(new { alg = "HS256", typ = "JWT" });
+        var encodedPayload = ExtensionMethods.SimpleEncrypt(payload);
+        var signingInput = $"{encodedHeader}.{encodedPayload}";
+        var signature = HMACSHA256.HashData(Encoding.UTF8.GetBytes(secret), Encoding.ASCII.GetBytes(signingInput));
+        var token = $"{signingInput}.{ExtensionMethods.SimpleEncrypt(signature)}";
+
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Cache-Control", "no-store");
+        response.Headers.Add("Pragma", "no-cache");
+        await response.WriteAsJsonAsync(new { token }, cancellationToken);
+        return response;
     }
 }

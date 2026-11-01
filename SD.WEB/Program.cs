@@ -80,7 +80,7 @@ AppStateStatic.IsBeta = await js.Utils().GetStorage("beta", JavascriptContext.De
 await js.Utils().SetStorage("app-version", AppStateStatic.Version, JavascriptContext.Default.String, CancellationToken.None);
 await AppStateStatic.GetPlatform(js, CancellationToken.None);
 await js.Services().InitGoogleAnalytics(AppStateStatic.Version, CancellationToken.None);
-await js.Services().InitUserBack(AppStateStatic.Version, CancellationToken.None);
+await js.Services().InitUserJot(CancellationToken.None);
 
 await app.RunAsync();
 

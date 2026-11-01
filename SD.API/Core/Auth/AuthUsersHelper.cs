@@ -16,6 +16,15 @@ public static class AuthUsersHelper
         return id ?? throw new UnhandledException("unauthenticated user");
     }
 
+    public static async Task<string> GetUserEmailAsync(this HttpRequestData req)
+    {
+        var principal = await req.ParseAndValidateJwtAsync();
+
+        var email = principal?.Claims.FirstOrDefault(w => string.Equals(w.Type, "email", StringComparison.OrdinalIgnoreCase))?.Value;
+
+        return email ?? throw new UnhandledException("unauthenticated user");
+    }
+
     public static string? GetUserIP(this HttpRequestData req, bool includePort)
     {
         if (req.Headers.TryGetValues("X-Forwarded-For", out var values))
@@ -80,6 +89,7 @@ public static class AuthUsersHelper
                 var claims = new List<Claim>
                 {
                     new("user_id", result.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))?.Value ?? ""),
+                    new("email", result.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Email, StringComparison.OrdinalIgnoreCase))?.Value ?? ""),
                 };
 
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "clerk"));

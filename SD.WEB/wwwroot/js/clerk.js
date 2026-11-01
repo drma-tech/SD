@@ -155,6 +155,39 @@ if (window.appConfig?.isBot === false) {
     authReadyResolve();
 }
 
+async function identifyUserJot(clerkToken) {
+    if (!window.uj?.identify) return;
+
+    try {
+        const response = await fetch(`${window.appConfig?.baseApiUrl ?? ""}/api/public/userjot/identity`, {
+            method: "POST",
+            headers: {
+                "X-Clerk-Token": `Bearer ${clerkToken}`,
+                "X-App-Version": window.appVersion,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to get UserJot signed identity: ${response.status}`);
+        }
+
+        const { token } = await response.json();
+        const result = await window.uj.identify({
+            token: token,
+            user: {
+                traits: {
+                    platform: storage.getLocalStorage("platform") ?? "unknown",
+                    app_version: storage.getLocalStorage("app-version") ?? "unknown",
+                }
+            }
+        });
+
+        console.log(result);
+    } catch (error) {
+        //ignores
+    }
+}
+
 function setupAuthListener(clerk) {
     clerk.addListener(async ({ session, user }) => {
         const authProvider = storage.getLocalStorage("auth");
@@ -162,20 +195,19 @@ function setupAuthListener(clerk) {
 
         window.isAuthenticated = !!user;
 
+        const token = session ? await session.getToken() : null;
+
         setTimeout(async () => {
-            if (user && window.Userback?.identify) {
+            if (user && token) {
+                    await identifyUserJot(token);
+            } else if (!user && window.uj?.logout) {
                 try {
-                    window.Userback.identify(user.id, {
-                        name: user.fullName,
-                        email: user.primaryEmailAddress?.emailAddress,
-                    });
-                } catch {
+                    await window.uj.logout();
+                } catch (error) {
                     //ignores
                 }
             }
         }, 5000);
-
-        const token = session ? await session.getToken() : null;
 
         await interop.invokeDotNetWhenReady("SD.WEB", "ClerkAuthChanged", token);
     });
