@@ -181,8 +181,6 @@ async function identifyUserJot(clerkToken) {
                 }
             }
         });
-
-        console.log(result);
     } catch (error) {
         //ignores
     }
