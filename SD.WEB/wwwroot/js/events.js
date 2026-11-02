@@ -110,10 +110,6 @@ window.addEventListener("unhandledrejection", function (event) {
         return;
     }
 
-    if (message.includes("Failed to fetch")) {
-        return;
-    }
-
     if (message.includes("Assert failed: .NET runtime")) {
         notification.showError("A fatal error occurred. Reloading the app...");
         setTimeout(() => location.reload(), 3000);
