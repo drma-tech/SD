@@ -2,18 +2,33 @@
 {
     public sealed class TaskDispatcher<T>
     {
-        private readonly List<Func<T, Task>> handlers = [];
+        private readonly Lock _sync = new();
+        private readonly List<Func<T, Task>> _handlers = [];
 
         public void Subscribe(Func<T, Task> handler, CancellationToken token)
         {
-            handlers.Add(handler);
+            lock (_sync)
+            {
+                _handlers.Add(handler);
+            }
 
-            token.Register(() => { handlers.Remove(handler); });
+            token.Register(() =>
+            {
+                lock (_sync)
+                {
+                    _handlers.Remove(handler);
+                }
+            });
         }
 
         public async Task PublishAsync(T value)
         {
-            var snapshot = handlers.ToArray();
+            Func<T, Task>[] snapshot;
+
+            lock (_sync)
+            {
+                snapshot = [.. _handlers];
+            }
 
             foreach (var handler in snapshot)
             {
@@ -23,7 +38,7 @@
                 }
                 catch (OperationCanceledException)
                 {
-                    // Ignore expected cancellation.
+                    // Ignore cancellation.
                 }
             }
         }
@@ -31,18 +46,33 @@
 
     public sealed class TaskDispatcher
     {
-        private readonly List<Func<Task>> handlers = [];
+        private readonly Lock _sync = new();
+        private readonly List<Func<Task>> _handlers = [];
 
         public void Subscribe(Func<Task> handler, CancellationToken token)
         {
-            handlers.Add(handler);
+            lock (_sync)
+            {
+                _handlers.Add(handler);
+            }
 
-            token.Register(() => { handlers.Remove(handler); });
+            token.Register(() =>
+            {
+                lock (_sync)
+                {
+                    _handlers.Remove(handler);
+                }
+            });
         }
 
         public async Task PublishAsync()
         {
-            var snapshot = handlers.ToArray();
+            Func<Task>[] snapshot;
+
+            lock (_sync)
+            {
+                snapshot = [.. _handlers];
+            }
 
             foreach (var handler in snapshot)
             {
@@ -52,7 +82,7 @@
                 }
                 catch (OperationCanceledException)
                 {
-                    // Ignore expected cancellation.
+                    // Ignore cancellation.
                 }
             }
         }
