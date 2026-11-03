@@ -1,6 +1,6 @@
 ﻿window.FontAwesomeKitConfig = {
     "id": 24066566,
-    "version": "7.2.0",
+    "version": "7.3.1",
     "token": "",
     "method": "js",
     "minify": {
@@ -17,6 +17,7 @@
     "baseUrlKit": "package/fa",
     "detectConflictsUntil": null,
     "iconUploads": {},
+    "imageUploads": {},
     "startupFilename": "free.min.js",
     "v4FontFaceShim": {
         "enabled": true
@@ -96,101 +97,116 @@
         }(t) || function (t, e) {
             var n = null == t ? null : "undefined" != typeof Symbol && t[Symbol.iterator] || t["@@iterator"];
             if (null != n) {
-                var o, r, i, a, c = [], l = !0, f = !1;
+                var o, r, a, i, l = [], s = !0, u = !1;
                 try {
-                    if (i = (n = n.call(t)).next,
+                    if (a = (n = n.call(t)).next,
                         0 === e) {
                         if (Object(n) !== n)
                             return;
-                        l = !1
+                        s = !1
                     } else
-                        for (; !(l = (o = i.call(n)).done) && (c.push(o.value),
-                            c.length !== e); l = !0)
+                        for (; !(s = (o = a.call(n)).done) && (l.push(o.value),
+                            l.length !== e); s = !0)
                             ;
                 } catch (t) {
-                    f = !0,
+                    u = !0,
                         r = t
                 } finally {
                     try {
-                        if (!l && null != n.return && (a = n.return(),
-                            Object(a) !== a))
+                        if (!s && null != n.return && (i = n.return(),
+                            Object(i) !== i))
                             return
                     } finally {
-                        if (f)
+                        if (u)
                             throw r
                     }
                 }
-                return c
+                return l
             }
-        }(t, e) || i(t, e) || function () {
+        }(t, e) || a(t, e) || function () {
             throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")
         }()
     }
-    function i(t, e) {
+    function a(t, e) {
         if (t) {
             if ("string" == typeof t)
-                return a(t, e);
+                return i(t, e);
             var n = Object.prototype.toString.call(t).slice(8, -1);
             return "Object" === n && t.constructor && (n = t.constructor.name),
-                "Map" === n || "Set" === n ? Array.from(t) : "Arguments" === n || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n) ? a(t, e) : void 0
+                "Map" === n || "Set" === n ? Array.from(t) : "Arguments" === n || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n) ? i(t, e) : void 0
         }
     }
-    function a(t, e) {
+    function i(t, e) {
         (null == e || e > t.length) && (e = t.length);
         for (var n = 0, o = new Array(e); n < e; n++)
             o[n] = t[n];
         return o
     }
-    var c, l, f, u, s, d = "notdog-duo", h = (o(c = {}, "classic", "Classic"),
-        o(c, "duotone", "Duotone"),
-        o(c, "sharp", "Sharp"),
-        o(c, "sharp-duotone", "Sharp Duotone"),
-        o(c, "chisel", "Chisel"),
-        o(c, "etch", "Etch"),
-        o(c, "graphite", "Graphite"),
-        o(c, "jelly", "Jelly"),
-        o(c, "jelly-duo", "Jelly Duo"),
-        o(c, "jelly-fill", "Jelly Fill"),
-        o(c, "notdog", "Notdog"),
-        o(c, "notdog-duo", "Notdog Duo"),
-        o(c, "slab", "Slab"),
-        o(c, "slab-press", "Slab Press"),
-        o(c, "thumbprint", "Thumbprint"),
-        o(c, "utility", "Utility"),
-        o(c, "utility-duo", "Utility Duo"),
-        o(c, "utility-fill", "Utility Fill"),
-        o(c, "whiteboard", "Whiteboard"),
-        ["fak", "fa-kit", "fakd", "fa-kit-duotone"]), p = (o(l = {}, "kit", "Kit"),
-            o(l, "kit-duotone", "Kit Duotone"),
-            "duotone-group"), y = "swap-opacity", b = "primary", m = "secondary", v = (o(f = {}, "classic", "Classic"),
-                o(f, "duotone", "Duotone"),
-                o(f, "sharp", "Sharp"),
-                o(f, "sharp-duotone", "Sharp Duotone"),
-                o(f, "chisel", "Chisel"),
-                o(f, "etch", "Etch"),
-                o(f, "graphite", "Graphite"),
-                o(f, "jelly", "Jelly"),
-                o(f, "jelly-duo", "Jelly Duo"),
-                o(f, "jelly-fill", "Jelly Fill"),
-                o(f, "notdog", "Notdog"),
-                o(f, "notdog-duo", "Notdog Duo"),
-                o(f, "slab", "Slab"),
-                o(f, "slab-press", "Slab Press"),
-                o(f, "thumbprint", "Thumbprint"),
-                o(f, "utility", "Utility"),
-                o(f, "utility-duo", "Utility Duo"),
-                o(f, "utility-fill", "Utility Fill"),
-                o(f, "whiteboard", "Whiteboard"),
-                o(u = {}, "kit", "Kit"),
-                o(u, "kit-duotone", "Kit Duotone"),
-                ["fa", "fas", "far", "fal", "fat", "fad", "fadr", "fadl", "fadt", "fab", "fass", "fasr", "fasl", "fast", "fasds", "fasdr", "fasdl", "fasdt", "faslr", "faslpr", "fawsb", "fatl", "fans", "fands", "faes", "fagt", "fajr", "fajfr", "fajdr", "facr", "fausb", "faudsb", "faufsb"].concat(["fa-classic", "fa-duotone", "fa-sharp", "fa-sharp-duotone", "fa-thumbprint", "fa-whiteboard", "fa-notdog", "fa-notdog-duo", "fa-chisel", "fa-etch", "fa-graphite", "fa-jelly", "fa-jelly-fill", "fa-jelly-duo", "fa-slab", "fa-slab-press", "fa-utility", "fa-utility-duo", "fa-utility-fill"], ["fa-solid", "fa-regular", "fa-light", "fa-thin", "fa-duotone", "fa-brands", "fa-semibold"])), g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], w = g.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-    [].concat((s = Object.keys({
+    var l, s, u, c, f, d = "notdog-duo", h = (o(l = {}, "classic", "Classic"),
+        o(l, "duotone", "Duotone"),
+        o(l, "sharp", "Sharp"),
+        o(l, "sharp-duotone", "Sharp Duotone"),
+        o(l, "chisel", "Chisel"),
+        o(l, "etch", "Etch"),
+        o(l, "graphite", "Graphite"),
+        o(l, "jelly", "Jelly"),
+        o(l, "jelly-duo", "Jelly Duo"),
+        o(l, "jelly-fill", "Jelly Fill"),
+        o(l, "mosaic", "Mosaic"),
+        o(l, "notdog", "Notdog"),
+        o(l, "notdog-duo", "Notdog Duo"),
+        o(l, "pixel", "Pixel"),
+        o(l, "slab", "Slab"),
+        o(l, "slab-duo", "Slab Duo"),
+        o(l, "slab-press", "Slab Press"),
+        o(l, "slab-press-duo", "Slab Press Duo"),
+        o(l, "thumbprint", "Thumbprint"),
+        o(l, "utility", "Utility"),
+        o(l, "utility-duo", "Utility Duo"),
+        o(l, "utility-fill", "Utility Fill"),
+        o(l, "vellum", "Vellum"),
+        o(l, "whiteboard", "Whiteboard"),
+        ["fak", "fa-kit", "fakd", "fa-kit-duotone"]), p = (o(s = {}, "kit", "Kit"),
+            o(s, "kit-duotone", "Kit Duotone"),
+            "duotone-group"), b = "swap-opacity", m = "primary", y = "secondary", v = (o(u = {}, "classic", "Classic"),
+                o(u, "duotone", "Duotone"),
+                o(u, "sharp", "Sharp"),
+                o(u, "sharp-duotone", "Sharp Duotone"),
+                o(u, "chisel", "Chisel"),
+                o(u, "etch", "Etch"),
+                o(u, "graphite", "Graphite"),
+                o(u, "jelly", "Jelly"),
+                o(u, "jelly-duo", "Jelly Duo"),
+                o(u, "jelly-fill", "Jelly Fill"),
+                o(u, "mosaic", "Mosaic"),
+                o(u, "notdog", "Notdog"),
+                o(u, "notdog-duo", "Notdog Duo"),
+                o(u, "pixel", "Pixel"),
+                o(u, "slab", "Slab"),
+                o(u, "slab-duo", "Slab Duo"),
+                o(u, "slab-press", "Slab Press"),
+                o(u, "slab-press-duo", "Slab Press Duo"),
+                o(u, "thumbprint", "Thumbprint"),
+                o(u, "utility", "Utility"),
+                o(u, "utility-duo", "Utility Duo"),
+                o(u, "utility-fill", "Utility Fill"),
+                o(u, "vellum", "Vellum"),
+                o(u, "whiteboard", "Whiteboard"),
+                o(c = {}, "kit", "Kit"),
+                o(c, "kit-duotone", "Kit Duotone"),
+                ["fa", "fas", "far", "fal", "fat", "fad", "fadr", "fadl", "fadt", "fab", "fass", "fasr", "fasl", "fast", "fasds", "fasdr", "fasdl", "fasdt", "faslr", "faslpr", "fasldr", "faslpdr", "fapr", "fams", "favs", "fawsb", "fatl", "fans", "fands", "faes", "fagt", "fajr", "fajfr", "fajdr", "facr", "fausb", "faudsb", "faufsb"].concat(["fa-classic", "fa-duotone", "fa-sharp", "fa-sharp-duotone", "fa-thumbprint", "fa-whiteboard", "fa-notdog", "fa-notdog-duo", "fa-chisel", "fa-etch", "fa-graphite", "fa-jelly", "fa-jelly-fill", "fa-jelly-duo", "fa-slab", "fa-slab-press", "fa-slab-press-duo", "fa-slab-duo", "fa-mosaic", "fa-pixel", "fa-vellum", "fa-utility", "fa-utility-duo", "fa-utility-fill"], ["fa-solid", "fa-regular", "fa-light", "fa-thin", "fa-duotone", "fa-brands", "fa-semibold"])), g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], w = g.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+    [].concat((f = Object.keys({
         classic: ["fas", "far", "fal", "fat", "fad"],
         duotone: ["fadr", "fadl", "fadt"],
         sharp: ["fass", "fasr", "fasl", "fast"],
         "sharp-duotone": ["fasds", "fasdr", "fasdl", "fasdt"],
         slab: ["faslr"],
         "slab-press": ["faslpr"],
+        "slab-duo": ["fasldr"],
+        "slab-press-duo": ["faslpdr"],
+        pixel: ["fapr"],
+        mosaic: ["fams"],
+        vellum: ["favs"],
         whiteboard: ["fawsb"],
         thumbprint: ["fatl"],
         notdog: ["fans"],
@@ -207,29 +223,29 @@
     }),
         function (t) {
             if (Array.isArray(t))
-                return a(t)
-        }(s) || function (t) {
+                return i(t)
+        }(f) || function (t) {
             if ("undefined" != typeof Symbol && null != t[Symbol.iterator] || null != t["@@iterator"])
                 return Array.from(t)
-        }(s) || i(s) || function () {
+        }(f) || a(f) || function () {
             throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")
-        }()), ["solid", "regular", "light", "thin", "duotone", "brands", "semibold"], ["aw", "fw", "pull-left", "pull-right"], ["2xs", "xs", "sm", "lg", "xl", "2xl", "beat", "border", "fade", "beat-fade", "bounce", "flip-both", "flip-horizontal", "flip-vertical", "flip", "inverse", "layers", "layers-bottom-left", "layers-bottom-right", "layers-counter", "layers-text", "layers-top-left", "layers-top-right", "li", "pull-end", "pull-start", "pulse", "rotate-180", "rotate-270", "rotate-90", "rotate-by", "shake", "spin-pulse", "spin-reverse", "spin", "stack-1x", "stack-2x", "stack", "ul", "width-auto", "width-fixed", p, y, b, m]).concat(g.map((function (t) {
+        }()), ["solid", "regular", "light", "thin", "duotone", "brands", "semibold"], ["aw", "fw", "pull-left", "pull-right"], ["2xs", "xs", "sm", "lg", "xl", "2xl", "beat", "beat-fade", "border", "bounce", "buzz", "canvas-square", "canvas-roomy", "fade", "flip-360", "flip-both", "flip-horizontal", "flip-vertical", "flip", "float", "inverse", "jello", "layers", "layers-bottom-left", "layers-bottom-right", "layers-counter", "layers-text", "layers-top-left", "layers-top-right", "li", "pull-end", "pull-start", "pulse", "rotate-180", "rotate-270", "rotate-90", "rotate-by", "shake", "spin-pulse", "spin-reverse", "spin", "spin-snap", "spin-snap-4", "spin-snap-8", "stack-1x", "stack-2x", "stack", "swing", "ul", "wag", "width-auto", "width-fixed", p, b, m, y]).concat(g.map((function (t) {
             return "".concat(t, "x")
         }
         ))).concat(w.map((function (t) {
             return "w-".concat(t)
         }
         )));
-    function j(t, e) {
+    function A(t, e) {
         var n = e && e.addOn || ""
             , o = e && e.baseFilename || t.license + n
             , r = e && e.minify ? ".min" : ""
-            , i = e && e.fileSuffix || t.method
-            , a = e && e.filename ? e.filename : o + r + "." + i
-            , c = e && e.subdir || t.method;
-        return t.baseUrl + "/releases/" + ("latest" === t.version ? "latest" : "v".concat(t.version)) + "/" + c + "/" + a
+            , a = e && e.fileSuffix || t.method
+            , i = e && e.filename ? e.filename : o + r + "." + a
+            , l = e && e.subdir || t.method;
+        return t.baseUrl + "/releases/" + ("latest" === t.version ? "latest" : "v".concat(t.version)) + "/" + l + "/" + i
     }
-    function A(t, e) {
+    function j(t, e) {
         var n = e || ["fa"]
             , o = "." + Array.prototype.join.call(n, ",.")
             , r = t.querySelectorAll(o);
@@ -246,34 +262,34 @@
         }
         ))
     }
-    var S, O = function () { }, E = "undefined" != typeof global && void 0 !== global.process && "function" == typeof global.process.emit, P = "undefined" == typeof setImmediate ? setTimeout : setImmediate, F = [];
-    function k() {
+    var S, O = function () { }, P = "undefined" != typeof global && void 0 !== global.process && "function" == typeof global.process.emit, E = "undefined" == typeof setImmediate ? setTimeout : setImmediate, F = [];
+    function x() {
         for (var t = 0; t < F.length; t++)
             F[t][0](F[t][1]);
         F = [],
             S = !1
     }
-    function _(t, e) {
+    function k(t, e) {
         F.push([t, e]),
             S || (S = !0,
-                P(k, 0))
+                E(x, 0))
     }
     function C(t) {
         var e = t.owner
             , n = e._state
             , o = e._data
             , r = t[n]
-            , i = t.then;
+            , a = t.then;
         if ("function" == typeof r) {
             n = "fulfilled";
             try {
                 o = r(o)
             } catch (t) {
-                I(i, t)
+                I(a, t)
             }
         }
-        U(i, o) || ("fulfilled" === n && x(i, o),
-            "rejected" === n && I(i, o))
+        U(a, o) || ("fulfilled" === n && _(a, o),
+            "rejected" === n && I(a, o))
     }
     function U(t, e) {
         var o;
@@ -285,7 +301,7 @@
                 if ("function" == typeof r)
                     return r.call(e, (function (n) {
                         o || (o = !0,
-                            e === n ? D(t, n) : x(t, n))
+                            e === n ? D(t, n) : _(t, n))
                     }
                     ), (function (e) {
                         o || (o = !0,
@@ -300,18 +316,18 @@
         }
         return !1
     }
-    function x(t, e) {
+    function _(t, e) {
         t !== e && U(t, e) || D(t, e)
     }
     function D(t, e) {
         "pending" === t._state && (t._state = "settled",
             t._data = e,
-            _(L, t))
+            k(L, t))
     }
     function I(t, e) {
         "pending" === t._state && (t._state = "settled",
             t._data = e,
-            _(N, t))
+            k(N, t))
     }
     function T(t) {
         t._then = t._then.forEach(C)
@@ -323,15 +339,15 @@
     function N(t) {
         t._state = "rejected",
             T(t),
-            !t._handled && E && global.process.emit("unhandledRejection", t._data, t)
-    }
-    function K(t) {
-        global.process.emit("rejectionHandled", t)
+            !t._handled && P && global.process.emit("unhandledRejection", t._data, t)
     }
     function M(t) {
+        global.process.emit("rejectionHandled", t)
+    }
+    function K(t) {
         if ("function" != typeof t)
             throw new TypeError("Promise resolver " + t + " is not a function");
-        if (this instanceof M == !1)
+        if (this instanceof K == !1)
             throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
         this._then = [],
             function (t, e) {
@@ -340,7 +356,7 @@
                 }
                 try {
                     t((function (t) {
-                        x(e, t)
+                        _(e, t)
                     }
                     ), n)
                 } catch (t) {
@@ -348,8 +364,8 @@
                 }
             }(t, this)
     }
-    M.prototype = {
-        constructor: M,
+    K.prototype = {
+        constructor: K,
         _state: "pending",
         _then: null,
         _data: void 0,
@@ -362,71 +378,71 @@
                 rejected: e
             };
             return !e && !t || this._handled || (this._handled = !0,
-                "rejected" === this._state && E && _(K, this)),
-                "fulfilled" === this._state || "rejected" === this._state ? _(C, n) : this._then.push(n),
+                "rejected" === this._state && P && k(M, this)),
+                "fulfilled" === this._state || "rejected" === this._state ? k(C, n) : this._then.push(n),
                 n.then
         },
         catch: function (t) {
             return this.then(null, t)
         }
     },
-        M.all = function (t) {
+        K.all = function (t) {
             if (!Array.isArray(t))
                 throw new TypeError("You must pass an array to Promise.all().");
-            return new M((function (e, n) {
+            return new K((function (e, n) {
                 var o = []
                     , r = 0;
-                function i(t) {
+                function a(t) {
                     return r++,
                         function (n) {
                             o[t] = n,
                                 --r || e(o)
                         }
                 }
-                for (var a, c = 0; c < t.length; c++)
-                    (a = t[c]) && "function" == typeof a.then ? a.then(i(c), n) : o[c] = a;
+                for (var i, l = 0; l < t.length; l++)
+                    (i = t[l]) && "function" == typeof i.then ? i.then(a(l), n) : o[l] = i;
                 r || e(o)
             }
             ))
         }
         ,
-        M.race = function (t) {
+        K.race = function (t) {
             if (!Array.isArray(t))
                 throw new TypeError("You must pass an array to Promise.race().");
-            return new M((function (e, n) {
+            return new K((function (e, n) {
                 for (var o, r = 0; r < t.length; r++)
                     (o = t[r]) && "function" == typeof o.then ? o.then(e, n) : e(o)
             }
             ))
         }
         ,
-        M.resolve = function (t) {
-            return t && "object" === n(t) && t.constructor === M ? t : new M((function (e) {
+        K.resolve = function (t) {
+            return t && "object" === n(t) && t.constructor === K ? t : new K((function (e) {
                 e(t)
             }
             ))
         }
         ,
-        M.reject = function (t) {
-            return new M((function (e, n) {
+        K.reject = function (t) {
+            return new K((function (e, n) {
                 n(t)
             }
             ))
         }
         ;
-    var R = "function" == typeof Promise ? Promise : M;
-    function J(t, e) {
+    var R = "function" == typeof Promise ? Promise : K;
+    function q(t, e) {
         var n = e.fetch
             , o = e.XMLHttpRequest
             , r = e.token
-            , i = t;
+            , a = t;
         return r && !function (t) {
             return t.indexOf("kit-upload.css") > -1
-        }(t) && ("URLSearchParams" in window ? (i = new URL(t)).searchParams.set("token", r) : i = i + "?token=" + encodeURIComponent(r)),
-            i = i.toString(),
+        }(t) && ("URLSearchParams" in window ? (a = new URL(t)).searchParams.set("token", r) : a = a + "?token=" + encodeURIComponent(r)),
+            a = a.toString(),
             new R((function (t, e) {
                 if ("function" == typeof n)
-                    n(i, {
+                    n(a, {
                         mode: "cors",
                         cache: "default"
                     }).then((function (t) {
@@ -451,7 +467,7 @@
                         ))
                     }
                     )),
-                        r.open("GET", i),
+                        r.open("GET", a),
                         r.send()
                 } else {
                     e(new Error(""))
@@ -459,7 +475,7 @@
             }
             ))
     }
-    function H(t, e, n) {
+    function J(t, e, n) {
         var o = t;
         return [[/(url\("?)\.\.\/\.\.\/\.\./g, function (t, n) {
             return "".concat(n).concat(e)
@@ -473,82 +489,82 @@
         ]].forEach((function (t) {
             var e = r(t, 2)
                 , n = e[0]
-                , i = e[1];
-            o = o.replace(n, i)
+                , a = e[1];
+            o = o.replace(n, a)
         }
         )),
             o
     }
-    function q(t, n) {
+    function z(t, n) {
         var o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : function () { }
             , r = n.document || r
-            , i = A.bind(A, r, [].concat(v, h.map((function (t) {
+            , a = j.bind(j, r, [].concat(v, h.map((function (t) {
                 return "fa-".concat(t)
             }
             ))));
-        t.autoA11y.enabled && o(i);
-        var a = t.subsetPath && t.baseUrl + "/" + t.subsetPath
-            , c = [];
-        if (a ? c.push({
+        t.autoA11y.enabled && o(a);
+        var i = t.subsetPath && t.baseUrl + "/" + t.subsetPath
+            , l = [];
+        if (i ? l.push({
             id: "fa-main",
             addOn: void 0,
-            url: a
-        }) : c.push({
+            url: i
+        }) : l.push({
             id: "fa-main",
             addOn: void 0,
-            url: j(t, {
+            url: A(t, {
                 filename: t.startupFilename,
                 minify: t.minify.enabled
             })
         }),
-            t.v4shim && t.v4shim.enabled && c.push({
+            t.v4shim && t.v4shim.enabled && l.push({
                 id: "fa-v4-shims",
                 addOn: "-v4-shims"
             }),
-            t.v5FontFaceShim && t.v5FontFaceShim.enabled && c.push({
+            t.v5FontFaceShim && t.v5FontFaceShim.enabled && l.push({
                 id: "fa-v5-font-face",
                 addOn: "-v5-font-face"
             }),
-            t.v4FontFaceShim && t.v4FontFaceShim.enabled && c.push({
+            t.v4FontFaceShim && t.v4FontFaceShim.enabled && l.push({
                 id: "fa-v4-font-face",
                 addOn: "-v4-font-face"
             }),
-            !a && t.customIconsCssPath) {
-            var l = t.customIconsCssPath.indexOf("kit-upload.css") > -1 ? t.baseUrlKit : t.baseUrl
-                , f = l + "/" + t.customIconsCssPath;
-            c.push({
+            !i && t.customIconsCssPath) {
+            var s = t.customIconsCssPath.indexOf("kit-upload.css") > -1 ? t.baseUrlKit : t.baseUrl
+                , u = s + "/" + t.customIconsCssPath;
+            l.push({
                 id: "fa-kit-upload",
-                url: f
+                url: u
             })
         }
-        var u = c.map((function (o) {
-            return new R((function (r, i) {
-                var a = o.url || j(t, {
+        var c = l.map((function (o) {
+            return new R((function (r, a) {
+                var i = o.url || A(t, {
                     addOn: o.addOn,
                     minify: t.minify.enabled
                 })
-                    , c = {
+                    , l = {
                         id: o.id
                     }
-                    , l = t.subset ? c : e(e(e({}, n), c), {}, {
+                    , s = t.subset ? l : e(e(e({}, n), l), {}, {
                         baseUrl: t.baseUrl,
                         version: t.version,
                         id: o.id,
                         contentFilter: function (t, e) {
-                            return H(t, e.baseUrl, e.version)
+                            return J(t, e.baseUrl, e.version)
                         }
                     });
-                J(a, n).then((function (t) {
-                    r(G(t, l))
+                q(i, n).then((function (t) {
+                    r(H(t, s))
                 }
-                )).catch(i)
+                )).catch(a)
             }
             ))
         }
         ));
-        return R.all(u)
+        return R.all(c)
     }
-    function G(t, e) {
+    function H(t, e) {
         var n = e.contentFilter || function (t, e) {
             return t
         }
@@ -560,18 +576,18 @@
             e && e.detectingConflicts && e.detectionIgnoreAttr && o.setAttributeNode(document.createAttribute(e.detectionIgnoreAttr)),
             o
     }
-    function X(t, n) {
+    function G(t, n) {
         n.autoA11y = t.autoA11y.enabled,
             "pro" === t.license && (n.autoFetchSvg = !0,
                 n.fetchSvgFrom = t.baseUrl + "/releases/" + ("latest" === t.version ? "latest" : "v".concat(t.version)) + "/svgs",
                 n.fetchUploadedSvgFrom = t.uploadsUrl);
         var o = [];
         return t.v4shim.enabled && o.push(new R((function (o, r) {
-            J(j(t, {
+            q(A(t, {
                 addOn: "-v4-shims",
                 minify: t.minify.enabled
             }), n).then((function (t) {
-                o(B(t, e(e({}, n), {}, {
+                o(X(t, e(e({}, n), {}, {
                     id: "fa-v4-shims"
                 })))
             }
@@ -579,11 +595,11 @@
         }
         ))),
             o.push(new R((function (o, r) {
-                J(t.subsetPath && t.baseUrl + "/" + t.subsetPath || j(t, {
+                q(t.subsetPath && t.baseUrl + "/" + t.subsetPath || A(t, {
                     filename: t.startupFilename,
                     minify: t.minify.enabled
                 }), n).then((function (t) {
-                    var r = B(t, e(e({}, n), {}, {
+                    var r = X(t, e(e({}, n), {}, {
                         id: "fa-main"
                     }));
                     o(function (t, e) {
@@ -601,7 +617,7 @@
             ))),
             R.all(o)
     }
-    function B(t, e) {
+    function X(t, e) {
         var n = document.createElement("SCRIPT")
             , o = document.createTextNode(t);
         return n.appendChild(o),
@@ -610,17 +626,17 @@
             e && e.detectingConflicts && e.detectionIgnoreAttr && n.setAttributeNode(document.createAttribute(e.detectionIgnoreAttr)),
             n
     }
-    function W(t) {
-        var e, n = [], o = document, r = o.documentElement.doScroll, i = (r ? /^loaded|^c/ : /^loaded|^i|^c/).test(o.readyState);
-        i || o.addEventListener("DOMContentLoaded", e = function () {
+    function B(t) {
+        var e, n = [], o = document, r = o.documentElement.doScroll, a = (r ? /^loaded|^c/ : /^loaded|^i|^c/).test(o.readyState);
+        a || o.addEventListener("DOMContentLoaded", e = function () {
             for (o.removeEventListener("DOMContentLoaded", e),
-                i = 1; e = n.shift();)
+                a = 1; e = n.shift();)
                 e()
         }
         ),
-            i ? setTimeout(t, 0) : n.push(t)
+            a ? setTimeout(t, 0) : n.push(t)
     }
-    function Y(t) {
+    function V(t) {
         "undefined" != typeof MutationObserver && new MutationObserver(t).observe(document, {
             childList: !0,
             subtree: !0
@@ -628,56 +644,81 @@
     }
     try {
         if (window.FontAwesomeKitConfig) {
-            var z = window.FontAwesomeKitConfig
-                , $ = {
-                    detectingConflicts: z.detectConflictsUntil && new Date <= new Date(z.detectConflictsUntil),
+            var W = window.FontAwesomeKitConfig
+                , Y = {
+                    detectingConflicts: W.detectConflictsUntil && new Date <= new Date(W.detectConflictsUntil),
                     detectionIgnoreAttr: "data-fa-detection-ignore",
                     fetch: window.fetch,
-                    token: z.token,
+                    token: W.token,
                     XMLHttpRequest: window.XMLHttpRequest,
                     document: document
                 }
-                , Q = document.currentScript
-                , V = Q ? Q.parentElement : document.head;
-            (function () {
-                var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}
-                    , e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                return "js" === t.method ? X(t, e) : "css" === t.method ? q(t, e, (function (t) {
-                    W(t),
-                        Y(t)
-                }
-                )) : void 0
-            }
-            )(z, $).then((function (t) {
-                t.map((function (t) {
-                    try {
-                        V.insertBefore(t, Q ? Q.nextSibling : null)
-                    } catch (e) {
-                        V.appendChild(t)
+                , $ = document.currentScript
+                , Q = $ ? $.parentElement : document.head
+                , Z = function (t) {
+                    var e = t && t.imageUploads || {};
+                    return "object" !== n(e) || 0 === Object.keys(e).length ? null : function (t) {
+                        var n = (t || document).querySelectorAll("img.fa-img-kit[data-fa-name]:not([data-fa-resolved])");
+                        Array.prototype.forEach.call(n, (function (t) {
+                            var n = (t.getAttribute("data-fa-name") || "").toLowerCase()
+                                , o = e[n];
+                            if (o) {
+                                var r = o["original" === t.getAttribute("data-fa-variant") ? "original" : "optimized"] || o.optimized;
+                                r && (t.src = r,
+                                    o.w && !t.getAttribute("width") && t.setAttribute("width", o.w),
+                                    o.h && !t.getAttribute("height") && t.setAttribute("height", o.h),
+                                    t.setAttribute("data-fa-resolved", ""))
+                            }
+                        }
+                        ))
                     }
+                }(W);
+            Z && (B((function () {
+                return Z(document)
+            }
+            )),
+                V((function () {
+                    return Z(document)
                 }
-                )),
-                    $.detectingConflicts && Q && W((function () {
-                        Q.setAttributeNode(document.createAttribute($.detectionIgnoreAttr));
-                        var t = function (t, e) {
-                            var n = document.createElement("script");
-                            return e && e.detectionIgnoreAttr && n.setAttributeNode(document.createAttribute(e.detectionIgnoreAttr)),
-                                n.src = j(t, {
-                                    baseFilename: "conflict-detection",
-                                    fileSuffix: "js",
-                                    subdir: "js",
-                                    minify: t.minify.enabled
-                                }),
-                                n
-                        }(z, $);
-                        document.body.appendChild(t)
+                ))),
+                function () {
+                    var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}
+                        , e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                    return "js" === t.method ? G(t, e) : "css" === t.method ? z(t, e, (function (t) {
+                        B(t),
+                            V(t)
                     }
-                    ))
-            }
-            )).catch((function (t) {
-                console.error("".concat("Font Awesome Kit:", " ").concat(t))
-            }
-            ))
+                    )) : void 0
+                }(W, Y).then((function (t) {
+                    t.map((function (t) {
+                        try {
+                            Q.insertBefore(t, $ ? $.nextSibling : null)
+                        } catch (e) {
+                            Q.appendChild(t)
+                        }
+                    }
+                    )),
+                        Y.detectingConflicts && $ && B((function () {
+                            $.setAttributeNode(document.createAttribute(Y.detectionIgnoreAttr));
+                            var t = function (t, e) {
+                                var n = document.createElement("script");
+                                return e && e.detectionIgnoreAttr && n.setAttributeNode(document.createAttribute(e.detectionIgnoreAttr)),
+                                    n.src = A(t, {
+                                        baseFilename: "conflict-detection",
+                                        fileSuffix: "js",
+                                        subdir: "js",
+                                        minify: t.minify.enabled
+                                    }),
+                                    n
+                            }(W, Y);
+                            document.body.appendChild(t)
+                        }
+                        ))
+                }
+                )).catch((function (t) {
+                    console.error("".concat("Font Awesome Kit:", " ").concat(t))
+                }
+                ))
         }
     } catch (d) {
         console.error("".concat("Font Awesome Kit:", " ").concat(d))
