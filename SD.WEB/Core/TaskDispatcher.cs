@@ -17,7 +17,14 @@
 
             foreach (var handler in snapshot)
             {
-                await handler(value);
+                try
+                {
+                    await handler(value);
+                }
+                catch (OperationCanceledException)
+                {
+                    // Ignore expected cancellation.
+                }
             }
         }
     }
@@ -39,7 +46,14 @@
 
             foreach (var handler in snapshot)
             {
-                await handler();
+                try
+                {
+                    await handler();
+                }
+                catch (OperationCanceledException)
+                {
+                    // Ignore expected cancellation.
+                }
             }
         }
     }

@@ -49,6 +49,10 @@ public abstract class ApiCore(string? key, string[] extraKeys)
 
             return await http.GetStringAsync(uri, cancellationToken);
         }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
         finally
         {
             await AppStateStatic.ProcessingFinished.PublishAsync();
@@ -65,6 +69,10 @@ public abstract class ApiCore(string? key, string[] extraKeys)
                 return await http.GetJsonFromApi<bool>(uri.ConfigureParameters(GetVersion()), cancellationToken);
 
             return await http.GetJsonFromApi<bool>(uri, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
         }
         finally
         {

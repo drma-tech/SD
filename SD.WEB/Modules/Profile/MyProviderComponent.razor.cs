@@ -72,9 +72,16 @@ namespace SD.WEB.Modules.Profile
 
         public async Task ShowProviderPopup(MyProvidersItem item)
         {
-            AllProviders ??= await AllProvidersApi.GetAll(state: null, Cts.Token);
+            try
+            {
+                AllProviders ??= await AllProvidersApi.GetAll(state: null, Cts.Token);
 
-            await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => string.Equals(f.id, item.id, StringComparison.OrdinalIgnoreCase)), WatchingList, WishList, item.region?.ToString(), item.id, Culture);
+                await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => string.Equals(f.id, item.id, StringComparison.OrdinalIgnoreCase)), WatchingList, WishList, item.region?.ToString(), item.id, Culture);
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         private async Task UpdateProviders()
