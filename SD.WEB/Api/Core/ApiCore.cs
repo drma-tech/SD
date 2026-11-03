@@ -199,7 +199,7 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             {
                 await state.FinishLoading(result);
             }
-            return result ?? [];
+            return result;
         }
         catch (NotificationException ex)
         {
