@@ -41,10 +41,10 @@
         };
         WishApi.DataChanged += async model =>
         {
-            await State?.StartLoading.Invoke(null);
+            if (State != null) await State.StartLoading.Invoke(null);
             Wish = model;
             await WishChanged.InvokeAsync(model);
-            await State?.FinishLoading.Invoke(model);
+            if (State != null) await State.FinishLoading.Invoke(model);
             await InvokeAsync(StateHasChanged);
         };
     }

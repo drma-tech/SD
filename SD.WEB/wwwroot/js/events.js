@@ -5,7 +5,7 @@ import { notification } from "./utils.js";
 //setTimeout(() => { throw new Error('error test call'); }, 100);
 
 window.addEventListener("error", function (event) {
-    const { message, filename } = event;
+    const { message, filename, lineno, colno, error } = event;
 
     if (filename?.includes("blazor.webassembly")) {
         notification.showBrowserWarning();
