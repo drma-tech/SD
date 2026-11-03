@@ -2,21 +2,22 @@
 
 This roadmap describes areas being explored for future development. It is not a delivery commitment, and priorities may change.
 
-## Content Discovery
+## Phase 1: Discovery Enhancements
 
-- Expand search filters and sorting capabilities.
-- Improve discovery relevance and content exploration.
-- Expand collections and content categories.
-- Improve streaming availability exploration.
-- Enhance discovery of upcoming movie and TV releases.
+- Advanced Discovery Filters
+- Provider-Based Content Discovery
+- Personalized Recommendations
 
-## Personal Watch Management
+## Phase 2: Discovery Automation
 
-- Improve watch tracking and viewing statistics.
-- Add more ways to organize personal watchlists.
+- Streaming Availability Notifications
+- Watchlist Availability Alerts
 
-## Future Considerations
+## Phase 3: Personal Watch Management
 
-- More personalized discovery experiences.
-- Additional notification options.
-- Data import and export capabilities.
+- Custom Watchlists
+- Personal Viewing Statistics
+
+## Future Development
+
+- To Be Defined
