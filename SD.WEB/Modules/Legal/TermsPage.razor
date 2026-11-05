@@ -248,80 +248,142 @@
     {
         <h1 class="support-title">Terms of Use</h1>
         <div class="support-subtitle">
-            Welcome to <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)!<br />
-            By accessing or using this service, you agree to these Terms of Use. Please read them carefully.
+            Welcome to <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)!
+            <br />
+            These Terms of Use ("Terms") govern your access to and use of the service. By accessing or using the service, you agree to these Terms. If you do not agree, do not use the service.
         </div>
+
         <div class="support-section">
             <h2>1. About the Service</h2>
-            <p><b>@AppInfo.Title</b> is a global platform designed to help users discover, organize, and manage streaming content across various services. While most features are available for free, some require authentication or an active subscription.</p>
-            <p>The service is operated by DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), registered in Estonia, and is intended for personal, non-commercial use only.</p>
+            <p><b>@AppInfo.Title</b> is a platform operated by DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), a company registered in Estonia. The platform helps users discover, organize, and manage information about movies, TV shows, and streaming services. The service may include free features and features that require an account or a paid subscription.</p>
+            <p>The service is made available for your personal, non-commercial use. This restriction applies to your use of the service and does not restrict the operator from operating the service commercially. You may not resell, commercially exploit, redistribute, or provide access to the service or its data as a competing product without our prior written permission.</p>
         </div>
+
         <div class="support-section">
-            <h2>2. Account, Data, and Privacy</h2>
-            <p>You may use the platform anonymously. However, features such as creating private lists or managing account preferences require authentication. Upon login, we collect your email, login timestamps, IP address, and device information. This data is used solely for security, diagnostics, personalization, and analytics.</p>
-            <p>We do not collect or store sensitive personal data or precise geolocation without explicit consent.</p>
-            <p>We implement reasonable technical and organizational measures to protect your data from unauthorized access or disclosure.</p>
-            <p>We use analytics tools such as Google Analytics and Microsoft Clarity to understand usage patterns. For more details, please refer to our <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.</p>
+            <h2>2. Eligibility and Accounts</h2>
+            <p>You must be legally capable of entering into a binding agreement under the laws that apply to you. If you are below the age of legal majority, you may use the service only with the involvement and permission of a parent or legal guardian, where permitted by applicable law.</p>
+            <p>You may access some parts of the platform without an account. Features such as creating and managing private lists or account preferences may require registration and authentication.</p>
+            <p>You agree to provide accurate registration information, keep your account credentials secure, and promptly notify us if you believe your account has been accessed without authorization. You are responsible for activity carried out through your account, except to the extent that applicable law provides otherwise.</p>
+            <p>We may refuse registration or require additional verification where reasonably necessary to protect the service, users, or our legal interests.</p>
         </div>
+
         <div class="support-section">
-            <h2>3. Features and Subscription</h2>
-            <p><b>@AppInfo.Title</b> offers both public and private lists:</p>
+            <h2>3. Account Data and Privacy</h2>
+            <p>When you use the service, we may process information such as your email address, authentication and login records, IP address, device and technical information, preferences, and content you create or save. The information processed depends on the features you use.</p>
+            <p>We use personal data for purposes such as providing and securing the service, troubleshooting, account management, personalization, analytics, and communicating with you. Our <a href=@($" /{Culture}/legal/privacy".Trim())>Privacy Policy</a> explains our data practices and your privacy rights.</p>
+            <p>We implement reasonable technical and organizational measures designed to protect personal data. No method of transmission or storage is completely secure, and we cannot guarantee absolute security.</p>
+        </div>
+
+        <div class="support-section">
+            <h2>4. Features, Lists, and User Content</h2>
+            <p>The platform may provide lists and other tools for organizing information about movies and TV shows. Features, usage limits, and availability may differ between free accounts and subscription plans and may change over time.</p>
+            <p>Lists identified as public or curated by the platform may be accessible to other users. You are responsible for the content you create, add, or share. Do not include content that is unlawful, misleading, defamatory, infringing, abusive, or otherwise prohibited by these Terms or applicable law.</p>
+            <p>If the service allows you to share a list through a public link or other sharing feature, you are responsible for choosing whether to share it and for the information it contains. Anyone who obtains a public link may be able to access the shared content and pass the link to others. Do not use a public sharing feature for information you intend to keep private.</p>
+            <p>You retain any rights you hold in content you submit. You grant us a non-exclusive, worldwide, royalty-free license to host, store, reproduce, and display that content only as reasonably necessary to operate, maintain, secure, and provide the features of the service, including sharing features you choose to use. This license ends when the content is deleted, subject to technical backups, legal retention requirements, and content already shared or accessed by others.</p>
+        </div>
+
+        <div class="support-section">
+            <h2>5. Subscriptions, Payments, and Billing</h2>
+            <p>Some features may require a paid subscription. Available plans, prices, billing periods, currencies, and payment methods are displayed in the service or by the relevant payment provider before purchase. Availability may vary by country, platform, and account.</p>
+            <p>Depending on the platform and availability, subscriptions may be processed through Stripe or Apple's in-app purchase system. The payment provider shown during checkout or in your subscription management screen governs the payment transaction. Paddle is not currently offered as a subscription payment option.</p>
+            <p>Unless the checkout flow states otherwise, subscriptions renew automatically for successive billing periods until cancelled. You authorize the applicable payment provider to charge the displayed subscription price and any applicable taxes or fees using your selected payment method.</p>
+            <p>You can manage or cancel a Stripe subscription through the subscription management option provided in the service, which opens the Stripe customer portal. For an Apple subscription, cancellation and billing management are handled through your Apple account settings. Cancellation generally prevents renewal at the end of the current paid period and does not automatically entitle you to a refund for that period.</p>
+            <p>Refunds, billing disputes, and payment adjustments are subject to the applicable payment provider's policies and any mandatory rights you have under applicable law. Where a purchase is processed by a third-party provider, you may need to contact that provider to manage the transaction or request a refund.</p>
+            <p>If you have an active subscription, you may be required to cancel it through the relevant provider before deleting your account. Deleting your account does not itself cancel a subscription or stop future billing.</p>
+        </div>
+
+        <div class="support-section">
+            <h2>6. Third-Party Content and Services</h2>
+            <p>The platform may display or link to data, images, descriptions, availability information, ratings, and other materials supplied by third parties, including TMDb, JustWatch, streaming providers, and other sources. Such materials remain subject to the rights and terms of their respective owners and providers.</p>
+            <p>We do not operate the streaming services listed on the platform, and we do not host, provide, or authorize the streaming, downloading, or playback of movies or TV shows through those third-party services. We are not affiliated with third-party providers unless we expressly state otherwise.</p>
+            <p>Streaming availability, catalogs, subscription prices, links, and other third-party information may vary by region and may change without notice. You should confirm availability, pricing, and applicable terms directly with the relevant provider before making a purchase or subscription decision.</p>
+            <p>Your use of third-party websites, applications, or services is governed by their own terms and privacy policies. We are not responsible for third-party services or content to the extent permitted by applicable law. Attribution and licensing information for certain sources may be available on our credits page.</p>
+        </div>
+
+        <div class="support-section">
+            <h2>7. Intellectual Property</h2>
+            <p>The service, including its name, branding, logos, original text, interface, and original materials, is owned by or licensed to DRMA Tech and is protected by applicable intellectual property laws. No rights are granted to you except the limited right to use the service in accordance with these Terms.</p>
+            <p>Some software components may be distributed under open-source licenses. Those licenses apply only to the specific components identified in the relevant license notices or repositories. They do not automatically grant rights to the service's branding, overall presentation, third-party data, images, or other materials.</p>
+            <p>Third-party names, trademarks, images, metadata, and other materials belong to their respective owners and may be subject to separate terms or licenses.</p>
+        </div>
+
+        <div class="support-section">
+            <h2>8. Acceptable Use and Restrictions</h2>
+            <p>You may use the service only for lawful purposes and in accordance with these Terms. You must not, and must not attempt to:</p>
             <ul>
-                <li><b>Public lists</b> are curated by the platform and accessible to all users, authenticated or not.</li>
-                <li><b>Private lists</b> are created by authenticated users. Free accounts have limits on the number of items per list, while subscribers enjoy higher limits and additional features.</li>
+                <li>Use the service for unlawful, fraudulent, misleading, or harmful purposes.</li>
+                <li>Scrape, harvest, systematically extract, copy, or collect data from the service using automated means, except where expressly authorized by us or permitted by applicable law.</li>
+                <li>Use bots, crawlers, scripts, or other automated access methods in a way that places an unreasonable burden on the service or bypasses technical restrictions.</li>
+                <li>Bypass subscription requirements, usage limits, access controls, or other technical or contractual restrictions.</li>
+                <li>Copy, modify, reverse engineer, decompile, or create derivative works from the service, except to the extent such restriction is prohibited by applicable law or the relevant open-source license.</li>
+                <li>Interfere with the operation, security, or integrity of the service, or attempt to gain unauthorized access to accounts, systems, or data.</li>
+                <li>Upload, publish, or share content that infringes intellectual property, privacy, or other rights, or violates applicable law.</li>
+                <li>Use the service or its content to build, train, or operate a competing database or service through unauthorized extraction or reuse.</li>
+                <li>Resell, sublicense, or commercially exploit the service or its content without our prior written permission.</li>
             </ul>
-            <p>Subscriptions are available monthly or annually, renew automatically unless cancelled, and are processed through our payment partner (Paddle). Prices are displayed in USD and may be converted to local currencies by the payment processor. Availability and payment methods vary by country.</p>
+            <p>We may investigate suspected violations and take proportionate action, including restricting access or suspending or terminating accounts, subject to applicable law.</p>
         </div>
+
         <div class="support-section">
-            <h2>4. Third-party Content</h2>
-            <p><b>@AppInfo.Title</b> displays data, images, and metadata sourced from third parties such as TMDb and JustWatch. These third-party contents remain the property of their respective owners.</p>
-            <p>We do not host or provide streaming, downloads, or playback of copyrighted content. Attribution and licensing details are available on our credits page.</p>
+            <h2>9. Service Availability and Changes</h2>
+            <p>We aim to keep the service available and useful, but we do not guarantee that it will always be uninterrupted, error-free, secure, or available in every location or on every device. Features may depend on third-party systems and data sources outside our control.</p>
+            <p>We may add, modify, restrict, suspend, or discontinue features or parts of the service. Where a change materially affects paid features or your rights, we will provide notice where required by applicable law.</p>
         </div>
+
         <div class="support-section">
-            <h2>5. Intellectual Property</h2>
-            <p>The structure, design, and presentation of data on <b>@AppInfo.Title</b> are protected under the MPL-2.0 license or similar open-source licenses. Third-party assets are governed by their respective copyrights and trademarks.</p>
-            <p>Unauthorized copying, scraping, reverse engineering, or redistribution of platform elements is strictly prohibited.</p>
+            <h2>10. Disclaimers</h2>
+            <p>To the maximum extent permitted by applicable law, the service is provided on an "as is" and "as available" basis. We do not warrant that third-party information, including titles, descriptions, ratings, streaming availability, prices, or external links, will be accurate, complete, current, or continuously available.</p>
+            <p>Recommendations and discovery features are provided for informational purposes only. You are responsible for verifying information with the relevant streaming provider before relying on it.</p>
+            <p>Nothing in these Terms excludes or limits any warranty, guarantee, or consumer right that cannot lawfully be excluded or limited under the laws applicable to you.</p>
         </div>
+
         <div class="support-section">
-            <h2>6. Acceptable Use</h2>
-            <p>Users agree to use the platform lawfully and responsibly. Prohibited actions include:</p>
-            <ul>
-                <li>Attempting to circumvent platform limits or restrictions.</li>
-                <li>Using bots, scrapers, or automated tools without explicit permission.</li>
-                <li>Uploading or sharing content that infringes intellectual property rights or applicable laws.</li>
-            </ul>
+            <h2>11. Limitation of Liability</h2>
+            <p>To the maximum extent permitted by applicable law, DRMA Tech will not be liable for indirect, incidental, special, consequential, or punitive damages, or for loss of profits, revenue, business opportunities, goodwill, or data arising from or related to your use of, or inability to use, the service.</p>
+            <p>To the maximum extent permitted by applicable law, DRMA Tech's total liability for claims arising out of or relating to the service or these Terms will be limited to the amount you paid to DRMA Tech for the service during the twelve months preceding the event giving rise to the claim. If you have not paid for the service, the limit will be EUR 50.</p>
+            <p>These limitations do not apply to liability that cannot be excluded or limited under applicable law, including any mandatory consumer rights, or to liability for fraud, intentional misconduct, or other matters that the law does not permit us to limit.</p>
         </div>
+
         <div class="support-section">
-            <h2>7. User Lists</h2>
-            <p>Authenticated users may create private lists to organize streaming content. These lists are personal and not visible to others unless the user chooses to share them externally.</p>
-            <p>Public lists are curated by the platform and accessible to all users without authentication.</p>
+            <h2>12. Suspension, Termination, and Account Deletion</h2>
+            <p>You may stop using the service at any time. You may request account deletion using the account or support options made available by the platform. Any active subscription must be cancelled separately through the relevant payment provider, and account deletion may be unavailable until the active subscription has been cancelled.</p>
+            <p>We may suspend or terminate access to all or part of the service if we reasonably believe that you have breached these Terms, created a security or legal risk, engaged in fraudulent activity, or used the service in a way that may harm the service or other users. Where appropriate and legally permitted, we will provide notice and an opportunity to address the issue.</p>
+            <p>Termination does not affect rights or obligations that accrued before termination. Provisions that by their nature should continue to apply, including intellectual property, disclaimers, liability limitations, and dispute provisions, will survive termination.</p>
         </div>
+
         <div class="support-section">
-            <h2>8. Limitation of Liability and Service Availability</h2>
-            <p><b>@AppInfo.Title</b> is provided "as is" and "as available." We do not guarantee uninterrupted access, accuracy, or completeness of content and metadata. Use of the platform is at your own risk.</p>
-            <p>We are not responsible for errors, outdated information, or third-party content availability.</p>
-            <p>The platform may be modified, suspended, or discontinued at any time without prior notice.</p>
+            <h2>13. Indemnification</h2>
+            <p>To the extent permitted by applicable law, you agree to be responsible for losses, liabilities, and reasonable costs arising from third-party claims caused by your unlawful use of the service, your violation of these Terms, or content you submit that infringes another person's rights. This provision does not apply where the claim results from our own acts or omissions to the extent responsibility cannot lawfully be transferred to you.</p>
         </div>
+
         <div class="support-section">
-            <h2>9. Changes to Terms</h2>
-            <p>We may update these Terms periodically. Significant changes affecting your rights or obligations will be communicated via email or platform notifications when feasible. Continued use after updates constitutes acceptance of the new Terms.</p>
+            <h2>14. Changes to These Terms</h2>
+            <p>We may update these Terms from time to time. The updated version will be published on this page with a revised update date. If a change materially affects your rights or obligations, we will provide additional notice where reasonably practicable or legally required.</p>
+            <p>Changes will take effect on the date stated in the updated Terms or, if no date is stated, when they are published. Where applicable law requires affirmative acceptance, we will request it. Otherwise, continued use of the service after the effective date constitutes acceptance of the updated Terms. If you do not agree, you must stop using the service.</p>
         </div>
+
         <div class="support-section">
-            <h2>10. Contact</h2>
-            <p>For support, feedback, or legal inquiries, please visit our support page or use the platform’s contact tools.</p>
+            <h2>15. Governing Law and Dispute Resolution</h2>
+            <p>These Terms are governed by the laws of Estonia, without prejudice to mandatory consumer protection provisions that apply in your country of residence. If you are a consumer, nothing in this section deprives you of protections or rights that cannot be waived under applicable law.</p>
+            <p>Subject to mandatory consumer jurisdiction rules, disputes arising out of or relating to these Terms or the service will be submitted to the competent courts of Estonia. You may also have the right to bring proceedings before the courts of your place of residence, depending on applicable law.</p>
         </div>
+
         <div class="support-section">
-            <h2>11. Legal Compliance</h2>
-            <p>You are responsible for complying with local laws, including copyright and privacy regulations. <b>@AppInfo.Title</b> complies with applicable international data protection laws such as GDPR and LGPD.</p>
-            <p>The platform is governed by Estonian law.</p>
+            <h2>16. General Provisions</h2>
+            <p>If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will remain in effect. Any invalid or unenforceable provision will be interpreted or replaced to the extent necessary to make it valid while preserving its original purpose as far as legally possible.</p>
+            <p>Our failure to enforce a provision is not a waiver of our right to do so later. These Terms, together with the policies expressly incorporated into them, form the agreement between you and DRMA Tech regarding your use of the service, subject to any mandatory rights under applicable law.</p>
+            <p>We are not responsible for delays or failures caused by events beyond our reasonable control, including natural disasters, war, civil unrest, governmental action, failures of telecommunications or infrastructure, or widespread third-party service outages.</p>
+            <p>You may not transfer your rights or obligations under these Terms without our prior written consent. We may transfer these Terms as part of a merger, restructuring, or transfer of the service, provided that doing so does not reduce your mandatory rights under applicable law.</p>
         </div>
+
         <div class="support-section">
-            <h2>12. Governing Law and Dispute Resolution</h2>
-            <p>These Terms are governed by the laws of Estonia. Any disputes will be resolved under the exclusive jurisdiction of the courts of Tallinn, Estonia, in English, except where local laws require otherwise.</p>
+            <h2>17. Contact</h2>
+            <p>For support, feedback, or legal inquiries, please visit our support page or use the contact options available on the platform.</p>
         </div>
+
         <div class="support-footer">
-            <p>Last updated: August 5, 2025</p>
-            <p>By using the platform, you agree to this Terms of Use and the <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.</p>
+            <p>Last updated: November 5, 2026</p>
+            <p>By using the platform, you acknowledge that you have read these Terms and agree to them, together with our <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.</p>
         </div>
     }
 </div>
