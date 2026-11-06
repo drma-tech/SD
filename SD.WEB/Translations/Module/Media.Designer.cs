@@ -169,6 +169,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Streaming availability data is provided by.
+        /// </summary>
+        internal static string JustWatchAttribution {
+            get {
+                return ResourceManager.GetString("JustWatchAttribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Media Type.
         /// </summary>
         internal static string MediaType {
@@ -354,15 +363,6 @@ namespace SD.WEB.Translations.Module {
         internal static string TopRated {
             get {
                 return ResourceManager.GetString("TopRated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Streaming availability data is provided by.
-        /// </summary>
-        internal static string JustWatchAttribution {
-            get {
-                return ResourceManager.GetString("JustWatchAttribution", resourceCulture);
             }
         }
         

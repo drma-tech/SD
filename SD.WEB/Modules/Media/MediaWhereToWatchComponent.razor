@@ -197,9 +197,9 @@
                     </MudPaper>
                 </MudItem>
             }
-            <MudItem xs="12">
-                @if (!hasProvider)
-                {
+            @if (!hasProvider)
+            {
+                <MudItem xs="12">
                     @if (ReleaseDate?.Date > DateTime.Now.Date)
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning">
@@ -222,13 +222,13 @@
                             <MudText Typo="Typo.body1">CurrentCulture: @CultureInfo.CurrentCulture.Name</MudText>
                         </MudAlert>
                     }
-                }
-            </MudItem>
+                </MudItem>
+            }
             <MudItem xs="12">
-                <MudText Typo="Typo.caption" Align="Align.Center" Class="mt-2">
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Info" Dense="true">
                     @Translations.Module.Media.JustWatchAttribution
                     <MudLink Href="https://www.justwatch.com" Target="_blank" rel="noopener noreferrer">JustWatch</MudLink>.
-                </MudText>
+                </MudAlert>
             </MudItem>
         </MudGrid>
 
