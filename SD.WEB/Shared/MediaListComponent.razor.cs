@@ -187,7 +187,7 @@ namespace SD.WEB.Shared
             {
                 tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
                 title = type == MediaType.movie ? item.title : item.name,
-                plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                plot = string.IsNullOrEmpty(item.overview) ? "No synopsis available." : item.overview,
                 release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
                 poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                 poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
@@ -202,13 +202,13 @@ namespace SD.WEB.Shared
             {
                 tmdb_id = item.id.ToString(CultureInfo.InvariantCulture),
                 title = type == MediaType.movie ? item.title : item.name,
-                plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                plot = string.IsNullOrEmpty(item.overview) ? "No synopsis available." : item.overview,
                 release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
                 poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                 poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
                 rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
                 MediaType = type,
-                comments = type == MediaType.tv ? string.Create(CultureInfo.InvariantCulture, $"{item.episode_count} episodes") : "",
+                comments = type == MediaType.tv ? string.Create(CultureInfo.InvariantCulture, $"{item.episode_count} {(item.episode_count == 1 ? "episode" : "episodes")}") : "",
             };
         }
     }

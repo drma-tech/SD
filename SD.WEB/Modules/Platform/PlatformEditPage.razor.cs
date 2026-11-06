@@ -67,7 +67,7 @@ namespace SD.WEB.Modules.Platform
                     await SaveSession();
                 }
 
-                await ShowSuccess("Synchronization Finished");
+                await ShowSuccess("Synchronization completed.");
             }
             catch (Exception ex)
             {
@@ -171,7 +171,7 @@ namespace SD.WEB.Modules.Platform
                     {
                         var content = sitetag.Attributes["content"].Value;
 
-                        if (string.IsNullOrEmpty(content)) return "description empty";
+                        if (string.IsNullOrEmpty(content)) return "The description is empty.";
 
                         return System.Web.HttpUtility.HtmlDecode(content);
                     }
@@ -179,10 +179,10 @@ namespace SD.WEB.Modules.Platform
             }
             else
             {
-                return "something wrong (metaTags null)";
+                return "An unexpected error occurred while reading the page metadata.";
             }
 
-            return "no description found";
+            return "No description was found.";
         }
     }
 }
