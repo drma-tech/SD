@@ -61,7 +61,7 @@ namespace SD.Shared.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Best awards of the {0}.
+        ///   Looks up a localized string similar to Top Awards of {0}.
         /// </summary>
         public static string AwardsOfTheYear {
             get {
@@ -79,7 +79,7 @@ namespace SD.Shared.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Most Expected Movies of {0}.
+        ///   Looks up a localized string similar to Most Anticipated Movies of {0}.
         /// </summary>
         public static string ExpectedMovieOfYear {
             get {
