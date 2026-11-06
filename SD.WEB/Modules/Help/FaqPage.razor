@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/help/faq"
 @inherits PageCore<FaqPage>
 
-<HeadComponent Title="FAQ" Url=@($"/{Culture}/help/faq") Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, privacy, and platform usage.")" Index="false"></HeadComponent>
+<HeadComponent Title="FAQ" Url=@($"/{Culture}/help/faq") Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, privacy, and platform usage.")" Index="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="FAQ" Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, privacy, and platform usage.")"></PageSectionComponent>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="@CssHelper.Build().Medium("mb")">
