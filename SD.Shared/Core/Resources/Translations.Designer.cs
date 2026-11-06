@@ -70,7 +70,7 @@ namespace SD.Shared.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore films and series that won the year’s top awards. Discover main categories, winners, and celebrated titles recognized by critics and audiences..
+        ///   Looks up a localized string similar to Explore films and series that won the year’s top awards in {0}. Discover main categories, winners, and celebrated titles recognized by critics and audiences..
         /// </summary>
         public static string AwardsOfTheYearDesc {
             get {
