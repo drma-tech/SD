@@ -124,7 +124,7 @@
     <value>Pays</value>
   </data>
   <data name="DeliveryModel" xml:space="preserve">
-    <value>Modèles</value>
+    <value>Options de visionnage</value>
   </data>
   <data name="DeliveryModelAds" xml:space="preserve">
     <value>Annonces</value>
@@ -190,13 +190,13 @@
     <value>Région</value>
   </data>
   <data name="Release" xml:space="preserve">
-    <value>Nouvelles</value>
+    <value>Nouveautés</value>
   </data>
   <data name="TabAbout" xml:space="preserve">
     <value>À propos</value>
   </data>
   <data name="TabCollection1" xml:space="preserve">
-    <value>Séquelles</value>
+    <value>Suites</value>
   </data>
   <data name="TabCollection2" xml:space="preserve">
     <value>Saisons</value>
@@ -211,7 +211,7 @@
     <value>Ce titre n'est pas disponible dans votre région : {0}</value>
   </data>
   <data name="TitleNotReleased" xml:space="preserve">
-    <value>Film/série pas encore sorti</value>
+    <value>Ce film ou cette série n'est pas encore sorti.</value>
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>Recommandé</value>
@@ -220,6 +220,6 @@
     <value>Où regarder</value>
   </data>
   <data name="Writing" xml:space="preserve">
-    <value>En écrivant</value>
+    <value>Scénario</value>
   </data>
 </root>
