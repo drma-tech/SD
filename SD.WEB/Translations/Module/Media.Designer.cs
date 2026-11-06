@@ -79,7 +79,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Viewing options.
+        ///   Looks up a localized string similar to Model.
         /// </summary>
         internal static string DeliveryModel {
             get {
