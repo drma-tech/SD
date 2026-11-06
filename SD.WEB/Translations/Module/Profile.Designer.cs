@@ -70,16 +70,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auth Providers.
-        /// </summary>
-        internal static string AuthProviders {
-            get {
-                return ResourceManager.GetString("AuthProviders", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete Account.
+        ///   Looks up a localized string similar to Delete account.
         /// </summary>
         internal static string DeleteAccount {
             get {
@@ -93,15 +84,6 @@ namespace SD.WEB.Translations.Module {
         internal static string DemoAlert {
             get {
                 return ResourceManager.GetString("DemoAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email.
-        /// </summary>
-        internal static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
@@ -124,20 +106,11 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Follow titles so they appear here (if it is a series or a movie that is part of a sequence)..
+        ///   Looks up a localized string similar to Follow titles to see them here. This applies to TV series and movies that are part of a franchise..
         /// </summary>
         internal static string FollowTitle {
             get {
                 return ResourceManager.GetString("FollowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Identification.
-        /// </summary>
-        internal static string Identification {
-            get {
-                return ResourceManager.GetString("Identification", resourceCulture);
             }
         }
         
@@ -151,7 +124,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Following - Movies.
+        ///   Looks up a localized string similar to Followed movies.
         /// </summary>
         internal static string MyMovieFollowing {
             get {
@@ -160,7 +133,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wishlist - Movies.
+        ///   Looks up a localized string similar to Movie wishlist.
         /// </summary>
         internal static string MyMovieWishlist {
             get {
@@ -187,7 +160,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Following - Series.
+        ///   Looks up a localized string similar to Followed series.
         /// </summary>
         internal static string MySeriesFollowing {
             get {
@@ -196,7 +169,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wishlist - Series.
+        ///   Looks up a localized string similar to TV series wishlist.
         /// </summary>
         internal static string MySeriesWishlist {
             get {
@@ -214,7 +187,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Regions have been automatically applied for your favorite providers. If they are wrong, please remove and add them again..
+        ///   Looks up a localized string similar to Regions have been automatically applied for your favorite platforms. If they are wrong, please remove and add them again..
         /// </summary>
         internal static string RegionsApplied {
             get {
@@ -223,7 +196,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What items have you already watched?.
+        ///   Looks up a localized string similar to Which titles have you already watched?.
         /// </summary>
         internal static string WhatHaveYouWatched {
             get {
