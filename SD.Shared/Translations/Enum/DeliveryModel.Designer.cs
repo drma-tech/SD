@@ -142,7 +142,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction.
+        ///   Looks up a localized string similar to Rent or Buy.
         /// </summary>
         public static string TVODName {
             get {

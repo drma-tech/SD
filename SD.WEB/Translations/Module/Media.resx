@@ -124,7 +124,7 @@
     <value>Countries</value>
   </data>
   <data name="DeliveryModel" xml:space="preserve">
-    <value>Models</value>
+    <value>Model</value>
   </data>
   <data name="DeliveryModelAds" xml:space="preserve">
     <value>Ads</value>
@@ -135,9 +135,6 @@
   <data name="DeliveryModelFlatRate" xml:space="preserve">
     <value>Flat Rate</value>
   </data>
-  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
-    <value>Flat Rate/Buy</value>
-  </data>
   <data name="DeliveryModelFree" xml:space="preserve">
     <value>Free</value>
   </data>
@@ -145,7 +142,7 @@
     <value>Rent</value>
   </data>
   <data name="Directing" xml:space="preserve">
-    <value>Directing</value>
+    <value>Directors</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Duration</value>
@@ -166,7 +163,7 @@
     <value>Stay updated with the latest releases on {0}, including newly launched movies and shows hitting the market.</value>
   </data>
   <data name="NoPlot" xml:space="preserve">
-    <value>overview not available in your language</value>
+    <value>Overview not available in your language.</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not Found</value>
@@ -193,7 +190,7 @@
     <value>Region</value>
   </data>
   <data name="Release" xml:space="preserve">
-    <value>News</value>
+    <value>New releases</value>
   </data>
   <data name="TabAbout" xml:space="preserve">
     <value>About</value>
@@ -214,15 +211,18 @@
     <value>This title is not available in your region: {0}</value>
   </data>
   <data name="TitleNotReleased" xml:space="preserve">
-    <value>Movie/Series not yet released</value>
+    <value>This movie or TV show hasn't been released yet.</value>
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>Recommended</value>
+  </data>
+  <data name="JustWatchAttribution" xml:space="preserve">
+    <value>Streaming availability data is provided by</value>
   </data>
   <data name="WhereToWatch" xml:space="preserve">
     <value>Where to watch</value>
   </data>
   <data name="Writing" xml:space="preserve">
-    <value>Writing</value>
+    <value>Writers</value>
   </data>
 </root>

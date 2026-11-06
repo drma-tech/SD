@@ -70,11 +70,29 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find the Best Cities and Countries to Live or Travel.
+        ///   Looks up a localized string similar to The future of finding a life partner is here. Smarter and more affordable than traditional matchmaking, with precise compatibility and no endless swiping..
+        /// </summary>
+        public static string modern_matchmaker_desc {
+            get {
+                return ResourceManager.GetString("modern-matchmaker-desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find the Best Cities and Countries to Live In or Visit.
         /// </summary>
         public static string next_spot {
             get {
                 return ResourceManager.GetString("next-spot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore countries and cities, learn interesting facts, and create your profile to find destinations that match your lifestyle, whether for a trip or a new home..
+        /// </summary>
+        public static string next_spot_desc {
+            get {
+                return ResourceManager.GetString("next-spot-desc", resourceCulture);
             }
         }
         
@@ -88,6 +106,15 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find rooms for rent and shared apartments. Discover affordable housing and join welcoming communities to feel at home anywhere..
+        /// </summary>
+        public static string shared_home_desc {
+            get {
+                return ResourceManager.GetString("shared-home-desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discover Movies and Series on Streaming Platforms.
         /// </summary>
         public static string streamingdiscovery {
@@ -97,11 +124,29 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks..
+        /// </summary>
+        public static string streamingdiscovery_desc {
+            get {
+                return ResourceManager.GetString("streamingdiscovery-desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web Standards Generator for Websites and PWAs.
         /// </summary>
         public static string webstandards {
             get {
                 return ResourceManager.GetString("webstandards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs..
+        /// </summary>
+        public static string webstandards_desc {
+            get {
+                return ResourceManager.GetString("webstandards-desc", resourceCulture);
             }
         }
     }

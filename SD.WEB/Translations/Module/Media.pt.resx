@@ -124,7 +124,7 @@
     <value>Países</value>
   </data>
   <data name="DeliveryModel" xml:space="preserve">
-    <value>Modelos</value>
+    <value>Modelo</value>
   </data>
   <data name="DeliveryModelAds" xml:space="preserve">
     <value>Anúncios</value>
@@ -135,9 +135,6 @@
   <data name="DeliveryModelFlatRate" xml:space="preserve">
     <value>Taxa Fixa</value>
   </data>
-  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
-    <value>Taxa Fixa/Comprar</value>
-  </data>
   <data name="DeliveryModelFree" xml:space="preserve">
     <value>Grátis</value>
   </data>
@@ -145,7 +142,7 @@
     <value>Alugar</value>
   </data>
   <data name="Directing" xml:space="preserve">
-    <value>Diretor(a)</value>
+    <value>Direção</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Duração</value>
@@ -154,7 +151,7 @@
     <value>Gêneros</value>
   </data>
   <data name="Homepage" xml:space="preserve">
-    <value>Homepage</value>
+    <value>Página inicial</value>
   </data>
   <data name="MediaType" xml:space="preserve">
     <value>Tipo de mídia</value>
@@ -214,15 +211,18 @@
     <value>Este título não está disponível em sua região: {0}</value>
   </data>
   <data name="TitleNotReleased" xml:space="preserve">
-    <value>Filme/Série ainda não lançado</value>
+    <value>Este filme ou série ainda não foi lançado.</value>
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>Recomendados</value>
+  </data>
+  <data name="JustWatchAttribution" xml:space="preserve">
+    <value>As informações sobre disponibilidade em streaming são fornecidas por</value>
   </data>
   <data name="WhereToWatch" xml:space="preserve">
     <value>Onde assistir</value>
   </data>
   <data name="Writing" xml:space="preserve">
-    <value>Roteirização</value>
+    <value>Roteiro</value>
   </data>
 </root>

@@ -14,12 +14,12 @@
 }
 else
 {
-    <HeadComponent Title="@(Translations.Title.Providers.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
-                   Description="@Translations.Description.Platforms.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country")" Url=@($"/{Culture}/platforms/{Region}")
+    <HeadComponent Title="@(Translations.Title.Providers.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "Unknown region"))"
+                   Description="@Translations.Description.Platforms.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "Unknown region")" Url=@($"/{Culture}/platforms/{Region}")
                    Index="@Region.NotEmpty()" Shared="true" FixedAlternateLanguage="@Culture"></HeadComponent>
 
-    <PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.Providers.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country"))"
-                          Description="@Translations.Description.Platforms.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "invalid country")">
+    <PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.Providers.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "Unknown region"))"
+                          Description="@Translations.Description.Platforms.CustomFormat(RegionEnum?.GetFieldSettings().Name ?? "Unknown region")">
         <ActionsFragment>
             <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Translations.Module.Media.DeliveryModel" Dense="true" Class="me-2">
                 @foreach (var item in DeliveryModels)

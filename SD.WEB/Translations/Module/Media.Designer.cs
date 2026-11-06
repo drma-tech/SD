@@ -79,7 +79,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Models.
+        ///   Looks up a localized string similar to Model.
         /// </summary>
         internal static string DeliveryModel {
             get {
@@ -115,15 +115,6 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flat Rate/Buy.
-        /// </summary>
-        internal static string DeliveryModelFlatRateBuy {
-            get {
-                return ResourceManager.GetString("DeliveryModelFlatRateBuy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Free.
         /// </summary>
         internal static string DeliveryModelFree {
@@ -142,7 +133,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directing.
+        ///   Looks up a localized string similar to Directors.
         /// </summary>
         internal static string Directing {
             get {
@@ -178,6 +169,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Streaming availability data is provided by.
+        /// </summary>
+        internal static string JustWatchAttribution {
+            get {
+                return ResourceManager.GetString("JustWatchAttribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Media Type.
         /// </summary>
         internal static string MediaType {
@@ -205,7 +205,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to overview not available in your language.
+        ///   Looks up a localized string similar to Overview not available in your language..
         /// </summary>
         internal static string NoPlot {
             get {
@@ -286,7 +286,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to News.
+        ///   Looks up a localized string similar to New releases.
         /// </summary>
         internal static string Release {
             get {
@@ -349,7 +349,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movie/Series not yet released.
+        ///   Looks up a localized string similar to This movie or TV show hasn&apos;t been released yet..
         /// </summary>
         internal static string TitleNotReleased {
             get {
@@ -376,7 +376,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Writing.
+        ///   Looks up a localized string similar to Writers.
         /// </summary>
         internal static string Writing {
             get {

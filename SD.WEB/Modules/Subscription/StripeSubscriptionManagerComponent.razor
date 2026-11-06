@@ -12,10 +12,10 @@
                 <MudTextField T="string" Label="@Translations.Module.Subscription.Cycle" Text="@Client?.GetActiveSubscription()?.Cycle?.GetFieldSettings().Name" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="Created At" Text="@Client?.GetActiveSubscription()?.CreatedAt.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="Created On" Text="@Client?.GetActiveSubscription()?.CreatedAt.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="Expires Date" Text="@Client?.GetActiveSubscription()?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="Expiration Date" Text="@Client?.GetActiveSubscription()?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
                 <MudTextField T="string" Label="@Translations.Module.Subscription.PaymentProvider" Text="@Client?.GetActiveSubscription()?.Provider?.GetFieldSettings().Name" ReadOnly="true"></MudTextField>
@@ -27,7 +27,7 @@
     </MudCardContent>
 </MudCard>
 <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="@CssHelper.Build().Small("mb")" Href="@CustomerPortalUrl" Target="_blank" Rel="nofollow, noopener" Disabled="CustomerPortalUrl.Empty()">
-    Change/Cancel my subscription
+    Manage or cancel my subscription
 </MudButton>
 
 @code {

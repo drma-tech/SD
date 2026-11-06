@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/company/about-us"
 @inherits PageCore<AboutUsPage>
 
-<HeadComponent Title="About Us" Description="@($"Learn about {AppInfo.Title}, our mission to help you discover and organize movies and shows, and the team behind the platform.")" Url=@($"/{Culture}/company/about-us") Index="false"></HeadComponent>
+<HeadComponent Title="About Us" Description="@($"Learn about {AppInfo.CompanyName}, our mission, and the digital products we build.")" Url=@($"/{Culture}/company/about-us") Index="false"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
@@ -9,81 +9,263 @@
         <h1 class="support-title">Sobre a @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
             Bem-vindo à <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
-            A @AppInfo.CompanyName cria ferramentas digitais inteligentes que ajudam as pessoas a encontrar o que melhor combina com elas e a tomar decisões de forma mais fácil, alinhada e centrada nas necessidades individuais.
+            Somos uma empresa de tecnologia dedicada a criar produtos digitais que tornam o dia a dia mais prático. Desenvolvemos soluções que ajudam as pessoas a encontrar opções, informações e experiências alinhadas aos seus interesses, objetivos e necessidades.
         </div>
         <div class="support-section">
-            <h2>1. Nossa Missão</h2>
-            <p>Na @AppInfo.CompanyName, focamos em criar ferramentas que simplificam a tomada de decisões, conectando os usuários ao que realmente se encaixa em suas necessidades e valores. Queremos que a tecnologia seja intuitiva, útil e alinhada com a forma como as pessoas realmente vivem.</p>
+            <h2>1. Nossa missão</h2>
+            <p>Queremos tornar a tecnologia uma aliada nas decisões e atividades do cotidiano. Por meio de experiências simples e intuitivas, transformamos necessidades reais em soluções úteis, que ajudam as pessoas a descobrir possibilidades e fazer escolhas com mais facilidade.</p>
         </div>
         <div class="support-section">
-            <h2>2. Quem Somos</h2>
-            <p>Somos uma equipe pequena, mas apaixonada, registrada na Estônia, combinando desenvolvimento de software, análise de dados e design. Gostamos de criar coisas que realmente ajudam as pessoas e valorizamos profundamente privacidade, transparência e confiança.</p>
+            <h2>2. Quem somos</h2>
+            <p>A @AppInfo.CompanyName é uma empresa de tecnologia que cria e desenvolve seus próprios produtos digitais para consumidores. A empresa está registrada na Estônia como <b>Delivering Reliable Modern Apps Tech OÜ</b> e atua com uma visão global, criando soluções para pessoas de diferentes países e realidades.</p>
         </div>
         <div class="support-section">
-            <h2>3. Nossos Produtos</h2>
+            <h2>3. Como desenvolvemos nossos produtos</h2>
+            <p>Cada produto nasce de uma necessidade ou oportunidade. Buscamos combinar tecnologia, praticidade e facilidade de uso em experiências claras, acessíveis e úteis.</p>
+            <p>A evolução é contínua: ouvimos os usuários, consideramos suas sugestões e acompanhamos como cada solução é utilizada. Também aplicamos nossa experiência e visão de produto para identificar melhorias, aperfeiçoar funcionalidades e desenvolver novas possibilidades.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Nossos produtos</h2>
+            <p>Nosso portfólio reúne soluções digitais para diferentes momentos e necessidades, desde descobrir conexões e destinos até simplificar tarefas relacionadas à web.</p>
             <ul>
-                <li><b style="color: var(--mud-palette-secondary);">Streaming Discovery:</b> Acompanhe suas plataformas de streaming, gerencie seu progresso de visualização e descubra o que assistir em seguida com listas curadas, vencedores de prêmios e recomendações de críticos.</li>
-                <li><b style="color: var(--mud-palette-secondary);">Modern Matchmaker:</b> O futuro para encontrar um parceiro de vida chegou. Mais inteligente e acessível do que o matchmaking tradicional, com compatibilidade precisa e sem o deslizar infinito.</li>
-                <li><b style="color: var(--mud-palette-secondary);">My Next Spot:</b> Explore países e cidades, descubra fatos interessantes e crie seu perfil para encontrar destinos que combinam com seu estilo de vida, seja para uma viagem ou um novo lar.</li>
-                <li><b style="color: var(--mud-palette-secondary);">WebStandards:</b> Um conjunto de ferramentas que ajuda desenvolvedores a configurar padrões essenciais da web como sitemaps, manifests, ícones, tags de SEO e arquivos de segurança para sites modernos e PWAs.</li>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a>:
+                        </b> @product.Description
+                    </li>
+                }
             </ul>
-            <p>Estamos constantemente trabalhando em novos projetos e melhorias e estamos animados com o que vem pela frente, mas por enquanto estas são nossas principais soluções.</p>
         </div>
         <div class="support-section">
-            <h2>4. Privacidade e Dados</h2>
-            <p>Você pode usar nossas ferramentas de forma anônima. Ao criar contas, coletamos o mínimo de dados, como e-mail, registros de login, endereço IP e informações do dispositivo, apenas para manter tudo seguro, personalizado e funcionando corretamente. Respeitamos a privacidade e cumprimos leis internacionais como GDPR e LGPD.</p>
-        </div>
-        <div class="support-section">
-            <h2>5. Legal e Conformidade</h2>
-            <p>Respeitamos leis de propriedade intelectual e direitos autorais. Não hospedamos nem fornecemos streaming de conteúdo de terceiros. Nossa plataforma opera sob a legislação da Estônia, e os usuários são responsáveis por seguir as regulamentações locais.</p>
-        </div>
-        <div class="support-section">
-            <h2>6. Contato</h2>
-            <p>Se você tiver dúvidas, feedback ou apenas quiser dizer olá, visite nossa <a href=@($"/{Culture}/help")>página de suporte</a> ou utilize as ferramentas de contato na plataforma.</p>
+            <h2>5. Entre em contato</h2>
+            <p>Estamos sempre abertos a ouvir ideias, dúvidas e sugestões. Para falar com nossa equipe, envie um e-mail para <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a> ou visite nossa <a href=@($"/{Culture}/help")>página de suporte</a>.</p>
         </div>
         <div class="support-footer">
-            <p>Última atualização: 31 de março de 2026</p>
+            <p>Última atualização: 6 de novembro de 2026</p>
         </div>
     }
     else if (Language == AppLanguage.es)
     {
         <h1 class="support-title">Sobre @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
-            Bienvenido a <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
-            @AppInfo.CompanyName crea herramientas digitales inteligentes que ayudan a las personas a encontrar lo que mejor se adapta a ellas y a tomar decisiones de manera más fácil, alineada y centrada en sus necesidades individuales.
+            ¡Bienvenido a <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
+            Somos una empresa tecnológica dedicada a crear productos digitales que hacen más práctico el día a día. Desarrollamos soluciones que ayudan a las personas a encontrar opciones, información y experiencias acordes con sus intereses, objetivos y necesidades.
         </div>
         <div class="support-section">
-            <h2>1. Nuestra Misión</h2>
-            <p>En @AppInfo.CompanyName, nos enfocamos en crear herramientas que simplifican la toma de decisiones, conectando a los usuarios con lo que realmente se ajusta a sus necesidades y valores. Queremos que la tecnología sea intuitiva, útil y alineada con la forma en que las personas realmente viven.</p>
+            <h2>1. Nuestra misión</h2>
+            <p>Queremos que la tecnología sea una aliada en las decisiones y actividades cotidianas. A través de experiencias sencillas e intuitivas, convertimos necesidades reales en soluciones útiles que ayudan a descubrir posibilidades y elegir con mayor facilidad.</p>
         </div>
         <div class="support-section">
-            <h2>2. Quiénes Somos</h2>
-            <p>Somos un equipo pequeño pero apasionado, registrado en Estonia, que combina desarrollo de software, análisis de datos y diseño. Nos encanta crear cosas que realmente ayudan a las personas y valoramos profundamente la privacidad, la transparencia y la confianza.</p>
+            <h2>2. Quiénes somos</h2>
+            <p>@AppInfo.CompanyName es una empresa tecnológica que crea y desarrolla sus propios productos digitales para consumidores. La empresa está registrada en Estonia como <b>Delivering Reliable Modern Apps Tech OÜ</b> y trabaja con una visión global, creando soluciones para personas de distintos países y contextos.</p>
         </div>
         <div class="support-section">
-            <h2>3. Nuestros Productos</h2>
+            <h2>3. Cómo desarrollamos nuestros productos</h2>
+            <p>Cada producto nace de una necesidad o una oportunidad. Combinamos tecnología, practicidad y facilidad de uso para crear experiencias claras, accesibles y útiles.</p>
+            <p>La evolución es continua: escuchamos a los usuarios, tenemos en cuenta sus sugerencias y observamos cómo se utiliza cada solución. También aplicamos nuestra experiencia y visión de producto para identificar mejoras, perfeccionar funciones y desarrollar nuevas posibilidades.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Nuestros productos</h2>
+            <p>Nuestro catálogo reúne soluciones digitales para distintas situaciones y necesidades, desde descubrir conexiones y destinos hasta simplificar tareas relacionadas con la web.</p>
             <ul>
-                <li><b style="color: var(--mud-palette-secondary);">Streaming Discovery:</b> Sigue tus plataformas de streaming, gestiona tu progreso de visualización y descubre qué ver a continuación con listas curadas, ganadores de premios y recomendaciones de críticos.</li>
-                <li><b style="color: var(--mud-palette-secondary);">Modern Matchmaker:</b> El futuro para encontrar una pareja de vida ya está aquí. Más inteligente y accesible que el matchmaking tradicional, con compatibilidad precisa y sin el deslizamiento infinito.</li>
-                <li><b style="color: var(--mud-palette-secondary);">My Next Spot:</b> Explora países y ciudades, descubre datos interesantes y crea tu perfil para encontrar destinos que se adapten a tu estilo de vida, ya sea para un viaje o un nuevo hogar.</li>
-                <li><b style="color: var(--mud-palette-secondary);">WebStandards:</b> Un conjunto de herramientas que ayuda a los desarrolladores a configurar estándares esenciales de la web como sitemaps, manifests, iconos, etiquetas SEO y archivos de seguridad para sitios modernos y PWAs.</li>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a>:
+                        </b> @product.Description
+                    </li>
+                }
             </ul>
-            <p>Estamos trabajando constantemente en nuevos proyectos y mejoras, y estamos entusiasmados con lo que viene, pero por ahora estas son nuestras principales soluciones.</p>
         </div>
         <div class="support-section">
-            <h2>4. Privacidad y Datos</h2>
-            <p>Puedes usar nuestras herramientas de forma anónima. Al crear cuentas, recopilamos datos mínimos como correo electrónico, registros de inicio de sesión, dirección IP e información del dispositivo, solo para mantener todo seguro, personalizado y funcionando correctamente. Respetamos la privacidad y cumplimos con leyes internacionales como GDPR y LGPD.</p>
-        </div>
-        <div class="support-section">
-            <h2>5. Legal y Cumplimiento</h2>
-            <p>Respetamos las leyes de propiedad intelectual y derechos de autor. No alojamos ni proporcionamos streaming de contenido de terceros. Nuestra plataforma opera bajo la legislación de Estonia, y los usuarios son responsables de cumplir con las regulaciones locales.</p>
-        </div>
-        <div class="support-section">
-            <h2>6. Contacto</h2>
-            <p>Si tienes preguntas, comentarios o simplemente quieres saludar, puedes visitar nuestra <a href=@($"/{Culture}/help")>página de soporte</a> o usar las herramientas de contacto en la plataforma.</p>
+            <h2>5. Contacto</h2>
+            <p>Siempre estamos abiertos a escuchar ideas, preguntas y sugerencias. Para contactar con nuestro equipo, escribe a <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a> o visita nuestra <a href=@($"/{Culture}/help")>página de soporte</a>.</p>
         </div>
         <div class="support-footer">
-            <p>Última actualización: 31 de marzo de 2026</p>
+            <p>Última actualización: 6 de noviembre de 2026</p>
+        </div>
+    }
+    else if (Language == AppLanguage.de)
+    {
+        <h1 class="support-title">Über @AppInfo.CompanyName</h1>
+        <div class="support-subtitle">
+            Willkommen bei <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
+            Wir sind ein Technologieunternehmen, das digitale Produkte entwickelt, um den Alltag praktischer zu gestalten. Unsere Lösungen helfen Menschen dabei, Optionen, Informationen und Erlebnisse zu finden, die zu ihren Interessen, Zielen und Bedürfnissen passen.
+        </div>
+        <div class="support-section">
+            <h2>1. Unsere Mission</h2>
+            <p>Wir möchten Technologie zu einem hilfreichen Begleiter bei alltäglichen Entscheidungen und Aktivitäten machen. Mit einfachen und intuitiven Erlebnissen verwandeln wir konkrete Bedürfnisse in nützliche Lösungen, die Menschen dabei unterstützen, Möglichkeiten zu entdecken und leichter Entscheidungen zu treffen.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Wer wir sind</h2>
+            <p>@AppInfo.CompanyName ist ein Technologieunternehmen, das eigene digitale Produkte für Verbraucher entwickelt. Das Unternehmen ist in Estland als <b>Delivering Reliable Modern Apps Tech OÜ</b> registriert und verfolgt eine globale Ausrichtung, um Menschen in verschiedenen Ländern und Lebenssituationen zu erreichen.</p>
+        </div>
+        <div class="support-section">
+            <h2>3. Wie wir unsere Produkte entwickeln</h2>
+            <p>Jedes Produkt entsteht aus einem Bedarf oder einer Gelegenheit. Wir verbinden Technologie, Alltagstauglichkeit und Benutzerfreundlichkeit zu klaren, zugänglichen und nützlichen Erlebnissen.</p>
+            <p>Die Weiterentwicklung ist ein fortlaufender Prozess: Wir hören unseren Nutzern zu, berücksichtigen ihre Vorschläge und beobachten, wie unsere Lösungen eingesetzt werden. Darüber hinaus nutzen wir unsere Erfahrung und unsere Produktvision, um Verbesserungen zu erkennen, Funktionen zu verfeinern und neue Möglichkeiten zu schaffen.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Unsere Produkte</h2>
+            <p>Unser Portfolio umfasst digitale Lösungen für unterschiedliche Situationen und Bedürfnisse, von persönlichen Verbindungen und Reisezielen bis hin zu einfacheren Aufgaben rund um das Web.</p>
+            <ul>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a>:
+                        </b> @product.Description
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. Kontakt</h2>
+            <p>Wir freuen uns über Ideen, Fragen und Anregungen. Sie erreichen unser Team unter <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a> oder über unsere <a href=@($"/{Culture}/help")>Support-Seite</a>.</p>
+        </div>
+        <div class="support-footer">
+            <p>Zuletzt aktualisiert: 6. November 2026</p>
+        </div>
+    }
+    else if (Language == AppLanguage.fr)
+    {
+        <h1 class="support-title">À propos de @AppInfo.CompanyName</h1>
+        <div class="support-subtitle">
+            Bienvenue chez <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>) !<br />
+            Nous sommes une entreprise technologique qui crée des produits numériques pour rendre le quotidien plus pratique. Nos solutions aident chacun à trouver des options, des informations et des expériences adaptées à ses intérêts, ses objectifs et ses besoins.
+        </div>
+        <div class="support-section">
+            <h2>1. Notre mission</h2>
+            <p>Nous souhaitons faire de la technologie une alliée dans les décisions et les activités du quotidien. Grâce à des expériences simples et intuitives, nous transformons des besoins concrets en solutions utiles qui permettent de découvrir de nouvelles possibilités et de faire des choix plus facilement.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Qui sommes-nous</h2>
+            <p>@AppInfo.CompanyName est une entreprise technologique qui crée et développe ses propres produits numériques destinés aux consommateurs. L'entreprise est enregistrée en Estonie sous le nom <b>Delivering Reliable Modern Apps Tech OÜ</b> et adopte une vision internationale pour proposer ses solutions à des personnes de différents pays et horizons.</p>
+        </div>
+        <div class="support-section">
+            <h2>3. Notre approche du développement</h2>
+            <p>Chaque produit naît d'un besoin ou d'une opportunité. Nous associons technologie, praticité et simplicité d'utilisation pour créer des expériences claires, accessibles et utiles.</p>
+            <p>Le développement est continu : nous écoutons les utilisateurs, prenons en compte leurs suggestions et observons l'utilisation de chaque solution. Nous nous appuyons également sur notre expérience et notre vision produit pour repérer des améliorations, perfectionner les fonctionnalités et créer de nouvelles possibilités.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Nos produits</h2>
+            <p>Notre portefeuille rassemble des solutions numériques adaptées à différents moments et besoins, de la découverte de relations et de destinations à la simplification de tâches liées au web.</p>
+            <ul>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a> :
+                        </b> @product.Description
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. Nous contacter</h2>
+            <p>Nous sommes toujours ravis de recevoir vos idées, questions et suggestions. Pour contacter notre équipe, écrivez à <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a> ou consultez notre <a href=@($"/{Culture}/help")>page d'assistance</a>.</p>
+        </div>
+        <div class="support-footer">
+            <p>Dernière mise à jour : 6 novembre 2026</p>
+        </div>
+    }
+    else if (Language == AppLanguage.it)
+    {
+        <h1 class="support-title">Informazioni su @AppInfo.CompanyName</h1>
+        <div class="support-subtitle">
+            Benvenuto in <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
+            Siamo un'azienda tecnologica che crea prodotti digitali per rendere più pratica la vita quotidiana. Le nostre soluzioni aiutano le persone a trovare opzioni, informazioni ed esperienze in linea con i propri interessi, obiettivi ed esigenze.
+        </div>
+        <div class="support-section">
+            <h2>1. La nostra missione</h2>
+            <p>Vogliamo rendere la tecnologia un'alleata nelle decisioni e nelle attività di ogni giorno. Attraverso esperienze semplici e intuitive, trasformiamo esigenze concrete in soluzioni utili che aiutano le persone a scoprire nuove possibilità e a scegliere più facilmente.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Chi siamo</h2>
+            <p>@AppInfo.CompanyName è un'azienda tecnologica che crea e sviluppa prodotti digitali propri per i consumatori. L'azienda è registrata in Estonia con il nome <b>Delivering Reliable Modern Apps Tech OÜ</b> e adotta una visione globale, sviluppando soluzioni per persone di paesi e contesti diversi.</p>
+        </div>
+        <div class="support-section">
+            <h2>3. Come sviluppiamo i nostri prodotti</h2>
+            <p>Ogni prodotto nasce da un'esigenza o da un'opportunità. Uniamo tecnologia, praticità e facilità d'uso per creare esperienze chiare, accessibili e utili.</p>
+            <p>Lo sviluppo è continuo: ascoltiamo gli utenti, prendiamo in considerazione i loro suggerimenti e osserviamo come vengono utilizzate le nostre soluzioni. Inoltre, mettiamo a frutto la nostra esperienza e la nostra visione del prodotto per individuare miglioramenti, perfezionare le funzionalità e sviluppare nuove possibilità.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. I nostri prodotti</h2>
+            <p>Il nostro portfolio raccoglie soluzioni digitali per diverse situazioni ed esigenze, dalla scoperta di nuove connessioni e destinazioni alla semplificazione delle attività legate al web.</p>
+            <ul>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a>:
+                        </b> @product.Description
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. Contatti</h2>
+            <p>Siamo sempre felici di ricevere idee, domande e suggerimenti. Per contattare il nostro team, scrivi a <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a> oppure visita la nostra <a href=@($"/{Culture}/help")>pagina di supporto</a>.</p>
+        </div>
+        <div class="support-footer">
+            <p>Ultimo aggiornamento: 6 novembre 2026</p>
+        </div>
+    }
+    else if (Language == AppLanguage.zh)
+    {
+        <h1 class="support-title">关于 @AppInfo.CompanyName</h1>
+        <div class="support-subtitle">
+            欢迎访问 <b>@AppInfo.CompanyName</b>（<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>）！<br />
+            我们是一家科技公司，致力于打造让日常生活更加便捷的数字产品。我们的解决方案帮助人们找到符合自身兴趣、目标和需求的选择、信息与体验。
+        </div>
+        <div class="support-section">
+            <h2>1. 我们的使命</h2>
+            <p>我们希望让科技成为日常决策与活动中的得力助手。通过简单直观的体验，我们将真实需求转化为实用解决方案，帮助人们发现更多可能，并更轻松地做出选择。</p>
+        </div>
+        <div class="support-section">
+            <h2>2. 关于我们</h2>
+            <p>@AppInfo.CompanyName 是一家面向消费者创建和开发自有数字产品的科技公司。公司在爱沙尼亚注册，法定名称为 <b>Delivering Reliable Modern Apps Tech OÜ</b>，以全球视野为不同国家和背景的人们打造解决方案。</p>
+        </div>
+        <div class="support-section">
+            <h2>3. 产品开发方式</h2>
+            <p>每款产品都源于真实需求或发展机会。我们将技术、实用性与易用性相结合，打造清晰、易于使用且真正有帮助的体验。</p>
+            <p>产品持续迭代：我们倾听用户反馈，认真考虑用户建议，并关注每项解决方案的实际使用情况。同时，我们运用自身经验与产品理念发现改进机会、优化功能并探索新的可能。</p>
+        </div>
+        <div class="support-section">
+            <h2>4. 我们的产品</h2>
+            <p>我们的产品组合涵盖不同场景与需求，包括发现人际连接和目的地，以及简化与 Web 相关的技术任务。</p>
+            <ul>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a>：
+                        </b> @product.Description
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. 联系我们</h2>
+            <p>我们欢迎各种想法、问题与建议。如需联系我们的团队，请发送邮件至 <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>，或访问我们的<a href=@($"/{Culture}/help")>支持页面</a>。</p>
+        </div>
+        <div class="support-footer">
+            <p>最后更新：2026年11月6日</p>
         </div>
     }
     else
@@ -91,40 +273,43 @@
         <h1 class="support-title">About @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
             Welcome to <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
-            @AppInfo.CompanyName builds smart digital tools that help people find what fits them best and make decisions easier, more aligned, and centered on individual needs.
+            We are a technology company creating digital products that make everyday life more practical. Our solutions help people find options, information, and experiences that match their interests, goals, and needs.
         </div>
         <div class="support-section">
-            <h2>1. Our Mission</h2>
-            <p>At @AppInfo.CompanyName, we focus on building tools that simplify decision-making by connecting users with what truly fits their needs and values. We want technology to feel intuitive, helpful, and aligned with the way people actually live.</p>
+            <h2>1. Our mission</h2>
+            <p>We want technology to be a helpful part of everyday decisions and activities. Through simple and intuitive experiences, we turn real needs into useful solutions that help people discover possibilities and make choices more easily.</p>
         </div>
         <div class="support-section">
-            <h2>2. Who We Are</h2>
-            <p>We’re a small but passionate team, registered in Estonia, combining software development, data analysis, and design. We love making things that actually help people, and we care deeply about privacy, transparency, and trust.</p>
+            <h2>2. Who we are</h2>
+            <p>@AppInfo.CompanyName is a technology company that creates and develops its own digital products for consumers. The company is registered in Estonia as <b>Delivering Reliable Modern Apps Tech OÜ</b> and takes a global approach, building solutions for people across different countries and backgrounds.</p>
         </div>
         <div class="support-section">
-            <h2>3. Our Products</h2>
+            <h2>3. How we build our products</h2>
+            <p>Every product starts with a need or an opportunity. We bring together technology, practicality, and ease of use to create clear, accessible, and useful experiences.</p>
+            <p>Development is continuous: we listen to users, consider their suggestions, and pay attention to how each solution is used. We also draw on our experience and product vision to identify improvements, refine features, and create new possibilities.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Our products</h2>
+            <p>Our portfolio brings together digital solutions for different situations and needs, from discovering personal connections and destinations to simplifying tasks related to the web.</p>
             <ul>
-                <li><b style="color: var(--mud-palette-secondary);">Streaming Discovery:</b> Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks.</li>
-                <li><b style="color: var(--mud-palette-secondary);">Modern Matchmaker:</b> The future of finding a life partner is here. Smarter and more affordable than traditional matchmaking, with precise compatibility and no endless swiping.</li>
-                <li><b style="color: var(--mud-palette-secondary);">My Next Spot:</b> Explore countries and cities, learn interesting facts, and create your profile to find destinations that match your lifestyle, whether for a trip or a new home.</li>
-                <li><b style="color: var(--mud-palette-secondary);">WebStandards:</b> A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.</li>
+                @foreach (var product in AppInfo.Products)
+                {
+                    <li>
+                        <b style="color: var(--mud-palette-secondary);">
+                            <a href="@product.Url" target="_blank" rel="noopener" style="color: var(--mud-palette-secondary) !important;">
+                                @product.Title
+                            </a>:
+                        </b> @product.Description
+                    </li>
+                }
             </ul>
-            <p>We are constantly working on new projects and improvements, and we’re excited about what’s ahead, but for now, these are our core offerings.</p>
         </div>
         <div class="support-section">
-            <h2>4. Privacy & Data</h2>
-            <p>You can use our tools anonymously. When you create accounts, we collect minimal data like email, login timestamps, IP address, and device information, only to keep things secure, personalized, and running smoothly. We respect privacy and comply with international laws like GDPR and LGPD.</p>
-        </div>
-        <div class="support-section">
-            <h2>5. Legal & Compliance</h2>
-            <p>We respect intellectual property and copyright laws. We don’t host or provide streaming of third-party content. Our platform operates under Estonian law, and users are responsible for following local regulations.</p>
-        </div>
-        <div class="support-section">
-            <h2>6. Contact</h2>
-            <p>If you have questions, feedback, or just want to say hi, you can visit our <a href=@($"/{Culture}/help")>support page</a> or use the contact tools on the platform.</p>
+            <h2>5. Get in touch</h2>
+            <p>We are always glad to hear ideas, questions, and suggestions. To contact our team, email <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a> or visit our <a href=@($"/{Culture}/help")>support page</a>.</p>
         </div>
         <div class="support-footer">
-            <p>Last updated: March 31, 2026</p>
+            <p>Last updated: November 6, 2026</p>
         </div>
     }
 </div>

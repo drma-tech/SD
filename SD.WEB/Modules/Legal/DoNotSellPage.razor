@@ -1,39 +1,80 @@
 ﻿@page "/{culture}/legal/do-not-sell"
 @inherits PageCore<DoNotSellPage>
 
-<HeadComponent Title="@Translations.Module.Legal.DoNotSell" Url=@($"/{Culture}/legal/do-not-sell") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Module.Legal.DoNotSell" Url=@($"/{Culture}/legal/do-not-sell") Index="true"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
     {
-        <h1 class="support-title">Não Vender ou Compartilhar Meus Dados Pessoais</h1>
+        <h1 class="support-title">Não Vender ou Compartilhar Minhas Informações Pessoais</h1>
         <div class="support-section">
-            <p>Não vendemos nem compartilhamos seus dados pessoais em troca de dinheiro ou qualquer outra forma de compensação.</p>
-            <p>No entanto, algumas ferramentas de terceiros usadas na plataforma (como para análises ou publicidade) podem coletar dados que, segundo a Lei de Privacidade da Califórnia (CCPA/CPRA), podem ser considerados como “compartilhamento”.</p>
-            <p>Você pode gerenciar suas preferências ajustando as configurações de cookies ou desativando rastreamento pelo navegador.</p>
-            <p>Se você reside na Califórnia e tiver dúvidas, entre em contato: support@streamingdiscovery.com</p>
+            <p>Não vendemos informações pessoais em troca de dinheiro. No entanto, algumas divulgações de informações pessoais a provedores de análise ou publicidade podem ser consideradas “compartilhamento” para fins de publicidade comportamental entre contextos, conforme a Lei de Privacidade do Consumidor da Califórnia, conforme alterada pela Lei dos Direitos de Privacidade da Califórnia (CCPA/CPRA), mesmo quando não há troca de dinheiro.</p>
+            <p>Você pode solicitar a exclusão da venda ou do compartilhamento de suas informações pessoais entrando em contato pelo endereço <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Não é necessário criar uma conta para enviar uma solicitação. Analisaremos e processaremos sua solicitação conforme exigido pelas leis de privacidade aplicáveis.</p>
+            <p>Para obter mais informações sobre as informações pessoais que coletamos, como as utilizamos e quais provedores de serviços podem recebê-las, consulte nossa <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a>.</p>
+            <p>Se tiver dúvidas sobre esta página ou suas opções de privacidade, entre em contato pelo endereço <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>.</p>
         </div>
     }
     else if (Language == AppLanguage.es)
     {
         <h1 class="support-title">No Vender ni Compartir Mi Información Personal</h1>
         <div class="support-section">
-            <p>No vendemos ni compartimos su información personal a cambio de dinero u otra compensación de valor.</p>
-            <p>Sin embargo, algunas herramientas de terceros utilizadas en nuestra plataforma (por ejemplo, para análisis o publicidad) pueden recopilar datos que podrían considerarse un “compartir” según la Ley de Privacidad de California (CCPA/CPRA).</p>
-            <p>Puede administrar sus preferencias ajustando la configuración de cookies o desactivando el seguimiento en su navegador.</p>
-            <p>Si usted reside en California y tiene preguntas, contáctenos: support@streamingdiscovery.com</p>
+            <p>No vendemos información personal a cambio de dinero. Sin embargo, algunas divulgaciones de información personal a proveedores de análisis o publicidad pueden considerarse “compartición” con fines de publicidad conductual entre contextos, conforme a la Ley de Privacidad del Consumidor de California, modificada por la Ley de Derechos de Privacidad de California (CCPA/CPRA), incluso cuando no se intercambia dinero.</p>
+            <p>Puede solicitar que no se venda ni comparta su información personal poniéndose en contacto con nosotros en <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. No necesita crear una cuenta para presentar una solicitud. Revisaremos y procesaremos su solicitud según lo exijan las leyes de privacidad aplicables.</p>
+            <p>Para obtener más información sobre la información personal que recopilamos, cómo la utilizamos y los proveedores de servicios que pueden recibirla, consulte nuestra <a href=@($"/{Culture}/legal/privacy")>Política de Privacidad</a>.</p>
+            <p>Si tiene preguntas sobre esta página o sus opciones de privacidad, póngase en contacto con nosotros en <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.zh)
+    {
+        <h1 class="support-title">不出售或共享我的个人信息</h1>
+        <div class="support-section">
+            <p>我们不会以金钱为交换条件出售个人信息。但是，根据经《加利福尼亚州隐私权法案》（CCPA/CPRA）修订的《加利福尼亚州消费者隐私法》，即使没有金钱交易，向分析服务或广告服务提供商披露某些个人信息，也可能被视为用于跨情境行为广告的“共享”。</p>
+            <p>您可以通过以下电子邮件地址联系我们，要求退出个人信息的出售或共享：<a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>。提交请求无需创建账户。我们将根据适用隐私法律的要求审核并处理您的请求。</p>
+            <p>有关我们收集的个人信息、使用方式以及可能接收这些信息的服务提供商的更多信息，请阅读我们的<a href=@($"/{Culture}/legal/privacy")>隐私政策</a>。</p>
+            <p>如果您对本页面或隐私选择有任何疑问，请通过以下电子邮件地址联系我们：<a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>。</p>
+        </div>
+    }
+    else if (Language == AppLanguage.fr)
+    {
+        <h1 class="support-title">Ne pas vendre ni partager mes informations personnelles</h1>
+        <div class="support-section">
+            <p>Nous ne vendons pas d’informations personnelles en échange d’argent. Toutefois, certaines divulgations d’informations personnelles à des fournisseurs de services d’analyse ou de publicité peuvent être considérées comme un « partage » à des fins de publicité comportementale intercontextuelle au sens de la loi californienne sur la protection de la vie privée des consommateurs, telle que modifiée par la loi californienne sur les droits à la vie privée (CCPA/CPRA), même lorsqu’aucune somme d’argent n’est échangée.</p>
+            <p>Vous pouvez demander à refuser la vente ou le partage de vos informations personnelles en nous contactant à l’adresse <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Vous n’avez pas besoin de créer un compte pour soumettre une demande. Nous examinerons et traiterons votre demande conformément aux lois applicables en matière de protection de la vie privée.</p>
+            <p>Pour en savoir plus sur les informations personnelles que nous collectons, leur utilisation et les prestataires de services susceptibles de les recevoir, veuillez consulter notre <a href=@($"/{Culture}/legal/privacy")>Politique de confidentialité</a>.</p>
+            <p>Si vous avez des questions concernant cette page ou vos choix en matière de confidentialité, contactez-nous à l’adresse <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.it)
+    {
+        <h1 class="support-title">Non vendere né condividere le mie informazioni personali</h1>
+        <div class="support-section">
+            <p>Non vendiamo informazioni personali in cambio di denaro. Tuttavia, alcune comunicazioni di informazioni personali a fornitori di servizi di analisi o pubblicità possono essere considerate una “condivisione” ai fini della pubblicità comportamentale tra contesti, ai sensi del California Consumer Privacy Act, come modificato dal California Privacy Rights Act (CCPA/CPRA), anche quando non viene scambiato denaro.</p>
+            <p>Puoi richiedere di opporti alla vendita o alla condivisione delle tue informazioni personali contattandoci all’indirizzo <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Non è necessario creare un account per inviare una richiesta. Esamineremo e gestiremo la richiesta come previsto dalle leggi applicabili in materia di privacy.</p>
+            <p>Per maggiori informazioni sulle informazioni personali che raccogliamo, su come le utilizziamo e sui fornitori di servizi che potrebbero riceverle, consulta la nostra <a href=@($"/{Culture}/legal/privacy")>Informativa sulla privacy</a>.</p>
+            <p>Per domande su questa pagina o sulle tue scelte in materia di privacy, contattaci all’indirizzo <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.de)
+    {
+        <h1 class="support-title">Meine personenbezogenen Daten nicht verkaufen oder weitergeben</h1>
+        <div class="support-section">
+            <p>Wir verkaufen personenbezogene Daten nicht gegen Geld. Die Offenlegung bestimmter personenbezogener Daten gegenüber Analyse- oder Werbedienstleistern kann jedoch gemäß dem California Consumer Privacy Act in der durch den California Privacy Rights Act geänderten Fassung (CCPA/CPRA) als „Weitergabe“ zu Zwecken kontextübergreifender verhaltensbezogener Werbung gelten, auch wenn dafür kein Geld gezahlt wird.</p>
+            <p>Sie können dem Verkauf oder der Weitergabe Ihrer personenbezogenen Daten widersprechen, indem Sie uns unter <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> kontaktieren. Für eine Anfrage ist kein Benutzerkonto erforderlich. Wir prüfen und bearbeiten Ihre Anfrage gemäß den geltenden Datenschutzgesetzen.</p>
+            <p>Weitere Informationen zu den personenbezogenen Daten, die wir erheben, ihrer Verwendung und den Dienstleistern, die diese Daten erhalten können, finden Sie in unserer <a href=@($"/{Culture}/legal/privacy")>Datenschutzerklärung</a>.</p>
+            <p>Wenn Sie Fragen zu dieser Seite oder Ihren Datenschutzoptionen haben, kontaktieren Sie uns unter <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>.</p>
         </div>
     }
     else
     {
         <h1 class="support-title">Do Not Sell or Share My Personal Information</h1>
         <div class="support-section">
-            <p>We do not sell or share your personal data in exchange for money or any other valuable consideration.</p>
-            <p>However, certain third-party tools used on our platform (e.g., for analytics or advertising) may collect data that could be considered a “share” under the California Consumer Privacy Act (CCPA/CPRA).</p>
-            <p>To manage your preferences, please adjust your cookie settings or disable tracking via your browser.</p>
-            <p>If you are a California resident and have any questions, contact us at: support@streamingdiscovery.com</p>
+            <p>We do not sell personal information in exchange for money. However, some disclosures of personal information to analytics or advertising providers may be considered “sharing” for cross-context behavioral advertising under the California Consumer Privacy Act, as amended by the California Privacy Rights Act (CCPA/CPRA), even when no money is exchanged.</p>
+            <p>You may request to opt out of the sale or sharing of your personal information by contacting us at <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. You do not need to create an account to submit a request. We will review and process your request as required by applicable privacy laws.</p>
+            <p>For more information about the personal information we collect, how we use it, and the service providers that may receive it, please read our <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.</p>
+            <p>If you have questions about this page or your privacy choices, contact us at <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>.</p>
         </div>
     }
+    @* TODO: Implement an opt-out preference mechanism and honor applicable Global Privacy Control signals. *@
 </div>
 
 @code {

@@ -25,7 +25,7 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
         var sub = Subscriptions.SingleOrDefault(s => string.Equals(s.SubscriptionId, id, StringComparison.Ordinal));
         if (sub != null) return sub;
 
-        sub = Subscriptions.OrderBy(p => p.CreatedAt).LastOrDefault(p => p.Provider == provider) ?? throw new NotificationException("No subscriptions found.");
+        sub = Subscriptions.OrderBy(p => p.CreatedAt).LastOrDefault(p => p.Provider == provider) ?? throw new NotificationException("No subscriptions were found.");
         sub.SubscriptionId = id;
         return sub;
     }

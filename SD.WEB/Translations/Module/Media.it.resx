@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Cast" xml:space="preserve">
-    <value>Lancio</value>
+    <value>Cast</value>
   </data>
   <data name="Countries" xml:space="preserve">
     <value>Paesi</value>
   </data>
   <data name="DeliveryModel" xml:space="preserve">
-    <value>Modelli</value>
+    <value>Modello</value>
   </data>
   <data name="DeliveryModelAds" xml:space="preserve">
     <value>Annunci</value>
@@ -135,9 +135,6 @@
   <data name="DeliveryModelFlatRate" xml:space="preserve">
     <value>Forfettario</value>
   </data>
-  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
-    <value>Tariffa fissa/Acquisto</value>
-  </data>
   <data name="DeliveryModelFree" xml:space="preserve">
     <value>Gratuito</value>
   </data>
@@ -145,7 +142,7 @@
     <value>Affitto</value>
   </data>
   <data name="Directing" xml:space="preserve">
-    <value>Dirigere</value>
+    <value>Regia</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Durata</value>
@@ -193,10 +190,10 @@
     <value>Regione</value>
   </data>
   <data name="Release" xml:space="preserve">
-    <value>Notizia</value>
+    <value>Nuove uscite</value>
   </data>
   <data name="TabAbout" xml:space="preserve">
-    <value>Di</value>
+    <value>Informazioni</value>
   </data>
   <data name="TabCollection1" xml:space="preserve">
     <value>Sequel</value>
@@ -214,15 +211,18 @@
     <value>Questo titolo non è disponibile nella tua regione: {0}</value>
   </data>
   <data name="TitleNotReleased" xml:space="preserve">
-    <value>Film/serie non ancora pubblicati</value>
+    <value>Questo film o questa serie non è ancora uscito.</value>
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>Raccomandato</value>
+  </data>
+  <data name="JustWatchAttribution" xml:space="preserve">
+    <value>Le informazioni sulla disponibilità in streaming sono fornite da</value>
   </data>
   <data name="WhereToWatch" xml:space="preserve">
     <value>Dove guardare</value>
   </data>
   <data name="Writing" xml:space="preserve">
-    <value>Scrivere</value>
+    <value>Sceneggiatura</value>
   </data>
 </root>

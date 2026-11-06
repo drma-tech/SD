@@ -1,247 +1,457 @@
 ﻿@page "/{culture}/legal/terms"
 @inherits PageCore<TermsPage>
 
-<HeadComponent Title="@Translations.Module.Legal.TermsUse" Url=@($"/{Culture}/legal/terms") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Module.Legal.TermsUse" Url=@($"/{Culture}/legal/terms") Index="true"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
     {
-        <h1 class="support-title">Termos de Uso</h1>
-        <div class="support-subtitle">
-            Bem-vindo ao <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)!<br />
-            Ao acessar ou usar este serviço, você concorda com estes Termos de Uso. Por favor, leia-os com atenção.
-        </div>
+        <h1 class="support-title">Termos de Uso</h1><div class="support-subtitle">Bem-vindo ao <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)!<br />Estes Termos de Uso ("Termos") regem seu acesso e uso do serviço. Ao utilizá-lo, você concorda com estes Termos. Se não concordar, não utilize o serviço.</div>
         <div class="support-section">
             <h2>1. Sobre o Serviço</h2>
-            <p>O <b>@AppInfo.Title</b> é uma plataforma global projetada para ajudar usuários a descobrir, organizar e gerenciar conteúdo de streaming em diversos serviços. Embora a maioria dos recursos esteja disponível gratuitamente, alguns são exclusivos para usuários autenticados ou assinantes com planos mensais ou anuais ativos.</p>
-            <p>O serviço é operado pela DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), registrada na Estônia, e é destinado apenas para uso pessoal e não comercial.</p>
+            <p><b>@AppInfo.Title</b> é operado pela DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), empresa registrada na Estônia. O serviço ajuda a descobrir, organizar e gerenciar informações sobre filmes, séries e serviços de streaming. Alguns recursos podem exigir conta ou assinatura paga.</p><p>O serviço destina-se ao uso pessoal e não comercial. Sem autorização prévia por escrito, você não pode revender, redistribuir ou explorar comercialmente o serviço ou seus dados, nem usá-los para criar um produto concorrente.</p>
         </div>
         <div class="support-section">
-            <h2>2. Conta, Dados e Privacidade</h2>
-            <p>Você pode usar a plataforma anonimamente. No entanto, recursos como a criação de listas privadas ou o gerenciamento de preferências de conta exigem autenticação. Após o login, coletamos seu e-mail, carimbos de data e hora de login, endereço IP e informações do dispositivo. Esses dados são usados ​​exclusivamente para segurança, diagnóstico, personalização e análise.</p>
-            <p>Não coletamos ou armazenamos dados pessoais sensíveis ou geolocalização precisa sem consentimento explícito.</p>
-            <p>Implementamos medidas técnicas e organizacionais razoáveis ​​para proteger seus dados contra acesso ou divulgação não autorizados.</p>
-            <p>Usamos ferramentas de análise como o Google Analytics e o Microsoft Clarity para entender os padrões de uso. Para mais detalhes, consulte nossa <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a>.</p>
+            <h2>2. Elegibilidade e Contas</h2>
+            <p>Você deve ter capacidade legal para celebrar um contrato vinculante. Menores de idade podem utilizar o serviço com autorização e participação dos pais ou responsável legal, quando permitido por lei.</p><p>Alguns recursos não exigem conta; outros, como listas privadas e preferências, podem exigir cadastro. Você deve fornecer informações precisas, proteger suas credenciais e nos avisar sobre suspeitas de acesso não autorizado. Você é responsável pelas atividades em sua conta, salvo disposição legal em contrário.</p><p>Podemos recusar cadastros ou solicitar verificações adicionais quando razoavelmente necessário para proteger o serviço, usuários ou nossos interesses legais.</p>
         </div>
         <div class="support-section">
-            <h2>3. Funcionalidades e Assinatura</h2>
-            <p>O <b>@AppInfo.Title</b> inclui listas públicas e privadas:</p>
-            <ul>
-                <li><b>Listas públicas</b> são curadas e mantidas pela plataforma e podem ser acessadas ou compartilhadas por qualquer usuário, autenticado ou não.</li>
-                <li><b>Listas privadas</b> são criadas por usuários autenticados. Usuários gratuitos têm um número limitado de itens por lista. Assinantes têm acesso a limites maiores.</li>
-            </ul>
-            <p>As assinaturas estão disponíveis mensal ou anualmente, renovam-se automaticamente salvo cancelamento, e são processadas por nosso parceiro de pagamentos (Paddle). Os preços são exibidos em dólares americanos e convertidos conforme necessário pelo processador de pagamentos.</p>
+            <h2>3. Dados da Conta e Privacidade</h2>
+            <p>Conforme os recursos utilizados, podemos tratar e-mail, registros de autenticação, endereço IP, informações técnicas e do dispositivo, preferências e conteúdo criado ou salvo. Usamos esses dados para fornecer, proteger, manter, personalizar e aprimorar o serviço e para nos comunicarmos com você.</p><p>Nossa <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a> explica o tratamento de dados pessoais e o exercício dos seus direitos. Adotamos medidas técnicas e organizacionais razoáveis, mas nenhum método de transmissão ou armazenamento é totalmente seguro.</p>
         </div>
         <div class="support-section">
-            <h2>4. Conteúdo de Terceiros</h2>
-            <p>O <b>@AppInfo.Title</b> utiliza dados, imagens e metadados de provedores externos como TMDb, JustWatch e outros. Não temos afiliação com esses serviços, e todo conteúdo de terceiros permanece propriedade de seus respectivos detentores.</p>
-            <p>Não oferecemos streaming, download ou reprodução de conteúdo protegido por direitos autorais. Todos os créditos estão disponíveis em nossa página de créditos.</p>
+            <h2>4. Recursos, Listas e Conteúdo do Usuário</h2>
+            <p>O serviço pode oferecer listas e ferramentas para organizar informações sobre filmes e séries. Recursos, limites e disponibilidade podem variar conforme a conta ou assinatura e mudar ao longo do tempo.</p><p>Você é responsável pelo conteúdo que criar, adicionar ou compartilhar. Não envie conteúdo ilegal, enganoso, difamatório, abusivo, infrator ou proibido por estes Termos ou pela legislação. Listas públicas e links compartilhados podem ser acessados e compartilhados por terceiros. Não compartilhe informações que queira manter privadas.</p><p>Você mantém os direitos sobre o conteúdo enviado e nos concede licença não exclusiva, mundial e isenta de royalties para hospedá-lo, armazená-lo, reproduzi-lo e exibi-lo somente quando necessário para operar, proteger e fornecer o serviço e seus recursos de compartilhamento. A licença termina com a exclusão, exceto para cópias de segurança, retenção legal ou conteúdo já compartilhado ou acessado por terceiros.</p>
         </div>
         <div class="support-section">
-            <h2>5. Propriedade Intelectual</h2>
-            <p>A estrutura, organização e apresentação visual dos dados no <b>@AppInfo.Title</b> são originais e protegidas sob a licença MPL-2.0 ou licenças abertas similares. Todos os recursos de terceiros permanecem sob seus respectivos direitos autorais e marcas registradas.</p>
-            <p>A reprodução, raspagem de dados (scraping), engenharia reversa ou redistribuição não autorizada de elementos da plataforma é estritamente proibida.</p>
+            <h2>5. Assinaturas, Pagamentos e Cobrança</h2>
+            <p>Alguns recursos podem ser pagos. Planos, preços, períodos, moedas, formas de pagamento e impostos ou tarifas serão apresentados antes da compra. Opções e funcionalidades podem variar por país, plataforma, conta e provedor. O serviço pode oferecer assinaturas recorrentes, compras no aplicativo, promoções ou outros recursos pagos.</p><p>Pagamentos podem ser processados por provedores terceirizados ou operadores de plataforma. Só podem ser usadas as opções exibidas no checkout, e os termos desses provedores também podem se aplicar.</p><p>Salvo indicação diferente no checkout, assinaturas renovam automaticamente até o cancelamento. Você autoriza a cobrança do valor exibido e dos tributos e tarifas aplicáveis. Gerencie ou cancele pelo serviço ou pelo provedor/plataforma da compra. O cancelamento geralmente interrompe renovações futuras, mas não gera automaticamente reembolso do período atual.</p><p>Reembolsos, contestações e ajustes estão sujeitos às políticas do provedor e aos direitos legais obrigatórios. Talvez seja necessário contatar quem processou a compra. Excluir a conta não cancela a assinatura nem interrompe cobranças futuras; cancele assinaturas ativas separadamente.</p>
         </div>
         <div class="support-section">
-            <h2>6. Uso Aceitável</h2>
-            <p>Os usuários concordam em usar a plataforma de forma legal e responsável. As ações proibidas incluem:</p>
-            <ul>
-                <li>Tentativa de burlar os limites ou restrições da plataforma.</li>
-                <li>Uso de bots, scrapers ou ferramentas automatizadas sem permissão explícita.</li>
-                <li>Envio ou compartilhamento de conteúdo que infrinja direitos de propriedade intelectual ou leis aplicáveis.</li>
-            </ul>
+            <h2>6. Conteúdo e Serviços de Terceiros</h2>
+            <p>O serviço pode utilizar ou vincular conteúdo e serviços de terceiros, incluindo metadados, imagens, avaliações, disponibilidade de streaming, links e informações de provedores. Também podemos depender de terceiros para autenticação, hospedagem, armazenamento, comunicações, pagamentos, análise, publicidade, feedback, segurança e monitoramento. Provedores e recursos podem mudar e variar por região ou plataforma.</p><p>Não operamos os serviços de streaming listados nem hospedamos, fornecemos ou autorizamos streaming, download ou reprodução de seus filmes e séries. Não somos afiliados a terceiros, salvo indicação expressa. Conteúdo e serviços de terceiros permanecem sujeitos aos direitos e termos de seus titulares.</p><p>Catálogos, disponibilidade, preços, links e outras informações podem estar incompletos, incorretos ou mudar por região e ao longo do tempo. Confirme os detalhes diretamente com o provedor antes de comprar ou assinar. O uso de serviços de terceiros é regido por seus próprios termos e políticas. Na medida permitida por lei, não nos responsabilizamos por eles. Atribuições e licenças podem constar na página de créditos.</p>
         </div>
         <div class="support-section">
-            <h2>7. Listas de Usuário</h2>
-            <p>Usuários autenticados podem criar listas privadas para organizar conteúdo. Essas listas são pessoais e não visíveis para outros, salvo se compartilhadas explicitamente pelo usuário. O número de itens por lista é limitado para usuários gratuitos e ampliado para assinantes.</p>
-            <p>Listas públicas são curadas pela plataforma e estão disponíveis para todos os usuários. Podem ser navegadas e compartilhadas livremente sem necessidade de autenticação.</p>
+            <h2>7. Propriedade Intelectual</h2>
+            <p>O nome, marca, logotipos, textos originais, interface e demais materiais originais pertencem à DRMA Tech ou são licenciados a ela e protegidos por leis de propriedade intelectual. Estes Termos concedem apenas direito limitado de uso do serviço.</p><p>Alguns componentes de software podem estar sujeitos a licenças de código aberto identificadas em seus avisos ou repositórios. Essas licenças não abrangem automaticamente marca, apresentação, dados de terceiros, imagens ou outros materiais. Materiais de terceiros pertencem a seus respectivos titulares.</p>
         </div>
         <div class="support-section">
-            <h2>8. Limitação de Responsabilidade</h2>
-            <p>O <b>@AppInfo.Title</b> é fornecido "como está" e "conforme disponível". Não garantimos serviço ininterrupto, precisão total ou adequação para um propósito específico.</p>
-            <p>Não nos responsabilizamos por imprecisões, metadados desatualizados ou omissões em conteúdos de terceiros. O uso é por sua conta e risco.</p>
-            <p>A plataforma pode ser modificada, suspensa ou descontinuada a qualquer momento sem aviso prévio.</p>
+            <h2>8. Uso Aceitável e Restrições</h2>
+            <p>O serviço só pode ser utilizado para fins lícitos. É proibido:</p><ul><li>Usá-lo para fins ilegais, fraudulentos, enganosos ou prejudiciais.</li><li>Raspar, coletar sistematicamente ou extrair dados por meios automatizados, salvo autorização ou permissão legal.</li><li>Usar bots, rastreadores ou scripts que sobrecarreguem injustificadamente o serviço ou contornem restrições técnicas.</li><li>Contornar assinaturas, limites de uso, controles de acesso ou outras restrições.</li><li>Copiar, modificar, fazer engenharia reversa, descompilar ou criar obras derivadas, salvo quando permitido por lei ou licença de código aberto.</li><li>Interferir na segurança ou operação, ou tentar acesso não autorizado a contas, sistemas ou dados.</li><li>Enviar conteúdo que infrinja direitos ou leis aplicáveis.</li><li>Extrair ou reutilizar conteúdo sem autorização para criar ou treinar banco de dados ou serviço concorrente.</li><li>Revender, sublicenciar ou explorar comercialmente o serviço ou conteúdo sem autorização escrita.</li></ul><p>Podemos investigar violações e adotar medidas proporcionais, incluindo restringir acesso ou suspender ou encerrar contas, conforme a lei.</p>
         </div>
         <div class="support-section">
-            <h2>9. Alterações</h2>
-            <p>Estes Termos podem ser atualizados sem aviso prévio. Mudanças significativas serão comunicadas por e-mail ou notificação na plataforma sempre que possível. O uso contínuo da plataforma após as alterações implica aceitação dos novos termos.</p>
+            <h2>9. Disponibilidade e Alterações do Serviço</h2>
+            <p>Buscamos manter o serviço disponível, mas não garantimos disponibilidade ininterrupta, livre de erros, segura ou universal. Alguns recursos dependem de sistemas e dados de terceiros fora do nosso controle.</p><p>Podemos adicionar, alterar, restringir, suspender ou descontinuar recursos. Avisaremos sobre alterações relevantes quando exigido por lei.</p>
         </div>
         <div class="support-section">
-            <h2>10. Contato</h2>
-            <p>Para suporte, feedback ou questões legais, visite nossa página de suporte ou utilize as ferramentas de contato disponíveis na plataforma.</p>
+            <h2>10. Isenções de Responsabilidade</h2>
+            <p>Na máxima extensão permitida por lei, o serviço é fornecido “no estado em que se encontra” e “conforme disponível”. Não garantimos que informações de terceiros, incluindo descrições, avaliações, disponibilidade de streaming, preços ou links, sejam precisas, completas, atuais ou continuamente disponíveis.</p><p>Recursos de descoberta e recomendação são informativos. Verifique os detalhes com o provedor antes de confiar neles. Nada exclui direitos do consumidor ou outras proteções que não possam ser legalmente excluídos.</p>
         </div>
         <div class="support-section">
-            <h2>11. Conformidade Legal</h2>
-            <p>Você é responsável por usar o serviço conforme as leis locais, incluindo regulamentos de direitos autorais e privacidade de dados. A plataforma é desenvolvida para estar em conformidade com o GDPR e padrões internacionais relacionados.</p>
-            <p>O serviço é regido sob a jurisdição da Estônia.</p>
+            <h2>11. Limitação de Responsabilidade</h2>
+            <p>Na máxima extensão permitida por lei, a DRMA Tech não responde por danos indiretos, incidentais, especiais, consequenciais ou punitivos, nem por perda de lucros, receita, oportunidades comerciais, reputação ou dados decorrentes do uso ou impossibilidade de uso do serviço.</p><p>A responsabilidade total da DRMA Tech relacionada ao serviço ou a estes Termos limita-se, na máxima extensão permitida, ao valor pago por você pelo serviço nos 12 meses anteriores ao evento que originou a reclamação. Se nada foi pago, o limite é EUR 50.</p><p>Esses limites não se aplicam a responsabilidades que não possam ser excluídas ou limitadas por lei, incluindo direitos obrigatórios do consumidor, fraude ou conduta intencional indevida.</p>
         </div>
         <div class="support-section">
-            <h2>12. Legislação Aplicável e Resolução de Disputas</h2>
-            <p>Estes Termos são regidos pelas leis da Estônia. Quaisquer disputas serão resolvidas sob a jurisdição exclusiva dos tribunais de Tallinn, Estônia, em inglês, salvo exigência contrária por leis locais aplicáveis ou em casos de investigações criminais.</p>
+            <h2>12. Suspensão, Encerramento e Exclusão da Conta</h2>
+            <p>Você pode parar de usar o serviço e solicitar a exclusão da conta pelas opções disponíveis na conta ou no suporte. Assinaturas ativas devem ser canceladas separadamente junto ao provedor ou plataforma, e a exclusão pode não estar disponível até o cancelamento.</p><p>Podemos suspender ou encerrar o acesso se acreditarmos razoavelmente que houve violação destes Termos, risco de segurança ou jurídico, fraude ou prejuízo ao serviço ou a outros usuários. Quando apropriado e permitido por lei, avisaremos e daremos oportunidade para resolver o problema.</p><p>O encerramento não afeta direitos ou obrigações anteriores. Disposições que devam continuar por sua natureza, incluindo propriedade intelectual, isenções, responsabilidade e disputas, permanecem em vigor.</p>
         </div>
-        <div class="support-footer">
-            <p>Última atualização: 5 de agosto de 2025</p>
-            <p>Ao utilizar a plataforma, você concorda com estes Termos de Uso e com a <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a>.</p>
+        <div class="support-section">
+            <h2>13. Indenização</h2>
+            <p>Na medida permitida por lei, você responde por perdas, responsabilidades e custos razoáveis decorrentes de reclamações de terceiros causadas pelo uso ilegal do serviço, violação destes Termos ou conteúdo que infrinja direitos alheios. Isso não transfere a você responsabilidade por nossos próprios atos ou omissões quando a lei proibir.</p>
         </div>
+        <div class="support-section">
+            <h2>14. Alterações destes Termos</h2>
+            <p>Podemos atualizar estes Termos publicando uma versão revisada nesta página. Avisaremos adicionalmente sobre alterações relevantes quando razoavelmente possível ou exigido por lei.</p><p>As alterações entram em vigor na data indicada ou, se não houver data, na publicação. Quando a aceitação expressa for legalmente exigida, solicitaremos. Caso contrário, continuar usando o serviço após a vigência significa aceitar as alterações. Se discordar, pare de usar o serviço.</p>
+        </div>
+        <div class="support-section">
+            <h2>15. Legislação Aplicável e Resolução de Disputas</h2>
+            <p>Estes Termos são regidos pelas leis da Estônia, sem prejuízo das proteções obrigatórias ao consumidor em seu país de residência. Nada elimina direitos irrenunciáveis segundo a legislação aplicável.</p><p>Observadas as regras obrigatórias de jurisdição do consumidor, disputas serão submetidas aos tribunais competentes da Estônia. Conforme a lei aplicável, você também poderá iniciar procedimentos em seu local de residência.</p>
+        </div>
+        <div class="support-section">
+            <h2>16. Disposições Gerais</h2>
+            <p>Se uma disposição for inválida ou inexequível, as demais permanecem eficazes. Podemos interpretar ou substituir a disposição afetada para preservar sua finalidade na maior medida legal possível. A falta de aplicação não constitui renúncia.</p><p>Estes Termos e as políticas incorporadas constituem o acordo entre você e a DRMA Tech sobre o serviço, observados os direitos legais obrigatórios. Não respondemos por atrasos ou falhas causados por eventos fora de nosso controle razoável, incluindo desastres naturais, conflitos, atos governamentais, falhas de infraestrutura ou interrupções generalizadas de terceiros.</p><p>Você não pode transferir direitos ou obrigações sem consentimento escrito. Podemos transferir estes Termos em caso de fusão, reestruturação ou transferência do serviço, sem reduzir seus direitos legais obrigatórios.</p>
+        </div>
+        <div class="support-section">
+            <h2>17. Contato e Suporte</h2>
+            <p>Para suporte, envie e-mail para <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>, use o recurso Feedback ou visite a <a href=@($"/{Culture}/help")>Central de Ajuda</a> para perguntas frequentes, solução de problemas, feedback e ferramentas de dados e exclusão da conta.</p><p>Para assuntos corporativos ou consultas gerais, escreva para <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>. Para solicitações legais ou de privacidade, use os canais disponíveis e identifique a natureza da solicitação.</p>
+        </div>
+        <div class="support-footer"><p>Última atualização: 5 de novembro de 2026</p><p>Ao utilizar a plataforma, você declara que leu e concorda com estes Termos e com nossa <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a>.</p></div>
     }
     else if (Language == AppLanguage.es)
     {
-        <h1 class="support-title">Términos de Uso</h1>
-        <div class="support-subtitle">
-            Bienvenido a <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)!<br />
-            Al acceder o utilizar este servicio, aceptas estos Términos de Uso. Por favor, léelos cuidadosamente.
+        <h1 class="support-title">Términos de Uso</h1><div class="support-subtitle">¡Te damos la bienvenida a <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)!<br />Estos Términos de Uso ("Términos") rigen tu acceso y uso del servicio. Al utilizarlo, aceptas estos Términos. Si no estás de acuerdo, no lo utilices.</div>
+        <div class="support-section">
+            <h2>1. Acerca del Servicio</h2>
+            <p><b>@AppInfo.Title</b> es operado por DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), empresa registrada en Estonia. Ayuda a descubrir, organizar y gestionar información sobre películas, series y servicios de streaming. Algunas funciones pueden requerir una cuenta o suscripción de pago.</p><p>El servicio es para uso personal y no comercial. Sin autorización previa por escrito, no puedes revender, redistribuir ni explotar comercialmente el servicio o sus datos, ni utilizarlos para crear un producto competidor.</p>
         </div>
         <div class="support-section">
-            <h2>1. Sobre el Servicio</h2>
-            <p><b>@AppInfo.Title</b> es una plataforma global diseñada para ayudar a los usuarios a descubrir, organizar y gestionar contenido de streaming de varios servicios. Aunque la mayoría de las funciones están disponibles de forma gratuita, algunas son exclusivas para usuarios autenticados o suscriptores con planes mensuales o anuales activos.</p>
-            <p>El servicio es operado por DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), registrada en Estonia, y está destinado únicamente para uso personal y no comercial.</p>
+            <h2>2. Requisitos y Cuentas</h2>
+            <p>Debes tener capacidad legal para celebrar un acuerdo vinculante. Los menores de edad pueden utilizar el servicio con permiso y participación de sus padres o tutor legal, cuando la ley lo permita.</p><p>Algunas funciones no requieren cuenta; otras, como listas privadas y preferencias, pueden requerir registro. Debes proporcionar información precisa, proteger tus credenciales y notificarnos sospechas de acceso no autorizado. Eres responsable de la actividad de tu cuenta, salvo disposición legal en contrario.</p><p>Podemos rechazar registros o solicitar verificaciones adicionales cuando sea razonablemente necesario para proteger el servicio, a los usuarios o nuestros intereses legales.</p>
         </div>
         <div class="support-section">
-            <h2>2. Cuenta, Datos y Privacidad</h2>
-            <p>Puede usar la plataforma de forma anónima. Sin embargo, funciones como la creación de listas privadas o la gestión de las preferencias de la cuenta requieren autenticación. Al iniciar sesión, recopilamos su correo electrónico, las marcas de tiempo de inicio de sesión, la dirección IP y la información del dispositivo. Estos datos se utilizan únicamente con fines de seguridad, diagnóstico, personalización y análisis.</p>
-            <p>No recopilamos ni almacenamos datos personales sensibles ni la geolocalización precisa sin su consentimiento explícito.</p>
-            <p>Implementamos medidas técnicas y organizativas razonables para proteger sus datos del acceso o la divulgación no autorizados.</p>
-            <p>Utilizamos herramientas de análisis como Google Analytics y Microsoft Clarity para comprender los patrones de uso. Para obtener más información, consulte nuestra <a href=@($"/{Culture}/legal/privacy")>Política de Privacidad</a>.</p>
+            <h2>3. Datos de la Cuenta y Privacidad</h2>
+            <p>Según las funciones que utilices, podemos tratar tu correo electrónico, registros de autenticación, dirección IP, información técnica y del dispositivo, preferencias y contenido creado o guardado. Utilizamos estos datos para proporcionar, proteger, mantener, personalizar y mejorar el servicio, y para comunicarnos contigo.</p><p>Nuestra <a href=@($"/{Culture}/legal/privacy")>Política de Privacidad</a> explica el tratamiento de datos personales y cómo ejercer tus derechos. Aplicamos medidas técnicas y organizativas razonables, pero ningún método de transmisión o almacenamiento es completamente seguro.</p>
         </div>
         <div class="support-section">
-            <h2>3. Funcionalidades y Suscripción</h2>
-            <p><b>@AppInfo.Title</b> incluye listas públicas y privadas:</p>
-            <ul>
-                <li><b>Listas públicas</b> son seleccionadas y mantenidas por la plataforma y pueden ser accedidas o compartidas por cualquier usuario, autenticado o no.</li>
-                <li><b>Listas privadas</b> son creadas por usuarios autenticados. Los usuarios gratuitos tienen un número limitado de elementos por lista. Los suscriptores tienen acceso a límites más altos.</li>
-            </ul>
-            <p>Las suscripciones están disponibles de forma mensual o anual, se renuevan automáticamente a menos que se cancelen, y son procesadas por nuestro socio de pagos (Paddle). Los precios se muestran en USD y se convierten automáticamente cuando sea necesario por el procesador de pagos.</p>
+            <h2>4. Funciones, Listas y Contenido del Usuario</h2>
+            <p>El servicio puede ofrecer listas y herramientas para organizar información sobre películas y series. Las funciones, los límites y la disponibilidad pueden variar según la cuenta o suscripción y cambiar con el tiempo.</p><p>Eres responsable del contenido que crees, añadas o compartas. No envíes contenido ilegal, engañoso, difamatorio, abusivo, que infrinja derechos o esté prohibido por estos Términos o la legislación aplicable. Otras personas pueden acceder y compartir listas públicas o enlaces compartidos. No compartas información que quieras mantener privada.</p><p>Conservas los derechos sobre el contenido enviado y nos otorgas una licencia no exclusiva, mundial y libre de regalías para alojarlo, almacenarlo, reproducirlo y mostrarlo solo cuando sea necesario para operar, proteger y proporcionar el servicio y sus funciones para compartir. La licencia termina al eliminarse el contenido, salvo copias de seguridad, conservación legal o contenido ya compartido o al que terceros hayan accedido.</p>
         </div>
         <div class="support-section">
-            <h2>4. Contenido de Terceros</h2>
-            <p><b>@AppInfo.Title</b> utiliza datos, imágenes y metadatos de proveedores externos como TMDb, JustWatch y otros. No estamos afiliados con estos servicios, y todo el contenido de terceros sigue siendo propiedad de sus respectivos dueños.</p>
-            <p>No ofrecemos transmisión, descarga ni reproducción de contenido protegido por derechos de autor. Todos los créditos se encuentran en nuestra página de créditos.</p>
+            <h2>5. Suscripciones, Pagos y Facturación</h2>
+            <p>Algunas funciones pueden ser de pago. Los planes, precios, períodos, monedas, métodos de pago e impuestos o cargos se mostrarán antes de la compra. Las opciones y funciones pueden variar según el país, la plataforma, la cuenta y el proveedor. El servicio puede ofrecer suscripciones recurrentes, compras dentro de la aplicación, promociones u otras funciones de pago.</p><p>Los pagos pueden ser procesados por proveedores externos u operadores de plataformas. Solo pueden utilizarse las opciones mostradas durante el pago, y también pueden aplicarse los términos de dichos proveedores.</p><p>Salvo que se indique lo contrario durante la compra, las suscripciones se renuevan automáticamente hasta su cancelación. Autorizas el cobro del importe mostrado y los impuestos y cargos aplicables. Gestiona o cancela la suscripción a través del servicio o del proveedor/plataforma de compra. La cancelación normalmente detiene futuras renovaciones, pero no da derecho automáticamente al reembolso del período actual.</p><p>Los reembolsos, disputas y ajustes están sujetos a las políticas del proveedor y a tus derechos legales obligatorios. Puede que debas contactar con quien procesó la compra. Eliminar tu cuenta no cancela la suscripción ni detiene futuros cobros; cancela por separado las suscripciones activas.</p>
         </div>
         <div class="support-section">
-            <h2>5. Propiedad Intelectual</h2>
-            <p>La estructura, organización y presentación visual de los datos en <b>@AppInfo.Title</b> son originales y están protegidas por la licencia MPL-2.0 u otras licencias abiertas similares. Todos los recursos de terceros conservan sus respectivos derechos de autor y marcas registradas.</p>
-            <p>Está estrictamente prohibida la reproducción, el scraping, la ingeniería inversa o la redistribución no autorizada de los elementos de la plataforma.</p>
+            <h2>6. Contenido y Servicios de Terceros</h2>
+            <p>El servicio puede utilizar o enlazar contenido y servicios de terceros, incluidos metadatos, imágenes, valoraciones, disponibilidad de streaming, enlaces e información de proveedores. También podemos depender de terceros para autenticación, alojamiento, almacenamiento, comunicaciones, pagos, análisis, publicidad, comentarios, seguridad y supervisión. Los proveedores y funciones pueden cambiar y variar según la región o plataforma.</p><p>No operamos los servicios de streaming incluidos ni alojamos, proporcionamos o autorizamos la transmisión, descarga o reproducción de sus películas y series. No estamos afiliados a terceros salvo indicación expresa. El contenido y los servicios de terceros siguen sujetos a los derechos y términos de sus titulares.</p><p>Los catálogos, la disponibilidad, los precios, los enlaces y otra información pueden estar incompletos, ser inexactos o cambiar según la región y el tiempo. Confirma los detalles directamente con el proveedor antes de comprar o suscribirte. El uso de servicios de terceros se rige por sus propios términos y políticas. No somos responsables de ellos en la medida permitida por la ley. La atribución y las licencias pueden consultarse en nuestra página de créditos.</p>
         </div>
         <div class="support-section">
-            <h2>6. Uso Aceptable</h2>
-            <p>Los usuarios se comprometen a utilizar la plataforma de forma legal y responsable. Las acciones prohibidas incluyen:</p>
-            <ul>
-                <li>Intentar eludir los límites o restricciones de la plataforma.</li>
-                <li>Usar bots, scrapers o herramientas automatizadas sin permiso explícito.</li>
-                <li>Subir o compartir contenido que infrinja los derechos de propiedad intelectual o la legislación aplicable.</li>
-            </ul>
+            <h2>7. Propiedad Intelectual</h2>
+            <p>El nombre, la marca, los logotipos, los textos originales, la interfaz y demás materiales originales pertenecen a DRMA Tech o están licenciados a esta, y están protegidos por las leyes de propiedad intelectual. Estos Términos solo conceden un derecho limitado de uso del servicio.</p><p>Algunos componentes de software pueden estar sujetos a licencias de código abierto identificadas en sus avisos o repositorios. Estas licencias no cubren automáticamente la marca, la presentación, los datos de terceros, las imágenes u otros materiales. Los materiales de terceros pertenecen a sus respectivos titulares.</p>
         </div>
         <div class="support-section">
-            <h2>7. Listas de Usuario</h2>
-            <p>Los usuarios autenticados pueden crear listas privadas para organizar contenido. Estas listas son personales y no visibles para otros, a menos que el usuario las comparta explícitamente. La cantidad de elementos por lista es limitada para usuarios gratuitos y ampliada para suscriptores.</p>
-            <p>Las listas públicas son seleccionadas por la plataforma y están disponibles para todos los usuarios. Se pueden explorar y compartir libremente sin necesidad de autenticación.</p>
+            <h2>8. Uso Aceptable y Restricciones</h2>
+            <p>Solo puedes utilizar el servicio con fines legales. Está prohibido:</p><ul><li>Utilizarlo con fines ilegales, fraudulentos, engañosos o perjudiciales.</li><li>Extraer, recopilar sistemáticamente u obtener datos mediante medios automatizados, salvo autorización o permiso legal.</li><li>Utilizar bots, rastreadores o scripts que sobrecarguen injustificadamente el servicio o eludan restricciones técnicas.</li><li>Eludir suscripciones, límites de uso, controles de acceso u otras restricciones.</li><li>Copiar, modificar, aplicar ingeniería inversa, descompilar o crear obras derivadas, salvo que lo permita la ley o una licencia de código abierto.</li><li>Interferir con la seguridad u operación, o intentar acceder sin autorización a cuentas, sistemas o datos.</li><li>Enviar contenido que infrinja derechos o leyes aplicables.</li><li>Extraer o reutilizar contenido sin autorización para crear o entrenar una base de datos o servicio competidor.</li><li>Revender, sublicenciar o explotar comercialmente el servicio o su contenido sin permiso escrito.</li></ul><p>Podemos investigar infracciones y adoptar medidas proporcionales, incluida la restricción del acceso o la suspensión o cancelación de cuentas, conforme a la ley.</p>
         </div>
         <div class="support-section">
-            <h2>8. Limitación de Responsabilidad</h2>
-            <p><b>@AppInfo.Title</b> se proporciona "tal cual" y "según disponibilidad". No garantizamos un servicio ininterrumpido, precisión total ni adecuación para un propósito específico.</p>
-            <p>No somos responsables por inexactitudes, metadatos desactualizados u omisiones en el contenido de terceros. El uso corre por tu cuenta y riesgo.</p>
-            <p>La plataforma puede ser modificada, suspendida o descontinuada en cualquier momento sin previo aviso.</p>
+            <h2>9. Disponibilidad y Cambios del Servicio</h2>
+            <p>Nos esforzamos por mantener el servicio disponible, pero no garantizamos disponibilidad ininterrumpida, sin errores, segura o universal. Algunas funciones dependen de sistemas y datos de terceros fuera de nuestro control.</p><p>Podemos añadir, modificar, restringir, suspender o interrumpir funciones. Avisaremos de cambios importantes cuando la ley lo exija.</p>
         </div>
         <div class="support-section">
-            <h2>9. Cambios</h2>
-            <p>Estos Términos pueden actualizarse sin previo aviso. Los cambios significativos serán comunicados por correo electrónico o notificación en la plataforma cuando sea posible. El uso continuado de la plataforma tras dichas actualizaciones implica la aceptación de los nuevos términos.</p>
+            <h2>10. Exenciones de Responsabilidad</h2>
+            <p>En la máxima medida permitida por la ley, el servicio se proporciona «tal cual» y «según disponibilidad». No garantizamos que la información de terceros, incluidas descripciones, valoraciones, disponibilidad de streaming, precios o enlaces, sea precisa, completa, actual o esté disponible continuamente.</p><p>Las funciones de descubrimiento y recomendación son informativas. Verifica los detalles con el proveedor antes de confiar en ellos. Nada excluye los derechos de los consumidores u otras protecciones que no puedan excluirse legalmente.</p>
         </div>
         <div class="support-section">
-            <h2>10. Contacto</h2>
-            <p>Para soporte, comentarios o asuntos legales, visita nuestra página de soporte o utiliza las herramientas de contacto de la plataforma.</p>
+            <h2>11. Limitación de Responsabilidad</h2>
+            <p>En la máxima medida permitida por la ley, DRMA Tech no responde por daños indirectos, incidentales, especiales, consecuentes o punitivos, ni por pérdidas de beneficios, ingresos, oportunidades comerciales, reputación o datos derivados del uso o la imposibilidad de usar el servicio.</p><p>La responsabilidad total de DRMA Tech relacionada con el servicio o estos Términos se limita, en la máxima medida permitida, al importe que nos hayas pagado por el servicio durante los 12 meses anteriores al hecho que origine la reclamación. Si no has pagado nada, el límite es de 50 EUR.</p><p>Estos límites no se aplican a responsabilidades que no puedan excluirse o limitarse legalmente, incluidos los derechos obligatorios de los consumidores, el fraude o la conducta dolosa.</p>
         </div>
         <div class="support-section">
-            <h2>11. Cumplimiento Legal</h2>
-            <p>Eres responsable de utilizar el servicio conforme a las leyes locales, incluyendo las regulaciones sobre derechos de autor y privacidad de datos. La plataforma está desarrollada para cumplir con el GDPR y otros estándares internacionales aplicables.</p>
-            <p>El servicio se rige bajo la jurisdicción de Estonia.</p>
+            <h2>12. Suspensión, Terminación y Eliminación de la Cuenta</h2>
+            <p>Puedes dejar de utilizar el servicio y solicitar la eliminación de tu cuenta mediante las opciones disponibles en la cuenta o soporte. Las suscripciones activas deben cancelarse por separado a través del proveedor o plataforma correspondiente, y la eliminación puede no estar disponible hasta su cancelación.</p><p>Podemos suspender o cancelar el acceso si creemos razonablemente que has incumplido estos Términos, creado un riesgo de seguridad o legal, cometido fraude o perjudicado el servicio u otros usuarios. Cuando sea apropiado y legalmente permitido, te avisaremos y te daremos la oportunidad de resolver el problema.</p><p>La terminación no afecta a derechos u obligaciones anteriores. Las disposiciones que deban continuar por su naturaleza, incluidas propiedad intelectual, exenciones, responsabilidad y disputas, seguirán vigentes.</p>
         </div>
         <div class="support-section">
-            <h2>12. Legislación Aplicable y Resolución de Disputas</h2>
-            <p>Estos Términos se rigen por las leyes de Estonia. Cualquier disputa se resolverá bajo la jurisdicción exclusiva de los tribunales de Tallin, Estonia, en inglés, salvo que las leyes locales aplicables indiquen lo contrario o se trate de investigaciones criminales.</p>
+            <h2>13. Indemnización</h2>
+            <p>En la medida permitida por la ley, eres responsable de pérdidas, responsabilidades y costes razonables derivados de reclamaciones de terceros causadas por el uso ilegal del servicio, el incumplimiento de estos Términos o contenido que infrinja derechos ajenos. Esto no te atribuye responsabilidad por nuestros propios actos u omisiones cuando la ley lo prohíba.</p>
         </div>
-        <div class="support-footer">
-            <p>Última actualización: 5 de agosto de 2025</p>
-            <p>Al utilizar la plataforma, aceptas estos Términos de uso y la <a href=@($"/{Culture}/legal/privacy")>Política de privacidad</a>.</p>
+        <div class="support-section">
+            <h2>14. Cambios en Estos Términos</h2>
+            <p>Podemos actualizar estos Términos publicando una versión revisada en esta página. Notificaremos adicionalmente los cambios importantes cuando sea razonablemente posible o legalmente obligatorio.</p><p>Los cambios entran en vigor en la fecha indicada o, si no se indica, al publicarse. Cuando la ley exija aceptación expresa, la solicitaremos. En los demás casos, continuar utilizando el servicio tras la fecha de entrada en vigor implica aceptar los cambios. Si no estás de acuerdo, deja de utilizarlo.</p>
         </div>
+        <div class="support-section">
+            <h2>15. Ley Aplicable y Resolución de Disputas</h2>
+            <p>Estos Términos se rigen por la legislación de Estonia, sin perjuicio de las protecciones obligatorias para consumidores de tu país de residencia. Nada elimina derechos irrenunciables conforme a la legislación aplicable.</p><p>Con sujeción a las normas obligatorias de jurisdicción de consumo, las disputas se someterán a los tribunales competentes de Estonia. Según la legislación aplicable, también puedes iniciar procedimientos en tu lugar de residencia.</p>
+        </div>
+        <div class="support-section">
+            <h2>16. Disposiciones Generales</h2>
+            <p>Si una disposición es inválida o inaplicable, las demás seguirán vigentes. Podemos interpretar o sustituir la disposición afectada para preservar su finalidad en la máxima medida legal posible. La falta de aplicación no constituye renuncia.</p><p>Estos Términos y las políticas incorporadas constituyen el acuerdo entre tú y DRMA Tech respecto al servicio, sujeto a los derechos legales obligatorios. No respondemos por retrasos o fallos causados por eventos fuera de nuestro control razonable, incluidos desastres naturales, conflictos, actos gubernamentales, fallos de infraestructura o interrupciones generalizadas de terceros.</p><p>No puedes transferir derechos u obligaciones sin consentimiento escrito. Podemos transferir estos Términos en caso de fusión, reestructuración o transferencia del servicio, sin reducir tus derechos legales obligatorios.</p>
+        </div>
+        <div class="support-section">
+            <h2>17. Contacto y Soporte</h2>
+            <p>Para soporte, escribe a <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>, utiliza la función Feedback o visita el <a href=@($"/{Culture}/help")>Centro de Ayuda</a> para preguntas frecuentes, solución de problemas, comentarios y herramientas de datos y eliminación de cuentas.</p><p>Para consultas corporativas o generales, escribe a <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>. Para solicitudes legales o de privacidad, utiliza los canales disponibles e indica la naturaleza de la solicitud.</p>
+        </div>
+        <div class="support-footer"><p>Última actualización: 5 de noviembre de 2026</p><p>Al utilizar la plataforma, confirmas que has leído y aceptas estos Términos y nuestra <a href=@($"/{Culture}/legal/privacy")>Política de Privacidad</a>.</p></div>
     }
     else if (Language == AppLanguage.zh)
     {
-        <h1 class="support-title">使用条款</h1>
-        <div class="support-subtitle">
-            欢迎使用 <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)！<br />
-            访问或使用本服务，即表示您同意本《使用条款》。请仔细阅读。
-        </div>
+        <h1 class="support-title">使用条款</h1><div class="support-subtitle">欢迎使用 <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>)！<br />本使用条款（“条款”）规范您对本服务的访问和使用。使用本服务即表示您同意本条款。如果您不同意，请勿使用本服务。</div>
         <div class="support-section">
             <h2>1. 关于服务</h2>
-            <p><b>@AppInfo.Title</b> 是一个全球平台，旨在帮助用户发现、整理和管理来自各种服务的流媒体内容。大多数功能可免费使用，但部分功能需要身份验证或有效订阅。</p>
-            <p>本服务由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营，该公司在爱沙尼亚注册，仅供个人、非商业用途。</p>
+            <p><b>@AppInfo.Title</b> 由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营，该公司在爱沙尼亚注册。本服务帮助用户发现、整理和管理电影、电视剧及流媒体服务信息。部分功能可能需要账户或付费订阅。</p><p>本服务仅供个人非商业用途。未经事先书面许可，您不得转售、再分发或商业利用本服务或其数据，也不得使用这些内容创建竞争产品。</p>
         </div>
         <div class="support-section">
-            <h2>2. 账户、数据与隐私</h2>
-            <p>您可以匿名使用本平台。但若要使用创建私人清单或管理账户偏好等功能，则需要身份验证。登录后，我们会收集您的电子邮箱、登录时间戳、IP 地址和设备信息。这些数据仅用于安全、诊断、个性化和分析。</p>
-            <p>未经明确同意，我们不会收集或存储敏感的个人数据或精确的地理位置。</p>
-            <p>我们采取合理的技术和组织措施，防止您的数据遭到未经授权的访问或泄露。</p>
-            <p>我们使用 Google Analytics 和 Microsoft Clarity 等分析工具来了解使用情况。详情请参阅我们的 <a href=@($"/{Culture}/legal/privacy")>隐私政策</a>。</p>
+            <h2>2. 资格与账户</h2>
+            <p>您必须根据适用法律具备订立有约束力协议的法律能力。未达到法定成年年龄的用户，可在法律允许时经父母或法定监护人许可并由其参与使用本服务。</p><p>部分功能无需账户，私人清单和账户偏好设置等功能可能需要注册。您应提供准确信息、保护账户凭据，并在怀疑发生未经授权的访问时通知我们。除适用法律另有规定外，您应对账户活动负责。</p><p>为合理保护服务、用户或我们的合法权益，我们可以拒绝注册或要求额外验证。</p>
         </div>
         <div class="support-section">
-            <h2>3. 功能与订阅</h2>
-            <p><b>@AppInfo.Title</b> 提供公共清单和私人清单：</p>
-            <ul>
-                <li><b>公共清单</b> 由平台策划，所有用户均可访问，无需身份验证。</li>
-                <li><b>私人清单</b> 由已验证用户创建。免费账户在每个清单的项目数量上有限制，而订阅用户可享受更高的限制和额外功能。</li>
-            </ul>
-            <p>订阅可按月或按年计费，除非取消，否则会自动续订，并通过我们的支付合作伙伴（Paddle）处理。价格以美元显示，支付处理方可能会将其转换为当地货币。可用性和支付方式因国家而异。</p>
+            <h2>3. 账户数据与隐私</h2>
+            <p>根据您使用的功能，我们可能处理您的电子邮箱、身份验证记录、IP 地址、设备和技术信息、偏好设置，以及您创建或保存的内容。我们使用这些信息提供、保护、维护、个性化和改进服务，并与您沟通。</p><p>我们的<a href=@($"/{Culture}/legal/privacy")>隐私政策</a>说明个人数据处理方式及您如何行使隐私权。我们采取合理的技术和组织措施保护个人数据，但任何传输或存储方式都无法保证绝对安全。</p>
         </div>
         <div class="support-section">
-            <h2>4. 第三方内容</h2>
-            <p><b>@AppInfo.Title</b> 显示的数据、图片和元数据来自第三方，如 TMDb 和 JustWatch。这些第三方内容仍归其各自所有者所有。</p>
-            <p>我们不托管或提供受版权保护内容的流媒体、下载或播放。署名和许可详情请见我们的鸣谢页面。</p>
+            <h2>4. 功能、清单与用户内容</h2>
+            <p>本服务可能提供清单及其他工具，用于整理电影和电视剧信息。功能、限制和可用性可能因账户或订阅计划而异，并可能随时间变化。</p><p>您应对自己创建、添加或分享的内容负责。请勿提交违法、误导、诽谤、辱骂、侵犯权利或违反本条款及适用法律的内容。公共清单和分享链接可能被他人访问和再次分享。请勿分享您希望保密的信息。</p><p>您保留对所提交内容拥有的权利，并授予我们非独占、全球范围、免版税的许可，仅在运营、保护和提供服务及分享功能所必需的范围内托管、存储、复制和展示内容。内容删除后许可终止，但备份、法律要求的保留以及已被他人分享或访问的内容除外。</p>
         </div>
         <div class="support-section">
-            <h2>5. 知识产权</h2>
-            <p><b>@AppInfo.Title</b> 上的数据结构、设计和展示受 MPL-2.0 许可证或类似开源许可证保护。第三方资源受其各自版权和商标约束。</p>
-            <p>严禁未经授权的复制、爬取、逆向工程或重新分发平台元素。</p>
+            <h2>5. 订阅、付款与账单</h2>
+            <p>部分功能可能需要付费。计划、价格、计费周期、货币、付款方式及适用税费将在购买前显示。选项和功能可能因国家或地区、平台、账户及服务商而异。本服务可能提供定期订阅、应用内购买、促销优惠或其他付费功能。</p><p>付款可能由第三方支付服务商或平台运营方处理。您只能使用结账时显示为可用的方式，相关服务商的条款和政策也可能适用。</p><p>除非购买时另有说明，订阅将自动续订，直至取消。您授权相关服务商或平台收取显示金额及适用税费。您应通过本服务或购买时使用的服务商或平台管理或取消订阅。取消通常只停止未来续订，并不自动赋予当前计费周期的退款权利。</p><p>退款、账单争议和付款调整受服务商政策及法定强制性权利约束。您可能需要联系处理购买的服务商或平台。删除账户本身不会取消订阅或停止未来扣款；有效订阅须另行取消。</p>
         </div>
         <div class="support-section">
-            <h2>6. 可接受使用</h2>
-            <p>用户同意合法、负责任地使用本平台。禁止的行为包括：</p>
-            <ul>
-                <li>试图绕过平台限制或约束。</li>
-                <li>未经明确许可使用机器人、爬虫或自动化工具。</li>
-                <li>上传或分享侵犯知识产权或违反适用法律的内容。</li>
-            </ul>
+            <h2>6. 第三方内容与服务</h2>
+            <p>本服务可能使用或链接第三方内容和服务，包括电影及电视剧元数据、图片、评分、流媒体可用性、外部链接及服务商提供的信息。我们也可能依赖第三方提供身份验证、托管、存储、通信、支付处理、分析、广告、反馈、安全和服务监控。服务商和功能可能随时间变化，并因平台或地区而异。</p><p>我们不运营平台列出的流媒体服务，也不托管、提供或授权播放、下载或播放其电影或电视剧。除非明确说明，我们与第三方服务商没有关联。第三方内容和服务仍受其所有者的权利和条款约束。</p><p>目录、可用性、价格、链接及其他第三方信息可能不完整、不准确，或因地区和时间而变化。购买或订阅前请直接向相关服务商核实。您使用第三方网站、应用或服务时须遵守其自身条款和隐私政策。在法律允许范围内，我们不对这些第三方承担责任。署名和许可信息可能列于鸣谢页面。</p>
         </div>
         <div class="support-section">
-            <h2>7. 用户清单</h2>
-            <p>已验证用户可以创建私人清单来整理流媒体内容。这些清单是个人的，除非用户选择外部分享，否则其他人不可见。</p>
-            <p>公共清单由平台策划，所有用户无需身份验证即可访问。</p>
+            <h2>7. 知识产权</h2>
+            <p>本服务的名称、品牌标识、徽标、原创文字、界面及其他原创材料归 DRMA Tech 所有或由其获得许可，并受知识产权法律保护。本条款仅授予您按本条款规定使用服务的有限权利。</p><p>部分软件组件可能受其声明或代码库中列明的开源许可证约束。这些许可证不会自动涵盖品牌标识、展示方式、第三方数据、图片或其他材料。第三方材料仍归各自所有者所有。</p>
         </div>
         <div class="support-section">
-            <h2>8. 责任限制与服务可用性</h2>
-            <p><b>@AppInfo.Title</b> 按“现状”和“可用性”提供。我们不保证不间断访问、内容和元数据的准确性或完整性。使用本平台的风险由您自行承担。</p>
-            <p>我们不对错误、过时信息或第三方内容的可用性负责。</p>
-            <p>平台可能随时修改、暂停或终止，恕不另行通知。</p>
+            <h2>8. 可接受使用与限制</h2>
+            <p>您只能将本服务用于合法目的。您不得：</p><ul><li>将服务用于非法、欺诈、误导或有害目的。</li><li>通过自动化方式抓取、收集或系统性提取服务数据，除非获得授权或法律允许。</li><li>以不合理增加服务负担或绕过技术限制的方式使用机器人、爬虫或脚本。</li><li>绕过订阅、使用限制、访问控制或其他限制。</li><li>复制、修改、逆向工程、反编译或创作衍生作品，除非适用法律或开源许可证允许。</li><li>干扰服务安全或运行，或试图未经授权访问账户、系统或数据。</li><li>提交侵犯权利或违反适用法律的内容。</li><li>未经授权提取或重复使用内容，以创建或训练竞争性数据库或服务。</li><li>未经书面许可转售、再许可或商业利用本服务或其内容。</li></ul><p>我们可以调查疑似违规行为，并依适用法律采取适当措施，包括限制访问、暂停或终止账户。</p>
         </div>
         <div class="support-section">
-            <h2>9. 条款变更</h2>
-            <p>我们可能会定期更新这些条款。涉及您权利或义务的重要变更将在可行时通过电子邮件或平台通知告知。更新后继续使用即表示接受新条款。</p>
+            <h2>9. 服务可用性与变更</h2>
+            <p>我们努力保持服务可用，但不保证服务始终不中断、没有错误、安全或在所有地区均可用。部分功能依赖我们无法控制的第三方系统和数据。</p><p>我们可以添加、修改、限制、暂停或停止功能。在法律要求时，我们会通知您重大变更。</p>
         </div>
         <div class="support-section">
-            <h2>10. 联系方式</h2>
-            <p>如需支持、反馈或法律咨询，请访问我们的支持页面或使用平台的联系工具。</p>
+            <h2>10. 免责声明</h2>
+            <p>在法律允许的最大范围内，本服务按“现状”和“可用状态”提供。我们不保证第三方信息，包括描述、评分、流媒体可用性、价格或链接，准确、完整、最新或持续可用。</p><p>发现和推荐功能仅供参考。依赖相关信息前，请向相关服务商核实。本条款不排除依法不得排除的消费者权利或其他保护。</p>
         </div>
         <div class="support-section">
-            <h2>11. 法律合规</h2>
-            <p>您有责任遵守当地法律，包括版权和隐私法规。<b>@AppInfo.Title</b> 遵守适用的国际数据保护法律，如 GDPR 和 LGPD。</p>
-            <p>本平台受爱沙尼亚法律管辖。</p>
+            <h2>11. 责任限制</h2>
+            <p>在法律允许的最大范围内，DRMA Tech 不对因使用或无法使用本服务产生的间接、附带、特殊、后果性或惩罚性损害，或利润、收入、商业机会、商誉或数据损失承担责任。</p><p>在法律允许的最大范围内，DRMA Tech 因本服务或本条款产生的总责任，以引发索赔事件前 12 个月内您为本服务向我们支付的金额为限。若您未支付费用，责任上限为 50 欧元。</p><p>上述限制不适用于依法不得排除或限制的责任，包括强制性消费者权利、欺诈或故意不当行为。</p>
         </div>
         <div class="support-section">
-            <h2>12. 管辖法律与争议解决</h2>
-            <p>本条款受爱沙尼亚法律管辖。任何争议将由爱沙尼亚塔林法院专属管辖，并以英语进行审理，除非当地法律另有要求。</p>
+            <h2>12. 暂停、终止与账户删除</h2>
+            <p>您可以随时停止使用本服务，并通过账户或支持渠道申请删除账户。有效订阅必须通过相关服务商或平台另行取消，取消前可能无法删除账户。</p><p>如果我们有合理理由认为您违反本条款、造成安全或法律风险、实施欺诈，或损害服务或其他用户，我们可以暂停或终止访问。在适当且法律允许时，我们会通知您并给予解决问题的机会。</p><p>终止不影响此前产生的权利或义务。根据其性质应继续有效的知识产权、免责声明、责任限制和争议解决条款将继续有效。</p>
+        </div>
+        <div class="support-section">
+            <h2>13. 赔偿</h2>
+            <p>在法律允许范围内，对于因您非法使用服务、违反本条款或提交侵犯他人权利的内容而导致第三方索赔所产生的损失、责任和合理费用，您应承担责任。法律禁止转移的我们自身行为或不作为责任不由您承担。</p>
+        </div>
+        <div class="support-section">
+            <h2>14. 本条款的变更</h2>
+            <p>我们可以通过在本页面发布修订版本来更新本条款。在合理可行或法律要求时，我们会就重大变更提供额外通知。</p><p>变更自注明日期生效；未注明日期时，自发布时生效。法律要求明确同意时，我们会征求您的同意。其他情况下，生效后继续使用服务即表示接受变更。如果不同意，请停止使用服务。</p>
+        </div>
+        <div class="support-section">
+            <h2>15. 适用法律与争议解决</h2>
+            <p>本条款受爱沙尼亚法律管辖，但不影响您居住国适用的强制性消费者保护规定。本条款不取消适用法律规定不得放弃的权利。</p><p>在遵守消费者管辖权强制性规则的前提下，争议将提交爱沙尼亚有管辖权的法院。根据适用法律，您也可能有权在居住地提起诉讼。</p>
+        </div>
+        <div class="support-section">
+            <h2>16. 一般条款</h2>
+            <p>任何条款无效或不可执行时，其余条款仍然有效。我们可以在法律允许范围内解释或替换相关条款，以尽可能保留其目的。未执行某项条款不构成放弃。</p><p>本条款及纳入其中的政策构成您与 DRMA Tech 关于本服务的协议，但不影响强制性法定权利。对于超出合理控制范围的事件造成的延迟或故障，我们不承担责任，包括自然灾害、冲突、政府行为、基础设施故障或大范围第三方服务中断。</p><p>未经书面同意，您不得转让权利或义务。我们可以在合并、重组或转让服务时转让本条款，但不会减少您的强制性法定权利。</p>
+        </div>
+        <div class="support-section">
+            <h2>17. 联系与支持</h2>
+            <p>如需支持，请发送邮件至 <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>，使用平台的 Feedback 功能，或访问<a href=@($"/{Culture}/help")>帮助中心</a>，查看常见问题、故障排除、反馈以及账户数据和删除工具。</p><p>公司事务或一般咨询请发送邮件至 <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>。法律或隐私请求请使用现有联系渠道并说明请求性质。</p>
+        </div>
+        <div class="support-footer"><p>最后更新：2026 年 11 月 5 日</p><p>使用本平台即表示您确认已阅读并同意本条款及我们的<a href=@($"/{Culture}/legal/privacy")>隐私政策</a>。</p></div>
+    }
+    else if (Language == AppLanguage.fr)
+    {
+        <h1 class="support-title">Conditions d’utilisation</h1>
+        <div class="support-subtitle">Bienvenue sur <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>) !<br />Les présentes Conditions d’utilisation (« Conditions ») régissent votre accès au service et son utilisation. En utilisant le service, vous acceptez ces Conditions. Si vous ne les acceptez pas, veuillez ne pas utiliser le service.</div>
+        <div class="support-section">
+            <h2>1. À propos du service</h2>
+            <p><b>@AppInfo.Title</b> est exploité par DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), une société enregistrée en Estonie. Le service vous aide à découvrir, organiser et gérer des informations sur les films, les séries et les services de streaming. Certaines fonctionnalités peuvent nécessiter un compte ou un abonnement payant.</p><p>Le service est destiné à un usage personnel et non commercial. Sans autorisation écrite préalable, vous ne pouvez pas revendre, redistribuer ou exploiter commercialement le service ou ses données, ni les utiliser pour créer un produit concurrent.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Éligibilité et comptes</h2>
+            <p>Vous devez avoir la capacité juridique de conclure un accord contraignant. Les mineurs peuvent utiliser le service avec l’autorisation et la participation de leurs parents ou de leur représentant légal, lorsque la loi le permet.</p><p>Certaines fonctionnalités ne nécessitent pas de compte ; d’autres, comme les listes privées et les préférences, peuvent nécessiter une inscription. Vous devez fournir des informations exactes, protéger vos identifiants et nous informer de tout soupçon d’accès non autorisé. Vous êtes responsable de l’activité de votre compte, sauf disposition légale contraire.</p><p>Nous pouvons refuser des inscriptions ou demander des vérifications supplémentaires lorsque cela est raisonnablement nécessaire pour protéger le service, les utilisateurs ou nos intérêts légitimes.</p>
+        </div>
+        <div class="support-section">
+            <h2>3. Données du compte et confidentialité</h2>
+            <p>Selon les fonctionnalités utilisées, nous pouvons traiter votre adresse e-mail, les journaux d’authentification, votre adresse IP, des informations techniques et relatives à l’appareil, vos préférences ainsi que le contenu créé ou enregistré. Nous utilisons ces données pour fournir, protéger, maintenir, personnaliser et améliorer le service, et pour communiquer avec vous.</p><p>Notre <a href=@($"/{Culture}/legal/privacy")>Politique de confidentialité</a> explique le traitement des données personnelles et la manière d’exercer vos droits. Nous appliquons des mesures techniques et organisationnelles raisonnables, mais aucune méthode de transmission ou de stockage n’est totalement sûre.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Fonctionnalités, listes et contenu utilisateur</h2>
+            <p>Le service peut proposer des listes et des outils permettant d’organiser des informations sur les films et les séries. Les fonctionnalités, limites et disponibilités peuvent varier selon le compte ou l’abonnement et évoluer au fil du temps.</p><p>Vous êtes responsable du contenu que vous créez, ajoutez ou partagez. Ne soumettez aucun contenu illégal, trompeur, diffamatoire, abusif, portant atteinte aux droits d’autrui ou interdit par les présentes Conditions ou la loi applicable. Les listes publiques et les liens partagés peuvent être consultés et repartagés par des tiers. Ne partagez pas d’informations que vous souhaitez garder privées.</p><p>Vous conservez vos droits sur le contenu soumis et nous accordez une licence non exclusive, mondiale et libre de redevances nous permettant de l’héberger, de le stocker, de le reproduire et de l’afficher uniquement dans la mesure nécessaire à l’exploitation, à la protection et à la fourniture du service et de ses fonctions de partage. Cette licence prend fin lors de la suppression du contenu, à l’exception des copies de sauvegarde, des obligations légales de conservation et du contenu déjà partagé ou consulté par des tiers.</p>
+        </div>
+        <div class="support-section">
+            <h2>5. Abonnements, paiements et facturation</h2>
+            <p>Certaines fonctionnalités peuvent être payantes. Les offres, prix, périodes, devises, moyens de paiement ainsi que les taxes ou frais applicables sont présentés avant l’achat. Les options et fonctionnalités peuvent varier selon le pays, la plateforme, le compte et le prestataire. Le service peut proposer des abonnements récurrents, des achats intégrés, des promotions ou d’autres fonctionnalités payantes.</p><p>Les paiements peuvent être traités par des prestataires tiers ou des opérateurs de plateforme. Seules les options affichées lors du paiement peuvent être utilisées, et les conditions de ces prestataires peuvent également s’appliquer.</p><p>Sauf indication contraire lors de l’achat, les abonnements sont renouvelés automatiquement jusqu’à leur résiliation. Vous autorisez le prélèvement du montant affiché ainsi que des taxes et frais applicables. Gérez ou résiliez votre abonnement via le service ou le prestataire/la plateforme auprès duquel vous avez effectué l’achat. La résiliation met généralement fin aux renouvellements futurs, mais ne donne pas automatiquement droit au remboursement de la période en cours.</p><p>Les remboursements, contestations et ajustements sont soumis aux politiques du prestataire et à vos droits légaux impératifs. Vous devrez peut-être contacter le prestataire ayant traité l’achat. La suppression de votre compte ne résilie pas l’abonnement et n’interrompt pas les prélèvements futurs ; les abonnements actifs doivent être résiliés séparément.</p>
+        </div>
+        <div class="support-section">
+            <h2>6. Contenus et services tiers</h2>
+            <p>Le service peut utiliser ou référencer des contenus et services tiers, notamment des métadonnées, images, évaluations, disponibilités de streaming, liens et informations fournies par des prestataires. Nous pouvons également dépendre de tiers pour l’authentification, l’hébergement, le stockage, les communications, les paiements, l’analyse, la publicité, les commentaires, la sécurité et la surveillance du service. Les prestataires et fonctionnalités peuvent évoluer et varier selon la région ou la plateforme.</p><p>Nous n’exploitons pas les services de streaming répertoriés et n’hébergeons, ne fournissons ni n’autorisons la diffusion, le téléchargement ou la lecture de leurs films et séries. Sauf indication expresse, nous ne sommes affiliés à aucun tiers. Les contenus et services tiers restent soumis aux droits et conditions de leurs titulaires.</p><p>Les catalogues, disponibilités, prix, liens et autres informations peuvent être incomplets, inexacts ou varier selon la région et au fil du temps. Vérifiez directement les informations auprès du prestataire avant tout achat ou abonnement. L’utilisation de services tiers est régie par leurs propres conditions et politiques. Dans la mesure permise par la loi, nous ne sommes pas responsables de ces services. Les attributions et licences peuvent figurer sur la page des crédits.</p>
+        </div>
+        <div class="support-section">
+            <h2>7. Propriété intellectuelle</h2>
+            <p>Le nom, la marque, les logos, les textes originaux, l’interface et les autres éléments originaux du service appartiennent à DRMA Tech ou lui sont concédés sous licence et sont protégés par les lois sur la propriété intellectuelle. Les présentes Conditions vous accordent uniquement un droit limité d’utilisation du service.</p><p>Certains composants logiciels peuvent être soumis à des licences open source indiquées dans leurs avis ou dépôts. Ces licences ne couvrent pas automatiquement la marque, la présentation, les données de tiers, les images ou les autres éléments. Les contenus tiers restent la propriété de leurs titulaires respectifs.</p>
+        </div>
+        <div class="support-section">
+            <h2>8. Utilisation acceptable et restrictions</h2>
+            <p>Le service ne peut être utilisé qu’à des fins licites. Il est interdit de :</p><ul><li>Utiliser le service à des fins illégales, frauduleuses, trompeuses ou nuisibles.</li><li>Extraire, collecter systématiquement ou récupérer des données par des moyens automatisés, sauf autorisation ou permission légale.</li><li>Utiliser des robots, robots d’exploration ou scripts qui surchargent déraisonnablement le service ou contournent des restrictions techniques.</li><li>Contourner les abonnements, limites d’utilisation, contrôles d’accès ou autres restrictions.</li><li>Copier, modifier, procéder à de l’ingénierie inverse, décompiler ou créer des œuvres dérivées, sauf si la loi ou une licence open source l’autorise.</li><li>Entraver la sécurité ou le fonctionnement du service, ou tenter d’accéder sans autorisation à des comptes, systèmes ou données.</li><li>Soumettre du contenu portant atteinte à des droits ou enfreignant la loi applicable.</li><li>Extraire ou réutiliser du contenu sans autorisation pour créer ou entraîner une base de données ou un service concurrent.</li><li>Revendre, concéder en sous-licence ou exploiter commercialement le service ou son contenu sans autorisation écrite.</li></ul><p>Nous pouvons enquêter sur les violations et prendre des mesures proportionnées, notamment restreindre l’accès ou suspendre ou résilier des comptes, conformément à la loi.</p>
+        </div>
+        <div class="support-section">
+            <h2>9. Disponibilité et modifications du service</h2>
+            <p>Nous nous efforçons de maintenir le service disponible, mais ne garantissons pas une disponibilité ininterrompue, sans erreur, sécurisée ou universelle. Certaines fonctionnalités dépendent de systèmes et de données tiers qui échappent à notre contrôle.</p><p>Nous pouvons ajouter, modifier, restreindre, suspendre ou supprimer des fonctionnalités. Nous informerons les utilisateurs des changements importants lorsque la loi l’exige.</p>
+        </div>
+        <div class="support-section">
+            <h2>10. Exclusions de responsabilité</h2>
+            <p>Dans toute la mesure permise par la loi, le service est fourni « en l’état » et « selon disponibilité ». Nous ne garantissons pas que les informations de tiers, notamment les descriptions, évaluations, disponibilités de streaming, prix ou liens, soient exactes, complètes, à jour ou disponibles en permanence.</p><p>Les fonctionnalités de découverte et de recommandation sont fournies à titre informatif. Vérifiez les informations auprès du prestataire avant de vous y fier. Rien dans les présentes Conditions n’exclut les droits des consommateurs ou autres protections qui ne peuvent légalement être exclus.</p>
+        </div>
+        <div class="support-section">
+            <h2>11. Limitation de responsabilité</h2>
+            <p>Dans toute la mesure permise par la loi, DRMA Tech ne saurait être tenue responsable des dommages indirects, accessoires, spéciaux, consécutifs ou punitifs, ni des pertes de bénéfices, de revenus, d’opportunités commerciales, de réputation ou de données résultant de l’utilisation ou de l’impossibilité d’utiliser le service.</p><p>La responsabilité totale de DRMA Tech liée au service ou aux présentes Conditions est limitée, dans toute la mesure permise par la loi, au montant que vous avez payé pour le service au cours des 12 mois précédant l’événement à l’origine de la réclamation. Si vous n’avez rien payé, le plafond est de 50 EUR.</p><p>Ces limitations ne s’appliquent pas aux responsabilités qui ne peuvent être exclues ou limitées par la loi, notamment les droits impératifs des consommateurs, la fraude ou les actes intentionnels fautifs.</p>
+        </div>
+        <div class="support-section">
+            <h2>12. Suspension, résiliation et suppression du compte</h2>
+            <p>Vous pouvez cesser d’utiliser le service et demander la suppression de votre compte via les options disponibles dans le compte ou auprès du support. Les abonnements actifs doivent être résiliés séparément auprès du prestataire ou de la plateforme concernée ; la suppression du compte peut être indisponible tant que l’abonnement n’est pas résilié.</p><p>Nous pouvons suspendre ou résilier l’accès si nous estimons raisonnablement qu’il y a eu violation des présentes Conditions, risque juridique ou de sécurité, fraude ou préjudice au service ou à d’autres utilisateurs. Lorsque cela est approprié et légalement autorisé, nous vous en informerons et vous donnerons la possibilité de résoudre le problème.</p><p>La résiliation n’affecte pas les droits ou obligations antérieurs. Les dispositions qui, par leur nature, doivent survivre, notamment celles relatives à la propriété intellectuelle, aux exclusions de responsabilité, à la responsabilité et aux litiges, restent en vigueur.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Indemnisation</h2>
+            <p>Dans la mesure permise par la loi, vous êtes responsable des pertes, responsabilités et frais raisonnables résultant de réclamations de tiers causées par votre utilisation illégale du service, la violation des présentes Conditions ou un contenu portant atteinte aux droits d’autrui. Cela ne vous rend pas responsable de nos propres actes ou omissions lorsque la loi l’interdit.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Modifications des présentes Conditions</h2>
+            <p>Nous pouvons mettre à jour les présentes Conditions en publiant une version révisée sur cette page. Nous fournirons un avis supplémentaire concernant les modifications importantes lorsque cela sera raisonnablement possible ou exigé par la loi.</p><p>Les modifications prennent effet à la date indiquée ou, à défaut, au moment de leur publication. Lorsque la loi exige un consentement exprès, nous le demanderons. Dans les autres cas, la poursuite de l’utilisation du service après la date d’entrée en vigueur vaut acceptation. Si vous n’êtes pas d’accord, cessez d’utiliser le service.</p>
+        </div>
+        <div class="support-section">
+            <h2>15. Droit applicable et règlement des litiges</h2>
+            <p>Les présentes Conditions sont régies par le droit estonien, sans préjudice des protections impératives des consommateurs dans votre pays de résidence. Rien ne supprime les droits auxquels il ne peut être renoncé en vertu du droit applicable.</p><p>Sous réserve des règles impératives de compétence en matière de consommation, les litiges seront soumis aux tribunaux compétents d’Estonie. Selon le droit applicable, vous pouvez également engager une procédure dans votre lieu de résidence.</p>
+        </div>
+        <div class="support-section">
+            <h2>16. Dispositions générales</h2>
+            <p>Si une disposition est invalide ou inapplicable, les autres dispositions restent en vigueur. Nous pouvons interpréter ou remplacer la disposition concernée afin d’en préserver l’objectif dans toute la mesure légalement possible. Le fait de ne pas faire appliquer une disposition ne constitue pas une renonciation.</p><p>Les présentes Conditions et les politiques qui y sont intégrées constituent l’accord entre vous et DRMA Tech concernant le service, sous réserve des droits légaux impératifs. Nous ne sommes pas responsables des retards ou défaillances causés par des événements échappant raisonnablement à notre contrôle, notamment les catastrophes naturelles, conflits, actes gouvernementaux, défaillances d’infrastructure ou pannes généralisées de services tiers.</p><p>Vous ne pouvez transférer vos droits ou obligations sans notre consentement écrit. Nous pouvons transférer les présentes Conditions dans le cadre d’une fusion, d’une restructuration ou d’un transfert du service, sans réduire vos droits légaux impératifs.</p>
+        </div>
+        <div class="support-section">
+            <h2>17. Contact et assistance</h2>
+            <p>Pour obtenir de l’aide, envoyez un e-mail à <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>, utilisez la fonction Feedback de la plateforme ou consultez le <a href=@($"/{Culture}/help")>Centre d’aide</a> pour les FAQ, le dépannage, les commentaires et les outils de gestion et de suppression des données du compte.</p><p>Pour les questions relatives à l’entreprise ou les demandes générales, écrivez à <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>. Pour les demandes juridiques ou relatives à la confidentialité, utilisez les moyens de contact disponibles et précisez la nature de votre demande.</p>
         </div>
         <div class="support-footer">
-            <p>最后更新日期：2025 年 8 月 5 日</p>
-            <p>使用本平台即表示您同意本《使用条款》和 <a href=@($"/{Culture}/legal/privacy")>隐私政策</a>。</p>
+            <p>Dernière mise à jour : 5 novembre 2026</p>
+            <p>En utilisant la plateforme, vous reconnaissez avoir lu et accepté les présentes Conditions ainsi que notre <a href=@($"/{Culture}/legal/privacy")>Politique de confidentialité</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.it)
+    {
+        <h1 class="support-title">Termini di utilizzo</h1>
+        <div class="support-subtitle">Benvenuto su <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>) !<br />I presenti Termini di utilizzo (i “Termini”) disciplinano l’accesso e l’utilizzo del servizio. Utilizzando il servizio, accetti questi Termini. Se non sei d’accordo, non utilizzare il servizio.</div>
+        <div class="support-section">
+            <h2>1. Informazioni sul servizio</h2>
+            <p><b>@AppInfo.Title</b> è gestito da DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), società registrata in Estonia. Il servizio aiuta a scoprire, organizzare e gestire informazioni su film, serie TV e servizi di streaming. Alcune funzionalità potrebbero richiedere un account o un abbonamento a pagamento.</p><p>Il servizio è destinato a uso personale e non commerciale. Senza previa autorizzazione scritta, non puoi rivendere, ridistribuire o sfruttare commercialmente il servizio o i suoi dati, né utilizzarli per creare un prodotto concorrente.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Requisiti e account</h2>
+            <p>Devi avere la capacità giuridica di stipulare un accordo vincolante. I minori possono utilizzare il servizio con il permesso e la partecipazione dei genitori o del tutore legale, ove consentito dalla legge.</p><p>Alcune funzionalità non richiedono un account; altre, come gli elenchi privati e le preferenze, potrebbero richiedere la registrazione. Devi fornire informazioni accurate, proteggere le credenziali e informarci in caso di sospetto accesso non autorizzato. Sei responsabile delle attività svolte tramite il tuo account, salvo diversa disposizione di legge.</p><p>Possiamo rifiutare registrazioni o richiedere verifiche aggiuntive quando ragionevolmente necessario per proteggere il servizio, gli utenti o i nostri interessi legittimi.</p>
+        </div>
+        <div class="support-section">
+            <h2>3. Dati dell’account e privacy</h2>
+            <p>A seconda delle funzionalità utilizzate, possiamo trattare il tuo indirizzo e-mail, i registri di autenticazione, l’indirizzo IP, informazioni tecniche e sul dispositivo, preferenze e contenuti creati o salvati. Utilizziamo questi dati per fornire, proteggere, mantenere, personalizzare e migliorare il servizio e per comunicare con te.</p><p>La nostra <a href=@($"/{Culture}/legal/privacy")>Informativa sulla privacy</a> spiega il trattamento dei dati personali e come esercitare i tuoi diritti. Adottiamo misure tecniche e organizzative ragionevoli, ma nessun metodo di trasmissione o archiviazione è completamente sicuro.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Funzionalità, elenchi e contenuti degli utenti</h2>
+            <p>Il servizio può offrire elenchi e strumenti per organizzare informazioni su film e serie TV. Funzionalità, limiti e disponibilità possono variare in base all’account o all’abbonamento e cambiare nel tempo.</p><p>Sei responsabile dei contenuti che crei, aggiungi o condividi. Non inviare contenuti illegali, ingannevoli, diffamatori, offensivi, lesivi dei diritti altrui o vietati dai presenti Termini o dalla legge applicabile. Gli elenchi pubblici e i link condivisi possono essere consultati e ricondivisi da terzi. Non condividere informazioni che desideri mantenere private.</p><p>Mantieni i diritti sui contenuti inviati e ci concedi una licenza non esclusiva, mondiale e gratuita per ospitarli, archiviarli, riprodurli e mostrarli esclusivamente nella misura necessaria a gestire, proteggere e fornire il servizio e le relative funzioni di condivisione. La licenza termina con l’eliminazione, fatta eccezione per copie di backup, obblighi legali di conservazione e contenuti già condivisi o consultati da terzi.</p>
+        </div>
+        <div class="support-section">
+            <h2>5. Abbonamenti, pagamenti e fatturazione</h2>
+            <p>Alcune funzionalità potrebbero essere a pagamento. Piani, prezzi, periodi, valute, metodi di pagamento e imposte o commissioni applicabili saranno mostrati prima dell’acquisto. Opzioni e funzionalità possono variare in base a paese, piattaforma, account e fornitore. Il servizio può offrire abbonamenti ricorrenti, acquisti in-app, promozioni o altre funzionalità a pagamento.</p><p>I pagamenti possono essere elaborati da fornitori terzi o operatori della piattaforma. È possibile utilizzare solo le opzioni mostrate al momento del pagamento e potrebbero applicarsi anche i termini di tali fornitori.</p><p>Salvo diversa indicazione al momento dell’acquisto, gli abbonamenti si rinnovano automaticamente fino alla cancellazione. Autorizzi l’addebito dell’importo mostrato e delle imposte e commissioni applicabili. Gestisci o annulla l’abbonamento tramite il servizio o il fornitore/la piattaforma utilizzati per l’acquisto. La cancellazione interrompe generalmente i rinnovi futuri, ma non dà automaticamente diritto al rimborso del periodo in corso.</p><p>Rimborsi, contestazioni e rettifiche sono soggetti alle politiche del fornitore e ai tuoi diritti legali inderogabili. Potrebbe essere necessario contattare il soggetto che ha elaborato l’acquisto. L’eliminazione dell’account non annulla l’abbonamento né interrompe gli addebiti futuri; gli abbonamenti attivi devono essere cancellati separatamente.</p>
+        </div>
+        <div class="support-section">
+            <h2>6. Contenuti e servizi di terze parti</h2>
+            <p>Il servizio può utilizzare o collegare contenuti e servizi di terze parti, inclusi metadati, immagini, valutazioni, disponibilità dello streaming, link e informazioni dei fornitori. Possiamo inoltre dipendere da terzi per autenticazione, hosting, archiviazione, comunicazioni, pagamenti, analisi, pubblicità, feedback, sicurezza e monitoraggio. Fornitori e funzionalità possono cambiare e variare in base alla regione o alla piattaforma.</p><p>Non gestiamo i servizi di streaming elencati e non ospitiamo, forniamo né autorizziamo lo streaming, il download o la riproduzione dei relativi film e serie TV. Salvo indicazione esplicita, non siamo affiliati a terzi. I contenuti e servizi di terzi restano soggetti ai diritti e ai termini dei rispettivi titolari.</p><p>Cataloghi, disponibilità, prezzi, link e altre informazioni possono essere incompleti, inesatti o variare in base alla regione e nel tempo. Verifica i dettagli direttamente con il fornitore prima di acquistare o abbonarti. L’utilizzo dei servizi di terzi è disciplinato dai relativi termini e dalle relative politiche. Nella misura consentita dalla legge, non siamo responsabili di tali servizi. Attribuzioni e licenze possono essere indicate nella pagina dei crediti.</p>
+        </div>
+        <div class="support-section">
+            <h2>7. Proprietà intellettuale</h2>
+            <p>Il nome, il marchio, i loghi, i testi originali, l’interfaccia e gli altri materiali originali del servizio appartengono a DRMA Tech o sono concessi in licenza a DRMA Tech e sono protetti dalle leggi sulla proprietà intellettuale. I presenti Termini concedono esclusivamente un diritto limitato di utilizzo del servizio.</p><p>Alcuni componenti software possono essere soggetti a licenze open source indicate nei relativi avvisi o repository. Tali licenze non comprendono automaticamente marchi, presentazione, dati di terzi, immagini o altri materiali. I materiali di terzi appartengono ai rispettivi titolari.</p>
+        </div>
+        <div class="support-section">
+            <h2>8. Uso consentito e restrizioni</h2>
+            <p>Il servizio può essere utilizzato esclusivamente per scopi leciti. È vietato:</p><ul><li>Utilizzarlo per scopi illegali, fraudolenti, ingannevoli o dannosi.</li><li>Effettuare scraping, raccolte sistematiche o estrazioni automatizzate di dati, salvo autorizzazione o permesso di legge.</li><li>Utilizzare bot, crawler o script che sovraccarichino irragionevolmente il servizio o aggirino restrizioni tecniche.</li><li>Eludere abbonamenti, limiti di utilizzo, controlli di accesso o altre restrizioni.</li><li>Copiare, modificare, effettuare reverse engineering, decompilare o creare opere derivate, salvo quanto consentito dalla legge o da una licenza open source.</li><li>Interferire con la sicurezza o il funzionamento, o tentare di accedere senza autorizzazione ad account, sistemi o dati.</li><li>Inviare contenuti che violino diritti o leggi applicabili.</li><li>Estrarre o riutilizzare contenuti senza autorizzazione per creare o addestrare un database o servizio concorrente.</li><li>Rivendere, concedere in sublicenza o sfruttare commercialmente il servizio o i suoi contenuti senza autorizzazione scritta.</li></ul><p>Possiamo indagare sulle violazioni e adottare misure proporzionate, tra cui limitare l’accesso o sospendere o chiudere account, nel rispetto della legge.</p>
+        </div>
+        <div class="support-section">
+            <h2>9. Disponibilità e modifiche del servizio</h2>
+            <p>Ci impegniamo a mantenere disponibile il servizio, ma non garantiamo una disponibilità ininterrotta, priva di errori, sicura o universale. Alcune funzionalità dipendono da sistemi e dati di terzi fuori dal nostro controllo.</p><p>Possiamo aggiungere, modificare, limitare, sospendere o interrompere funzionalità. Comunicheremo le modifiche sostanziali quando richiesto dalla legge.</p>
+        </div>
+        <div class="support-section">
+            <h2>10. Esclusioni di responsabilità</h2>
+            <p>Nella massima misura consentita dalla legge, il servizio è fornito “così com’è” e “secondo disponibilità”. Non garantiamo che le informazioni di terzi, incluse descrizioni, valutazioni, disponibilità dello streaming, prezzi o link, siano accurate, complete, aggiornate o continuamente disponibili.</p><p>Le funzionalità di scoperta e raccomandazione hanno finalità informative. Verifica i dettagli con il fornitore prima di farvi affidamento. Nulla esclude i diritti dei consumatori o altre tutele che non possono essere legalmente escluse.</p>
+        </div>
+        <div class="support-section">
+            <h2>11. Limitazione di responsabilità</h2>
+            <p>Nella massima misura consentita dalla legge, DRMA Tech non è responsabile per danni indiretti, incidentali, speciali, consequenziali o punitivi, né per perdita di profitti, ricavi, opportunità commerciali, reputazione o dati derivanti dall’uso o dall’impossibilità di utilizzare il servizio.</p><p>La responsabilità complessiva di DRMA Tech relativa al servizio o ai presenti Termini è limitata, nella massima misura consentita, all’importo da te pagato per il servizio nei 12 mesi precedenti l’evento che ha originato la richiesta. Se non hai pagato nulla, il limite è di 50 EUR.</p><p>Questi limiti non si applicano alle responsabilità che non possono essere escluse o limitate per legge, inclusi i diritti inderogabili dei consumatori, la frode o la condotta dolosa.</p>
+        </div>
+        <div class="support-section">
+            <h2>12. Sospensione, cessazione ed eliminazione dell’account</h2>
+            <p>Puoi smettere di utilizzare il servizio e richiedere l’eliminazione dell’account tramite le opzioni disponibili nell’account o il supporto. Gli abbonamenti attivi devono essere cancellati separatamente presso il fornitore o la piattaforma interessati; l’eliminazione potrebbe non essere disponibile fino alla cancellazione.</p><p>Possiamo sospendere o interrompere l’accesso se riteniamo ragionevolmente che vi sia stata una violazione dei presenti Termini, un rischio per la sicurezza o legale, una frode o un danno al servizio o ad altri utenti. Ove appropriato e consentito dalla legge, ti informeremo e ti daremo la possibilità di risolvere il problema.</p><p>La cessazione non pregiudica diritti o obblighi già maturati. Le disposizioni che per loro natura devono rimanere in vigore, incluse quelle relative a proprietà intellettuale, esclusioni di responsabilità, responsabilità e controversie, continueranno ad applicarsi.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Manleva</h2>
+            <p>Nella misura consentita dalla legge, sei responsabile delle perdite, responsabilità e spese ragionevoli derivanti da reclami di terzi causati dall’uso illecito del servizio, dalla violazione dei presenti Termini o da contenuti che ledono i diritti altrui. Ciò non trasferisce a te la responsabilità per nostri atti od omissioni quando la legge lo vieta.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Modifiche ai presenti Termini</h2>
+            <p>Possiamo aggiornare i presenti Termini pubblicando una versione rivista su questa pagina. Forniremo un’ulteriore comunicazione delle modifiche sostanziali ove ragionevolmente possibile o richiesto dalla legge.</p><p>Le modifiche entrano in vigore alla data indicata o, se non indicata, al momento della pubblicazione. Quando la legge richiede un’accettazione esplicita, la richiederemo. Negli altri casi, continuare a utilizzare il servizio dopo la data di entrata in vigore equivale ad accettare le modifiche. Se non sei d’accordo, interrompi l’utilizzo del servizio.</p>
+        </div>
+        <div class="support-section">
+            <h2>15. Legge applicabile e risoluzione delle controversie</h2>
+            <p>I presenti Termini sono disciplinati dalla legge estone, fatto salvo il rispetto delle tutele inderogabili dei consumatori previste nel tuo paese di residenza. Nulla elimina i diritti ai quali non è possibile rinunciare ai sensi della legge applicabile.</p><p>Fatte salve le norme inderogabili sulla giurisdizione dei consumatori, le controversie saranno sottoposte ai tribunali competenti dell’Estonia. A seconda della legge applicabile, potresti anche avere il diritto di avviare procedimenti nel tuo luogo di residenza.</p>
+        </div>
+        <div class="support-section">
+            <h2>16. Disposizioni generali</h2>
+            <p>Se una disposizione è invalida o inapplicabile, le restanti disposizioni rimangono efficaci. Possiamo interpretare o sostituire la disposizione interessata per preservarne lo scopo nella massima misura consentita dalla legge. La mancata applicazione di una disposizione non costituisce rinuncia.</p><p>I presenti Termini e le politiche in essi richiamate costituiscono l’accordo tra te e DRMA Tech relativo al servizio, fatti salvi i diritti legali inderogabili. Non siamo responsabili per ritardi o malfunzionamenti causati da eventi al di fuori del nostro ragionevole controllo, inclusi calamità naturali, conflitti, atti governativi, guasti alle infrastrutture o interruzioni diffuse di servizi di terzi.</p><p>Non puoi trasferire diritti o obblighi senza il nostro consenso scritto. Possiamo trasferire i presenti Termini nell’ambito di una fusione, ristrutturazione o cessione del servizio, senza ridurre i tuoi diritti legali inderogabili.</p>
+        </div>
+        <div class="support-section">
+            <h2>17. Contatti e assistenza</h2>
+            <p>Per assistenza, invia un’e-mail a <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>, utilizza la funzione Feedback della piattaforma oppure visita il <a href=@($"/{Culture}/help")>Centro assistenza</a> per FAQ, risoluzione dei problemi, feedback e strumenti per i dati e l’eliminazione dell’account.</p><p>Per questioni aziendali o richieste generali, scrivi a <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>. Per richieste legali o relative alla privacy, utilizza i canali di contatto disponibili e specifica la natura della richiesta.</p>
+        </div>
+        <div class="support-footer">
+            <p>Ultimo aggiornamento: 5 novembre 2026</p>
+            <p>Utilizzando la piattaforma, dichiari di aver letto e accettato i presenti Termini e la nostra <a href=@($"/{Culture}/legal/privacy")>Informativa sulla privacy</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.de)
+    {
+        <h1 class="support-title">Nutzungsbedingungen</h1>
+        <div class="support-subtitle">Willkommen bei <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>) !<br />Diese Nutzungsbedingungen („Bedingungen“) regeln Ihren Zugriff auf den Dienst und dessen Nutzung. Durch die Nutzung des Dienstes stimmen Sie diesen Bedingungen zu. Wenn Sie nicht einverstanden sind, nutzen Sie den Dienst bitte nicht.</div>
+        <div class="support-section">
+            <h2>1. Über den Dienst</h2>
+            <p><b>@AppInfo.Title</b> wird von DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), einem in Estland registrierten Unternehmen, betrieben. Der Dienst hilft Ihnen, Informationen über Filme, Serien und Streamingdienste zu entdecken, zu organisieren und zu verwalten. Für einige Funktionen ist möglicherweise ein Konto oder ein kostenpflichtiges Abonnement erforderlich.</p><p>Der Dienst ist für den persönlichen, nicht kommerziellen Gebrauch bestimmt. Ohne vorherige schriftliche Genehmigung dürfen Sie den Dienst oder seine Daten weder weiterverkaufen, weiterverbreiten oder kommerziell verwerten noch zur Erstellung eines konkurrierenden Produkts verwenden.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Berechtigung und Konten</h2>
+            <p>Sie müssen rechtlich befugt sein, eine verbindliche Vereinbarung abzuschließen. Minderjährige dürfen den Dienst nutzen, wenn dies gesetzlich zulässig ist und ihre Eltern oder Erziehungsberechtigten zustimmen und daran beteiligt sind.</p><p>Einige Funktionen erfordern kein Konto; andere, etwa private Listen und Einstellungen, können eine Registrierung voraussetzen. Sie müssen korrekte Angaben machen, Ihre Zugangsdaten schützen und uns über vermutete unbefugte Zugriffe informieren. Sofern gesetzlich nichts anderes gilt, sind Sie für Aktivitäten über Ihr Konto verantwortlich.</p><p>Wir können Registrierungen ablehnen oder zusätzliche Prüfungen verlangen, wenn dies vernünftigerweise erforderlich ist, um den Dienst, Nutzer oder unsere berechtigten Interessen zu schützen.</p>
+        </div>
+        <div class="support-section">
+            <h2>3. Kontodaten und Datenschutz</h2>
+            <p>Je nach den genutzten Funktionen können wir Ihre E-Mail-Adresse, Authentifizierungsprotokolle, IP-Adresse, technische Geräteinformationen, Einstellungen sowie von Ihnen erstellte oder gespeicherte Inhalte verarbeiten. Wir verwenden diese Daten, um den Dienst bereitzustellen, zu schützen, zu warten, zu personalisieren und zu verbessern sowie um mit Ihnen zu kommunizieren.</p><p>Unsere <a href=@($"/{Culture}/legal/privacy")>Datenschutzerklärung</a> erläutert die Verarbeitung personenbezogener Daten und die Ausübung Ihrer Rechte. Wir setzen angemessene technische und organisatorische Maßnahmen ein, jedoch ist keine Übertragungs- oder Speichermethode vollständig sicher.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Funktionen, Listen und Nutzerinhalte</h2>
+            <p>Der Dienst kann Listen und Werkzeuge zur Organisation von Informationen über Filme und Serien bereitstellen. Funktionen, Beschränkungen und Verfügbarkeit können je nach Konto oder Abonnement variieren und sich im Laufe der Zeit ändern.</p><p>Sie sind für die von Ihnen erstellten, hinzugefügten oder geteilten Inhalte verantwortlich. Übermitteln Sie keine rechtswidrigen, irreführenden, verleumderischen, missbräuchlichen, rechtsverletzenden oder nach diesen Bedingungen oder geltendem Recht verbotenen Inhalte. Öffentliche Listen und geteilte Links können von Dritten aufgerufen und weitergegeben werden. Teilen Sie keine Informationen, die Sie privat halten möchten.</p><p>Sie behalten Ihre Rechte an den übermittelten Inhalten und räumen uns eine nicht ausschließliche, weltweite und gebührenfreie Lizenz ein, diese ausschließlich im erforderlichen Umfang zum Betrieb, Schutz und zur Bereitstellung des Dienstes und seiner Freigabefunktionen zu hosten, zu speichern, zu vervielfältigen und anzuzeigen. Die Lizenz endet mit der Löschung, ausgenommen Sicherungskopien, gesetzliche Aufbewahrungspflichten sowie Inhalte, die bereits geteilt oder von Dritten aufgerufen wurden.</p>
+        </div>
+        <div class="support-section">
+            <h2>5. Abonnements, Zahlungen und Abrechnung</h2>
+            <p>Einige Funktionen können kostenpflichtig sein. Tarife, Preise, Laufzeiten, Währungen, Zahlungsmethoden sowie anfallende Steuern oder Gebühren werden vor dem Kauf angezeigt. Optionen und Funktionen können je nach Land, Plattform, Konto und Anbieter variieren. Der Dienst kann wiederkehrende Abonnements, In-App-Käufe, Werbeaktionen oder andere kostenpflichtige Funktionen anbieten.</p><p>Zahlungen können von Drittanbietern oder Plattformbetreibern verarbeitet werden. Es können nur die beim Bezahlvorgang angezeigten Optionen verwendet werden; zusätzlich können die Bedingungen dieser Anbieter gelten.</p><p>Sofern beim Kauf nicht anders angegeben, verlängern sich Abonnements automatisch bis zur Kündigung. Sie ermächtigen den Einzug des angezeigten Betrags sowie anfallender Steuern und Gebühren. Verwalten oder kündigen Sie Ihr Abonnement über den Dienst oder den Anbieter/die Plattform, bei dem/der Sie den Kauf getätigt haben. Eine Kündigung verhindert in der Regel zukünftige Verlängerungen, begründet jedoch nicht automatisch einen Anspruch auf Erstattung des laufenden Abrechnungszeitraums.</p><p>Erstattungen, Zahlungsstreitigkeiten und Anpassungen unterliegen den Richtlinien des Anbieters und Ihren zwingenden gesetzlichen Rechten. Möglicherweise müssen Sie sich an den Anbieter wenden, der den Kauf verarbeitet hat. Die Löschung Ihres Kontos kündigt das Abonnement nicht und stoppt keine zukünftigen Zahlungen; aktive Abonnements müssen separat gekündigt werden.</p>
+        </div>
+        <div class="support-section">
+            <h2>6. Inhalte und Dienste Dritter</h2>
+            <p>Der Dienst kann Inhalte und Dienste Dritter verwenden oder verlinken, darunter Metadaten, Bilder, Bewertungen, Streaming-Verfügbarkeiten, Links und Anbieterinformationen. Wir können außerdem auf Drittanbieter für Authentifizierung, Hosting, Speicherung, Kommunikation, Zahlungsabwicklung, Analyse, Werbung, Feedback, Sicherheit und Überwachung angewiesen sein. Anbieter und Funktionen können sich ändern und je nach Region oder Plattform variieren.</p><p>Wir betreiben die aufgeführten Streamingdienste nicht und hosten, stellen oder genehmigen weder das Streaming noch den Download oder die Wiedergabe ihrer Filme und Serien. Sofern nicht ausdrücklich angegeben, sind wir nicht mit Drittanbietern verbunden. Inhalte und Dienste Dritter unterliegen weiterhin den Rechten und Bedingungen ihrer jeweiligen Inhaber.</p><p>Kataloge, Verfügbarkeiten, Preise, Links und sonstige Informationen können unvollständig oder unrichtig sein oder sich je nach Region und im Laufe der Zeit ändern. Prüfen Sie die Angaben vor einem Kauf oder Abonnement direkt beim Anbieter. Die Nutzung von Diensten Dritter unterliegt deren eigenen Bedingungen und Richtlinien. Soweit gesetzlich zulässig, übernehmen wir keine Verantwortung für diese Dienste. Quellenangaben und Lizenzen können auf der Credits-Seite aufgeführt sein.</p>
+        </div>
+        <div class="support-section">
+            <h2>7. Geistiges Eigentum</h2>
+            <p>Der Name, die Marke, Logos, Originaltexte, Benutzeroberfläche und sonstigen Originalmaterialien des Dienstes gehören DRMA Tech oder sind an DRMA Tech lizenziert und durch Gesetze zum Schutz geistigen Eigentums geschützt. Diese Bedingungen gewähren Ihnen lediglich ein eingeschränktes Recht zur Nutzung des Dienstes.</p><p>Einige Softwarekomponenten können Open-Source-Lizenzen unterliegen, die in den jeweiligen Hinweisen oder Repositories aufgeführt sind. Diese Lizenzen umfassen nicht automatisch Marken, Gestaltung, Daten Dritter, Bilder oder andere Materialien. Materialien Dritter bleiben Eigentum ihrer jeweiligen Inhaber.</p>
+        </div>
+        <div class="support-section">
+            <h2>8. Zulässige Nutzung und Einschränkungen</h2>
+            <p>Der Dienst darf nur für rechtmäßige Zwecke verwendet werden. Untersagt ist:</p><ul><li>Die Nutzung zu rechtswidrigen, betrügerischen, irreführenden oder schädlichen Zwecken.</li><li>Das Scraping, systematische Sammeln oder automatisierte Extrahieren von Daten, sofern dies nicht genehmigt oder gesetzlich erlaubt ist.</li><li>Der Einsatz von Bots, Crawlern oder Skripten, die den Dienst unangemessen belasten oder technische Beschränkungen umgehen.</li><li>Das Umgehen von Abonnements, Nutzungsgrenzen, Zugriffskontrollen oder sonstigen Beschränkungen.</li><li>Das Kopieren, Ändern, Zurückentwickeln, Dekompilieren oder Erstellen abgeleiteter Werke, sofern dies nicht gesetzlich oder durch eine Open-Source-Lizenz erlaubt ist.</li><li>Die Beeinträchtigung der Sicherheit oder des Betriebs oder der Versuch, unbefugt auf Konten, Systeme oder Daten zuzugreifen.</li><li>Das Übermitteln von Inhalten, die Rechte verletzen oder gegen geltendes Recht verstoßen.</li><li>Das unbefugte Extrahieren oder Wiederverwenden von Inhalten zur Erstellung oder zum Training einer konkurrierenden Datenbank oder eines konkurrierenden Dienstes.</li><li>Der Weiterverkauf, die Unterlizenzierung oder kommerzielle Nutzung des Dienstes oder seiner Inhalte ohne schriftliche Genehmigung.</li></ul><p>Wir können Verstöße untersuchen und verhältnismäßige Maßnahmen ergreifen, einschließlich der Einschränkung des Zugriffs sowie der Sperrung oder Kündigung von Konten, soweit gesetzlich zulässig.</p>
+        </div>
+        <div class="support-section">
+            <h2>9. Verfügbarkeit und Änderungen des Dienstes</h2>
+            <p>Wir bemühen uns, den Dienst verfügbar zu halten, garantieren jedoch keine ununterbrochene, fehlerfreie, sichere oder weltweite Verfügbarkeit. Einige Funktionen hängen von Systemen und Daten Dritter ab, die außerhalb unserer Kontrolle liegen.</p><p>Wir können Funktionen hinzufügen, ändern, einschränken, aussetzen oder einstellen. Über wesentliche Änderungen informieren wir, soweit gesetzlich erforderlich.</p>
+        </div>
+        <div class="support-section">
+            <h2>10. Haftungsausschlüsse</h2>
+            <p>Im größtmöglichen gesetzlich zulässigen Umfang wird der Dienst „wie besehen“ und „wie verfügbar“ bereitgestellt. Wir garantieren nicht, dass Informationen Dritter, einschließlich Beschreibungen, Bewertungen, Streaming-Verfügbarkeiten, Preise oder Links, korrekt, vollständig, aktuell oder dauerhaft verfügbar sind.</p><p>Entdeckungs- und Empfehlungsfunktionen dienen ausschließlich Informationszwecken. Prüfen Sie Angaben beim Anbieter, bevor Sie sich darauf verlassen. Gesetzliche Verbraucherrechte oder andere Schutzrechte, auf die nicht wirksam verzichtet werden kann, bleiben unberührt.</p>
+        </div>
+        <div class="support-section">
+            <h2>11. Haftungsbeschränkung</h2>
+            <p>Im größtmöglichen gesetzlich zulässigen Umfang haftet DRMA Tech nicht für mittelbare, beiläufige, besondere, Folge- oder Strafschäden sowie nicht für entgangene Gewinne, Einnahmen, Geschäftsmöglichkeiten, Reputation oder Daten, die aus der Nutzung oder der Unmöglichkeit der Nutzung des Dienstes entstehen.</p><p>Die Gesamthaftung von DRMA Tech im Zusammenhang mit dem Dienst oder diesen Bedingungen ist im größtmöglichen gesetzlich zulässigen Umfang auf den Betrag begrenzt, den Sie in den 12 Monaten vor dem anspruchsbegründenden Ereignis für den Dienst bezahlt haben. Wenn Sie nichts bezahlt haben, beträgt die Haftungsobergrenze 50 EUR.</p><p>Diese Beschränkungen gelten nicht für Haftung, die gesetzlich nicht ausgeschlossen oder beschränkt werden darf, einschließlich zwingender Verbraucherrechte, Betrugs oder vorsätzlichen Fehlverhaltens.</p>
+        </div>
+        <div class="support-section">
+            <h2>12. Sperrung, Beendigung und Kontolöschung</h2>
+            <p>Sie können die Nutzung des Dienstes einstellen und über die verfügbaren Kontofunktionen oder den Support die Löschung Ihres Kontos beantragen. Aktive Abonnements müssen separat beim jeweiligen Anbieter oder der jeweiligen Plattform gekündigt werden. Bis zur Kündigung ist eine Kontolöschung möglicherweise nicht verfügbar.</p><p>Wir können den Zugriff sperren oder beenden, wenn wir vernünftigerweise davon ausgehen, dass diese Bedingungen verletzt wurden, ein Sicherheits- oder Rechtsrisiko besteht, Betrug vorliegt oder der Dienst oder andere Nutzer geschädigt werden. Soweit angemessen und gesetzlich zulässig, informieren wir Sie und geben Ihnen Gelegenheit, das Problem zu beheben.</p><p>Die Beendigung berührt keine zuvor entstandenen Rechte oder Pflichten. Bestimmungen, die ihrer Natur nach fortgelten sollen, einschließlich geistigen Eigentums, Haftungsausschlüssen, Haftung und Streitigkeiten, bleiben wirksam.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Freistellung</h2>
+            <p>Soweit gesetzlich zulässig, sind Sie für Verluste, Verbindlichkeiten und angemessene Kosten verantwortlich, die aus Ansprüchen Dritter entstehen, welche durch Ihre rechtswidrige Nutzung des Dienstes, einen Verstoß gegen diese Bedingungen oder Inhalte verursacht wurden, die Rechte anderer verletzen. Dies überträgt Ihnen keine Verantwortung für unsere eigenen Handlungen oder Unterlassungen, soweit dies gesetzlich unzulässig ist.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Änderungen dieser Bedingungen</h2>
+            <p>Wir können diese Bedingungen aktualisieren, indem wir eine überarbeitete Fassung auf dieser Seite veröffentlichen. Über wesentliche Änderungen informieren wir zusätzlich, soweit dies vernünftigerweise möglich oder gesetzlich vorgeschrieben ist.</p><p>Änderungen treten zu dem angegebenen Datum oder, falls kein Datum angegeben ist, mit der Veröffentlichung in Kraft. Wenn eine ausdrückliche Zustimmung gesetzlich erforderlich ist, holen wir diese ein. Andernfalls gilt die weitere Nutzung des Dienstes nach Inkrafttreten als Zustimmung. Wenn Sie nicht einverstanden sind, stellen Sie die Nutzung des Dienstes ein.</p>
+        </div>
+        <div class="support-section">
+            <h2>15. Anwendbares Recht und Streitbeilegung</h2>
+            <p>Diese Bedingungen unterliegen estnischem Recht, unbeschadet zwingender Verbraucherschutzvorschriften in Ihrem Wohnsitzland. Rechte, auf die nach geltendem Recht nicht verzichtet werden kann, bleiben unberührt.</p><p>Vorbehaltlich zwingender Zuständigkeitsregeln für Verbraucher werden Streitigkeiten den zuständigen Gerichten Estlands vorgelegt. Je nach anwendbarem Recht können Sie Verfahren auch an Ihrem Wohnsitz einleiten.</p>
+        </div>
+        <div class="support-section">
+            <h2>16. Allgemeine Bestimmungen</h2>
+            <p>Sollte eine Bestimmung unwirksam oder nicht durchsetzbar sein, bleiben die übrigen Bestimmungen wirksam. Wir können die betroffene Bestimmung auslegen oder ersetzen, um ihren Zweck im größtmöglichen gesetzlich zulässigen Umfang zu erhalten. Die Nichtdurchsetzung einer Bestimmung gilt nicht als Verzicht.</p><p>Diese Bedingungen und die darin einbezogenen Richtlinien bilden die Vereinbarung zwischen Ihnen und DRMA Tech bezüglich des Dienstes, vorbehaltlich zwingender gesetzlicher Rechte. Wir haften nicht für Verzögerungen oder Ausfälle aufgrund von Ereignissen außerhalb unserer angemessenen Kontrolle, einschließlich Naturkatastrophen, Konflikten, staatlichen Maßnahmen, Infrastrukturausfällen oder weitreichenden Ausfällen bei Drittanbietern.</p><p>Sie dürfen Rechte oder Pflichten nicht ohne unsere schriftliche Zustimmung übertragen. Wir können diese Bedingungen im Rahmen einer Fusion, Umstrukturierung oder Übertragung des Dienstes übertragen, ohne Ihre zwingenden gesetzlichen Rechte einzuschränken.</p>
+        </div>
+        <div class="support-section">
+            <h2>17. Kontakt und Support</h2>
+            <p>Für Support schreiben Sie an <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>, nutzen Sie die Feedback-Funktion der Plattform oder besuchen Sie das <a href=@($"/{Culture}/help")>Hilfe-Center</a> mit FAQs, Fehlerbehebung, Feedback sowie Werkzeugen für Kontodaten und Kontolöschung.</p><p>Für Unternehmensanfragen oder allgemeine Fragen schreiben Sie an <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>. Für rechtliche oder datenschutzbezogene Anfragen nutzen Sie bitte die verfügbaren Kontaktmöglichkeiten und geben Sie die Art Ihrer Anfrage an.</p>
+        </div>
+        <div class="support-footer">
+            <p>Zuletzt aktualisiert: 5. November 2026</p>
+            <p>Durch die Nutzung der Plattform bestätigen Sie, dass Sie diese Bedingungen und unsere gelesen haben und ihnen zustimmen: <a href=@($"/{Culture}/legal/privacy")>Datenschutzerklärung</a>.</p>
         </div>
     }
     else
@@ -314,6 +524,7 @@
                 <li>Use unauthorized extraction or reuse to build or train a competing database or service.</li>
                 <li>Resell, sublicense, or commercially exploit the service or its content without our written permission.</li>
             </ul>
+            @* TODO: Implement an internal workflow for receiving, reviewing, and acting on suspected Terms violations, including account restrictions or termination where appropriate. *@
             <p>We may investigate suspected violations and take proportionate action, including restricting access or suspending or terminating accounts, subject to applicable law.</p>
         </div>
 

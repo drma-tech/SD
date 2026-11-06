@@ -358,7 +358,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gaelic (GB).
+        ///   Looks up a localized string similar to Scottish Gaelic (GB).
         /// </summary>
         public static string gd_GB {
             get {
@@ -394,7 +394,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Croatian (RH).
+        ///   Looks up a localized string similar to Croatian (HR).
         /// </summary>
         public static string hr_HR {
             get {
@@ -475,7 +475,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kirghiz (KG).
+        ///   Looks up a localized string similar to Kyrgyz (KG).
         /// </summary>
         public static string ky_KG {
             get {
@@ -745,7 +745,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uzbek (PK).
+        ///   Looks up a localized string similar to Uzbek (UZ).
         /// </summary>
         public static string uz_UZ {
             get {
@@ -763,7 +763,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chinese (CH).
+        ///   Looks up a localized string similar to Chinese (CN).
         /// </summary>
         public static string zh_CN {
             get {

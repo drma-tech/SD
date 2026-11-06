@@ -70,92 +70,11 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We&apos;ve sent a verification code to {0}. Please enter it to continue..
-        /// </summary>
-        internal static string CodeSent {
-            get {
-                return ResourceManager.GetString("CodeSent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Continue with {0}.
-        /// </summary>
-        internal static string ContinueWith {
-            get {
-                return ResourceManager.GetString("ContinueWith", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create Account.
+        ///   Looks up a localized string similar to Create account.
         /// </summary>
         internal static string CreateAccount {
             get {
                 return ResourceManager.GetString("CreateAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email.
-        /// </summary>
-        internal static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The email may take a minute or more to arrive..
-        /// </summary>
-        internal static string EmailDelay {
-            get {
-                return ResourceManager.GetString("EmailDelay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the code you received by email..
-        /// </summary>
-        internal static string EnterCode {
-            get {
-                return ResourceManager.GetString("EnterCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter a valid email address..
-        /// </summary>
-        internal static string EnterEmail {
-            get {
-                return ResourceManager.GetString("EnterEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is not a valid email address.
-        /// </summary>
-        internal static string InvalidEmail {
-            get {
-                return ResourceManager.GetString("InvalidEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If the social login attempt fails, please try again or use the option to log in with email..
-        /// </summary>
-        internal static string LoginSocialFailed {
-            get {
-                return ResourceManager.GetString("LoginSocialFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Microsoft emails (Outlook, Hotmail, etc.) may not work..
-        /// </summary>
-        internal static string MicrosoftEmails {
-            get {
-                return ResourceManager.GetString("MicrosoftEmails", resourceCulture);
             }
         }
         
@@ -174,24 +93,6 @@ namespace SD.WEB.Translations.Module {
         internal static string NothingThisAddress {
             get {
                 return ResourceManager.GetString("NothingThisAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OTP Code.
-        /// </summary>
-        internal static string OTPCode {
-            get {
-                return ResourceManager.GetString("OTPCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sign In or Sign Up.
-        /// </summary>
-        internal static string SignInSignUp {
-            get {
-                return ResourceManager.GetString("SignInSignUp", resourceCulture);
             }
         }
         
@@ -223,7 +124,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unauthenticated User.
+        ///   Looks up a localized string similar to Unauthenticated user.
         /// </summary>
         internal static string UnauthenticatedUser {
             get {

@@ -250,7 +250,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cote D&apos;Ivoire.
+        ///   Looks up a localized string similar to Côte d&apos;Ivoire.
         /// </summary>
         public static string CI {
             get {
@@ -457,7 +457,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guadaloupe.
+        ///   Looks up a localized string similar to Guadeloupe.
         /// </summary>
         public static string GP {
             get {
@@ -691,7 +691,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Libyan Arab Jamahiriya.
+        ///   Looks up a localized string similar to Libya.
         /// </summary>
         public static string LY {
             get {
@@ -727,7 +727,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Macedonia.
+        ///   Looks up a localized string similar to North Macedonia.
         /// </summary>
         public static string MK {
             get {
@@ -1069,7 +1069,7 @@ namespace SD.Shared.Translations.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Turkey.
+        ///   Looks up a localized string similar to Türkiye.
         /// </summary>
         public static string TR {
             get {

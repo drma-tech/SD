@@ -1,255 +1,812 @@
 ﻿@page "/{culture}/legal/privacy"
 @inherits PageCore<PrivacyPage>
 
-<HeadComponent Title="@Translations.Module.Legal.PrivacyPolicy" Url=@($"/{Culture}/legal/privacy") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Module.Legal.PrivacyPolicy" Url=@($"/{Culture}/legal/privacy") Index="true"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
     {
         <h1 class="support-title">Política de Privacidade</h1>
         <div class="support-subtitle">
-            Sua privacidade é uma prioridade no <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), operado pela DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
-            Por favor, leia esta política com atenção para entender como tratamos seus dados.
+            Esta Política de Privacidade explica como a DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), empresa responsável pelo Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), coleta, utiliza e compartilha informações quando você visita ou utiliza nosso site, aplicativos e serviços relacionados.
         </div>
         <div class="support-section">
-            <h2>1. Dados coletados</h2>
-            <p>Coletamos e armazenamos informações como: endereço de e-mail, data de login e endereço IP, país de acesso (via IP) e configurações básicas do usuário. O login é opcional, mas alguns recursos estão disponíveis apenas para usuários autenticados. Dados técnicos e de navegação também podem ser coletados mesmo sem autenticação.</p>
-            <p>Todas as informações sobre filmes e séries são obtidas de serviços externos como TMDb, IMDb, JustWatch, entre outros. A plataforma apenas organiza, apresenta e personaliza esse conteúdo.</p>
-            <p>Não coletamos dados pessoais sensíveis ou geolocalização precisa sem consentimento explícito.</p>
+            <h2>1. Informações que coletamos</h2>
+            <p><b>Informações da conta.</b> Quando você cria ou utiliza uma conta, coletamos informações como endereço de e-mail, nome de exibição e identificador da conta. A autenticação é fornecida pelo Clerk.</p>
+            <p><b>Suas preferências e atividades.</b> Quando você utiliza recursos da conta, processamos informações sobre os serviços de streaming e regiões selecionados, títulos adicionados à sua lista de desejos, filmes e séries marcados como assistidos, episódios assistidos e preferências como idioma, região e configurações de exibição.</p>
+            <p><b>Informações do dispositivo e de uso.</b> Quando você utiliza o Streaming Discovery, nós e nossos prestadores de serviços podemos coletar informações como endereço IP, país ou região aproximados, tipo de navegador e dispositivo, sistema operacional, versão do aplicativo, páginas visualizadas, interações com o serviço e informações de diagnóstico. Essas informações nos ajudam a operar, proteger e aprimorar o serviço.</p>
+            <p><b>Comunicações e comentários.</b> Se você entrar em contato conosco, enviar comentários ou sugerir um recurso, processaremos as informações e a mensagem fornecidas para responder e aprimorar o serviço.</p>
+            <p><b>Informações de assinatura.</b> Se você assinar um plano, processaremos as informações necessárias para gerenciar sua assinatura, como provedor de pagamento, plano, status da assinatura e referências de transação. Os provedores de pagamento coletam e processam os dados de pagamento conforme descrito em suas próprias políticas de privacidade.</p>
+            <p>Você pode utilizar alguns recursos de descoberta sem uma conta. Os recursos que salvam preferências ou atividades de visualização exigem que você entre na sua conta.</p>
         </div>
         <div class="support-section">
-            <h2>2. Cookies e tecnologias similares</h2>
-            <p>Utilizamos cookies próprios e armazenamento de sessão para manter preferências do usuário, autenticação e funcionalidades da plataforma. Também utilizamos cookies de terceiros de serviços como Google AdSense para exibir anúncios personalizados com base em sua atividade e preferências.</p>
-            <p><b>Importante:</b> Devido à estrutura AppTrackingTransparency (ATT) da Apple, que exige permissão explícita do usuário para rastreamento entre aplicativos e sites, as tecnologias de rastreamento comportamental não estão operacionais em dispositivos Apple em nosso aplicativo. Não usamos nem instalamos estruturas de rastreamento que exijam o consentimento da ATT. Como resultado, a coleta de dados comportamentais e as análises relacionadas são limitadas ou indisponíveis em dispositivos Apple.</p>
+            <h2>2. Como utilizamos as informações</h2>
+            <p>Utilizamos as informações descritas acima para:</p>
+            <ul>
+                <li>Fornecer o Streaming Discovery e seus recursos, incluindo acesso à conta, configurações personalizadas e listas salvas.</li>
+                <li>Lembrar suas preferências de streaming e atividades de visualização.</li>
+                <li>Exibir informações sobre conteúdo e disponibilidade relevantes para seu idioma e região.</li>
+                <li>Processar e gerenciar assinaturas e o respectivo suporte ao cliente.</li>
+                <li>Enviar comunicações importantes sobre conta, serviço e assinatura, além de atualizações solicitadas por você.</li>
+                <li>Responder a perguntas, comentários e solicitações de suporte.</li>
+                <li>Manter a segurança, a confiabilidade e o desempenho do serviço.</li>
+                <li>Entender como o serviço é utilizado e aprimorar seus recursos e a experiência do usuário.</li>
+                <li>Cumprir as leis aplicáveis e proteger nossos direitos e os direitos dos usuários.</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookies e tecnologias semelhantes</h2>
+            <p>O Streaming Discovery e os serviços que utilizamos podem depender de cookies e tecnologias semelhantes, incluindo o armazenamento do navegador, para lembrar preferências, oferecer recursos essenciais, entender como o serviço é utilizado e exibir ou mensurar publicidade.</p>
+            <p>Essas tecnologias podem ser fornecidas por nós ou por terceiros, incluindo Google Analytics, Microsoft Clarity e Google AdSense. Elas podem coletar informações sobre seu dispositivo, navegador e interações com o serviço.</p>
+            <p>Você pode gerenciar ou excluir cookies nas configurações do navegador. Também pode consultar as opções de personalização de anúncios do Google nas configurações de anúncios do Google. O bloqueio de cookies ou tecnologias semelhantes pode afetar alguns recursos, e as configurações do navegador podem não controlar todas as tecnologias utilizadas por terceiros.</p>
         </div>
         <div class="support-section">
-            <h2>3. Ferramentas de análise</h2>
-            <p>Para melhorar a plataforma e entender os padrões de uso, utilizamos ferramentas como Google Analytics e Microsoft Clarity. Esses serviços podem coletar dados não identificáveis, como endereço IP, localização aproximada, tipo de navegador, duração da sessão e páginas visitadas.</p>
-            <p><b>Observação:</b> Em dispositivos Apple, devido às restrições da ATT, o rastreamento comportamental e a coleta de dados entre aplicativos são limitados. Cumprimos integralmente essas restrições e não as ignoramos, portanto, os dados de usuários da Apple podem ser menos abrangentes ou ausentes.</p>
+            <h2>4. Análises, melhoria do serviço e publicidade</h2>
+            <p>Utilizamos serviços de terceiros para entender como o Streaming Discovery é utilizado, identificar problemas técnicos, coletar comentários e oferecer suporte à publicidade:</p>
+            <ul>
+                <li><b>Google Analytics</b> nos ajuda a entender o uso geral do serviço, como as páginas e os recursos utilizados.</li>
+                <li><b>Microsoft Clarity</b> nos ajuda a entender como os visitantes interagem com o serviço, incluindo a navegação e as interações nas páginas.</li>
+                <li><b>Sentry</b> nos ajuda a identificar erros e diagnosticar problemas técnicos.</li>
+                <li><b>UserJot</b> permite que os usuários enviem comentários e sugestões de recursos. Quando você envia comentários enquanto está conectado, informações associadas à sua conta podem ser compartilhadas para que o comentário seja tratado no contexto adequado.</li>
+                <li><b>Google AdSense</b> exibe anúncios. O Google e seus parceiros de publicidade podem utilizar cookies ou tecnologias semelhantes e processar informações do dispositivo, navegador e relacionadas à publicidade para exibir, mensurar e proteger anúncios. O tipo de publicidade exibida pode depender da sua localização, da legislação aplicável e das configurações de publicidade disponíveis.</li>
+            </ul>
         </div>
         <div class="support-section">
-            <h2>4. Compartilhamento de dados</h2>
-            <p>Não compartilhamos seus dados pessoais com terceiros, exceto com parceiros técnicos essenciais para o funcionamento do serviço, incluindo provedores de login social, infraestrutura de hospedagem, análises e publicidade. Esses parceiros atuam sob rigorosos acordos de confidencialidade e controle de acesso.</p>
+            <h2>5. Como compartilhamos informações</h2>
+            <p>Não vendemos suas informações pessoais em troca de dinheiro. Compartilhamos informações somente quando necessário para fornecer, manter, proteger ou aprimorar o Streaming Discovery, processar uma transação solicitada por você ou cumprir obrigações legais.</p>
+            <p>Dependendo dos recursos que você utiliza, as informações podem ser compartilhadas com estas categorias de prestadores de serviços:</p>
+            <ul>
+                <li><b>Provedores de autenticação:</b> Clerk, que nos ajuda a gerenciar o cadastro e o acesso às contas.</li>
+                <li><b>Provedores de hospedagem e infraestrutura:</b> Microsoft Azure, que dá suporte à operação e ao armazenamento do serviço.</li>
+                <li><b>Provedores de análise e diagnóstico:</b> Google Analytics, Microsoft Clarity e Sentry, que nos ajudam a entender o uso do serviço e resolver problemas técnicos.</li>
+                <li><b>Provedores de feedback:</b> UserJot, que oferece suporte a comentários e sugestões de recursos.</li>
+                <li><b>Provedores de publicidade:</b> Google AdSense e seus parceiros de publicidade, que dão suporte à exibição e mensuração de anúncios.</li>
+                <li><b>Provedores de pagamento:</b> Stripe e, dependendo da plataforma, região e disponibilidade, Apple, Google Play, Microsoft Store ou Paddle. Esses provedores processam pagamentos ou assinaturas quando a opção de compra correspondente é oferecida. Nem todos os provedores ou métodos de pagamento estão disponíveis para todos os usuários.</li>
+                <li><b>Provedores de e-mail:</b> ZeptoMail, que nos ajuda a enviar e-mails relacionados à conta e ao serviço.</li>
+            </ul>
+            <p>Algumas divulgações a provedores de análise ou publicidade podem ser consideradas um “compartilhamento” de informações pessoais para publicidade comportamental entre contextos, conforme determinadas leis de privacidade, mesmo quando não há troca de dinheiro. Para obter mais informações sobre as opções aplicáveis, consulte nossa página <a href=@($"/{Culture}/legal/do-not-sell")>Não Vender ou Compartilhar Minhas Informações Pessoais</a>.</p>
+            <p>Também podemos divulgar informações quando necessário para cumprir obrigações legais, responder a solicitações legítimas, proteger usuários ou defender nossos direitos. Se nossa empresa estiver envolvida em uma fusão, aquisição ou venda de ativos, as informações poderão ser transferidas como parte dessa transação, respeitando os requisitos de privacidade aplicáveis.</p>
         </div>
         <div class="support-section">
-            <h2>5. Armazenamento</h2>
-            <p>Seus dados são armazenados em servidores da Microsoft Azure localizados nos Estados Unidos e podem ser replicados em outras regiões para garantir estabilidade e disponibilidade. Os dados são protegidos por práticas modernas de segurança, incluindo transmissão criptografada e controle de acesso.</p>
-            <p>Quando uma conta é excluída, os dados pessoais são removidos do banco de dados principal. No entanto, certas informações podem ser retidas em sistemas isolados por até 6 meses por razões legais ou operacionais, como prevenção de fraudes, conformidade ou solicitações de investigação. Após esse período, os dados são permanentemente excluídos ou anonimizados.</p>
+            <h2>6. Conteúdo e serviços de terceiros</h2>
+            <p>O Streaming Discovery utiliza serviços de conteúdo de terceiros, incluindo TMDB e serviços acessados por meio da RapidAPI, para fornecer informações sobre filmes e séries, como títulos, descrições, avaliações, imagens, trailers e disponibilidade. Quando você pesquisa ou visualiza conteúdo, termos de pesquisa, identificadores de conteúdo, idioma ou região relevantes podem ser enviados a esses provedores para recuperar as informações solicitadas.</p>
+            <p>Quando você acessa um link para outro site ou serviço, aplicam-se os termos e a política de privacidade do respectivo provedor. Não controlamos a operação dos serviços de terceiros nem a forma como eles tratam as informações que coletam independentemente.</p>
         </div>
         <div class="support-section">
-            <h2>6. Direitos do usuário</h2>
-            <p>Os usuários podem excluir suas contas a qualquer momento e solicitar a remoção de seus dados associados. Também é possível acessar ou modificar suas informações de conta usando as ferramentas disponíveis nas configurações do perfil. Se desejar obter uma cópia dos seus dados armazenados, entre em contato pelo canal de suporte.</p>
-            <p>Se você tiver dúvidas sobre seus dados ou desejar exercer seus direitos sob as leis de privacidade aplicáveis ​​(GDPR, LGPD, CCPA/CPRA), entre em contato conosco por meio da página de suporte da plataforma.</p>
+            <h2>7. Pagamentos e assinaturas</h2>
+            <p>As opções de assinatura e pagamento podem variar de acordo com seu dispositivo, plataforma, região e disponibilidade atual. Quando oferecidos, os pagamentos podem ser processados pela Stripe, Apple, Google Play, Microsoft Store ou Paddle. O provedor correspondente explicará quais informações coleta para processar seu pagamento.</p>
+            <p>Recebemos e mantemos as informações relacionadas à assinatura necessárias para oferecer seu plano, como provedor de pagamento, status da assinatura, detalhes do plano e referências de transação. Não recebemos os dados completos do seu cartão de pagamento quando essas informações são inseridas diretamente no provedor de pagamento.</p>
+            <p>Excluir sua conta do Streaming Discovery não cancela automaticamente uma assinatura gerenciada por um provedor de pagamento ou loja de aplicativos. Cancele a assinatura com o provedor pelo qual realizou a compra antes de solicitar a exclusão da conta. As informações mantidas pelos provedores de pagamento estão sujeitas às próprias políticas de privacidade e práticas de retenção.</p>
         </div>
         <div class="support-section">
-            <h2>7. Listas públicas e privadas</h2>
-            <p>A plataforma oferece listas públicas curadas que podem ser acessadas e compartilhadas por qualquer visitante. Usuários autenticados podem criar listas privadas com número limitado de itens. Essas listas permanecem privadas, mas podem ser compartilhadas por link público, a critério do usuário. Usuários pagos têm acesso a maior capacidade de listas.</p>
+            <h2>8. Retenção de dados e exclusão da conta</h2>
+            <p>Mantemos informações pessoais pelo tempo necessário para fornecer o serviço, manter sua conta e o conteúdo salvo, cumprir obrigações legais, resolver disputas e proteger o serviço.</p>
+            <p>Você pode solicitar a exclusão da sua conta do Streaming Discovery pela Central de Ajuda. Se tiver uma assinatura ativa, deverá cancelá-la com o provedor de pagamento correspondente antes que a exclusão da conta possa ser concluída. Quando sua conta for excluída, as informações pessoais e o conteúdo salvo associados a ela serão removidos dos nossos serviços ativos de conta, ressalvadas as informações que devemos ou podemos manter por motivos legais, de segurança ou operacionais legítimos.</p>
+            <p>A exclusão da sua conta não exclui automaticamente as informações mantidas de forma independente por provedores de pagamento, análise, publicidade, e-mail ou outros terceiros. A retenção dessas informações é regida pelas próprias políticas de privacidade e obrigações legais desses provedores.</p>
         </div>
         <div class="support-section">
-            <h2>8. Crianças e menores de idade</h2>
-            <p>A plataforma é destinada ao público geral e não coleta intencionalmente dados de menores de idade. Se tomarmos conhecimento do uso não autorizado de nossos serviços por crianças abaixo da idade permitida, os dados associados serão removidos mediante solicitação.</p>
+            <h2>9. Seus direitos e opções de privacidade</h2>
+            <p>Dependendo de onde você mora e das leis aplicáveis, você pode ter o direito de solicitar acesso, correção ou exclusão de suas informações pessoais, obter uma cópia de determinadas informações, opor-se ou restringir certos tratamentos ou retirar seu consentimento quando o tratamento for baseado nele. Você também pode ter o direito de apresentar uma reclamação a uma autoridade de proteção de dados.</p>
+            <p>Você pode baixar determinadas informações da conta usando o recurso Baixar Dados na Central de Ajuda. Também pode enviar solicitações relacionadas à privacidade pela Central de Ajuda ou entrar em contato pelo endereço <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Podemos solicitar informações para confirmar que a solicitação diz respeito a você antes de respondê-la.</p>
+            <p>Algumas informações podem precisar ser mantidas quando exigido por lei ou quando houver um motivo legítimo relacionado a questões legais ou de segurança. Seus direitos podem variar conforme sua localização e a legislação aplicável.</p>
         </div>
         <div class="support-section">
-            <h2>9. Conformidade legal</h2>
-            <p>Esta política de privacidade está alinhada com as regulamentações de privacidade e proteção de dados aplicáveis, incluindo GDPR, LGPD e leis equivalentes nas regiões onde operamos.</p>
+            <h2>10. Listas públicas e compartilhadas</h2>
+            <p>O Streaming Discovery inclui listas públicas selecionadas que os visitantes podem visualizar. Se você criar ou compartilhar uma lista usando um link público, as pessoas que tiverem acesso a esse link poderão visualizar e compartilhar seu conteúdo. Lembre-se de que informações tornadas públicas ou compartilhadas com outras pessoas podem ser copiadas ou redistribuídas por elas.</p>
+            <p>As listas privadas permanecem privadas, a menos que você opte por compartilhá-las usando um link público ou outro recurso de compartilhamento.</p>
         </div>
         <div class="support-section">
-            <h2>10. Contato</h2>
-            <p>Se tiver dúvidas, solicitações ou reclamações relacionadas aos seus dados pessoais, utilize a página de suporte disponível na plataforma.</p>
+            <h2>11. Privacidade de crianças</h2>
+            <p>O Streaming Discovery é destinado ao público geral e não é direcionado a crianças em situações nas quais o uso do serviço ou a coleta de suas informações pessoais sejam proibidos pela legislação aplicável. Não coletamos intencionalmente informações pessoais de crianças em circunstâncias nas quais seja necessário o consentimento dos pais ou responsáveis. Se você acredita que uma criança nos forneceu informações pessoais indevidamente, entre em contato conosco.</p>
         </div>
         <div class="support-section">
-            <h2>11. Atualizações</h2>
-            <p>Esta política pode ser atualizada periodicamente para refletir mudanças na funcionalidade, nos serviços ou nas regulamentações aplicáveis. Recomendamos revisá-la ocasionalmente para se manter informado.</p>
+            <h2>12. Segurança e transferências internacionais</h2>
+            <p>Utilizamos medidas de proteção razoáveis destinadas a proteger informações pessoais contra acesso não autorizado, perda, uso indevido ou divulgação. Nenhum serviço online pode garantir segurança completa.</p>
+            <p>O Streaming Discovery e seus prestadores de serviços podem processar informações em países diferentes daquele em que você reside. Quando exigido, são utilizadas salvaguardas adequadas para transferências internacionais de informações pessoais.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Alterações nesta Política de Privacidade</h2>
+            <p>Podemos atualizar esta Política de Privacidade periodicamente para refletir alterações no Streaming Discovery, em nossos prestadores de serviços ou nas leis aplicáveis. A versão mais recente será publicada nesta página com a data de atualização. Quando exigido, forneceremos um aviso adicional sobre alterações relevantes.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Fale conosco</h2>
+            <p>Se tiver dúvidas sobre esta Política de Privacidade ou desejar exercer seus direitos de privacidade, entre em contato pelo endereço <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> ou utilize a <a href=@($"/{Culture}/help")>Central de Ajuda</a>.</p>
+            <p>A DRMA Tech (Delivering Reliable Modern Apps Tech OÜ) opera o Streaming Discovery. Para assuntos gerais relacionados à empresa, entre em contato pelo endereço <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>.</p>
         </div>
         <div class="support-footer">
-            <p>Última atualização: 5 de agosto de 2025</p>
-            <p>Ao utilizar este site, você concorda com esta Política de Privacidade e com os <a href=@($"/{Culture}/legal/terms")>Termos de Uso</a>.</p>
+            <p>Última atualização: 6 de novembro de 2026</p>
+            <p>Para obter informações sobre os termos do serviço, leia nossos <a href=@($"/{Culture}/legal/terms")>Termos de Uso</a>.</p>
         </div>
     }
     else if (Language == AppLanguage.es)
     {
         <h1 class="support-title">Política de Privacidad</h1>
         <div class="support-subtitle">
-            Tu privacidad es una prioridad en <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), operado por DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
-            Por favor, lee esta política con atención para entender cómo manejamos tus datos.
+            Esta Política de Privacidad explica cómo DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), la empresa que opera Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), recopila, utiliza y comparte información cuando visitas o utilizas nuestro sitio web, aplicaciones y servicios relacionados.
         </div>
         <div class="support-section">
-            <h2>1. Datos recopilados</h2>
-            <p>Recopilamos y almacenamos información como: dirección de correo electrónico, fecha de inicio de sesión y dirección IP, país de acceso (a través de IP) y configuraciones básicas del usuario. El inicio de sesión es opcional, pero algunas funciones solo están disponibles para usuarios autenticados. También se pueden recopilar datos técnicos y de navegación incluso sin autenticación.</p>
-            <p>Toda la información sobre películas y series proviene de servicios externos como TMDb, IMDb, JustWatch, entre otros. La plataforma solo organiza, presenta y personaliza este contenido.</p>
-            <p>No recopilamos datos personales sensibles ni geolocalización precisa sin consentimiento explícito.</p>
+            <h2>1. Información que recopilamos</h2>
+            <p><b>Información de la cuenta.</b> Cuando creas o utilizas una cuenta, recopilamos información como tu dirección de correo electrónico, nombre para mostrar e identificador de cuenta. La autenticación de cuentas es proporcionada por Clerk.</p>
+            <p><b>Tus preferencias y actividad.</b> Cuando utilizas las funciones de la cuenta, procesamos información sobre los servicios de streaming y las regiones que seleccionas, los títulos que añades a tu lista de deseos, las películas y series que marcas como vistas, los episodios vistos y preferencias como el idioma, la región y la configuración de visualización.</p>
+            <p><b>Información del dispositivo y de uso.</b> Cuando utilizas Streaming Discovery, nosotros y nuestros proveedores de servicios podemos recopilar información como tu dirección IP, país o región aproximados, tipo de navegador y dispositivo, sistema operativo, versión de la aplicación, páginas visitadas, interacciones con el servicio e información de diagnóstico. Esta información nos ayuda a operar, proteger y mejorar el servicio.</p>
+            <p><b>Comunicaciones y comentarios.</b> Si te pones en contacto con nosotros, envías comentarios o sugieres una función, procesamos la información y el mensaje que proporcionas para poder responderte y mejorar el servicio.</p>
+            <p><b>Información de suscripción.</b> Si te suscribes, procesamos la información necesaria para gestionar tu suscripción, como el proveedor de pago, el plan, el estado de la suscripción y las referencias de transacción. Los proveedores de pago recopilan y procesan los datos de pago según se describe en sus propias políticas de privacidad.</p>
+            <p>Puedes utilizar algunas funciones de descubrimiento sin una cuenta. Las funciones que guardan preferencias o actividad de visualización requieren que inicies sesión.</p>
         </div>
         <div class="support-section">
-            <h2>2. Cookies y tecnologías similares</h2>
-            <p>Utilizamos cookies propias y almacenamiento de sesión para mantener las preferencias del usuario, la autenticación y el funcionamiento de la plataforma. También usamos cookies de terceros de servicios como Google AdSense para mostrar anuncios personalizados según tu actividad y preferencias.</p>
-            <p><b>Importante:</b> Debido al marco AppTrackingTransparency (ATT) de Apple, que requiere el permiso explícito del usuario para el seguimiento entre aplicaciones y sitios web, las tecnologías de seguimiento del comportamiento no están disponibles en los dispositivos Apple de nuestra aplicación. No utilizamos ni instalamos marcos de seguimiento que requieran el consentimiento de ATT. Por lo tanto, la recopilación de datos de comportamiento y los análisis relacionados son limitados o no están disponibles en los dispositivos Apple.</p>
+            <h2>2. Cómo utilizamos la información</h2>
+            <p>Utilizamos la información descrita anteriormente para:</p>
+            <ul>
+                <li>Proporcionar Streaming Discovery y sus funciones, incluido el acceso a la cuenta, la configuración personalizada y las listas guardadas.</li>
+                <li>Recordar tus preferencias de streaming y tu actividad de visualización.</li>
+                <li>Mostrar contenido e información de disponibilidad relevantes para tu idioma y región.</li>
+                <li>Procesar y gestionar suscripciones y la atención al cliente relacionada.</li>
+                <li>Enviar comunicaciones importantes sobre la cuenta, el servicio y la suscripción, así como las actualizaciones que hayas solicitado.</li>
+                <li>Responder a preguntas, comentarios y solicitudes de soporte.</li>
+                <li>Mantener la seguridad, fiabilidad y rendimiento del servicio.</li>
+                <li>Comprender cómo se utiliza el servicio y mejorar sus funciones y la experiencia del usuario.</li>
+                <li>Cumplir las leyes aplicables y proteger nuestros derechos y los de nuestros usuarios.</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookies y tecnologías similares</h2>
+            <p>Streaming Discovery y los servicios que utilizamos pueden depender de cookies y tecnologías similares, incluido el almacenamiento del navegador, para recordar preferencias, ofrecer funciones esenciales, comprender cómo se utiliza el servicio y mostrar o medir publicidad.</p>
+            <p>Estas tecnologías pueden ser proporcionadas por nosotros o por terceros, incluidos Google Analytics, Microsoft Clarity y Google AdSense. Pueden recopilar información sobre tu dispositivo, navegador e interacciones con el servicio.</p>
+            <p>Puedes gestionar o eliminar las cookies desde la configuración de tu navegador. También puedes consultar las opciones de personalización de anuncios de Google en la configuración de anuncios de Google. Bloquear las cookies o tecnologías similares puede afectar a algunas funciones, y la configuración del navegador puede no controlar todas las tecnologías utilizadas por terceros.</p>
         </div>
         <div class="support-section">
-            <h2>3. Herramientas de análisis</h2>
-            <p>Para mejorar la plataforma y comprender los patrones de uso, utilizamos herramientas como Google Analytics y Microsoft Clarity. Estos servicios pueden recopilar datos no identificables como dirección IP, ubicación aproximada, tipo de navegador, duración de la sesión y páginas visitadas.</p>
-            <p><b>Nota:</b> En los dispositivos Apple, debido a las restricciones de ATT, el seguimiento del comportamiento y la recopilación de datos entre aplicaciones son limitados. Cumplimos plenamente con estas restricciones y no las eludimos, por lo que los datos de los usuarios de Apple podrían ser menos completos o inexistentes.</p>
+            <h2>4. Analítica, mejora del servicio y publicidad</h2>
+            <p>Utilizamos servicios de terceros para comprender cómo se utiliza Streaming Discovery, identificar problemas técnicos, recopilar comentarios y facilitar la publicidad:</p>
+            <ul>
+                <li><b>Google Analytics</b> nos ayuda a comprender el uso general del servicio, por ejemplo, qué páginas y funciones se utilizan.</li>
+                <li><b>Microsoft Clarity</b> nos ayuda a comprender cómo interactúan los visitantes con el servicio, incluida la navegación y las interacciones en las páginas.</li>
+                <li><b>Sentry</b> nos ayuda a identificar errores y diagnosticar problemas técnicos.</li>
+                <li><b>UserJot</b> permite a los usuarios enviar comentarios y sugerencias de funciones. Cuando envías comentarios con la sesión iniciada, puede compartirse información asociada a tu cuenta para gestionar esos comentarios en su contexto.</li>
+                <li><b>Google AdSense</b> muestra anuncios. Google y sus socios publicitarios pueden utilizar cookies o tecnologías similares y procesar información del dispositivo, del navegador y relacionada con la publicidad para ofrecer, medir y proteger los anuncios. El tipo de publicidad mostrada puede depender de tu ubicación, la legislación aplicable y la configuración publicitaria disponible.</li>
+            </ul>
         </div>
         <div class="support-section">
-            <h2>4. Compartición de datos</h2>
-            <p>No compartimos tus datos personales con terceros, salvo con socios técnicos esenciales para el funcionamiento básico, incluidos proveedores de inicio de sesión social, infraestructura de alojamiento, análisis y servicios de publicidad. Estos socios operan bajo estrictos controles de confidencialidad y acceso.</p>
+            <h2>5. Cómo compartimos la información</h2>
+            <p>No vendemos tu información personal a cambio de dinero. Compartimos información únicamente cuando es necesario para proporcionar, mantener, proteger o mejorar Streaming Discovery, procesar una transacción que solicites o cumplir la ley.</p>
+            <p>Según las funciones que utilices, la información puede compartirse con estas categorías de proveedores de servicios:</p>
+            <ul>
+                <li><b>Proveedores de autenticación:</b> Clerk, que nos ayuda a gestionar el registro y el inicio de sesión de las cuentas.</li>
+                <li><b>Proveedores de alojamiento e infraestructura:</b> Microsoft Azure, que permite operar y almacenar el servicio.</li>
+                <li><b>Proveedores de analítica y diagnóstico:</b> Google Analytics, Microsoft Clarity y Sentry, que nos ayudan a comprender el uso del servicio y resolver problemas técnicos.</li>
+                <li><b>Proveedores de comentarios:</b> UserJot, que facilita los comentarios y las sugerencias de funciones.</li>
+                <li><b>Proveedores de publicidad:</b> Google AdSense y sus socios publicitarios, que facilitan la publicación y medición de anuncios.</li>
+                <li><b>Proveedores de pago:</b> Stripe y, según la plataforma, región y disponibilidad, Apple, Google Play, Microsoft Store o Paddle. Estos proveedores procesan pagos o suscripciones cuando se ofrece la opción de compra correspondiente. No todos los proveedores ni métodos de pago están disponibles para todos los usuarios.</li>
+                <li><b>Proveedores de correo electrónico:</b> ZeptoMail, que nos ayuda a enviar correos relacionados con la cuenta y el servicio.</li>
+            </ul>
+            <p>Algunas comunicaciones de información a proveedores de analítica o publicidad pueden considerarse una “compartición” de información personal con fines de publicidad conductual entre contextos según determinadas leyes de privacidad, incluso cuando no se intercambia dinero. Para obtener más información sobre las opciones aplicables, consulta nuestra página <a href=@($"/{Culture}/legal/do-not-sell")>No Vender ni Compartir Mi Información Personal</a>.</p>
+            <p>También podemos divulgar información cuando sea necesario para cumplir obligaciones legales, responder a solicitudes legítimas, proteger a los usuarios o defender nuestros derechos. Si nuestra empresa participa en una fusión, adquisición o venta de activos, la información puede transferirse como parte de esa operación, de conformidad con los requisitos de privacidad aplicables.</p>
         </div>
         <div class="support-section">
-            <h2>5. Almacenamiento</h2>
-            <p>Tus datos se almacenan en servidores de Microsoft Azure ubicados en los Estados Unidos y pueden replicarse en otras regiones para garantizar la estabilidad y disponibilidad. Los datos están protegidos mediante prácticas modernas de seguridad, como transmisión cifrada y acceso controlado.</p>
-            <p>Cuando se elimina una cuenta, los datos personales se eliminan de la base de datos principal. Sin embargo, cierta información puede conservarse en sistemas aislados por hasta 6 meses por razones legales u operativas, como prevención de fraudes, cumplimiento o solicitudes de investigación. Después de este período, los datos se eliminan permanentemente o se anonimizan.</p>
+            <h2>6. Contenido y servicios de terceros</h2>
+            <p>Streaming Discovery utiliza servicios de contenido de terceros, incluidos TMDB y servicios a los que se accede a través de RapidAPI, para proporcionar información sobre películas y series, como títulos, descripciones, valoraciones, imágenes, tráilers y disponibilidad. Cuando buscas o consultas contenido, se pueden enviar a esos proveedores los términos de búsqueda, identificadores de contenido, idioma o región pertinentes para recuperar la información solicitada.</p>
+            <p>Cuando sigues un enlace a otro sitio web o servicio, se aplican los términos y la política de privacidad de ese proveedor. No controlamos el funcionamiento de los servicios de terceros ni la forma en que gestionan la información que recopilan de manera independiente.</p>
         </div>
         <div class="support-section">
-            <h2>6. Derechos del usuario</h2>
-            <p>Los usuarios pueden eliminar sus cuentas en cualquier momento y solicitar la eliminación de sus datos asociados. También puedes acceder o modificar tu información de cuenta usando las herramientas disponibles en la configuración de perfil. Si deseas obtener una copia de tus datos almacenados, puedes contactarnos a través del canal de soporte.</p>
-            <p>Si tiene preguntas sobre sus datos o desea ejercer sus derechos bajo las leyes de privacidad aplicables (GDPR, LGPD, CCPA/CPRA), contáctenos a través de la página de soporte de la plataforma.</p>
+            <h2>7. Pagos y suscripciones</h2>
+            <p>Las opciones de suscripción y pago pueden variar según tu dispositivo, plataforma, región y disponibilidad actual. Cuando se ofrecen, los pagos pueden ser gestionados por Stripe, Apple, Google Play, Microsoft Store o Paddle. El proveedor correspondiente explicará qué información recopila para procesar tu pago.</p>
+            <p>Recibimos y conservamos la información relacionada con la suscripción que necesitamos para ofrecerte tu plan, como el proveedor de pago, el estado de la suscripción, los detalles del plan y las referencias de transacción. No recibimos los datos completos de tu tarjeta de pago cuando los introduces directamente en el proveedor de pago.</p>
+            <p>Eliminar tu cuenta de Streaming Discovery no cancela automáticamente una suscripción gestionada por un proveedor de pago o una tienda de aplicaciones. Cancela la suscripción con el proveedor a través del cual la compraste antes de solicitar la eliminación de la cuenta. La información que conservan los proveedores de pago está sujeta a sus propias políticas de privacidad y prácticas de conservación.</p>
         </div>
         <div class="support-section">
-            <h2>7. Listas públicas y privadas</h2>
-            <p>La plataforma ofrece listas públicas curadas que pueden ser accedidas y compartidas por cualquier visitante. Los usuarios autenticados pueden crear listas privadas con un número limitado de elementos. Estas listas permanecen privadas, pero pueden compartirse mediante un enlace público, a discreción del usuario. Los usuarios pagos tienen acceso a una mayor capacidad de listas.</p>
+            <h2>8. Conservación de datos y eliminación de la cuenta</h2>
+            <p>Conservamos la información personal durante el tiempo necesario para prestar el servicio, mantener tu cuenta y el contenido guardado, cumplir obligaciones legales, resolver disputas y proteger el servicio.</p>
+            <p>Puedes solicitar la eliminación de tu cuenta de Streaming Discovery a través del Centro de Ayuda. Si tienes una suscripción activa, debes cancelarla con el proveedor de pago correspondiente antes de que se pueda completar la eliminación de la cuenta. Cuando se elimina tu cuenta, la información personal y el contenido guardado asociados a ella se eliminan de nuestros servicios activos de cuentas, salvo la información que debamos o podamos conservar por motivos legales, de seguridad u operativos legítimos.</p>
+            <p>La eliminación de tu cuenta no elimina automáticamente la información que conservan de forma independiente los proveedores de pagos, analítica, publicidad, correo electrónico u otros terceros. La conservación de esa información se rige por sus propias políticas de privacidad y obligaciones legales.</p>
         </div>
         <div class="support-section">
-            <h2>8. Niños y menores de edad</h2>
-            <p>La plataforma está destinada al público general y no recopila intencionadamente datos de menores de edad. Si llegamos a saber del uso no autorizado de nuestros servicios por parte de niños que no cumplan con la edad mínima permitida, eliminaremos los datos asociados tras recibir una solicitud.</p>
+            <h2>9. Tus derechos y opciones de privacidad</h2>
+            <p>Dependiendo de dónde vivas y de las leyes aplicables, puedes tener derecho a solicitar acceso, rectificación o eliminación de tu información personal, obtener una copia de determinada información, oponerte a ciertos tratamientos o restringirlos, o retirar tu consentimiento cuando el tratamiento se base en él. También puedes tener derecho a presentar una reclamación ante una autoridad de protección de datos.</p>
+            <p>Puedes descargar cierta información de tu cuenta mediante la función Descargar datos del Centro de Ayuda. También puedes enviar solicitudes de privacidad a través del Centro de Ayuda o escribirnos a <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Es posible que te pidamos información para confirmar que una solicitud se refiere a ti antes de responder.</p>
+            <p>Es posible que debamos conservar cierta información cuando así lo exija la ley o exista un motivo legal o de seguridad válido. Tus derechos pueden variar según tu ubicación y la legislación aplicable.</p>
         </div>
         <div class="support-section">
-            <h2>9. Cumplimiento legal</h2>
-            <p>Esta política de privacidad está alineada con las normativas aplicables de privacidad y protección de datos, incluyendo el GDPR, la LGPD y leyes equivalentes en las regiones donde operamos.</p>
+            <h2>10. Listas públicas y compartidas</h2>
+            <p>Streaming Discovery incluye listas públicas seleccionadas que los visitantes pueden consultar. Si creas o compartes una lista mediante un enlace público, las personas que tengan acceso a ese enlace podrán ver y compartir su contenido. Ten en cuenta que otras personas pueden copiar o redistribuir la información que se haga pública o se comparta con ellas.</p>
+            <p>Las listas privadas permanecen privadas, salvo que decidas compartirlas mediante un enlace público u otra función para compartir.</p>
         </div>
         <div class="support-section">
-            <h2>10. Contacto</h2>
-            <p>Si tienes preguntas, solicitudes o reclamos relacionados con tus datos personales, utiliza la página de soporte disponible en la plataforma.</p>
+            <h2>11. Privacidad de los menores</h2>
+            <p>Streaming Discovery está destinado al público general y no se dirige a niños en situaciones en las que la legislación aplicable prohíba el uso del servicio o la recopilación de sus datos personales. No recopilamos deliberadamente información personal de niños en circunstancias en las que se requiera el consentimiento de sus padres o tutores. Si crees que un niño nos ha proporcionado información personal de forma indebida, ponte en contacto con nosotros.</p>
         </div>
         <div class="support-section">
-            <h2>11. Actualizaciones</h2>
-            <p>Esta política puede actualizarse periódicamente para reflejar cambios en la funcionalidad, servicios o regulaciones aplicables. Recomendamos revisarla de vez en cuando para mantenerte informado.</p>
+            <h2>12. Seguridad y transferencias internacionales</h2>
+            <p>Utilizamos medidas de protección razonables diseñadas para proteger la información personal frente al acceso no autorizado, la pérdida, el uso indebido o la divulgación. Ningún servicio en línea puede garantizar una seguridad absoluta.</p>
+            <p>Streaming Discovery y sus proveedores de servicios pueden procesar información en países distintos de aquel en el que resides. Cuando sea necesario, se aplican garantías adecuadas para las transferencias internacionales de información personal.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Cambios en esta Política de Privacidad</h2>
+            <p>Podemos actualizar esta Política de Privacidad periódicamente para reflejar cambios en Streaming Discovery, nuestros proveedores de servicios o la legislación aplicable. La versión más reciente se publicará en esta página con su fecha de actualización. Cuando sea necesario, proporcionaremos un aviso adicional sobre los cambios importantes.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Contacto</h2>
+            <p>Si tienes preguntas sobre esta Política de Privacidad o deseas ejercer tus derechos de privacidad, escríbenos a <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> o utiliza el <a href=@($"/{Culture}/help")>Centro de Ayuda</a>.</p>
+            <p>DRMA Tech (Delivering Reliable Modern Apps Tech OÜ) opera Streaming Discovery. Para consultas generales sobre la empresa, escribe a <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>.</p>
         </div>
         <div class="support-footer">
-            <p>Última actualización: 5 de agosto de 2025</p>
-            <p>Al utilizar este sitio, aceptas esta Política de Privacidad y los <a href=@($"/{Culture}/legal/terms")>Términos de Uso</a>.</p>
+            <p>Última actualización: 6 de noviembre de 2026</p>
+            <p>Para obtener información sobre las condiciones del servicio, consulta nuestros <a href=@($"/{Culture}/legal/terms")>Términos de Uso</a>.</p>
         </div>
     }
     else if (Language == AppLanguage.zh)
     {
         <h1 class="support-title">隐私政策</h1>
         <div class="support-subtitle">
-            您的隐私是 <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>) 的首要任务，本平台由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营。<br />
-            请仔细阅读本政策，以了解我们如何处理您的数据。
+            本隐私政策说明 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ），即 Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>) 的运营公司，在您访问或使用我们的网站、应用程序及相关服务时，如何收集、使用和共享信息。
         </div>
         <div class="support-section">
-            <h2>1. 收集的数据</h2>
-            <p>我们会收集和存储以下信息：电子邮箱地址、登录日期和 IP 地址、访问国家（通过 IP）、设备类型、浏览器类型和基本用户设置。登录为可选操作，但部分功能仅对已验证用户开放。即使未登录，技术和浏览数据也可能被收集。</p>
-            <p>所有电影和电视剧信息均来自外部服务，如 TMDb、IMDb、JustWatch 等。平台仅对这些内容进行整理、组织并以个性化的方式展示。</p>
-            <p>未经明确同意，我们不会收集敏感的个人数据或精确的地理位置。</p>
+            <h2>1. 我们收集的信息</h2>
+            <p><b>账户信息。</b>当您创建或使用账户时，我们会收集电子邮箱地址、显示名称和账户标识符等信息。账户身份验证由 Clerk 提供。</p>
+            <p><b>您的偏好和活动。</b>当您使用账户功能时，我们会处理您选择的流媒体服务和地区、添加到愿望清单的影片、标记为已观看的电影和剧集、已观看的剧集分集，以及语言、地区和显示设置等偏好信息。</p>
+            <p><b>设备和使用信息。</b>当您使用 Streaming Discovery 时，我们及我们的服务提供商可能会收集 IP 地址、大致国家或地区、浏览器和设备类型、操作系统、应用程序版本、浏览页面、与服务的交互记录以及诊断信息。这些信息有助于我们运营、保护和改进服务。</p>
+            <p><b>通信和反馈。</b>如果您联系我们、提交反馈或建议新功能，我们会处理您提供的信息和消息，以便作出回复并改进服务。</p>
+            <p><b>订阅信息。</b>如果您订阅服务，我们会处理管理订阅所需的信息，例如支付服务提供商、套餐、订阅状态和交易参考信息。支付服务提供商会按照其各自隐私政策中的说明收集和处理支付信息。</p>
+            <p>您无需账户即可使用部分内容发现功能。保存偏好或观看活动的功能需要您登录。</p>
         </div>
         <div class="support-section">
-            <h2>2. Cookies 和类似技术</h2>
-            <p>我们使用第一方 Cookie 和会话存储来维护用户偏好、身份验证和平台功能。第三方分析提供商可能会使用 Cookie 来分析使用模式。您可以通过浏览器或平台设置来管理或撤销同意。</p>
-            <p><b>重要提示：</b>由于 Apple 的 AppTrackingTransparency (ATT) 框架要求用户明确许可才能进行跨应用和跨网站跟踪，因此我们的应用在 Apple 设备上不启用行为跟踪技术。我们不会使用或安装需要 ATT 许可的跟踪框架。因此，在 Apple 设备上，行为数据收集和相关分析受到限制或不可用。</p>
+            <h2>2. 我们如何使用信息</h2>
+            <p>我们使用上述信息来：</p>
+            <ul>
+                <li>提供 Streaming Discovery 及其功能，包括账户访问、个性化设置和已保存的清单。</li>
+                <li>记住您的流媒体偏好和观看活动。</li>
+                <li>显示与您的语言和地区相关的内容及可观看信息。</li>
+                <li>处理和管理订阅及相关客户支持。</li>
+                <li>发送重要的账户、服务和订阅通知，以及您主动要求接收的更新。</li>
+                <li>回复问题、反馈和支持请求。</li>
+                <li>维护服务的安全性、可靠性和性能。</li>
+                <li>了解服务的使用方式，并改进其功能和用户体验。</li>
+                <li>遵守适用法律，并保护我们的权利及用户的权利。</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookie 和类似技术</h2>
+            <p>Streaming Discovery 及我们使用的服务可能会使用 Cookie 和类似技术（包括浏览器存储），以记住用户偏好、支持必要功能、了解服务的使用情况，以及展示或衡量广告效果。</p>
+            <p>这些技术可能由我们或第三方提供，包括 Google Analytics、Microsoft Clarity 和 Google AdSense。它们可能会收集有关您的设备、浏览器以及您与服务互动情况的信息。</p>
+            <p>您可以通过浏览器设置管理或删除 Cookie。您也可以通过 Google 的广告设置查看广告个性化选项。屏蔽 Cookie 或类似技术可能会影响部分功能，而且浏览器设置可能无法控制第三方使用的所有技术。</p>
         </div>
         <div class="support-section">
-            <h2>3. 分析工具</h2>
-            <p>我们使用 Google Analytics 和 Microsoft Clarity 等分析工具来了解平台使用情况并改进服务。这些工具收集的均为非个人识别数据，例如 IP 地址、大致位置（城市或区域级别）、浏览器类型、会话时长和访问页面。不会与这些服务共享任何可识别个人身份的信息。</p>
-            <p><b>注意：</b>在 Apple 设备上，由于 ATT 限制，行为跟踪和跨应用数据收集受到限制。我们完全遵守这些限制，不会绕过，因此来自 Apple 用户的数据可能较少或不存在。</p>
+            <h2>4. 分析、服务改进和广告</h2>
+            <p>我们使用第三方服务来了解 Streaming Discovery 的使用情况、识别技术问题、收集反馈并支持广告业务：</p>
+            <ul>
+                <li><b>Google Analytics</b> 帮助我们了解服务的整体使用情况，例如哪些页面和功能被使用。</li>
+                <li><b>Microsoft Clarity</b> 帮助我们了解访客如何与服务互动，包括页面导航和页面内操作。</li>
+                <li><b>Sentry</b> 帮助我们发现错误并诊断技术问题。</li>
+                <li><b>UserJot</b> 允许用户提交反馈和功能建议。当您登录后提交反馈时，可能会共享与您账户相关的信息，以便在适当的上下文中处理反馈。</li>
+                <li><b>Google AdSense</b> 用于展示广告。Google 及其广告合作伙伴可能使用 Cookie 或类似技术，并处理设备、浏览器及广告相关信息，以投放、衡量和保护广告。展示的广告类型可能取决于您的所在地、适用法律和可用的广告设置。</li>
+            </ul>
         </div>
         <div class="support-section">
-            <h2>4. 数据共享</h2>
-            <p>我们不会出售或出租您的个人数据。我们仅与平台核心功能所必需的可信第三方提供商共享数据，例如社交登录提供商、托管服务、分析工具和广告平台。这些提供商均受严格的保密协议约束，且其数据访问权限仅限于必要的信息。</p>
+            <h2>5. 我们如何共享信息</h2>
+            <p>我们不会以金钱为交换条件出售您的个人信息。只有在提供、维护、保护或改进 Streaming Discovery、处理您请求的交易或遵守法律要求时，我们才会共享信息。</p>
+            <p>根据您使用的功能，信息可能会与以下类别的服务提供商共享：</p>
+            <ul>
+                <li><b>身份验证服务提供商：</b>Clerk，帮助我们管理账户注册和登录。</li>
+                <li><b>托管和基础设施服务提供商：</b>Microsoft Azure，为服务运营和数据存储提供支持。</li>
+                <li><b>分析和诊断服务提供商：</b>Google Analytics、Microsoft Clarity 和 Sentry，帮助我们了解服务使用情况并解决技术问题。</li>
+                <li><b>反馈服务提供商：</b>UserJot，为用户反馈和功能建议提供支持。</li>
+                <li><b>广告服务提供商：</b>Google AdSense 及其广告合作伙伴，为广告展示和效果衡量提供支持。</li>
+                <li><b>支付服务提供商：</b>Stripe，以及根据平台、地区和服务可用情况提供的 Apple、Google Play、Microsoft Store 或 Paddle。这些服务提供商会在相应购买选项开放时处理付款或订阅。并非所有用户都能使用每一种服务提供商或支付方式。</li>
+                <li><b>电子邮件服务提供商：</b>ZeptoMail，帮助我们发送与账户和服务相关的电子邮件。</li>
+            </ul>
+            <p>根据某些隐私法律，即使没有金钱交易，向分析或广告服务提供商披露某些信息，也可能被视为用于跨情境行为广告的个人信息“共享”。有关适用选项的更多信息，请参阅我们的<a href=@($"/{Culture}/legal/do-not-sell")>不出售或共享我的个人信息</a>页面。</p>
+            <p>在履行法律义务、回应合法请求、保护用户或维护我们的权利所必需时，我们也可能披露信息。如果我们的业务涉及合并、收购或资产出售，相关信息可能作为交易的一部分进行转移，并遵守适用的隐私要求。</p>
         </div>
         <div class="support-section">
-            <h2>5. 数据存储与安全</h2>
-            <p>您的数据安全存储在位于美国的 Microsoft Azure 服务器上，并可能在其他地区进行复制以确保稳定性和可用性。数据在传输过程中会加密（如通过 HTTPS），并受到访问控制和监控保护。</p>
-            <p>当账户被删除时，个人数据将从主数据库中移除。某些数据可能会在隔离系统中保留长达 6 个月，用于法律或运营原因，例如防止欺诈或符合法规。此后，数据将被永久删除或匿名化。</p>
+            <h2>6. 第三方内容和服务</h2>
+            <p>Streaming Discovery 使用第三方内容服务，包括 TMDB 以及通过 RapidAPI 访问的服务，以提供电影和电视剧信息，例如片名、简介、评分、图片、预告片和可观看信息。当您搜索或查看内容时，相关搜索词、内容标识符、语言或地区信息可能会发送给这些服务提供商，以获取您请求的信息。</p>
+            <p>当您访问指向其他网站或服务的链接时，该服务提供商自己的条款和隐私政策将适用。我们无法控制第三方服务的运营方式，也无法控制它们如何处理其独立收集的信息。</p>
         </div>
         <div class="support-section">
-            <h2>6. 用户权利</h2>
-            <p>您可以随时删除账户并请求删除您的数据。您还享有访问、更正或导出数据的权利，可以通过账户设置中的工具或支持渠道实现。</p>
-            <p>如果您对数据有疑问，或希望根据适用的隐私法律（GDPR、LGPD、CCPA/CPRA）行使您的权利，请通过平台的支持页面与我们联系。</p>
+            <h2>7. 付款和订阅</h2>
+            <p>订阅和支付选项可能因您的设备、平台、地区及当前可用情况而异。在提供相应选项时，付款可能由 Stripe、Apple、Google Play、Microsoft Store 或 Paddle 处理。相关服务提供商会说明其为处理付款而收集的信息。</p>
+            <p>我们会接收并保留提供您的订阅套餐所需的信息，例如支付服务提供商、订阅状态、套餐详情和交易参考信息。如果您直接在支付服务提供商处输入完整的支付卡信息，我们不会收到这些完整信息。</p>
+            <p>删除 Streaming Discovery 账户不会自动取消由支付服务提供商或应用商店管理的订阅。申请删除账户前，请先通过您购买订阅时使用的服务提供商取消订阅。支付服务提供商保留的信息受其自身隐私政策和数据保留规则约束。</p>
         </div>
         <div class="support-section">
-            <h2>7. 公共和私人清单</h2>
-            <p>平台提供由策划的公共清单，任何访问者均可访问和分享。已登录用户可以创建私人清单，项目数量受订阅等级限制。私人清单保持机密，除非用户选择对外分享。</p>
+            <h2>8. 数据保留和账户删除</h2>
+            <p>我们仅在提供服务、维护您的账户和已保存内容、履行法律义务、解决争议及保护服务所需的期间内保留个人信息。</p>
+            <p>您可以通过帮助中心申请删除 Streaming Discovery 账户。如果您有有效订阅，必须先向相关支付服务提供商取消订阅，之后才能完成账户删除。账户删除后，与账户关联的个人信息和已保存内容将从我们的活跃账户服务中移除，但法律、安全或正当运营原因要求或允许我们保留的信息除外。</p>
+            <p>删除账户不会自动删除支付、分析、广告、电子邮件或其他第三方服务提供商独立持有的信息。这些提供商对信息的保留受其自身隐私政策和法律义务约束。</p>
         </div>
         <div class="support-section">
-            <h2>8. 儿童和未成年人</h2>
-            <p>平台面向普通用户，不会有意收集未达到法定成年年龄儿童的数据。如果我们发现未成年人在未经父母同意的情况下提供了个人信息，我们将采取措施删除该数据。</p>
+            <h2>9. 您的隐私权利和选择</h2>
+            <p>根据您的居住地和适用法律，您可能有权请求访问、更正或删除个人信息，获取某些信息的副本，反对或限制某些处理活动，或在处理基于同意时撤回同意。您也可能有权向数据保护监管机构提出投诉。</p>
+            <p>您可以通过帮助中心的“下载数据”功能下载部分账户信息。您也可以通过帮助中心提交隐私请求，或发送电子邮件至 <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> 联系我们。在回复之前，我们可能会要求您提供信息，以确认请求确实与您本人有关。</p>
+            <p>如果法律要求保留某些信息，或存在正当的法律或安全理由，我们可能需要继续保留这些信息。您的权利可能因所在地和适用法律而异。</p>
         </div>
         <div class="support-section">
-            <h2>9. 法律合规</h2>
-            <p>本政策符合包括 GDPR、LGPD 和 CCPA/CPRA 在内的隐私法律，具体取决于您的所在地。我们会持续审查实践，以确保符合适用法规。</p>
+            <h2>10. 公开和共享清单</h2>
+            <p>Streaming Discovery 提供访客可以查看的精选公开清单。如果您创建清单或通过公开链接分享清单，能够访问该链接的人可能会查看和分享其中的内容。请注意，公开发布或与他人分享的信息可能会被他人复制或再次传播。</p>
+            <p>私人清单会保持私密，除非您选择通过公开链接或其他分享功能进行分享。</p>
         </div>
         <div class="support-section">
-            <h2>10. 联系方式</h2>
-            <p>如对您的数据隐私有任何问题、请求或投诉，请使用平台内的支持页面或直接联系我们。</p>
+            <h2>11. 儿童隐私</h2>
+            <p>Streaming Discovery 面向普通受众。在适用法律禁止儿童使用服务或收集其个人信息的情况下，本服务不会面向儿童。对于法律要求取得父母或监护人同意的情形，我们不会故意收集儿童的个人信息。如果您认为儿童在不适当的情况下向我们提供了个人信息，请联系我们。</p>
         </div>
         <div class="support-section">
-            <h2>11. 本政策的更新</h2>
-            <p>我们可能会定期更新本隐私政策，以反映技术、服务或法规的变化。重大变更将在可行时通过通知或电子邮件告知。我们建议您定期查看本政策。</p>
+            <h2>12. 安全和国际数据传输</h2>
+            <p>我们采取合理的保护措施，旨在防止个人信息遭到未经授权的访问、丢失、滥用或披露。任何在线服务都无法保证绝对安全。</p>
+            <p>Streaming Discovery 及其服务提供商可能会在您居住国以外的国家处理信息。在法律要求的情况下，我们会为个人信息的国际传输采取适当的保护措施。</p>
+        </div>
+        <div class="support-section">
+            <h2>13. 本隐私政策的变更</h2>
+            <p>我们可能会不时更新本隐私政策，以反映 Streaming Discovery、服务提供商或适用法律的变化。最新版本将连同更新日期发布在本页面上。在法律要求的情况下，我们会就重大变更提供额外通知。</p>
+        </div>
+        <div class="support-section">
+            <h2>14. 联系我们</h2>
+            <p>如果您对本隐私政策有任何疑问，或希望行使您的隐私权利，请发送电子邮件至 <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>，或使用<a href=@($"/{Culture}/help")>帮助中心</a>。</p>
+            <p>Streaming Discovery 由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营。如有一般公司事务咨询，请联系 <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>。</p>
         </div>
         <div class="support-footer">
-            <p>最后更新日期：2025 年 8 月 5 日</p>
-            <p>使用本平台即表示您同意本《隐私政策》和 <a href=@($"/{Culture}/legal/terms")>使用条款</a>。</p>
+            <p>最后更新日期：2026 年 11 月 6 日</p>
+            <p>有关服务条款的信息，请阅读我们的<a href=@($"/{Culture}/legal/terms")>使用条款</a>。</p>
+        </div>
+    }
+    else if (Language == AppLanguage.fr)
+    {
+        <h1 class="support-title">Politique de confidentialité</h1>
+        <div class="support-subtitle">
+            La présente Politique de confidentialité explique comment DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), la société qui exploite Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), collecte, utilise et partage des informations lorsque vous visitez ou utilisez notre site web, nos applications et les services associés.
+        </div>
+        <div class="support-section">
+            <h2>1. Informations que nous collectons</h2>
+            <p><b>Informations du compte.</b> Lorsque vous créez ou utilisez un compte, nous collectons des informations telles que votre adresse e-mail, votre nom d’affichage et votre identifiant de compte. L’authentification des comptes est fournie par Clerk.</p>
+            <p><b>Vos préférences et votre activité.</b> Lorsque vous utilisez les fonctionnalités de votre compte, nous traitons des informations concernant les services de streaming et les régions que vous sélectionnez, les titres ajoutés à votre liste de souhaits, les films et séries que vous marquez comme visionnés, les épisodes regardés et vos préférences, notamment la langue, la région et les paramètres d’affichage.</p>
+            <p><b>Informations sur l’appareil et l’utilisation.</b> Lorsque vous utilisez Streaming Discovery, nous et nos prestataires de services pouvons collecter des informations telles que votre adresse IP, votre pays ou région approximatif, le type de navigateur et d’appareil, le système d’exploitation, la version de l’application, les pages consultées, vos interactions avec le service et des informations de diagnostic. Ces informations nous aident à exploiter, protéger et améliorer le service.</p>
+            <p><b>Communications et commentaires.</b> Si vous nous contactez, envoyez des commentaires ou suggérez une fonctionnalité, nous traitons les informations et le message que vous fournissez afin de vous répondre et d’améliorer le service.</p>
+            <p><b>Informations relatives aux abonnements.</b> Si vous souscrivez un abonnement, nous traitons les informations nécessaires à sa gestion, telles que le prestataire de paiement, le forfait, le statut de l’abonnement et les références de transaction. Les prestataires de paiement collectent et traitent les données de paiement conformément à leurs propres politiques de confidentialité.</p>
+            <p>Vous pouvez utiliser certaines fonctionnalités de découverte sans compte. Les fonctionnalités qui enregistrent vos préférences ou votre activité de visionnage nécessitent que vous soyez connecté.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Comment nous utilisons les informations</h2>
+            <p>Nous utilisons les informations décrites ci-dessus pour :</p>
+            <ul>
+                <li>Fournir Streaming Discovery et ses fonctionnalités, notamment l’accès au compte, les paramètres personnalisés et les listes enregistrées.</li>
+                <li>Mémoriser vos préférences de streaming et votre activité de visionnage.</li>
+                <li>Afficher des informations sur les contenus et leur disponibilité en fonction de votre langue et de votre région.</li>
+                <li>Traiter et gérer les abonnements ainsi que le service client associé.</li>
+                <li>Envoyer des communications importantes concernant votre compte, le service et votre abonnement, ainsi que les mises à jour que vous avez demandées.</li>
+                <li>Répondre aux questions, commentaires et demandes d’assistance.</li>
+                <li>Maintenir la sécurité, la fiabilité et les performances du service.</li>
+                <li>Comprendre l’utilisation du service et améliorer ses fonctionnalités ainsi que l’expérience utilisateur.</li>
+                <li>Respecter les lois applicables et protéger nos droits ainsi que ceux de nos utilisateurs.</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookies et technologies similaires</h2>
+            <p>Streaming Discovery et les services que nous utilisons peuvent recourir à des cookies et à des technologies similaires, notamment au stockage du navigateur, pour mémoriser les préférences, prendre en charge les fonctionnalités essentielles, comprendre l’utilisation du service et afficher ou mesurer les publicités.</p>
+            <p>Ces technologies peuvent être fournies par nous ou par des tiers, notamment Google Analytics, Microsoft Clarity et Google AdSense. Elles peuvent collecter des informations concernant votre appareil, votre navigateur et vos interactions avec le service.</p>
+            <p>Vous pouvez gérer ou supprimer les cookies dans les paramètres de votre navigateur. Vous pouvez également consulter les options de personnalisation des annonces de Google dans les paramètres publicitaires de Google. Le blocage des cookies ou des technologies similaires peut affecter certaines fonctionnalités, et les paramètres du navigateur peuvent ne pas contrôler toutes les technologies utilisées par des tiers.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Analyses, amélioration du service et publicité</h2>
+            <p>Nous utilisons des services tiers pour comprendre comment Streaming Discovery est utilisé, identifier les problèmes techniques, recueillir des commentaires et prendre en charge la publicité :</p>
+            <ul>
+                <li><b>Google Analytics</b> nous aide à comprendre l’utilisation générale du service, notamment les pages et les fonctionnalités utilisées.</li>
+                <li><b>Microsoft Clarity</b> nous aide à comprendre comment les visiteurs interagissent avec le service, notamment la navigation et les interactions sur les pages.</li>
+                <li><b>Sentry</b> nous aide à identifier les erreurs et à diagnostiquer les problèmes techniques.</li>
+                <li><b>UserJot</b> permet aux utilisateurs d’envoyer des commentaires et des suggestions de fonctionnalités. Lorsque vous envoyez des commentaires après vous être connecté, des informations associées à votre compte peuvent être partagées afin que ces commentaires soient traités dans leur contexte.</li>
+                <li><b>Google AdSense</b> affiche des publicités. Google et ses partenaires publicitaires peuvent utiliser des cookies ou des technologies similaires et traiter des informations relatives à l’appareil, au navigateur et à la publicité afin de diffuser, mesurer et protéger les annonces. Le type de publicité affiché peut dépendre de votre emplacement, de la législation applicable et des paramètres publicitaires disponibles.</li>
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. Comment nous partageons les informations</h2>
+            <p>Nous ne vendons pas vos informations personnelles contre de l’argent. Nous partageons des informations uniquement lorsque cela est nécessaire pour fournir, maintenir, protéger ou améliorer Streaming Discovery, traiter une transaction que vous demandez ou respecter la loi.</p>
+            <p>Selon les fonctionnalités que vous utilisez, les informations peuvent être partagées avec les catégories suivantes de prestataires de services :</p>
+            <ul>
+                <li><b>Prestataires d’authentification :</b> Clerk, qui nous aide à gérer l’inscription et la connexion aux comptes.</li>
+                <li><b>Prestataires d’hébergement et d’infrastructure :</b> Microsoft Azure, qui prend en charge le fonctionnement et le stockage du service.</li>
+                <li><b>Prestataires d’analyse et de diagnostic :</b> Google Analytics, Microsoft Clarity et Sentry, qui nous aident à comprendre l’utilisation du service et à résoudre les problèmes techniques.</li>
+                <li><b>Prestataires de commentaires :</b> UserJot, qui prend en charge les commentaires et les suggestions de fonctionnalités.</li>
+                <li><b>Prestataires publicitaires :</b> Google AdSense et ses partenaires publicitaires, qui prennent en charge l’affichage et la mesure des publicités.</li>
+                <li><b>Prestataires de paiement :</b> Stripe et, selon la plateforme, la région et la disponibilité, Apple, Google Play, Microsoft Store ou Paddle. Ces prestataires traitent les paiements ou les abonnements lorsque l’option d’achat correspondante est proposée. Tous les prestataires ou moyens de paiement ne sont pas disponibles pour chaque utilisateur.</li>
+                <li><b>Prestataires de messagerie :</b> ZeptoMail, qui nous aide à envoyer des e-mails relatifs au compte et au service.</li>
+            </ul>
+            <p>Certaines divulgations à des prestataires d’analyse ou de publicité peuvent être considérées comme un « partage » d’informations personnelles à des fins de publicité comportementale intercontextuelle au sens de certaines lois sur la confidentialité, même lorsqu’aucune somme d’argent n’est échangée. Pour en savoir plus sur les choix applicables, consultez notre page <a href=@($"/{Culture}/legal/do-not-sell")>Ne pas vendre ni partager mes informations personnelles</a>.</p>
+            <p>Nous pouvons également divulguer des informations si cela est nécessaire pour respecter des obligations légales, répondre à des demandes légitimes, protéger les utilisateurs ou défendre nos droits. Si notre entreprise fait l’objet d’une fusion, d’une acquisition ou d’une vente d’actifs, des informations peuvent être transférées dans le cadre de cette opération, sous réserve des exigences applicables en matière de confidentialité.</p>
+        </div>
+        <div class="support-section">
+            <h2>6. Contenus et services tiers</h2>
+            <p>Streaming Discovery utilise des services de contenu tiers, notamment TMDB et des services accessibles via RapidAPI, afin de fournir des informations sur les films et les séries, telles que les titres, descriptions, notes, images, bandes-annonces et disponibilités. Lorsque vous recherchez ou consultez un contenu, les termes de recherche, identifiants de contenu, informations de langue ou de région pertinents peuvent être envoyés à ces prestataires afin de récupérer les informations demandées.</p>
+            <p>Lorsque vous suivez un lien vers un autre site web ou service, les conditions et la politique de confidentialité de ce prestataire s’appliquent. Nous ne contrôlons ni le fonctionnement des services tiers ni la manière dont ils traitent les informations qu’ils collectent de façon indépendante.</p>
+        </div>
+        <div class="support-section">
+            <h2>7. Paiements et abonnements</h2>
+            <p>Les options d’abonnement et de paiement peuvent varier selon votre appareil, votre plateforme, votre région et les disponibilités actuelles. Lorsqu’ils sont proposés, les paiements peuvent être traités par Stripe, Apple, Google Play, Microsoft Store ou Paddle. Le prestataire concerné vous indiquera quelles informations il collecte pour traiter votre paiement.</p>
+            <p>Nous recevons et conservons les informations relatives à l’abonnement nécessaires pour fournir votre forfait, telles que le prestataire de paiement, le statut de l’abonnement, les détails du forfait et les références de transaction. Nous ne recevons pas les données complètes de votre carte de paiement lorsque celles-ci sont saisies directement auprès du prestataire de paiement.</p>
+            <p>La suppression de votre compte Streaming Discovery n’annule pas automatiquement un abonnement géré par un prestataire de paiement ou une boutique d’applications. Veuillez annuler l’abonnement auprès du prestataire par lequel vous l’avez acheté avant de demander la suppression de votre compte. Les informations conservées par les prestataires de paiement sont soumises à leurs propres politiques de confidentialité et pratiques de conservation.</p>
+        </div>
+        <div class="support-section">
+            <h2>8. Conservation des données et suppression du compte</h2>
+            <p>Nous conservons les informations personnelles aussi longtemps que nécessaire pour fournir le service, maintenir votre compte et vos contenus enregistrés, respecter nos obligations légales, résoudre les litiges et protéger le service.</p>
+            <p>Vous pouvez demander la suppression de votre compte Streaming Discovery via le Centre d’aide. Si vous avez un abonnement actif, vous devez l’annuler auprès du prestataire de paiement concerné avant que la suppression du compte puisse être effectuée. Lorsque votre compte est supprimé, les informations personnelles et les contenus enregistrés qui lui sont associés sont supprimés de nos services de compte actifs, sous réserve des informations que nous devons ou sommes autorisés à conserver pour des motifs légitimes d’ordre juridique, de sécurité ou opérationnel.</p>
+            <p>La suppression de votre compte ne supprime pas automatiquement les informations détenues indépendamment par les prestataires de paiement, d’analyse, de publicité, de messagerie ou d’autres services tiers. Leur conservation est régie par leurs propres politiques de confidentialité et obligations légales.</p>
+        </div>
+        <div class="support-section">
+            <h2>9. Vos droits et choix en matière de confidentialité</h2>
+            <p>Selon votre lieu de résidence et les lois applicables, vous pouvez avoir le droit de demander l’accès à vos informations personnelles, leur rectification ou leur suppression, d’obtenir une copie de certaines informations, de vous opposer à certains traitements ou d’en demander la limitation, ou de retirer votre consentement lorsque le traitement repose sur celui-ci. Vous pouvez également avoir le droit de déposer une plainte auprès d’une autorité de protection des données.</p>
+            <p>Vous pouvez télécharger certaines informations de votre compte à l’aide de la fonctionnalité Télécharger les données dans le Centre d’aide. Vous pouvez également envoyer des demandes relatives à la confidentialité via le Centre d’aide ou nous contacter à l’adresse <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Nous pouvons vous demander des informations afin de confirmer que la demande vous concerne avant d’y répondre.</p>
+            <p>Certaines informations peuvent devoir être conservées lorsque la loi l’exige ou lorsqu’un motif juridique ou de sécurité valable s’applique. Vos droits peuvent varier selon votre lieu de résidence et la législation applicable.</p>
+        </div>
+        <div class="support-section">
+            <h2>10. Listes publiques et partagées</h2>
+            <p>Streaming Discovery propose des listes publiques sélectionnées que les visiteurs peuvent consulter. Si vous créez ou partagez une liste au moyen d’un lien public, les personnes ayant accès à ce lien peuvent consulter et partager son contenu. Gardez à l’esprit que les informations rendues publiques ou partagées avec d’autres personnes peuvent être copiées ou redistribuées par celles-ci.</p>
+            <p>Les listes privées restent privées, sauf si vous choisissez de les partager au moyen d’un lien public ou d’une autre fonctionnalité de partage.</p>
+        </div>
+        <div class="support-section">
+            <h2>11. Confidentialité des enfants</h2>
+            <p>Streaming Discovery s’adresse au grand public et ne cible pas les enfants lorsque l’utilisation du service ou la collecte de leurs informations personnelles serait interdite par la législation applicable. Nous ne collectons pas sciemment d’informations personnelles concernant des enfants dans les situations où le consentement parental est requis. Si vous pensez qu’un enfant nous a fourni des informations personnelles de manière inappropriée, veuillez nous contacter.</p>
+        </div>
+        <div class="support-section">
+            <h2>12. Sécurité et transferts internationaux</h2>
+            <p>Nous utilisons des mesures de protection raisonnables destinées à protéger les informations personnelles contre tout accès non autorisé, perte, utilisation abusive ou divulgation. Aucun service en ligne ne peut garantir une sécurité totale.</p>
+            <p>Streaming Discovery et ses prestataires de services peuvent traiter des informations dans des pays autres que celui où vous résidez. Lorsque cela est requis, des garanties appropriées sont mises en place pour les transferts internationaux d’informations personnelles.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Modifications de la présente Politique de confidentialité</h2>
+            <p>Nous pouvons mettre à jour cette Politique de confidentialité périodiquement afin de refléter les changements apportés à Streaming Discovery, à nos prestataires de services ou aux lois applicables. La dernière version sera publiée sur cette page avec sa date de mise à jour. Lorsque cela est requis, nous fournirons un avis supplémentaire concernant les modifications importantes.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Nous contacter</h2>
+            <p>Si vous avez des questions concernant cette Politique de confidentialité ou souhaitez exercer vos droits, contactez-nous à l’adresse <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> ou utilisez le <a href=@($"/{Culture}/help")>Centre d’aide</a>.</p>
+            <p>DRMA Tech (Delivering Reliable Modern Apps Tech OÜ) exploite Streaming Discovery. Pour toute question générale concernant l’entreprise, contactez <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>.</p>
+        </div>
+        <div class="support-footer">
+            <p>Dernière mise à jour : 6 novembre 2026</p>
+            <p>Pour en savoir plus sur les conditions du service, veuillez lire nos <a href=@($"/{Culture}/legal/terms")>Conditions d’utilisation</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.it)
+    {
+        <h1 class="support-title">Informativa sulla privacy</h1>
+        <div class="support-subtitle">
+            La presente Informativa sulla privacy spiega come DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), la società che gestisce Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), raccoglie, utilizza e condivide informazioni quando visiti o utilizzi il nostro sito web, le applicazioni e i servizi correlati.
+        </div>
+        <div class="support-section">
+            <h2>1. Informazioni che raccogliamo</h2>
+            <p><b>Informazioni sull’account.</b> Quando crei o utilizzi un account, raccogliamo informazioni come il tuo indirizzo e-mail, il nome visualizzato e l’identificativo dell’account. L’autenticazione degli account è fornita da Clerk.</p>
+            <p><b>Preferenze e attività.</b> Quando utilizzi le funzionalità dell’account, trattiamo informazioni sui servizi di streaming e sulle regioni selezionate, sui titoli aggiunti alla lista dei desideri, sui film e sulle serie che contrassegni come guardati, sugli episodi visualizzati e sulle preferenze relative a lingua, regione e impostazioni di visualizzazione.</p>
+            <p><b>Informazioni sul dispositivo e sull’utilizzo.</b> Quando utilizzi Streaming Discovery, noi e i nostri fornitori di servizi possiamo raccogliere informazioni quali indirizzo IP, paese o regione approssimativi, tipo di browser e dispositivo, sistema operativo, versione dell’applicazione, pagine visitate, interazioni con il servizio e informazioni diagnostiche. Queste informazioni ci aiutano a gestire, proteggere e migliorare il servizio.</p>
+            <p><b>Comunicazioni e feedback.</b> Se ci contatti, invii un commento o suggerisci una funzionalità, trattiamo le informazioni e il messaggio che fornisci per poterti rispondere e migliorare il servizio.</p>
+            <p><b>Informazioni sull’abbonamento.</b> Se sottoscrivi un abbonamento, trattiamo le informazioni necessarie per gestirlo, come il fornitore di pagamento, il piano, lo stato dell’abbonamento e i riferimenti delle transazioni. I fornitori di pagamento raccolgono e trattano i dati di pagamento secondo quanto descritto nelle rispettive informative sulla privacy.</p>
+            <p>Puoi utilizzare alcune funzionalità di ricerca senza un account. Le funzionalità che salvano preferenze o attività di visualizzazione richiedono l’accesso al tuo account.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Come utilizziamo le informazioni</h2>
+            <p>Utilizziamo le informazioni descritte sopra per:</p>
+            <ul>
+                <li>Fornire Streaming Discovery e le sue funzionalità, inclusi l’accesso all’account, le impostazioni personalizzate e le liste salvate.</li>
+                <li>Ricordare le tue preferenze di streaming e la tua attività di visualizzazione.</li>
+                <li>Mostrare contenuti e informazioni sulla disponibilità pertinenti alla tua lingua e regione.</li>
+                <li>Elaborare e gestire gli abbonamenti e la relativa assistenza clienti.</li>
+                <li>Inviare comunicazioni importanti relative all’account, al servizio e all’abbonamento, nonché gli aggiornamenti che hai richiesto.</li>
+                <li>Rispondere a domande, commenti e richieste di assistenza.</li>
+                <li>Mantenere la sicurezza, l’affidabilità e le prestazioni del servizio.</li>
+                <li>Comprendere come viene utilizzato il servizio e migliorarne le funzionalità e l’esperienza utente.</li>
+                <li>Rispettare le leggi applicabili e tutelare i nostri diritti e quelli degli utenti.</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookie e tecnologie simili</h2>
+            <p>Streaming Discovery e i servizi che utilizziamo possono fare affidamento su cookie e tecnologie simili, incluso l’archiviazione del browser, per ricordare le preferenze, supportare le funzionalità essenziali, comprendere come viene utilizzato il servizio e mostrare o misurare la pubblicità.</p>
+            <p>Queste tecnologie possono essere fornite da noi o da terze parti, tra cui Google Analytics, Microsoft Clarity e Google AdSense. Possono raccogliere informazioni sul dispositivo, sul browser e sulle interazioni con il servizio.</p>
+            <p>Puoi gestire o eliminare i cookie dalle impostazioni del browser. Puoi anche consultare le opzioni di personalizzazione degli annunci di Google nelle relative impostazioni pubblicitarie. Il blocco dei cookie o di tecnologie simili può influire su alcune funzionalità e le impostazioni del browser potrebbero non controllare tutte le tecnologie utilizzate da terze parti.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Analisi, miglioramento del servizio e pubblicità</h2>
+            <p>Utilizziamo servizi di terze parti per comprendere come viene utilizzato Streaming Discovery, individuare problemi tecnici, raccogliere feedback e supportare la pubblicità:</p>
+            <ul>
+                <li><b>Google Analytics</b> ci aiuta a comprendere l’utilizzo generale del servizio, ad esempio quali pagine e funzionalità vengono utilizzate.</li>
+                <li><b>Microsoft Clarity</b> ci aiuta a comprendere come i visitatori interagiscono con il servizio, inclusa la navigazione e le interazioni sulle pagine.</li>
+                <li><b>Sentry</b> ci aiuta a individuare errori e diagnosticare problemi tecnici.</li>
+                <li><b>UserJot</b> consente agli utenti di inviare feedback e suggerimenti per nuove funzionalità. Quando invii un feedback dopo aver effettuato l’accesso, le informazioni associate al tuo account possono essere condivise affinché il feedback venga gestito nel contesto appropriato.</li>
+                <li><b>Google AdSense</b> mostra annunci pubblicitari. Google e i suoi partner pubblicitari possono utilizzare cookie o tecnologie simili e trattare informazioni relative al dispositivo, al browser e alla pubblicità per pubblicare, misurare e proteggere gli annunci. Il tipo di pubblicità mostrata può dipendere dalla tua posizione, dalle leggi applicabili e dalle impostazioni pubblicitarie disponibili.</li>
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. Come condividiamo le informazioni</h2>
+            <p>Non vendiamo le tue informazioni personali in cambio di denaro. Condividiamo le informazioni solo quando necessario per fornire, mantenere, proteggere o migliorare Streaming Discovery, elaborare una transazione da te richiesta o adempiere agli obblighi di legge.</p>
+            <p>A seconda delle funzionalità che utilizzi, le informazioni possono essere condivise con le seguenti categorie di fornitori di servizi:</p>
+            <ul>
+                <li><b>Fornitori di autenticazione:</b> Clerk, che ci aiuta a gestire la registrazione e l’accesso agli account.</li>
+                <li><b>Fornitori di hosting e infrastruttura:</b> Microsoft Azure, che supporta il funzionamento e l’archiviazione del servizio.</li>
+                <li><b>Fornitori di analisi e diagnostica:</b> Google Analytics, Microsoft Clarity e Sentry, che ci aiutano a comprendere l’utilizzo del servizio e a risolvere problemi tecnici.</li>
+                <li><b>Fornitori di feedback:</b> UserJot, che supporta commenti e suggerimenti sulle funzionalità.</li>
+                <li><b>Fornitori pubblicitari:</b> Google AdSense e i suoi partner pubblicitari, che supportano la visualizzazione e la misurazione degli annunci.</li>
+                <li><b>Fornitori di pagamento:</b> Stripe e, a seconda della piattaforma, della regione e della disponibilità, Apple, Google Play, Microsoft Store o Paddle. Questi fornitori elaborano pagamenti o abbonamenti quando viene offerta la relativa opzione di acquisto. Non tutti i fornitori o metodi di pagamento sono disponibili per ogni utente.</li>
+                <li><b>Fornitori di e-mail:</b> ZeptoMail, che ci aiuta a inviare e-mail relative all’account e al servizio.</li>
+            </ul>
+            <p>Alcune comunicazioni di informazioni a fornitori di analisi o pubblicità possono essere considerate una “condivisione” di informazioni personali per finalità di pubblicità comportamentale tra contesti ai sensi di determinate leggi sulla privacy, anche quando non viene scambiato denaro. Per maggiori informazioni sulle opzioni applicabili, consulta la pagina <a href=@($"/{Culture}/legal/do-not-sell")>Non vendere né condividere le mie informazioni personali</a>.</p>
+            <p>Possiamo inoltre divulgare informazioni quando necessario per adempiere a obblighi legali, rispondere a richieste legittime, proteggere gli utenti o tutelare i nostri diritti. Se la nostra azienda è coinvolta in una fusione, acquisizione o vendita di attività, le informazioni possono essere trasferite nell’ambito di tale operazione, nel rispetto dei requisiti applicabili in materia di privacy.</p>
+        </div>
+        <div class="support-section">
+            <h2>6. Contenuti e servizi di terze parti</h2>
+            <p>Streaming Discovery utilizza servizi di contenuti di terze parti, tra cui TMDB e servizi accessibili tramite RapidAPI, per fornire informazioni su film e serie TV, come titoli, descrizioni, valutazioni, immagini, trailer e disponibilità. Quando cerchi o visualizzi contenuti, i termini di ricerca, gli identificativi dei contenuti e le informazioni pertinenti sulla lingua o sulla regione possono essere inviati a tali fornitori per recuperare le informazioni richieste.</p>
+            <p>Quando segui un link verso un altro sito web o servizio, si applicano i termini e l’informativa sulla privacy del relativo fornitore. Non controlliamo il funzionamento dei servizi di terze parti né il modo in cui trattano le informazioni raccolte autonomamente.</p>
+        </div>
+        <div class="support-section">
+            <h2>7. Pagamenti e abbonamenti</h2>
+            <p>Le opzioni di abbonamento e pagamento possono variare in base al dispositivo, alla piattaforma, alla regione e alla disponibilità corrente. Quando disponibili, i pagamenti possono essere gestiti da Stripe, Apple, Google Play, Microsoft Store o Paddle. Il fornitore pertinente spiegherà quali informazioni raccoglie per elaborare il pagamento.</p>
+            <p>Riceviamo e conserviamo le informazioni relative all’abbonamento necessarie per fornire il tuo piano, come il fornitore di pagamento, lo stato dell’abbonamento, i dettagli del piano e i riferimenti delle transazioni. Non riceviamo i dati completi della tua carta di pagamento quando vengono inseriti direttamente presso il fornitore di pagamento.</p>
+            <p>L’eliminazione del tuo account Streaming Discovery non annulla automaticamente un abbonamento gestito da un fornitore di pagamento o da un app store. Annulla l’abbonamento presso il fornitore tramite il quale lo hai acquistato prima di richiedere l’eliminazione dell’account. Le informazioni conservate dai fornitori di pagamento sono soggette alle rispettive informative sulla privacy e pratiche di conservazione.</p>
+        </div>
+        <div class="support-section">
+            <h2>8. Conservazione dei dati ed eliminazione dell’account</h2>
+            <p>Conserviamo le informazioni personali per il tempo necessario a fornire il servizio, mantenere il tuo account e i contenuti salvati, adempiere agli obblighi legali, risolvere controversie e proteggere il servizio.</p>
+            <p>Puoi richiedere l’eliminazione del tuo account Streaming Discovery tramite il Centro assistenza. Se hai un abbonamento attivo, devi annullarlo presso il fornitore di pagamento pertinente prima che l’eliminazione dell’account possa essere completata. Quando il tuo account viene eliminato, le informazioni personali e i contenuti salvati associati vengono rimossi dai nostri servizi attivi relativi agli account, fatta eccezione per le informazioni che dobbiamo o possiamo conservare per legittimi motivi legali, di sicurezza o operativi.</p>
+            <p>L’eliminazione del tuo account non elimina automaticamente le informazioni conservate autonomamente da fornitori di servizi di pagamento, analisi, pubblicità, e-mail o altri servizi di terze parti. La conservazione di tali informazioni è regolata dalle rispettive informative sulla privacy e dagli obblighi di legge.</p>
+        </div>
+        <div class="support-section">
+            <h2>9. I tuoi diritti e le tue scelte in materia di privacy</h2>
+            <p>A seconda del luogo in cui vivi e delle leggi applicabili, potresti avere il diritto di richiedere l’accesso alle tue informazioni personali, la loro rettifica o eliminazione, ottenere una copia di determinate informazioni, opporti a determinati trattamenti o limitarli, oppure revocare il consenso quando il trattamento si basa su di esso. Potresti inoltre avere il diritto di presentare un reclamo a un’autorità per la protezione dei dati.</p>
+            <p>Puoi scaricare alcune informazioni del tuo account utilizzando la funzione Scarica dati nel Centro assistenza. Puoi anche inviare richieste relative alla privacy tramite il Centro assistenza o contattarci all’indirizzo <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. Prima di rispondere, potremmo chiederti informazioni per verificare che la richiesta ti riguardi.</p>
+            <p>Alcune informazioni potrebbero dover essere conservate quando richiesto dalla legge o in presenza di un valido motivo legale o di sicurezza. I tuoi diritti possono variare in base alla tua posizione e alla legge applicabile.</p>
+        </div>
+        <div class="support-section">
+            <h2>10. Liste pubbliche e condivise</h2>
+            <p>Streaming Discovery include liste pubbliche selezionate che i visitatori possono consultare. Se crei o condividi una lista tramite un link pubblico, le persone che hanno accesso a quel link possono visualizzarne e condividerne i contenuti. Tieni presente che le informazioni rese pubbliche o condivise con altre persone possono essere copiate o ridistribuite da queste ultime.</p>
+            <p>Le liste private rimangono private, a meno che tu non scelga di condividerle tramite un link pubblico o un’altra funzionalità di condivisione.</p>
+        </div>
+        <div class="support-section">
+            <h2>11. Privacy dei minori</h2>
+            <p>Streaming Discovery è destinato a un pubblico generale e non è rivolto ai minori nei casi in cui la legge applicabile vieti l’utilizzo del servizio o la raccolta delle loro informazioni personali. Non raccogliamo consapevolmente informazioni personali di minori nelle circostanze in cui è richiesto il consenso dei genitori o dei tutori. Se ritieni che un minore ci abbia fornito informazioni personali in modo improprio, contattaci.</p>
+        </div>
+        <div class="support-section">
+            <h2>12. Sicurezza e trasferimenti internazionali</h2>
+            <p>Adottiamo misure di protezione ragionevoli volte a proteggere le informazioni personali da accessi non autorizzati, perdita, uso improprio o divulgazione. Nessun servizio online può garantire una sicurezza completa.</p>
+            <p>Streaming Discovery e i suoi fornitori di servizi possono trattare informazioni in paesi diversi da quello in cui risiedi. Quando richiesto, vengono adottate garanzie adeguate per i trasferimenti internazionali di informazioni personali.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Modifiche alla presente Informativa sulla privacy</h2>
+            <p>Potremmo aggiornare periodicamente la presente Informativa sulla privacy per riflettere modifiche a Streaming Discovery, ai nostri fornitori di servizi o alle leggi applicabili. La versione più recente sarà pubblicata su questa pagina con la relativa data di aggiornamento. Quando richiesto, forniremo un ulteriore avviso in merito alle modifiche sostanziali.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Contattaci</h2>
+            <p>Se hai domande sulla presente Informativa sulla privacy o desideri esercitare i tuoi diritti in materia di privacy, contattaci all’indirizzo <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> oppure utilizza il <a href=@($"/{Culture}/help")>Centro assistenza</a>.</p>
+            <p>DRMA Tech (Delivering Reliable Modern Apps Tech OÜ) gestisce Streaming Discovery. Per richieste generali relative all’azienda, contatta <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>.</p>
+        </div>
+        <div class="support-footer">
+            <p>Ultimo aggiornamento: 6 novembre 2026</p>
+            <p>Per informazioni sulle condizioni del servizio, leggi i nostri <a href=@($"/{Culture}/legal/terms")>Termini di utilizzo</a>.</p>
+        </div>
+    }
+    else if (Language == AppLanguage.de)
+    {
+        <h1 class="support-title">Datenschutzerklärung</h1>
+        <div class="support-subtitle">
+            Diese Datenschutzerklärung erläutert, wie DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), das Unternehmen hinter Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), Informationen erhebt, verwendet und weitergibt, wenn Sie unsere Website, Anwendungen und zugehörigen Dienste besuchen oder nutzen.
+        </div>
+        <div class="support-section">
+            <h2>1. Welche Informationen wir erheben</h2>
+            <p><b>Kontoinformationen.</b> Wenn Sie ein Konto erstellen oder verwenden, erheben wir Informationen wie Ihre E-Mail-Adresse, Ihren Anzeigenamen und Ihre Konto-ID. Die Kontoauthentifizierung wird von Clerk bereitgestellt.</p>
+            <p><b>Ihre Einstellungen und Aktivitäten.</b> Wenn Sie Kontofunktionen verwenden, verarbeiten wir Informationen zu den ausgewählten Streamingdiensten und Regionen, den Titeln auf Ihrer Merkliste, den von Ihnen als angesehen markierten Filmen und Serien, angesehenen Episoden sowie Einstellungen wie Sprache, Region und Anzeigeoptionen.</p>
+            <p><b>Geräte- und Nutzungsinformationen.</b> Wenn Sie Streaming Discovery verwenden, können wir und unsere Dienstleister Informationen wie Ihre IP-Adresse, Ihr ungefähres Land oder Ihre ungefähre Region, Browser- und Gerätetyp, Betriebssystem, Anwendungsversion, aufgerufene Seiten, Interaktionen mit dem Dienst und Diagnoseinformationen erheben. Diese Informationen helfen uns, den Dienst zu betreiben, zu schützen und zu verbessern.</p>
+            <p><b>Kommunikation und Feedback.</b> Wenn Sie uns kontaktieren, Feedback senden oder eine Funktion vorschlagen, verarbeiten wir die von Ihnen bereitgestellten Informationen und Nachrichten, um Ihnen zu antworten und den Dienst zu verbessern.</p>
+            <p><b>Abonnementinformationen.</b> Wenn Sie ein Abonnement abschließen, verarbeiten wir die zu dessen Verwaltung erforderlichen Informationen, beispielsweise Zahlungsanbieter, Tarif, Abonnementstatus und Transaktionsreferenzen. Zahlungsanbieter erheben und verarbeiten Zahlungsdaten gemäß ihren eigenen Datenschutzerklärungen.</p>
+            <p>Einige Entdeckungsfunktionen können Sie ohne Konto nutzen. Für Funktionen, die Einstellungen oder Wiedergabeaktivitäten speichern, müssen Sie angemeldet sein.</p>
+        </div>
+        <div class="support-section">
+            <h2>2. Wie wir Informationen verwenden</h2>
+            <p>Wir verwenden die oben beschriebenen Informationen, um:</p>
+            <ul>
+                <li>Streaming Discovery und seine Funktionen bereitzustellen, einschließlich Kontozugriff, personalisierter Einstellungen und gespeicherter Listen.</li>
+                <li>Ihre Streaming-Einstellungen und Wiedergabeaktivitäten zu speichern.</li>
+                <li>Inhalte und Verfügbarkeitsinformationen anzuzeigen, die für Ihre Sprache und Region relevant sind.</li>
+                <li>Abonnements und den dazugehörigen Kundensupport zu verarbeiten und zu verwalten.</li>
+                <li>Wichtige Mitteilungen zu Ihrem Konto, zum Dienst und zu Ihrem Abonnement sowie von Ihnen angeforderte Aktualisierungen zu senden.</li>
+                <li>Fragen, Feedback und Supportanfragen zu beantworten.</li>
+                <li>Die Sicherheit, Zuverlässigkeit und Leistung des Dienstes aufrechtzuerhalten.</li>
+                <li>Die Nutzung des Dienstes zu verstehen und seine Funktionen sowie die Benutzererfahrung zu verbessern.</li>
+                <li>Geltende Gesetze einzuhalten und unsere Rechte sowie die Rechte unserer Nutzer zu schützen.</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookies und ähnliche Technologien</h2>
+            <p>Streaming Discovery und die von uns genutzten Dienste können Cookies und ähnliche Technologien, einschließlich des Browserspeichers, verwenden, um Einstellungen zu speichern, wesentliche Funktionen bereitzustellen, die Nutzung des Dienstes zu verstehen und Werbung anzuzeigen oder zu messen.</p>
+            <p>Diese Technologien können von uns oder von Drittanbietern bereitgestellt werden, darunter Google Analytics, Microsoft Clarity und Google AdSense. Dabei können Informationen über Ihr Gerät, Ihren Browser und Ihre Interaktionen mit dem Dienst erhoben werden.</p>
+            <p>Sie können Cookies über Ihre Browsereinstellungen verwalten oder löschen. Außerdem können Sie die Optionen zur Personalisierung von Werbung in den Google-Anzeigeneinstellungen einsehen. Das Blockieren von Cookies oder ähnlichen Technologien kann einige Funktionen beeinträchtigen. Die Browsereinstellungen kontrollieren möglicherweise nicht alle von Drittanbietern verwendeten Technologien.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Analysen, Dienstverbesserung und Werbung</h2>
+            <p>Wir verwenden Dienste von Drittanbietern, um die Nutzung von Streaming Discovery zu verstehen, technische Probleme zu erkennen, Feedback zu sammeln und Werbung zu unterstützen:</p>
+            <ul>
+                <li><b>Google Analytics</b> hilft uns, die allgemeine Nutzung des Dienstes zu verstehen, beispielsweise welche Seiten und Funktionen verwendet werden.</li>
+                <li><b>Microsoft Clarity</b> hilft uns zu verstehen, wie Besucher mit dem Dienst interagieren, einschließlich der Navigation und der Interaktionen auf einzelnen Seiten.</li>
+                <li><b>Sentry</b> hilft uns, Fehler zu erkennen und technische Probleme zu diagnostizieren.</li>
+                <li><b>UserJot</b> ermöglicht Nutzern, Feedback und Funktionswünsche einzureichen. Wenn Sie angemeldet Feedback senden, können mit Ihrem Konto verbundene Informationen weitergegeben werden, damit das Feedback im entsprechenden Zusammenhang bearbeitet werden kann.</li>
+                <li><b>Google AdSense</b> zeigt Werbung an. Google und seine Werbepartner können Cookies oder ähnliche Technologien verwenden und Geräte-, Browser- sowie werbebezogene Informationen verarbeiten, um Werbung auszuliefern, zu messen und zu schützen. Die angezeigte Werbung kann von Ihrem Standort, den geltenden Gesetzen und den verfügbaren Werbeeinstellungen abhängen.</li>
+            </ul>
+        </div>
+        <div class="support-section">
+            <h2>5. Wie wir Informationen weitergeben</h2>
+            <p>Wir verkaufen Ihre personenbezogenen Daten nicht gegen Geld. Wir geben Informationen nur weiter, wenn dies erforderlich ist, um Streaming Discovery bereitzustellen, zu betreiben, zu schützen oder zu verbessern, eine von Ihnen angeforderte Transaktion abzuwickeln oder gesetzliche Anforderungen zu erfüllen.</p>
+            <p>Abhängig von den von Ihnen genutzten Funktionen können Informationen an folgende Kategorien von Dienstleistern weitergegeben werden:</p>
+            <ul>
+                <li><b>Authentifizierungsanbieter:</b> Clerk unterstützt uns bei der Verwaltung der Kontoerstellung und Anmeldung.</li>
+                <li><b>Hosting- und Infrastruktur-Anbieter:</b> Microsoft Azure unterstützt den Betrieb und die Speicherung des Dienstes.</li>
+                <li><b>Analyse- und Diagnoseanbieter:</b> Google Analytics, Microsoft Clarity und Sentry helfen uns, die Nutzung des Dienstes zu verstehen und technische Probleme zu beheben.</li>
+                <li><b>Feedback-Anbieter:</b> UserJot unterstützt Feedback und Funktionswünsche.</li>
+                <li><b>Werbeanbieter:</b> Google AdSense und seine Werbepartner unterstützen die Anzeige und Messung von Werbung.</li>
+                <li><b>Zahlungsanbieter:</b> Stripe und, abhängig von Plattform, Region und Verfügbarkeit, Apple, Google Play, Microsoft Store oder Paddle. Diese Anbieter verarbeiten Zahlungen oder Abonnements, sofern die entsprechende Kaufoption angeboten wird. Nicht jeder Anbieter und jede Zahlungsmethode ist für alle Nutzer verfügbar.</li>
+                <li><b>E-Mail-Anbieter:</b> ZeptoMail unterstützt uns beim Versand von konto- und dienstbezogenen E-Mails.</li>
+            </ul>
+            <p>Bestimmte Weitergaben an Analyse- oder Werbeanbieter können nach einigen Datenschutzgesetzen als „Weitergabe“ personenbezogener Daten für kontextübergreifende verhaltensbezogene Werbung gelten, auch wenn kein Geld ausgetauscht wird. Weitere Informationen zu den geltenden Wahlmöglichkeiten finden Sie auf unserer Seite <a href=@($"/{Culture}/legal/do-not-sell")>Meine personenbezogenen Daten nicht verkaufen oder weitergeben</a>.</p>
+            <p>Wir können Informationen außerdem offenlegen, wenn dies zur Erfüllung gesetzlicher Verpflichtungen, zur Beantwortung rechtmäßiger Anfragen, zum Schutz von Nutzern oder zur Wahrung unserer Rechte erforderlich ist. Im Falle einer Fusion, Übernahme oder Veräußerung von Vermögenswerten unseres Unternehmens können Informationen im Rahmen dieser Transaktion unter Beachtung der geltenden Datenschutzanforderungen übertragen werden.</p>
+        </div>
+        <div class="support-section">
+            <h2>6. Inhalte und Dienste von Drittanbietern</h2>
+            <p>Streaming Discovery verwendet Inhalte von Drittanbietern, darunter TMDB und über RapidAPI erreichbare Dienste, um Informationen zu Filmen und Serien bereitzustellen, beispielsweise Titel, Beschreibungen, Bewertungen, Bilder, Trailer und Verfügbarkeiten. Wenn Sie nach Inhalten suchen oder diese ansehen, können relevante Suchbegriffe, Inhaltskennungen sowie Sprach- oder Regionsinformationen an diese Anbieter gesendet werden, um die angeforderten Informationen abzurufen.</p>
+            <p>Wenn Sie einem Link zu einer anderen Website oder einem anderen Dienst folgen, gelten die Nutzungsbedingungen und die Datenschutzerklärung des jeweiligen Anbieters. Wir haben keinen Einfluss darauf, wie Drittanbieter ihre Dienste betreiben oder unabhängig erhobene Informationen verarbeiten.</p>
+        </div>
+        <div class="support-section">
+            <h2>7. Zahlungen und Abonnements</h2>
+            <p>Die verfügbaren Abonnement- und Zahlungsoptionen können je nach Gerät, Plattform, Region und aktueller Verfügbarkeit variieren. Sofern angeboten, können Zahlungen von Stripe, Apple, Google Play, Microsoft Store oder Paddle abgewickelt werden. Der jeweilige Anbieter erläutert, welche Informationen er zur Verarbeitung Ihrer Zahlung erhebt.</p>
+            <p>Wir erhalten und speichern die für die Bereitstellung Ihres Tarifs erforderlichen abonnementsbezogenen Informationen, beispielsweise Zahlungsanbieter, Abonnementstatus, Tarifdetails und Transaktionsreferenzen. Wenn Sie Ihre vollständigen Zahlungskartendaten direkt beim Zahlungsanbieter eingeben, erhalten wir diese Daten nicht.</p>
+            <p>Durch die Löschung Ihres Streaming-Discovery-Kontos wird ein von einem Zahlungsanbieter oder App Store verwaltetes Abonnement nicht automatisch gekündigt. Bitte kündigen Sie das Abonnement zunächst bei dem Anbieter, über den Sie es erworben haben, bevor Sie die Kontolöschung beantragen. Die von Zahlungsanbietern gespeicherten Informationen unterliegen deren eigenen Datenschutzerklärungen und Aufbewahrungspraktiken.</p>
+        </div>
+        <div class="support-section">
+            <h2>8. Datenspeicherung und Kontolöschung</h2>
+            <p>Wir speichern personenbezogene Daten so lange, wie dies zur Bereitstellung des Dienstes, zur Verwaltung Ihres Kontos und Ihrer gespeicherten Inhalte, zur Erfüllung gesetzlicher Verpflichtungen, zur Beilegung von Streitigkeiten und zum Schutz des Dienstes erforderlich ist.</p>
+            <p>Sie können die Löschung Ihres Streaming-Discovery-Kontos über das Hilfezentrum beantragen. Wenn Sie ein aktives Abonnement haben, müssen Sie dieses beim zuständigen Zahlungsanbieter kündigen, bevor die Kontolöschung abgeschlossen werden kann. Nach der Löschung Ihres Kontos werden die damit verbundenen personenbezogenen Daten und gespeicherten Inhalte aus unseren aktiven Kontodiensten entfernt. Ausgenommen sind Informationen, die wir aus legitimen rechtlichen, sicherheitsbezogenen oder betrieblichen Gründen aufbewahren müssen oder dürfen.</p>
+            <p>Durch die Löschung Ihres Kontos werden Informationen, die Zahlungs-, Analyse-, Werbe-, E-Mail- oder andere Drittanbieter unabhängig aufbewahren, nicht automatisch gelöscht. Deren Aufbewahrung richtet sich nach den jeweiligen Datenschutzerklärungen und gesetzlichen Verpflichtungen.</p>
+        </div>
+        <div class="support-section">
+            <h2>9. Ihre Datenschutzrechte und Wahlmöglichkeiten</h2>
+            <p>Abhängig von Ihrem Wohnort und den geltenden Gesetzen haben Sie möglicherweise das Recht, Auskunft über Ihre personenbezogenen Daten sowie deren Berichtigung oder Löschung zu verlangen, eine Kopie bestimmter Informationen zu erhalten, bestimmten Verarbeitungen zu widersprechen oder diese einzuschränken oder eine Einwilligung zu widerrufen, wenn die Verarbeitung auf einer Einwilligung beruht. Möglicherweise haben Sie außerdem das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.</p>
+            <p>Sie können bestimmte Kontoinformationen über die Funktion Daten herunterladen im Hilfezentrum herunterladen. Datenschutzanfragen können Sie auch über das Hilfezentrum einreichen oder uns unter <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> kontaktieren. Vor einer Antwort können wir Informationen anfordern, um zu bestätigen, dass sich die Anfrage auf Sie bezieht.</p>
+            <p>Bestimmte Informationen müssen möglicherweise aufbewahrt werden, wenn dies gesetzlich vorgeschrieben ist oder ein berechtigter rechtlicher oder sicherheitsbezogener Grund vorliegt. Ihre Rechte können je nach Standort und geltendem Recht unterschiedlich sein.</p>
+        </div>
+        <div class="support-section">
+            <h2>10. Öffentliche und geteilte Listen</h2>
+            <p>Streaming Discovery enthält ausgewählte öffentliche Listen, die Besucher ansehen können. Wenn Sie eine Liste erstellen oder über einen öffentlichen Link teilen, können Personen mit Zugriff auf diesen Link deren Inhalte ansehen und weitergeben. Beachten Sie, dass öffentlich zugänglich gemachte oder mit anderen geteilte Informationen von diesen kopiert oder weiterverbreitet werden können.</p>
+            <p>Private Listen bleiben privat, sofern Sie sie nicht über einen öffentlichen Link oder eine andere Freigabefunktion teilen.</p>
+        </div>
+        <div class="support-section">
+            <h2>11. Datenschutz von Kindern</h2>
+            <p>Streaming Discovery richtet sich an ein allgemeines Publikum und nicht an Kinder, wenn die Nutzung des Dienstes oder die Erhebung ihrer personenbezogenen Daten nach geltendem Recht unzulässig wäre. Wir erheben wissentlich keine personenbezogenen Daten von Kindern in Fällen, in denen die Zustimmung der Eltern oder Erziehungsberechtigten erforderlich ist. Wenn Sie glauben, dass ein Kind uns unzulässigerweise personenbezogene Daten übermittelt hat, kontaktieren Sie uns bitte.</p>
+        </div>
+        <div class="support-section">
+            <h2>12. Sicherheit und internationale Übermittlungen</h2>
+            <p>Wir setzen angemessene Schutzmaßnahmen ein, um personenbezogene Daten vor unbefugtem Zugriff, Verlust, Missbrauch oder Offenlegung zu schützen. Kein Online-Dienst kann vollständige Sicherheit garantieren.</p>
+            <p>Streaming Discovery und seine Dienstleister können Informationen in anderen Ländern als Ihrem Wohnsitzland verarbeiten. Soweit erforderlich, werden geeignete Schutzmaßnahmen für die internationale Übermittlung personenbezogener Daten eingesetzt.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Änderungen dieser Datenschutzerklärung</h2>
+            <p>Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren, um Änderungen an Streaming Discovery, unseren Dienstleistern oder geltenden Gesetzen zu berücksichtigen. Die aktuelle Version wird zusammen mit dem Aktualisierungsdatum auf dieser Seite veröffentlicht. Soweit erforderlich, informieren wir zusätzlich über wesentliche Änderungen.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Kontakt</h2>
+            <p>Wenn Sie Fragen zu dieser Datenschutzerklärung haben oder Ihre Datenschutzrechte ausüben möchten, kontaktieren Sie uns unter <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> oder nutzen Sie das <a href=@($"/{Culture}/help")>Hilfezentrum</a>.</p>
+            <p>DRMA Tech (Delivering Reliable Modern Apps Tech OÜ) betreibt Streaming Discovery. Bei allgemeinen Unternehmensanfragen wenden Sie sich bitte an <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>.</p>
+        </div>
+        <div class="support-footer">
+            <p>Zuletzt aktualisiert: 6. November 2026</p>
+            <p>Informationen zu den Nutzungsbedingungen finden Sie in unseren <a href=@($"/{Culture}/legal/terms")>Nutzungsbedingungen</a>.</p>
         </div>
     }
     else
     {
         <h1 class="support-title">Privacy Policy</h1>
         <div class="support-subtitle">
-            Your privacy is a priority at <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), operated by DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
-            Please read this policy carefully to understand how we handle your data.
+            This Privacy Policy explains how DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), the company operating Streaming Discovery (<a href="@AppInfo.WebSite" target="_blank" rel="noopener">@AppInfo.WebSite</a>), collects, uses, and shares information when you visit or use our website, applications, and related services.
         </div>
         <div class="support-section">
-            <h2>1. Data collected</h2>
-            <p>We collect and store information such as: email address, login date and IP address, access country (via IP), device type, browser type, and basic user settings. Login is optional, but some features are only available to authenticated users. Technical and browsing data may also be collected even without authentication.</p>
-            <p>All film and series information is sourced from external services like TMDb, IMDb, JustWatch, among others. The platform only curates, organizes, and presents this content in personalized formats.</p>
-            <p>We do not collect sensitive personal data or precise geolocation without explicit consent.</p>
+            <h2>1. Information We Collect</h2>
+            <p><b>Account information.</b> When you create or use an account, we collect information such as your email address, display name, and account identifier. Account authentication is provided by Clerk.</p>
+            <p><b>Your preferences and activity.</b> When you use account features, we process information about your selected streaming services and regions, titles added to your wishlist, movies and shows you mark as watched, watched episodes, and preferences such as language, region, and display settings.</p>
+            <p><b>Device and usage information.</b> When you use Streaming Discovery, we and our service providers may collect information such as your IP address, approximate country or region, browser and device type, operating system, application version, pages viewed, interactions with the service, and diagnostic information. This information helps us operate, protect, and improve the service.</p>
+            <p><b>Communications and feedback.</b> If you contact us, submit feedback, or suggest a feature, we process the information and message you provide so we can respond and improve the service.</p>
+            <p><b>Subscription information.</b> If you subscribe, we process information needed to manage your subscription, such as the payment provider, plan, subscription status, and transaction references. Payment providers collect and process payment details as described in their own privacy policies.</p>
+            <p>You can use some discovery features without an account. Features that save preferences or viewing activity require you to sign in.</p>
         </div>
         <div class="support-section">
-            <h2>2. Cookies and similar technologies</h2>
-            <p>We use first-party cookies and session storage to maintain user preferences, authentication, and platform functionality. Third-party cookies from analytics providers may be used to analyze usage patterns. You can manage or revoke consent through your browser or platform settings.</p>
-            <p><b>Important:</b> Due to Apple's AppTrackingTransparency (ATT) framework, which requires explicit user permission for cross-app and cross-site tracking, behavioral tracking technologies are not operational on Apple devices in our app. We do not use or install tracking frameworks that require ATT consent. As a result, behavioral data collection and related analytics are limited or unavailable on Apple devices.</p>
+            <h2>2. How We Use Information</h2>
+            <p>We use the information described above to:</p>
+            <ul>
+                <li>Provide Streaming Discovery and its features, including account access, personalized settings, and saved lists.</li>
+                <li>Remember your streaming preferences and viewing activity.</li>
+                <li>Show content and availability information relevant to your language and region.</li>
+                <li>Process and manage subscriptions and related customer support.</li>
+                <li>Send important account, service, and subscription communications, as well as updates you have requested.</li>
+                <li>Respond to questions, feedback, and support requests.</li>
+                <li>Maintain the security, reliability, and performance of the service.</li>
+                <li>Understand how the service is used and improve its features and user experience.</li>
+                <li>Comply with applicable laws and protect our rights and the rights of our users.</li>
+            </ul>
+        </div>
+        @* TODO: Implement a consent management mechanism for analytics and advertising technologies, and initialize these providers according to the user's consent where required by applicable law. *@
+        <div class="support-section">
+            <h2>3. Cookies and Similar Technologies</h2>
+            <p>Streaming Discovery and the services we use may rely on cookies and similar technologies, including browser storage, to remember preferences, support essential features, understand how the service is used, and display or measure advertising.</p>
+            <p>These technologies may be provided by us or by third parties, including Google Analytics, Microsoft Clarity, and Google AdSense. They may collect information about your device, browser, and interactions with the service.</p>
+            <p>You can manage or delete cookies through your browser settings. You can also review Google's advertising personalization options through Google's ad settings. Blocking cookies or similar technologies may affect some features, and browser settings may not control every technology used by third parties.</p>
         </div>
         <div class="support-section">
-            <h2>3. Analytics tools</h2>
-            <p>We use analytics tools like Google Analytics and Microsoft Clarity to understand platform usage and improve our services. These tools collect non-identifiable data such as IP address, approximate location (city or region level), browser type, session duration, and visited pages. No personal identification is shared with these services.</p>
-            <p><b>Note:</b> On Apple devices, due to ATT restrictions, behavioral tracking and cross-app data collection are limited. We fully comply with these restrictions and do not bypass them, so data from Apple users may be less comprehensive or absent.</p>
+            <h2>4. Analytics, Service Improvement, and Advertising</h2>
+            <p>We use third-party services to understand how Streaming Discovery is used, identify technical issues, collect feedback, and support advertising:</p>
+            <ul>
+                <li><b>Google Analytics</b> helps us understand general usage of the service, such as which pages and features are used.</li>
+                <li><b>Microsoft Clarity</b> helps us understand how visitors interact with the service, including navigation and on-page interactions.</li>
+                <li><b>Sentry</b> helps us identify errors and diagnose technical problems.</li>
+                <li><b>UserJot</b> allows users to submit feedback and feature requests. When you submit feedback while signed in, information associated with your account may be shared so the feedback can be handled in context.</li>
+                <li><b>Google AdSense</b> displays advertisements. Google and its advertising partners may use cookies or similar technologies and process device, browser, and advertising-related information to deliver, measure, and protect advertisements. The type of advertising shown may depend on your location, applicable law, and available advertising settings.</li>
+            </ul>
         </div>
         <div class="support-section">
-            <h2>4. Data sharing</h2>
-            <p>We do not sell or rent your personal data. We share data only with trusted third-party providers essential to the platform’s core functionality, such as social login providers, hosting services, analytics, and advertising platforms. These providers operate under strict confidentiality agreements and data access is limited to necessary information.</p>
+            <h2>5. How We Share Information</h2>
+            <p>We do not sell your personal information for money. We share information only when needed to provide, maintain, protect, or improve Streaming Discovery, to process a transaction you request, or when required by law.</p>
+            <p>Depending on the features you use, information may be shared with these categories of service providers:</p>
+            <ul>
+                <li><b>Authentication providers:</b> Clerk, which helps us manage account registration and sign-in.</li>
+                <li><b>Hosting and infrastructure providers:</b> Microsoft Azure, which supports the operation and storage of the service.</li>
+                <li><b>Analytics and diagnostics providers:</b> Google Analytics, Microsoft Clarity, and Sentry, which help us understand service usage and resolve technical issues.</li>
+                <li><b>Feedback providers:</b> UserJot, which supports feedback and feature requests.</li>
+                <li><b>Advertising providers:</b> Google AdSense and its advertising partners, which support the display and measurement of advertisements.</li>
+                <li><b>Payment providers:</b> Stripe and, depending on the platform, region, and availability, Apple, Google Play, Microsoft Store, or Paddle. These providers process payments or subscriptions when the corresponding purchase option is offered. Not every provider or payment method is available to every user.</li>
+                <li><b>Email providers:</b> ZeptoMail, which helps us deliver account and service-related emails.</li>
+            </ul>
+            <p>Some disclosures to analytics or advertising providers may be considered a “share” of personal information for cross-context behavioral advertising under certain privacy laws, even when no money is exchanged. For more information about applicable choices, see our <a href=@($"/{Culture}/legal/do-not-sell")>Do Not Sell or Share My Personal Information</a> page.</p>
+            <p>We may also disclose information if necessary to comply with legal obligations, respond to lawful requests, protect users, or defend our rights. If our business is involved in a merger, acquisition, or sale of assets, information may be transferred as part of that transaction, subject to applicable privacy requirements.</p>
         </div>
         <div class="support-section">
-            <h2>5. Data storage and security</h2>
-            <p>Your data is securely stored on Microsoft Azure servers located in the United States, with possible replication in other regions for stability and availability. Data is encrypted during transmission (e.g., via HTTPS) and protected with access controls and monitoring.</p>
-            <p>When an account is deleted, personal data is removed from the main database. Certain data may be retained in isolated systems for up to 6 months for legal or operational reasons, such as fraud prevention or compliance. After this period, the data is permanently deleted or anonymized.</p>
+            <h2>6. Third-Party Content and Services</h2>
+            <p>Streaming Discovery uses third-party content services, including TMDB and services accessed through RapidAPI, to provide movie and TV information such as titles, descriptions, ratings, images, trailers, and availability details. When you search for or view content, relevant search terms, content identifiers, language, or region information may be sent to those providers to retrieve the requested information.</p>
+            <p>When you follow a link to another website or service, that provider's own terms and privacy policy apply. We do not control how third parties operate their services or handle information they collect independently.</p>
         </div>
         <div class="support-section">
-            <h2>6. User rights</h2>
-            <p>You can delete your account at any time and request removal of your data. You also have the right to access, correct, or export your data using tools provided in your account settings or via support channels.</p>
-            <p>If you have questions about your data or wish to exercise your rights under applicable privacy laws (GDPR, LGPD, CCPA/CPRA), please contact us through the platform’s support page.</p>
+            <h2>7. Payments and Subscriptions</h2>
+            <p>Subscription and payment options may vary depending on your device, platform, region, and current availability. Where offered, payments may be handled by Stripe, Apple, Google Play, Microsoft Store, or Paddle. The relevant provider will explain what information it collects to process your payment.</p>
+            <p>We receive and retain subscription-related information needed to provide your plan, such as the payment provider, subscription status, plan details, and transaction references. We do not receive your full payment card details when those details are entered directly with the payment provider.</p>
+            <p>Deleting your Streaming Discovery account does not automatically cancel a subscription managed by a payment provider or app store. Please cancel the subscription with the provider through which you purchased it before requesting account deletion. Information retained by payment providers is subject to their own privacy policies and retention practices.</p>
         </div>
         <div class="support-section">
-            <h2>7. Public and private lists</h2>
-            <p>The platform features curated public lists accessible and shareable by any visitor. Logged-in users can create private lists with item limits based on their subscription level. Private lists remain confidential unless shared externally by the user.</p>
+            <h2>8. Data Retention and Account Deletion</h2>
+            <p>We keep personal information for as long as necessary to provide the service, maintain your account and saved content, meet legal obligations, resolve disputes, and protect the service.</p>
+            <p>You can request deletion of your Streaming Discovery account through the Help Center. If you have an active subscription, you must cancel it with the relevant payment provider before account deletion can be completed. When your account is deleted, the personal information and saved content associated with it are removed from our active account services, subject to information we must or are permitted to retain for legitimate legal, security, or operational reasons.</p>
+            <p>Deleting your account does not automatically delete information held independently by payment, analytics, advertising, email, or other third-party providers. Their retention of information is governed by their own privacy policies and legal obligations.</p>
         </div>
         <div class="support-section">
-            <h2>8. Children and minors</h2>
-            <p>The platform is designed for general audiences and does not knowingly collect data from children under the applicable age of majority. If we learn that a minor has provided personal information without parental consent, we will take steps to delete such data.</p>
+            <h2>9. Your Privacy Rights and Choices</h2>
+            <p>Depending on where you live and the laws that apply, you may have the right to request access to, correction of, or deletion of your personal information, obtain a copy of certain information, object to or restrict certain processing, or withdraw consent where processing is based on consent. You may also have the right to complain to a data protection authority.</p>
+            <p>You can download certain account information using the Download Data feature in the Help Center. You can also submit privacy requests through the Help Center or contact us at <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a>. We may ask for information to confirm that a request relates to you before responding.</p>
+            <p>Some information may need to be retained where required by law or where a valid legal or security reason applies. Your rights may vary depending on your location and the applicable law.</p>
         </div>
         <div class="support-section">
-            <h2>9. Legal compliance</h2>
-            <p>This policy aligns with privacy laws including GDPR, LGPD, and CCPA/CPRA, depending on your location. We continuously review our practices to ensure compliance with applicable regulations.</p>
+            <h2>10. Public and Shared Lists</h2>
+            <p>Streaming Discovery includes curated public lists that visitors can view. If you create or share a list using a public link, people who have access to that link may be able to view and share its contents. Keep in mind that information made public or shared with others may be copied or redistributed by them.</p>
+            <p>Private lists remain private unless you choose to share them using a public link or another sharing feature.</p>
         </div>
         <div class="support-section">
-            <h2>10. Contact</h2>
-            <p>For any questions, requests, or complaints regarding your data privacy, please use the support page within the platform or contact us directly.</p>
+            <h2>11. Children’s Privacy</h2>
+            <p>Streaming Discovery is intended for a general audience and is not directed at children where use of the service or collection of their personal information would be prohibited by applicable law. We do not knowingly collect personal information from children in circumstances where parental consent is required. If you believe a child has provided personal information to us improperly, please contact us.</p>
         </div>
         <div class="support-section">
-            <h2>11. Updates to this Policy</h2>
-            <p>We may update this Privacy Policy periodically to reflect changes in technology, services, or regulations. Significant changes will be communicated through notifications or email when feasible. We encourage you to review this policy regularly.</p>
+            <h2>12. Security and International Transfers</h2>
+            <p>We use reasonable safeguards designed to protect personal information against unauthorized access, loss, misuse, or disclosure. No online service can guarantee complete security.</p>
+            <p>Streaming Discovery and its service providers may process information in countries other than the country where you live. Where required, appropriate safeguards are used for international transfers of personal information.</p>
+        </div>
+        <div class="support-section">
+            <h2>13. Changes to This Privacy Policy</h2>
+            <p>We may update this Privacy Policy from time to time to reflect changes to Streaming Discovery, our service providers, or applicable laws. The latest version will be published on this page with its updated date. Where required, we will provide additional notice of material changes.</p>
+        </div>
+        <div class="support-section">
+            <h2>14. Contact Us</h2>
+            <p>If you have questions about this Privacy Policy or want to exercise your privacy rights, contact us at <a href="mailto:support@streamingdiscovery.com">support@streamingdiscovery.com</a> or use the <a href=@($"/{Culture}/help")>Help Center</a>.</p>
+            <p>DRMA Tech (Delivering Reliable Modern Apps Tech OÜ) operates Streaming Discovery. For general company inquiries, contact <a href="mailto:contact@drma-tech.com">contact@drma-tech.com</a>.</p>
         </div>
         <div class="support-footer">
-            <p>Last updated: August 5, 2025</p>
-            <p>By using the platform, you agree to this Privacy Policy and the <a href=@($"/{Culture}/legal/terms")>Terms of Use</a>.</p>
+            <p>Last updated: November 6, 2026</p>
+            <p>For information about the service terms, please read our <a href=@($"/{Culture}/legal/terms")>Terms of Use</a>.</p>
         </div>
     }
 </div>

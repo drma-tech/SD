@@ -1,8 +1,8 @@
 ﻿@page "/{culture}/help/faq"
 @inherits PageCore<FaqPage>
 
-<HeadComponent Title="FAQ" Url=@($"/{Culture}/help/faq") Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, and platform usage.")" Index="false"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="FAQ" Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, and platform usage.")"></PageSectionComponent>
+<HeadComponent Title="FAQ" Url=@($"/{Culture}/help/faq") Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, privacy, and platform usage.")" Index="true"></HeadComponent>
+<PageSectionComponent IsPageHeader="true" Title="FAQ" Description="@($"Find answers to common questions about {AppInfo.Title}, including accounts, lists, recommendations, subscriptions, privacy, and platform usage.")"></PageSectionComponent>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="@CssHelper.Build().Medium("mb")">
     <MudExpansionPanel Disabled="true" HideIcon="true">
@@ -13,11 +13,23 @@
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="What user data does the platform collect?" HeaderClass="mud-secondary-text">
-        We collect minimal data: email for login, platform preferences, and usage metadata like IP and login times. No personal sensitive information is stored.
+    <MudExpansionPanel Text="What information does Streaming Discovery collect?" HeaderClass="mud-secondary-text">
+        Depending on the features you use, we may process your email address, display name, account identifier, streaming preferences, viewing activity, saved content, device and usage information, and messages or feedback you submit. Subscription-related information may also be processed when you make a purchase. For details, see our <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Are my lists and data shared with others?" HeaderClass="mud-secondary-text">
-        Private lists you create are visible only to you unless you choose to share a public link. Public lists are curated by the platform and accessible to all users.
+    <MudExpansionPanel Text="Does Streaming Discovery sell my personal information?" HeaderClass="mud-secondary-text">
+        We do not sell personal information in exchange for money. However, certain disclosures to analytics or advertising providers may be considered sharing for cross-context behavioral advertising under privacy laws such as the CCPA and CPRA. You can learn about your choices and submit an opt-out request on our <a href=@($"/{Culture}/legal/do-not-sell")>Do Not Sell or Share My Personal Information</a> page.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Is my information shared with third parties?" HeaderClass="mud-secondary-text">
+        We share information with service providers when needed to operate, maintain, protect, or improve the platform, process transactions, or comply with legal obligations. These providers may support authentication, hosting, analytics, advertising, feedback, payments, and email delivery. Their handling of information is also subject to their own privacy policies where applicable.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Can I download or request a copy of my data?" HeaderClass="mud-secondary-text">
+        You can download certain account information using the Download Data feature in the Help Center. You can also submit a privacy request through the Help Center or email support@streamingdiscovery.com. Available rights depend on your location and applicable privacy laws.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="What happens when I delete my account?" HeaderClass="mud-secondary-text">
+        Personal information and saved content associated with your account are removed from our active account services, subject to information we must or are permitted to retain for legal, security, or operational reasons. Deleting your account does not automatically delete information held independently by payment, analytics, advertising, email, or other third-party providers.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Are cookies and analytics used?" HeaderClass="mud-secondary-text">
+        We and our service providers may use cookies and similar technologies for essential features, preferences, analytics, service improvement, and advertising. You can manage or delete cookies through your browser settings, although browser settings may not control every technology used by third parties.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -31,13 +43,16 @@
         </TitleContent>
     </MudExpansionPanel>
     <MudExpansionPanel Text="Can I create and manage my own lists?" HeaderClass="mud-secondary-text">
-        Yes, you can create private lists of movies and series you want to follow or watch. Premium users can save more items per list.
+        Yes. When signed in, you can create and manage personal lists of movies and TV shows. Available limits and features may vary by subscription plan.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="How does personalized recommendations work?" HeaderClass="mud-secondary-text">
-        Recommendations are based on your favorite platforms and genres, excluding titles already on other personal lists.
+    <MudExpansionPanel Text="Are my lists public or private?" HeaderClass="mud-secondary-text">
+        Curated public lists can be viewed by visitors. Your private lists remain private unless you choose to share them using a public link or another sharing feature. Anyone with access to a shared link may be able to view and share its contents.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="How do personalized recommendations work?" HeaderClass="mud-secondary-text">
+        Recommendations can take your selected streaming services, regions, and preferences into account to help you discover relevant movies and TV shows.
     </MudExpansionPanel>
     <MudExpansionPanel Text="Can I share my private lists?" HeaderClass="mud-secondary-text">
-        Yes, you can generate public links to share your private lists with others outside the platform.
+        Yes. You can choose to share a private list using a public link. Only share information you are comfortable making accessible to people who have that link.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -51,13 +66,13 @@
         </TitleContent>
     </MudExpansionPanel>
     <MudExpansionPanel Text="Do I need to create an account?" HeaderClass="mud-secondary-text">
-        No account is required to browse public lists and general content. Creating an account lets you save your preferences and manage your personal lists.
+        No. Some discovery features and public lists are available without an account. You need to sign in to use features that save preferences, viewing activity, or personal lists.
     </MudExpansionPanel>
     <MudExpansionPanel Text="What information is required to register?" HeaderClass="mud-secondary-text">
-        Only an email address is required to create an account. No personal data beyond that is collected.
+        An email address is required to create an account. Depending on how you use the platform, we may also process account details and technical or usage information as described in our <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Can I delete my account and data?" HeaderClass="mud-secondary-text">
-        Yes, you can delete your account anytime, which removes your saved lists and preferences from our system.
+    <MudExpansionPanel Text="How can I delete my account?" HeaderClass="mud-secondary-text">
+        You can request account deletion through the account or support options in the Help Center. If you have an active subscription, you must cancel it with the relevant payment provider or platform before account deletion can be completed.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -70,14 +85,17 @@
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Is the platform free?" HeaderClass="mud-secondary-text">
-        Yes, basic access is free. Premium subscriptions unlock benefits such as no ads and larger list capacities.
+    <MudExpansionPanel Text="Is Streaming Discovery free?" HeaderClass="mud-secondary-text">
+        Some features are available for free. Other features may require a paid subscription. Available plans, features, prices, and billing options may vary by country, platform, account, and provider.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="How do I manage my subscription?" HeaderClass="mud-secondary-text">
-        You can manage or cancel your subscription at any time in your account billing settings.
+    <MudExpansionPanel Text="How do I manage or cancel my subscription?" HeaderClass="mud-secondary-text">
+        Manage or cancel your subscription through Streaming Discovery or the payment provider or platform you used to purchase it, as applicable. Cancellation generally stops future renewals but does not automatically provide a refund for the current billing period.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="How is payment processed?" HeaderClass="mud-secondary-text">
-        Payments are securely handled by our partner Paddle. We do not store full payment details on our servers.
+    <MudExpansionPanel Text="Do I need to cancel my subscription before deleting my account?" HeaderClass="mud-secondary-text">
+        Yes. Deleting your account does not automatically cancel a subscription managed by a payment provider or app store. Cancel it with the provider through which you subscribed before requesting account deletion.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="How are payments processed?" HeaderClass="mud-secondary-text">
+        Depending on availability, payments may be processed by Stripe, Apple, Google Play, Microsoft Store, or Paddle. We retain subscription-related information needed to manage your plan, but we do not receive your full payment card details when you enter them directly with the payment provider. Payment options vary by platform and region.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -90,13 +108,19 @@
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Is this a platform to watch movies and shows?" HeaderClass="mud-secondary-text">
-        No, our platform is for managing, discovering, and organizing movies and shows, not streaming or viewing content.
+    <MudExpansionPanel Text="Can I watch movies and TV shows on Streaming Discovery?" HeaderClass="mud-secondary-text">
+        No. Streaming Discovery helps you discover and organize information about movies, TV shows, and streaming services. It does not host or provide streaming, downloading, or playback of that content.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Is information about titles and streaming availability always accurate?" HeaderClass="mud-secondary-text">
+        Movie and TV information, catalogs, prices, availability, and external links come from third-party sources and may be incomplete, inaccurate, or change over time and by region. Check the relevant streaming provider directly before making a purchase or subscription decision.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Can I use platform information for commercial purposes or collect it automatically?" HeaderClass="mud-secondary-text">
+        The service is intended for personal, non-commercial use. Automated scraping or systematic extraction, reselling, redistribution, or commercial exploitation of the service or its data is not permitted unless authorized by us or allowed by applicable law. See our <a href=@($"/{Culture}/legal/terms")>Terms of Use</a>.
     </MudExpansionPanel>
     <MudExpansionPanel Text="How can I contact support?" HeaderClass="mud-secondary-text">
-        You can contact support via the in-app feedback section or by emailing support@streamingdiscovery.com.
+        You can use the platform's Feedback feature, visit the Help Center, or email support@streamingdiscovery.com. For general company inquiries, contact contact@drma-tech.com.
     </MudExpansionPanel>
     <MudExpansionPanel Text="What languages does the platform support?" HeaderClass="mud-secondary-text">
-        The platform interface supports English, Portuguese, and Spanish. Movie and show metadata is available in multiple languages but does not affect site language.
+        The platform interface supports English, Portuguese, Spanish, Chinese, French, Italian, and German. Movie and TV metadata may be available in additional languages depending on the source.
     </MudExpansionPanel>
 </MudExpansionPanels>
