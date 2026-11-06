@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/company/about-us"
 @inherits PageCore<AboutUsPage>
 
-<HeadComponent Title="About Us" Description="@($"Learn about {AppInfo.CompanyName}, our mission, and the digital products we build.")" Url=@($"/{Culture}/company/about-us") Index="false"></HeadComponent>
+<HeadComponent Title="About Us" Description="@($"Learn about {AppInfo.CompanyName}, our approach to building useful digital products, and the solutions we create.")" Url=@($"/{Culture}/company/about-us") Index="false"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
@@ -9,28 +9,37 @@
         <h1 class="support-title">Sobre a @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
             Bem-vindo à <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
-            Criamos produtos digitais que ajudam as pessoas a explorar possibilidades, encontrar o que combina com elas e tomar decisões com mais facilidade.
+            Somos uma empresa de tecnologia que desenvolve soluções digitais para tornar o dia a dia das pessoas mais prático. Criamos produtos que ajudam cada pessoa a encontrar opções, informações e experiências mais alinhadas ao seu perfil e às suas necessidades.
         </div>
         <div class="support-section">
-            <h2>1. Nossa Missão</h2>
-            <p>Nossa missão é desenvolver ferramentas digitais úteis e intuitivas que simplifiquem tarefas e ajudem as pessoas a fazer escolhas mais alinhadas às suas necessidades.</p>
+            <h2>1. Nossa missão</h2>
+            <p>Nosso objetivo é desenvolver soluções digitais para problemas e necessidades do cotidiano. Acreditamos que a tecnologia deve facilitar a vida, não torná-la mais complicada. Por isso, buscamos transformar tarefas, dúvidas e decisões comuns em experiências mais simples e intuitivas.</p>
+            <p>Em muitos dos nossos produtos, isso significa ajudar as pessoas a descobrir aquilo que combina com suas preferências, objetivos e estilo de vida, em vez de oferecer as mesmas opções para todo mundo.</p>
         </div>
         <div class="support-section">
-            <h2>2. Quem Somos</h2>
-            <p>Somos uma empresa de tecnologia focada em criar e desenvolver produtos digitais. Combinamos desenvolvimento de software, análise e design para transformar ideias em ferramentas práticas.</p>
+            <h2>2. Quem somos</h2>
+            <p>A @AppInfo.CompanyName atua no desenvolvimento de produtos digitais próprios, voltados principalmente para consumidores. Não trabalhamos com desenvolvimento sob encomenda: identificamos oportunidades, criamos nossas próprias soluções e acompanhamos sua evolução.</p>
+            <p>Nossa atuação é global. Por isso, desenvolvemos produtos pensando em diferentes países, públicos e idiomas, para que possam ser úteis a pessoas com contextos e necessidades variadas.</p>
         </div>
         <div class="support-section">
-            <h2>3. Nossos Produtos</h2>
+            <h2>3. Como desenvolvemos nossos produtos</h2>
+            <p>Partimos de problemas reais e buscamos criar experiências diretas, acessíveis e fáceis de usar. Cada produto tem sua própria finalidade, mas todos seguem a mesma ideia: oferecer recursos práticos sem acrescentar complexidade desnecessária.</p>
+            <p>O desenvolvimento é contínuo. Consideramos os comentários e as sugestões dos usuários, observamos como os produtos são utilizados e também confiamos na experiência e na percepção de quem os desenvolve para identificar oportunidades de melhoria. Assim, podemos ajustar funcionalidades, aprimorar a experiência e acompanhar as necessidades das pessoas ao longo do tempo.</p>
+            <p>Também valorizamos a disponibilidade internacional e o suporte a vários idiomas, permitindo que nossos produtos alcancem pessoas em diferentes partes do mundo.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Nossos produtos</h2>
+            <p>Nosso portfólio reúne soluções para diferentes necessidades, desde encontrar conexões pessoais e escolher destinos até facilitar tarefas técnicas relacionadas à web.</p>
             <ul>
                 @foreach (var product in AppInfo.Products)
                 {
-                    <li><b style="color: var(--mud-palette-secondary);"><a href="@product.Url" target="_blank" rel="noopener">@product.Title</a>:</b> @product.SubTitle</li>
+                    <li><b style="color: var(--mud-palette-secondary);"><a href="@product.Url" target="_blank" rel="noopener">@product.Title</a>:</b> @product.Description</li>
                 }
             </ul>
         </div>
         <div class="support-section">
-            <h2>4. Contato</h2>
-            <p>Se você tiver dúvidas, sugestões ou quiser entrar em contato, visite nossa <a href=@($"/{Culture}/help")>página de suporte</a>.</p>
+            <h2>5. Fale conosco</h2>
+            <p>Opiniões, dúvidas e sugestões fazem parte da evolução dos nossos produtos. Se quiser compartilhar uma ideia, relatar um problema ou simplesmente entrar em contato, visite nossa <a href=@($"/{Culture}/help")>página de suporte</a>.</p>
         </div>
         <div class="support-footer">
             <p>Última atualização: 6 de novembro de 2026</p>
@@ -41,28 +50,37 @@
         <h1 class="support-title">Sobre @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
             ¡Bienvenido a <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
-            Creamos productos digitales que ayudan a las personas a explorar posibilidades, encontrar lo que mejor se adapta a ellas y tomar decisiones con mayor facilidad.
+            Somos una empresa tecnológica que desarrolla soluciones digitales para hacer más práctico el día a día de las personas. Creamos productos que ayudan a cada persona a encontrar opciones, información y experiencias más acordes con su perfil y sus necesidades.
         </div>
         <div class="support-section">
-            <h2>1. Nuestra Misión</h2>
-            <p>Nuestra misión es desarrollar herramientas digitales útiles e intuitivas que simplifiquen tareas y ayuden a las personas a tomar decisiones más acordes con sus necesidades.</p>
+            <h2>1. Nuestra misión</h2>
+            <p>Nuestro objetivo es desarrollar soluciones digitales para los problemas y las necesidades cotidianas. Creemos que la tecnología debe facilitar la vida, no complicarla. Por eso, buscamos transformar tareas, dudas y decisiones habituales en experiencias más sencillas e intuitivas.</p>
+            <p>En muchos de nuestros productos, esto significa ayudar a las personas a descubrir lo que mejor encaja con sus preferencias, objetivos y estilo de vida, en lugar de ofrecer las mismas opciones a todo el mundo.</p>
         </div>
         <div class="support-section">
-            <h2>2. Quiénes Somos</h2>
-            <p>Somos una empresa tecnológica enfocada en crear y desarrollar productos digitales. Combinamos desarrollo de software, análisis y diseño para transformar ideas en herramientas prácticas.</p>
+            <h2>2. Quiénes somos</h2>
+            <p>@AppInfo.CompanyName se dedica al desarrollo de productos digitales propios, dirigidos principalmente a consumidores. No ofrecemos desarrollo de software por encargo: identificamos oportunidades, creamos nuestras propias soluciones y acompañamos su evolución.</p>
+            <p>Nuestra actividad tiene un alcance global. Por eso, desarrollamos productos pensando en distintos países, públicos e idiomas, para que sean útiles a personas con diferentes contextos y necesidades.</p>
         </div>
         <div class="support-section">
-            <h2>3. Nuestros Productos</h2>
+            <h2>3. Cómo desarrollamos nuestros productos</h2>
+            <p>Partimos de problemas reales y buscamos crear experiencias directas, accesibles y fáciles de usar. Cada producto tiene su propia finalidad, pero todos siguen la misma idea: ofrecer recursos prácticos sin añadir complejidad innecesaria.</p>
+            <p>El desarrollo es continuo. Tenemos en cuenta los comentarios y las sugerencias de los usuarios, observamos cómo se utilizan los productos y también confiamos en la experiencia y el criterio de quienes los desarrollan para identificar oportunidades de mejora. Así podemos ajustar funciones, mejorar la experiencia y acompañar las necesidades de las personas con el tiempo.</p>
+            <p>También damos importancia a la disponibilidad internacional y al soporte para varios idiomas, para que nuestros productos puedan llegar a personas de distintas partes del mundo.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Nuestros productos</h2>
+            <p>Nuestro catálogo reúne soluciones para distintas necesidades, desde encontrar conexiones personales y elegir destinos hasta facilitar tareas técnicas relacionadas con la web.</p>
             <ul>
                 @foreach (var product in AppInfo.Products)
                 {
-                    <li><b style="color: var(--mud-palette-secondary);"><a href="@product.Url" target="_blank" rel="noopener">@product.Title</a>:</b> @product.SubTitle</li>
+                    <li><b style="color: var(--mud-palette-secondary);"><a href="@product.Url" target="_blank" rel="noopener">@product.Title</a>:</b> @product.Description</li>
                 }
             </ul>
         </div>
         <div class="support-section">
-            <h2>4. Contacto</h2>
-            <p>Si tienes preguntas, sugerencias o quieres ponerte en contacto, visita nuestra <a href=@($"/{Culture}/help")>página de soporte</a>.</p>
+            <h2>5. Contacto</h2>
+            <p>Las opiniones, preguntas y sugerencias forman parte de la evolución de nuestros productos. Si quieres compartir una idea, informar de un problema o simplemente ponerte en contacto, visita nuestra <a href=@($"/{Culture}/help")>página de soporte</a>.</p>
         </div>
         <div class="support-footer">
             <p>Última actualización: 6 de noviembre de 2026</p>
@@ -73,28 +91,37 @@
         <h1 class="support-title">About @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
             Welcome to <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank" rel="noopener">@AppInfo.CompanyWebSite</a>)!<br />
-            We build digital products that help people explore possibilities, find what fits them, and make decisions more easily.
+            We are a technology company building digital solutions that make everyday life more practical. Our products help people find options, information, and experiences that better fit their profiles and needs.
         </div>
         <div class="support-section">
-            <h2>1. Our Mission</h2>
-            <p>Our mission is to develop useful and intuitive digital tools that simplify tasks and help people make choices that better match their needs.</p>
+            <h2>1. Our mission</h2>
+            <p>Our goal is to develop digital solutions for everyday problems and needs. We believe technology should make life easier, not more complicated. We work to turn common tasks, questions, and decisions into simpler and more intuitive experiences.</p>
+            <p>For many of our products, this means helping people discover what matches their preferences, goals, and lifestyles instead of presenting the same options to everyone.</p>
         </div>
         <div class="support-section">
-            <h2>2. Who We Are</h2>
-            <p>We are a technology company focused on creating and developing digital products. We combine software development, analysis, and design to turn ideas into practical tools.</p>
+            <h2>2. Who we are</h2>
+            <p>@AppInfo.CompanyName focuses on developing its own digital products, primarily for consumers. We do not provide custom software development services. We identify opportunities, build our own solutions, and take responsibility for their ongoing evolution.</p>
+            <p>Our reach is global. We develop products with different countries, audiences, and languages in mind, aiming to make them useful to people with a wide range of backgrounds and needs.</p>
         </div>
         <div class="support-section">
-            <h2>3. Our Products</h2>
+            <h2>3. How we build our products</h2>
+            <p>We start with real problems and aim to create experiences that are straightforward, accessible, and easy to use. Each product has its own purpose, but they share the same principle: provide practical tools without adding unnecessary complexity.</p>
+            <p>Product development is an ongoing process. We consider user feedback and suggestions, observe how our products are used, and rely on the experience and personal judgment of the people building them to identify opportunities for improvement. This helps us refine features, improve the overall experience, and respond to people's changing needs.</p>
+            <p>We also value international availability and support for multiple languages, helping our products reach people in different parts of the world.</p>
+        </div>
+        <div class="support-section">
+            <h2>4. Our products</h2>
+            <p>Our portfolio brings together solutions for different needs, from finding personal connections and choosing places to live or visit to simplifying technical tasks related to the web.</p>
             <ul>
                 @foreach (var product in AppInfo.Products)
                 {
-                    <li><b style="color: var(--mud-palette-secondary);"><a href="@product.Url" target="_blank" rel="noopener">@product.Title</a>:</b> @product.SubTitle</li>
+                    <li><b style="color: var(--mud-palette-secondary);"><a href="@product.Url" target="_blank" rel="noopener">@product.Title</a>:</b> @product.Description</li>
                 }
             </ul>
         </div>
         <div class="support-section">
-            <h2>4. Contact</h2>
-            <p>If you have questions, suggestions, or would like to get in touch, visit our <a href=@($"/{Culture}/help")>support page</a>.</p>
+            <h2>5. Get in touch</h2>
+            <p>Feedback, questions, and suggestions are part of how our products evolve. If you would like to share an idea, report an issue, or simply get in touch, visit our <a href=@($"/{Culture}/help")>support page</a>.</p>
         </div>
         <div class="support-footer">
             <p>Last updated: November 6, 2026</p>
