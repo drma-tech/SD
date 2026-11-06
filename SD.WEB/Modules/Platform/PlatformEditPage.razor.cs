@@ -41,7 +41,7 @@ namespace SD.WEB.Modules.Platform
                 if (AllProviders != null)
                 {
                     var details = AllProviders.Items;
-                    var blocked_providers = new List<string>() { "Amazon Channel", "Apple TV Channel", "Roku Premium Channel", "on U-Next" };
+                    var blocked_providers = new List<string>() { "Amazon Channel", "Amzon Channel", "Apple TV Channel", "Roku Premium Channel", "on U-Next" };
 
                     foreach (var region in EnumHelper.GetValues<Country>())
                     {
