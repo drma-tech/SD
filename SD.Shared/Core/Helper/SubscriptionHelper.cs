@@ -18,7 +18,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.FavoriteProviders)
-            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
+            throw new NotificationException("You've reached the limit for your current plan. Upgrade to Premium for a higher limit.");
     }
 
     public static void ValidateWatching(AccountProduct? product, int qtd)
@@ -27,7 +27,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.Watching)
-            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
+            throw new NotificationException("You've reached the limit for your current plan. Upgrade to Premium for a higher limit.");
     }
 
     public static void ValidateWishList(AccountProduct? product, int qtd)
@@ -36,7 +36,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.Wishlist)
-            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
+            throw new NotificationException("You've reached the limit for your current plan. Upgrade to Premium for a higher limit.");
     }
 }
 
