@@ -31,11 +31,11 @@ namespace SD.WEB.Core
 
         public static readonly ProductLink[] Products =
         [
-            //new("Streaming Discovery", Translations.Product.streamingdiscovery, "https://streamingdiscovery.com", "/logo/streamingdiscovery.png", live: true ),
-            new("Modern Matchmaker", Translations.Product.modern_matchmaker, "https://modern-matchmaker.com", "/logo/modern-matchmaker.png", live: true ),
-            new("My Next Spot", Translations.Product.next_spot, "https://my-next-spot.com", "/logo/next-spot.png", live: true ),
-            new("Web Standards", Translations.Product.webstandards, "https://web-standards.com", "/logo/webstandards.png", live: false ),
-            //new("Shared Home", Translations.Product.shared_home, "https://shared-home.com", "/logo/shared-home.png", live: true ),
+            //new("Streaming Discovery", Translations.Product.streamingdiscovery, Translations.Product.streamingdiscovery_description, "https://streamingdiscovery.com", "/logo/streamingdiscovery.png", live: true ),
+            new("Modern Matchmaker", Translations.Product.modern_matchmaker, Translations.Product.modern_matchmaker_description, "https://modern-matchmaker.com", "/logo/modern-matchmaker.png", live: true ),
+            new("My Next Spot", Translations.Product.next_spot, Translations.Product.next_spot_description, "https://my-next-spot.com", "/logo/next-spot.png", live: true ),
+            new("Web Standards", Translations.Product.webstandards, Translations.Product.webstandards_description, "https://web-standards.com", "/logo/webstandards.png", live: false ),
+            //new("Shared Home", Translations.Product.shared_home, Translations.Product.shared_home_description, "https://shared-home.com", "/logo/shared-home.png", live: true ),
        ];
     }
 }
