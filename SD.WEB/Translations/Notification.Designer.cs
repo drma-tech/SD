@@ -214,7 +214,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No data available..
+        ///   Looks up a localized string similar to No data available.
         /// </summary>
         internal static string RenderControlNoData {
             get {

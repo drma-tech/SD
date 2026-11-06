@@ -133,7 +133,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sort By.
+        ///   Looks up a localized string similar to Sort by.
         /// </summary>
         internal static string SortBy {
             get {
@@ -160,7 +160,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for movies, series or people.
+        ///   Looks up a localized string similar to Search for movies, TV shows, or people.
         /// </summary>
         internal static string TypeSomething {
             get {
