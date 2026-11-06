@@ -61,7 +61,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cycle.
+        ///   Looks up a localized string similar to Billing cycle.
         /// </summary>
         internal static string Cycle {
             get {
@@ -70,7 +70,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore all the content.
+        ///   Looks up a localized string similar to Explore all content.
         /// </summary>
         internal static string ExploreContent {
             get {
@@ -88,7 +88,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active?.
+        ///   Looks up a localized string similar to Status.
         /// </summary>
         internal static string IsActive {
             get {
@@ -97,7 +97,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Subscription.
+        ///   Looks up a localized string similar to My subscription.
         /// </summary>
         internal static string MySubscription {
             get {
@@ -124,7 +124,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to * Prices are displayed in US dollars. Your payment provider may convert and/or adjust the amount based on your location and local taxes..
+        ///   Looks up a localized string similar to * Prices are displayed in US dollars. Your payment provider may convert the amount and apply any applicable local taxes..
         /// </summary>
         internal static string PricesDisplayedDollars {
             get {
