@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdBlockerDetected" xml:space="preserve">
-    <value>AdBlocker détecté. Veuillez envisager de mettre notre application sur liste blanche pour nous soutenir. Merci!</value>
+    <value>Un bloqueur de publicités a été détecté. Ajoutez notre application à votre liste d'autorisation pour nous soutenir. Merci !</value>
   </data>
   <data name="CheckOurApps" xml:space="preserve">
     <value>Découvrez nos autres applications étonnantes :</value>
@@ -127,16 +127,16 @@
     <value>Avis de site Web externe</value>
   </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
-    <value>Attends des nouvelles...</value>
+    <value>Restez informé des nouveautés.</value>
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
-    <value>En développement</value>
+    <value>Cette fonctionnalité est en cours de développement.</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Non</value>
   </data>
   <data name="NoFollow" xml:space="preserve">
-    <value>Ce film ne fait pas partie d'une franchise, il ne peut donc pas être suivi.</value>
+    <value>Ce titre ne fait pas partie d'une franchise et ne peut donc pas être suivi.</value>
   </data>
   <data name="OperationCanceled" xml:space="preserve">
     <value>Opération annulée !</value>
@@ -178,6 +178,6 @@
     <value>Oui</value>
   </data>
   <data name="YouMustLogged" xml:space="preserve">
-    <value>Vous devez être connecté</value>
+    <value>Vous devez être connecté pour continuer.</value>
   </data>
 </root>
