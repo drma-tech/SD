@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdBlockerDetected" xml:space="preserve">
-    <value>AdBlocker detectado. Considere incluir nuestra aplicación en la lista blanca para ayudarnos. ¡Gracias!</value>
+    <value>Se ha detectado un bloqueador de anuncios. Añade nuestra aplicación a la lista de permitidos para apoyarnos. ¡Gracias!</value>
   </data>
   <data name="CheckOurApps" xml:space="preserve">
     <value>Explora nuestras otras increíbles aplicaciones:</value>
@@ -127,19 +127,19 @@
     <value>Aviso del sitio web externo</value>
   </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
-    <value>Espera noticias...</value>
+    <value>Mantente al tanto de las novedades.</value>
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
-    <value>En desarrollo</value>
+    <value>Esta función está en desarrollo.</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="NoFollow" xml:space="preserve">
-    <value>Esta película no forma parte de una franquicia, por lo tanto no se puede seguir.</value>
+    <value>Este título no forma parte de una franquicia, por lo que no puedes seguirlo.</value>
   </data>
   <data name="OperationCanceled" xml:space="preserve">
-    <value>Operación cancelada!</value>
+    <value>¡Operación cancelada!</value>
   </data>
   <data name="OperationCompleted" xml:space="preserve">
     <value>¡La operación se realizó con éxito!</value>
@@ -166,7 +166,7 @@
     <value>Operación no válida. Por favor, inténtelo de nuevo.</value>
   </data>
   <data name="RenderControlLoading" xml:space="preserve">
-    <value>Llevar...</value>
+    <value>Cargando...</value>
   </data>
   <data name="RenderControlNoData" xml:space="preserve">
     <value>Datos no disponibles</value>
@@ -178,6 +178,6 @@
     <value>Sí</value>
   </data>
   <data name="YouMustLogged" xml:space="preserve">
-    <value>Debes estar conectado</value>
+    <value>Debes iniciar sesión para continuar.</value>
   </data>
 </root>
