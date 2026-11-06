@@ -205,7 +205,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overview not available in your language..
+        ///   Looks up a localized string similar to Overview not available in your language.
         /// </summary>
         internal static string NoPlot {
             get {
