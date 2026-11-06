@@ -358,6 +358,15 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Streaming availability data is provided by.
+        /// </summary>
+        internal static string JustWatchAttribution {
+            get {
+                return ResourceManager.GetString("JustWatchAttribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Where to watch.
         /// </summary>
         internal static string WhereToWatch {
