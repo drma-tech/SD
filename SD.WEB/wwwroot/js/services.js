@@ -32,7 +32,8 @@ export const services = {
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", code);
 
-        //todo: whem implement tracking consent, modify this to wait for user consent
+        // TODO: Do not load Clarity or grant analytics/ad storage until the user has made a valid consent choice where required.
+        // TODO: Implement granular consent, persist the choice, and support withdrawal before initializing this provider.
         let attempts = 0;
         const maxAttempts = 12;
         const clarityCheckInterval = setInterval(function () {
