@@ -205,8 +205,6 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
                 tmdb = tmdbRating,
             };
 
-            //todo: do scrap only with the right url (no guess anymore)
-
             await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
             //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes

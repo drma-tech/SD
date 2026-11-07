@@ -5,7 +5,6 @@
 <HeadComponent Title="Ask Consent" Url=@($"/{Culture}/legal/ask-consent") Index="false"></HeadComponent>
 
 <MudPaper Elevation="0" Outlined="true" Class="@CssHelper.Build().Small("pa")">
-    @* TODO: Keep this page limited to the Huawei mainland-China privacy-statement agreement if the actual app/SDK data flows trigger that requirement. Provide distinct Agree and Reject choices before collection of covered personal information; rejection must stop that covered collection, not automatically disable unrelated processing. Verify whether AppGallery's hosted prompt is enabled and integrate its agreement status instead of showing a duplicate custom prompt. Do not reuse this page as a generic analytics, diagnostics, or feedback consent dialog. *@
     <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@CssHelper.Build().Small("mb")">
         <MudText Inline="true">
             @((MarkupString)string.Format(Translations.Module.Auth.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.PrivacyPolicy}</a>"))

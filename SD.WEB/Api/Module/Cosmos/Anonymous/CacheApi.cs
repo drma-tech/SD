@@ -37,11 +37,6 @@ public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<MostPopularD
 
             foreach (var item in result?.Data?.Items ?? [])
             {
-                //TODO: tv api has wrong poster definitions
-                //var shortImage = !string.IsNullOrEmpty(item.Image) && item.Image.Contains("_V1_")
-                //    ? item.Image?.Remove(item.Image.IndexOf("_V1_", StringComparison.Ordinal)) + "_V1_QL75_UY207_CR13,0,140,207_.jpg"
-                //    : item.Image;
-
                 currentList.Add(BuildMediaDetail(item, MediaType.tv));
             }
         }

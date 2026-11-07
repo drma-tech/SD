@@ -41,13 +41,6 @@ namespace SD.WEB.Shared
 
         protected override void OnInitialized()
         {
-            //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
-            //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
-
-            //TODO: analyse this
-            // AppState.WishListChanged += StateHasChanged;
-            // AppState.WatchedListChanged += StateHasChanged;
-
             if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await LoadParameterDataAsync(), Cts.Token);
         }
 

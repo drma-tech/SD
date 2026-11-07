@@ -87,11 +87,6 @@ namespace SD.WEB.Modules.Profile
                 }
             }
 
-            if (Watching == null && AppStateStatic.IsAuthenticated)
-            {
-                //todo: generate demo
-            }
-
             await WishMovieState.FinishLoading.Invoke(Wish);
             await WishTvState.FinishLoading.Invoke(Wish);
             await WatchingMovieState.FinishLoading.Invoke(Watching);
@@ -123,11 +118,5 @@ namespace SD.WEB.Modules.Profile
                 await ShowInfo(Translations.Module.Profile.DemoAlert);
             }
         }
-
-        // private async Task SetReviewed()
-        // {
-        //     await JsRuntime.InvokeAsync<string>("SetLocalStorage", "reviewed", "true");
-        //     Reviewed = "true";
-        // }
     }
 }

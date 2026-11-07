@@ -110,8 +110,8 @@ namespace SD.API.Core.Scraping
                 ratings.imdb ??= result?.ratings?.imdb?.score?.ToString(CultureInfo.InvariantCulture);
                 ratings.imdbLink ??= result?.ratings?.imdb?.url;
 
-                ratings.imdb ??= result?.ratings?.metacritic?.userScore?.ToString(CultureInfo.InvariantCulture);
-                ratings.imdbLink ??= result?.ratings?.metacritic?.url;
+                ratings.metacritic ??= result?.ratings?.metacritic?.userScore?.ToString(CultureInfo.InvariantCulture);
+                ratings.metacriticLink ??= result?.ratings?.metacritic?.url;
 
                 var rottenTomatoesRating = result?.ratings?.rotten_tomatoes?.audienceScore;
                 if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
