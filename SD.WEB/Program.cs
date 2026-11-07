@@ -79,7 +79,7 @@ AppStateStatic.IsBeta = await js.Utils().GetStorage("beta", JavascriptContext.De
 
 await js.Utils().SetStorage("app-version", AppStateStatic.Version, JavascriptContext.Default.String, CancellationToken.None);
 await AppStateStatic.GetPlatform(js, CancellationToken.None);
-// TODO: Initialize analytics only after the required consent or other applicable user choice for the platform and jurisdiction. Store listing disclosures are pre-installation transparency, not blanket consent.
+// TODO: For native app builds, do not show a generic first-launch consent prompt merely to repeat the privacy disclosures published in the app stores. Request a specific consent or OS permission only when required by applicable law or platform policy. For browser builds, apply the required jurisdiction-specific notice, consent, or opt-out flow before activating technologies where required.
 await js.Services().InitGoogleAnalytics(AppStateStatic.Version, CancellationToken.None);
 // TODO: Verify the feedback SDK's data practices and lawful basis by platform/jurisdiction, and provide any in-app notice or obtain consent before initialization where specifically required.
 await js.Services().InitUserJot(CancellationToken.None);

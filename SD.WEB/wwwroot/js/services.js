@@ -32,8 +32,8 @@ export const services = {
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", code);
 
-        // TODO: Determine the lawful basis and any consent/notice requirements for Clarity by platform and jurisdiction before initialization.
-        // TODO: Do not unconditionally grant analytics/ad storage. Apply the user's valid choice where consent is required, and support withdrawal or objection as applicable.
+        // TODO: For browser sessions, determine the applicable lawful basis and jurisdiction-specific notice, consent, or opt-out requirements before initializing Clarity. Do not add a generic native-app consent prompt merely to repeat store disclosures.
+        // TODO: For browser sessions, do not grant analytics/ad storage before the required consent or other applicable user choice. Support withdrawal or objection where required. Native app builds should rely on their published store privacy disclosures unless a specific law or platform rule requires an affirmative in-app action.
         let attempts = 0;
         const maxAttempts = 12;
         const clarityCheckInterval = setInterval(function () {
