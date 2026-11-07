@@ -4,16 +4,16 @@
 @inherits ComponentCore<MediaAboutComponent>
 
 <MudStack Row="false" Breakpoint="Breakpoint.SmAndUp">
-    <div Style="position: relative; min-width: 300px;">
+    <div Style="position: relative; min-width: 256px;">
         @if (Media?.release_date < DateTime.Now.AddMonths(-3))
         {
-            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
                 @Media?.release_date?.Year
             </MudChip>
         }
         else
         {
-            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
                 @Media?.release_date?.ToShortDateString()
             </MudChip>
         }

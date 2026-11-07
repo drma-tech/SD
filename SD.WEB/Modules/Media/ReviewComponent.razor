@@ -10,7 +10,7 @@
             <MudItem xs="12" md="6" Style="text-align: justify;">
                 <MudPaper Outlined="true" Class="pa-2" Style="height: 100%;">
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <MudChip T="string" Color="GetColorByRating(item?.score)" Label="true" Style="padding: 0.2rem; height: auto; margin: 0; margin-bottom: 4px;" Size="AppStateStatic.Size">
+                        <MudChip T="string" Color="GetColorByRating(item?.score)" Label="true" Style="padding: 0.2rem; height: auto; margin: 0; margin-bottom: 4px;">
                             @item?.score
                         </MudChip>
                         <MudText Typo="Typo.subtitle1" Color="Color.Primary">
@@ -21,11 +21,11 @@
                         </MudText>
                     </div>
                     <MudText Typo="Typo.body1" Align="Align.Justify" Inline="true"
-                             Style="@($"line-height: normal; {(AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">
+                             Style="@($"line-height: normal; {(AppStateStatic.IsMobile ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">
                         @item?.quote
                     </MudText>
                     <MudLink Href="@item?.reviewUrl" Target="_blank" rel="nofollow, noopener" Color="Color.Info"
-                             Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
+                             Style="@((AppStateStatic.IsMobile ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
                         Read full review
                     </MudLink>
                 </MudPaper>

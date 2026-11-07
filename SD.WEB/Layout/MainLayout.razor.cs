@@ -85,7 +85,6 @@ namespace SD.WEB.Layout
             {
                 //Get the value at the beginning (NotifyBrowserViewportChangeAsync is too slow)
                 AppStateStatic.Breakpoint = await BrowserViewportService.GetCurrentBreakpointAsync();
-                AppStateStatic.Size = AppStateStatic.Breakpoint == Breakpoint.Xs ? Size.Small : Size.Medium;
                 AppStateStatic.BreakpointChanged.Publish(AppStateStatic.Breakpoint);
 
                 try

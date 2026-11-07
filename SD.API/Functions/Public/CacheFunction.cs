@@ -78,7 +78,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
             var compactModels = new TrailerModel();
 
-            foreach (var item in obj?.contents?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 12 : 100).Select(s => s.video) ?? [])
+            foreach (var item in obj?.contents?.Take(string.Equals(mode, "compact", StringComparison.OrdinalIgnoreCase) ? 18 : 100).Select(s => s.video) ?? [])
             {
                 if (item == null) continue;
                 compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,

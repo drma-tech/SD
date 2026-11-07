@@ -23,7 +23,7 @@
                     @Translations.Module.Profile.Platforms
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
                 @(MyProviders?.Items.Count ?? 0)
             </MudChip>
         </MudPaper>
@@ -36,10 +36,10 @@
                     @Translations.Module.Profile.Wishlist
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
                 @(Wish?.Movies.Count ?? 0) @PopularType.MovieName
             </MudChip>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
                 @(Wish?.Shows.Count ?? 0) @PopularType.ShowName
             </MudChip>
         </MudPaper>
@@ -52,10 +52,10 @@
                     @Translations.Module.Profile.Following
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
                 @(Watching?.Movies.Count ?? 0) @PopularType.MovieName
             </MudChip>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
                 @(Watching?.Shows.Count ?? 0) @PopularType.ShowName
             </MudChip>
         </MudPaper>

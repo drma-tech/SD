@@ -35,7 +35,7 @@
                                     <div>
                                         <MudIcon Icon="@Icons.Custom.Brands.YouTube" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
                                         <MudLink OnClick="@(() => VideoClick(item))" Color="Color.Secondary"
-                                                 Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
+                                                 Style="@((AppStateStatic.IsMobile ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
                                             @item.name
                                         </MudLink>
                                     </div>

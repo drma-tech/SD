@@ -11,15 +11,13 @@
                 {
                     if (item.release_date.Value < DateTime.Now.AddMonths(-3))
                     {
-                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
-                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                        <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
                             @item.release_date.Value.Year
                         </MudChip>
                     }
                     else
                     {
-                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
-                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                        <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
                             @item.release_date.Value.ToShortDateString()
                         </MudChip>
                     }

@@ -4,24 +4,24 @@
 
         @if (TopLeft != null)
         {
-            <MudChip T="string" Color="TopLeft.Color" Label="true" Class="poster-chip" Style="top: 0; left: 0;" Icon="@TopLeft.Icon" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="TopLeft.Color" Label="true" Class="poster-chip" Style="top: 0; left: 0;" Icon="@TopLeft.Icon">
                 @TopLeft.Text
             </MudChip>
         }
         @if (TopRight != null)
         {
-            <MudChip T="string" Color="TopRight.Color" Label="true" Class="poster-chip" Style="top: 0; right: 0;" Icon="@TopRight.Icon" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="TopRight.Color" Label="true" Class="poster-chip" Style="top: 0; right: 0;" Icon="@TopRight.Icon">
                 @TopRight.Text
             </MudChip>
         }
         @if (CenterLeft != null)
         {
-            <MudChip T="string" Color="CenterLeft.Color" Label="true" Class="poster-icon chip-no-text" Style="left: 0;" Icon="@CenterLeft.Icon" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="CenterLeft.Color" Label="true" Class="poster-icon chip-no-text" Style="left: 0;" Icon="@CenterLeft.Icon">
             </MudChip>
         }
         @if (CenterRight != null)
         {
-            <MudChip T="string" Color="CenterRight.Color" Label="true" Class="poster-icon chip-no-text" Style="right: 0;" Icon="@CenterRight.Icon" Size="AppStateStatic.Size">
+            <MudChip T="string" Color="CenterRight.Color" Label="true" Class="poster-icon chip-no-text" Style="right: 0;" Icon="@CenterRight.Icon">
             </MudChip>
         }
         @if (ForceShowTitle)
@@ -54,7 +54,7 @@
                 <div class="absolute" style="bottom: 0; background-color: rgba(255, 255, 255, 0.5); width: 100%; text-align: center;">
                     @foreach (var item in Comments!.Split(CommentsSeparator))
                     {
-                        <MudChip T="string" Color="Color.Secondary" Label="true" Class="poster-chip" Style="bottom: 0; z-index: 1; position: inherit !important;" Size="AppStateStatic.Size">
+                        <MudChip T="string" Color="Color.Secondary" Label="true" Class="poster-chip" Style="bottom: 0; z-index: 1; position: inherit !important;">
                             @item
                         </MudChip>
                     }

@@ -19,7 +19,6 @@ public static class AppStateStatic
     public static string? UserId { get; set; }
     public static DateTimeOffset? LastAccess { get; set; } //control login, so we don't call api too often
 
-    public static Size Size { get; set; } = Size.Small;
     public static Breakpoint Breakpoint { get; set; } = Breakpoint.Md;
     public static ActionDispatcher<Breakpoint> BreakpointChanged { get; } = new();
     public static bool IsMobile => Breakpoint == Breakpoint.Xs;

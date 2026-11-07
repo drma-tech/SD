@@ -35,13 +35,13 @@
                     </MudStack>
                     @foreach (var item in AppStateStatic.Keywords)
                     {
-                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" OnClick="@(() => LoadItems(item.id))">
+                        <MudChip T="string" Color="Color.Info" OnClick="@(() => LoadItems(item.id))">
                             @item.name
                         </MudChip>
                     }
                     @if (AppStateStatic.Keywords.NotEmpty())
                     {
-                        <MudChip T="string" Color="Color.Secondary" Size="AppStateStatic.Size" OnClick="@LoadMore" Disabled="@DisableLoadMore">
+                        <MudChip T="string" Color="Color.Secondary" OnClick="@LoadMore" Disabled="@DisableLoadMore">
                             @Translations.Button.LoadMore
                         </MudChip>
                     }
