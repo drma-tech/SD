@@ -39,7 +39,7 @@ window.sentryOnLoad = function () {
                 operation_system: environment.getOperatingSystem() ?? "unknown",
             };
 
-            // TODO: Review diagnostic context for personal data and minimize URLs, query strings, and identifiers. Also gate Sentry initialization where a store-specific pre-collection step applies, especially before the Huawei China privacy agreement is accepted; store privacy labels do not authorize SDK collection.
+            // TODO: Review Sentry's actual diagnostic payloads, personal data, URLs, query strings, identifiers, recipients, and retention. Minimize collected context and document the lawful basis and required notice/objection controls. Gate initialization before collection only where a specific legal or store rule applies to the actual diagnostic data; do not assume crash reporting universally requires a consent popup. Store privacy labels are disclosures, not consent.
             if (isOpaqueScriptError(event)) {
                 event.tags["custom.opaqueScriptError"] = "true";
 

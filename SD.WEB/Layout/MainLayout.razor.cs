@@ -189,7 +189,7 @@ namespace SD.WEB.Layout
 
         private async Task RedirectToRequestConsentForChina(CancellationToken cancellationToken)
         {
-            // TODO: This Huawei-China gate currently runs from MainLayout after index.html scripts and Program.cs SDK initialization. Move the privacy agreement decision ahead of Sentry, Google Analytics, Clarity, UserJot, and AdSense initialization. Provide explicit Agree and Reject actions, and confirm whether AppGallery's hosted privacy pop-up is enabled to avoid duplicating it. Also apply Xiaomi GetApps consent before PII collection where its agreement requires it.
+            // TODO: This Huawei-China check currently runs after index.html scripts and Program.cs SDK initialization. First verify whether this distribution and each SDK actually collect personal information covered by the mainland-China/AppGallery requirements. If a privacy-statement agreement is required, obtain it before the covered collection, provide clear Agree and Reject choices, and verify whether AppGallery's hosted prompt is enabled to avoid duplication. Do not automatically block unrelated processing or SDKs that do not collect covered personal information. Separately apply Xiaomi GetApps' consent requirement before collection of personally identifiable information actually in scope of its developer agreement.
             if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/legal/", StringComparison.OrdinalIgnoreCase))
             {
                 var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cancellationToken);
