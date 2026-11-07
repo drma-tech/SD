@@ -47,6 +47,8 @@ namespace SD.WEB.Modules.Help
             {
                 if (AppStateStatic.Principal == null) return;
 
+                // TODO: Remove the active-subscription deletion block. Account deletion must remain available independently of subscription cancellation.
+                // TODO: Ensure the server-side deletion workflow removes or anonymizes all eligible personal data and preserves only legally required records.
                 if (AppStateStatic.Principal.GetActiveSubscription() != null)
                 {
                     await DialogService.ShowMessageBoxAsync("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
