@@ -32,8 +32,8 @@ export const services = {
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", code);
 
-        // TODO: For browser sessions, determine the applicable lawful basis and jurisdiction-specific notice, consent, or opt-out requirements before initializing Clarity. Do not add a generic native-app consent prompt merely to repeat store disclosures.
-        // TODO: For browser sessions, do not grant analytics/ad storage before the required consent or other applicable user choice. Support withdrawal or objection where required. Native app builds should rely on their published store privacy disclosures unless a specific law or platform rule requires an affirmative in-app action.
+        // TODO: Gate Clarity before initialization. Browser/PWA: apply jurisdiction-specific cookie/analytics consent or opt-out requirements. Huawei China: do not initialize before privacy-statement agreement. Xiaomi GetApps: do not collect PII before required user consent. iOS: ATT is only for cross-company tracking and is not a general analytics consent. Google Play, Amazon, and Microsoft store labels are disclosures, not consent.
+        // TODO: Do not grant analytics/ad storage before the applicable browser consent/opt-out choice. For native wrappers, gate SDKs according to store-specific requirements: Huawei China privacy agreement before any SDK collection; Xiaomi user consent before PII collection; iOS ATT only for cross-company tracking. Store privacy labels alone do not authorize collection. Support withdrawal/objection where required.
         let attempts = 0;
         const maxAttempts = 12;
         const clarityCheckInterval = setInterval(function () {
