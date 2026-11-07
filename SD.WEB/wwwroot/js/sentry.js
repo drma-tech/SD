@@ -18,8 +18,6 @@ const ignoredErrors = [
 window.sentryOnLoad = function () {
     Sentry.init({
         dsn: window.appConfig?.servicesConfig?.SentryDsn,
-        // TODO: Review and minimize IP and other default PII collection. Disable it unless a documented legal basis, necessity assessment, and appropriate transparency/controls support it.
-        sendDefaultPii: true, // enable ip
         release: `sd-js@${window.appVersion}`,
         environment: env,
         ignoreErrors: ignoredErrors,

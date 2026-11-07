@@ -6,7 +6,7 @@ export const apple = {
     openCheckout(productId) {
         if (window.appConfig?.isMobileApp !== true) {
             notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
-            Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
+            Sentry?.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
             return;
         }
 
@@ -15,13 +15,13 @@ export const apple = {
             callback: function (data) {
                 if (!data) {
                     notification.showError("No data returned from purchase");
-                    Sentry.captureMessage("No data returned from purchase", "error");
+                    Sentry?.captureMessage("No data returned from purchase", "error");
                     return;
                 }
 
                 if (!data.isSuccess) {
                     notification.showError("Purchase failed or canceled");
-                    Sentry.captureMessage("Purchase failed or canceled", "error");
+                    Sentry?.captureMessage("Purchase failed or canceled", "error");
                     return;
                 }
 
@@ -29,7 +29,7 @@ export const apple = {
 
                 if (!receiptData) {
                     notification.showError("Receipt not found");
-                    Sentry.captureMessage("Receipt not found", "error");
+                    Sentry?.captureMessage("Receipt not found", "error");
                     return;
                 }
 
@@ -83,7 +83,7 @@ export const google = {
             });
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
-            Sentry.captureException(e);
+            Sentry?.captureException(e);
         }
     },
 };
@@ -130,7 +130,7 @@ export const stripe = {
             window.location.href = checkoutUrl;
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
-            Sentry.captureException(e);
+            Sentry?.captureException(e);
         }
     },
 };

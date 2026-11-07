@@ -134,7 +134,7 @@ if (window.appConfig?.isBot === false) {
             await initAuth();
         } catch (err) {
             try {
-                Sentry.withScope((scope) => {
+                Sentry?.withScope((scope) => {
                     if (err?.moduleUrl) {
                         scope.setContext("clerk_init_auth", {
                             url: err.moduleUrl,
@@ -143,7 +143,7 @@ if (window.appConfig?.isBot === false) {
                             userAgent: navigator.userAgent,
                         });
                     }
-                    Sentry.captureException(err);
+                    Sentry?.captureException(err);
                 });
             } catch {
                 // ignore

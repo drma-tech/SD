@@ -129,7 +129,7 @@
                         })
                     }).catch(error => {
                         showToast2(error.message);
-                        Sentry.captureException(error);
+                        Sentry?.captureException(error);
                     });
                 }
                 else {
@@ -146,7 +146,7 @@
             }
         } catch (error) {
             showToast2(error.message);
-            Sentry.captureException(error);
+            Sentry?.captureException(error);
         }
     </script>
 
