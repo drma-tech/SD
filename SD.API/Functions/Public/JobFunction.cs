@@ -66,9 +66,12 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
             var newMovies = new List<string>();
             var newSeasons = new List<string>();
 
-            foreach (var movie in doc.Movies)
+            var moviesToRemove = new List<WatchingListItem>();
+
+            foreach (var movie in doc.Movies.ToList())
             {
                 var uri = TmdbOptions.BaseUri + "collection/" + movie.id!.ConfigureParameters(parameters);
+
                 try
                 {
                     var collection = await client.GetJsonFromApi<TmdbCollection>(uri, cancellationToken);
@@ -83,9 +86,17 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
                 {
                     if (ex.Message.Contains("could not be found", StringComparison.OrdinalIgnoreCase))
                     {
-                        doc.Movies.Remove(movie);
+                        moviesToRemove.Add(movie);
+                        continue;
                     }
+
+                    throw;
                 }
+            }
+
+            foreach (var movie in moviesToRemove)
+            {
+                doc.Movies.Remove(movie);
             }
 
             foreach (var show in doc.Shows)
