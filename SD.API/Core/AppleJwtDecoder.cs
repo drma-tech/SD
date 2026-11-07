@@ -21,6 +21,7 @@ namespace SD.API.Core
             return JsonSerializer.Deserialize<AppleTransactionInfo>(payloadJson) ?? throw new UnhandledException("Invalid AppleTransactionInfo JSON");
         }
 
+        //todo: validate if x5c really belongs to Apple
         private static string ValidateAndReadJwt(string jwt)
         {
             var token = new JwtSecurityToken(jwt);

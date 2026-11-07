@@ -47,6 +47,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
             var purchase = result.latest_receipt_info[^1];
 
+            //todo: Check whether the original_transaction_id already exists in the database (to avoid false receipt).
             var sub = new AuthSubscription
             {
                 Provider = PaymentProvider.Apple,
