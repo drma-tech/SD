@@ -32,8 +32,8 @@ export const services = {
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", code);
 
-        // TODO: Do not load Clarity or grant analytics/ad storage until the user has made a valid consent choice where required.
-        // TODO: Implement granular consent, persist the choice, and support withdrawal before initializing this provider.
+        // TODO: For browser sessions, determine the applicable lawful basis and jurisdiction-specific notice, consent, or opt-out requirements before initializing Clarity. Do not add a generic native-app consent prompt merely to repeat store disclosures.
+        // TODO: For browser sessions, do not grant analytics/ad storage before the required consent or other applicable user choice. Support withdrawal or objection where required. Native app builds should rely on their published store privacy disclosures unless a specific law or platform rule requires an affirmative in-app action.
         let attempts = 0;
         const maxAttempts = 12;
         const clarityCheckInterval = setInterval(function () {

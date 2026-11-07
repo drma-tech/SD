@@ -39,10 +39,10 @@
     <script type="module" src="js/devices.js"></script>
     <script type="module" src="js/slider.js"></script>
 
-    <!-- TODO: Load Google Analytics only after the required consent has been obtained. -->
+    <!-- TODO: For browser access, show the required privacy/cookie notice and obtain consent or provide an opt-out before loading Google Analytics when required by the user's jurisdiction. Native app store disclosures do not govern this browser flow. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PREF5QX1F"></script>
 
-    <!-- TODO: Load the AdSense library only after the required advertising consent and regional privacy checks. -->
+    <!-- TODO: For browser access, apply the jurisdiction-specific advertising and cookie requirements before loading AdSense, including consent or opt-out controls only where required. This browser flow is separate from native app store disclosures. -->
     <!-- Google Adsense -->
     <script>
         if (window.appConfig?.blazorSupported === true) {
