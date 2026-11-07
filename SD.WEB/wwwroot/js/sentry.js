@@ -39,6 +39,7 @@ window.sentryOnLoad = function () {
                 operation_system: environment.getOperatingSystem() ?? "unknown",
             };
 
+            // TODO: Review diagnostic context for personal data. Avoid transmitting full URLs, query strings, or identifiers unless necessary and supported by a valid lawful basis.
             if (isOpaqueScriptError(event)) {
                 event.tags["custom.opaqueScriptError"] = "true";
 

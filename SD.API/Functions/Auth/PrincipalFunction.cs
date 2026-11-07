@@ -99,6 +99,7 @@ public static class PrincipalHelper
     {
         if (userId.Empty()) throw new UnhandledException("UserId is empty");
 
+        // TODO: Audit all user-linked data before treating this as complete account erasure. This currently deletes principal, login, provider, watching-list, and wish-list records plus the Clerk user; review billing/transaction records, diagnostics, support records, backups, and third-party processors. Preserve only data with a documented legal basis and retention period.
         await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId));
         await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId));
         await repo.DeleteItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId));

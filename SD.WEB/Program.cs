@@ -79,9 +79,9 @@ AppStateStatic.IsBeta = await js.Utils().GetStorage("beta", JavascriptContext.De
 
 await js.Utils().SetStorage("app-version", AppStateStatic.Version, JavascriptContext.Default.String, CancellationToken.None);
 await AppStateStatic.GetPlatform(js, CancellationToken.None);
-// TODO: Initialize analytics only after the consent manager confirms a valid consent choice where required.
+// TODO: Initialize analytics only after the required consent or other applicable user choice for the platform and jurisdiction. Store listing disclosures are pre-installation transparency, not blanket consent.
 await js.Services().InitGoogleAnalytics(AppStateStatic.Version, CancellationToken.None);
-// TODO: Confirm the lawful basis and provide the required notice/controls before loading the feedback SDK.
+// TODO: Verify the feedback SDK's data practices and lawful basis by platform/jurisdiction, and provide any in-app notice or obtain consent before initialization where specifically required.
 await js.Services().InitUserJot(CancellationToken.None);
 
 await app.RunAsync();
