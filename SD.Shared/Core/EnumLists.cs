@@ -3,7 +3,7 @@
 public enum EnumLists
 {
     [FieldSettings("ExpectedMovieOfYear", Description = "ExpectedMovieOfYearDesc", ResourceType = typeof(Resources.Translations))]
-    ExpectedMovieOf2026 = 8544544,
+    ExpectedMovieOfYear = 8544544,
 
     [FieldSettings("AwardsOfTheYear", Description = "AwardsOfTheYearDesc", ResourceType = typeof(Resources.Translations))]
     AwardsOfTheYear = 8498534,

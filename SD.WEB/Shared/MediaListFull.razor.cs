@@ -72,9 +72,9 @@ namespace SD.WEB.Shared
 
                 if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
-                    await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
+                    var (_, lastPage2) = await MediaListApi.GetList(Items, [State], TypeSelected, StringParameters, List, ++_currentPage, Cts.Token);
 
-                    DisableLoadMore = lastPage || Items.Count >= 200;
+                    DisableLoadMore = lastPage2 || Items.Count >= 200;
                 }
 
                 if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", System.Globalization.CultureInfo.InvariantCulture)).ToHashSet();

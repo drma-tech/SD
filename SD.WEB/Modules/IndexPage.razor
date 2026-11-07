@@ -32,17 +32,17 @@
 
 @* <Advertising Slot="@AdSlot.Middle"></Advertising> *@
 
-<PageSectionComponent Title="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Description="@Translations.Description.ExpectedMovies.CustomFormat(2026)">
+<PageSectionComponent Title="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Description="@Translations.Description.ExpectedMovies.CustomFormat(DateTime.Now.Year)">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="60px" ApplyEffectsToContainer="true" TabPanelsClass="@CssHelper.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}")" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOfYear}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Watching="Watching" Wish="Wish" Culture="@Culture" />
+                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOfYear" TitleHead="@Translations.Title.ExpectedMovieOfYear.CustomFormat(DateTime.Now.Year)" Watching="Watching" Wish="Wish" Culture="@Culture" />
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>

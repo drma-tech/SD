@@ -1,7 +1,6 @@
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Functions.Admin;
 using SD.API.Functions.Auth;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
@@ -15,7 +14,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
     [Function("ClearExpectedMovies")]
     public async Task ClearExpectedMovies([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/clear-expected-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var cacheKey = $"{TmdbOptions.BaseUriNew}list/{(int)EnumLists.ExpectedMovieOf2026}";
+        var cacheKey = $"{TmdbOptions.BaseUriNew}list/{(int)EnumLists.ExpectedMovieOfYear}";
         var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
         var client = factory.CreateClient("tmdb");
 
@@ -31,7 +30,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 
                 if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
                 {
-                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOf2026, item.id, type, tmdbWriteToken, cancellationToken);
+                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOfYear, item.id, type, tmdbWriteToken, cancellationToken);
                 }
             }
             else
@@ -40,7 +39,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 
                 if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
                 {
-                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOf2026, item.id, type, tmdbWriteToken, cancellationToken);
+                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOfYear, item.id, type, tmdbWriteToken, cancellationToken);
                 }
             }
         }

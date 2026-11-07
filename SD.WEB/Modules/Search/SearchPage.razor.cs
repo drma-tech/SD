@@ -56,6 +56,8 @@ namespace SD.WEB.Modules.Search
             }
             else if (AppStateStatic.Index == 2)
             {
+                ParametersQuery["sort_by"] = AppStateStatic.SortBy ?? throw new NotificationException("sort_by not present");
+
                 if (AppStateStatic.Type == MediaType.movie)
                 {
                     ParametersAdvanced["with_genres"] = ((int)AppStateStatic.MovieGenre!.Value).ToString(CultureInfo.InvariantCulture);
