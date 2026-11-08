@@ -182,11 +182,6 @@ public static class PopupHelper
         await service.ShowAsync<OnboardingPopup>(Translations.Module.Help.WelcomeTo.CustomFormat(AppInfo.Title), parameters, Options(MaxWidth.Medium));
     }
 
-    public static async Task AskReviewPopup(this IDialogService service)
-    {
-        await service.ShowAsync<AskReviewPopup>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
-    }
-
     public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)
     {
         return new DialogOptions

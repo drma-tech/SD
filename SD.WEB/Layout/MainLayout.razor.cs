@@ -91,7 +91,6 @@ namespace SD.WEB.Layout
                 {
                     await ApplyDarkMode(Cts.Token);
                     await RedirectToRequestConsentForChina(Cts.Token);
-                    await AskUSerForReview(Cts.Token);
                     await RegisterSessionAccesses(Cts.Token);
                     await ShowOnBoardingPopup(Cts.Token);
                 }
@@ -203,39 +202,6 @@ namespace SD.WEB.Layout
                         Navigation.NavigateTo($"/{Culture}/legal/ask-consent");
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// asks for a review after the third visit, every 24 hours
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        private async Task AskUSerForReview(CancellationToken cancellationToken)
-        {
-            var accesses = await JsRuntime.Utils().GetStorage("session-accesses", JavascriptContext.Default.HashSetDateTime, cancellationToken) ?? [];
-            var hasPreviousAccess = accesses.Count > 0;
-            var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
-            bool isTooSoon = false;
-
-            if (lastAccess != null)
-            {
-                var hoursSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
-                isTooSoon = hoursSinceLast < 24;
-            }
-
-            var reviewed = await JsRuntime.Utils().GetStorage("store-reviewed", JavascriptContext.Default.Boolean, cancellationToken);
-
-            accesses.Add(DateTime.UtcNow); //simulate the new access
-            bool isOddAccess = accesses.Count % 2 == 1;
-
-            if (accesses.Count >= 3 && isOddAccess && !reviewed && !isTooSoon)
-            {
-                Task.Run(async () =>
-                {
-                    await Task.Delay(5000, cancellationToken); //delay of 5 seconds
-                    await DialogService.AskReviewPopup();
-                }, cancellationToken).FireAndForget();
             }
         }
 

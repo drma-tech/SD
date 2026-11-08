@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Components;
+
 namespace SD.WEB.Modules.Profile
 {
     public partial class ProfilePage
     {
+        [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
+
         public RenderControlState<MyProviders?> ProviderState { get; set; } = new(null, obj => obj == null || obj.Items.Empty());
 
         public RenderControlState<WishList?> WishMovieState { get; set; } = new(null, list => list == null || list.Movies.Empty());

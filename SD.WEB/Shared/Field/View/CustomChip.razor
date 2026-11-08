@@ -4,7 +4,7 @@
 <span class="@Class" style="@Style">
     @if (Name.NotEmpty())
     {
-        <MudChip T="string" Size="Size" Variant="Variant.Filled" Class="mx-0" Color="ColorName" Href="@NameHref" OnClick="NameClick">
+        <MudChip T="string" Size="Size" Variant="Variant.Filled" Class="mx-0" Style="@NameChipStyle" Color="ColorName" Href="@NameHref" OnClick="NameClick">
             @Name
         </MudChip>
     }
@@ -65,6 +65,8 @@
 
     [Parameter] public string? NameHref { get; set; }
     [Parameter] public string? ValueHref { get; set; }
+
+    [Parameter] public string? NameChipStyle { get; set; }
 
     [Parameter] public EventCallback NameClick { get; set; }
     [Parameter] public EventCallback ValueClick { get; set; }

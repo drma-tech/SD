@@ -1,6 +1,7 @@
 ﻿@page "/{culture}/profile"
 
 @using SD.Shared.Translations.Enum
+@using SD.WEB.Modules.Help
 @inherits PageCore<ProfilePage>
 
 @inject AllProvidersApi AllProvidersApi
@@ -13,6 +14,22 @@
 <HeadComponent Title="@Translations.Title.Profile" Description="@Translations.Description.Profile" Url=@($"/{Culture}/profile") Index="true"></HeadComponent>
 
 <PageSectionComponent IsPageHeader="true" Title="@Translations.Title.Profile" Description="@Translations.Description.Profile"></PageSectionComponent>
+
+@if (!Printscreen)
+{
+    if (AppStateStatic.IsAuthenticated && AppStateStatic.ActiveProduct == AccountProduct.Basic)
+    {
+        <MudPaper Class="@CssHelper.Build().Medium("pa").Large("mb")" Outlined="true" Style="text-align: center; padding-bottom: 12px !important;">
+            <AskReviewComponent ShowOtherApps="false" ActionColor="Color.Default">
+                <CustomHeader>
+                    <MudAlert Variant="Variant.Outlined" Severity="MudBlazor.Severity.Warning" Dense="true" Class="mb-3" Style="text-align: center;">
+                        <span style="font-weight: bold;">@Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title)</span> @Translations.Module.Help.WriteReviewSubtitle
+                    </MudAlert>
+                </CustomHeader>
+            </AskReviewComponent>
+        </MudPaper>
+    }
+}
 
 <MudGrid Spacing="@CssHelper.SpaceSmall" Class="@CssHelper.Build().Large("mb")">
     <MudItem xs="6" md="4">

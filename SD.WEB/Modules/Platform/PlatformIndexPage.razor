@@ -54,13 +54,14 @@ else
                             <MudCardHeader Style="padding: 8px;">
                                 <CardHeaderAvatar>
                                     <MudLink Href="@($"/{Culture}/platform/{item.id}")">
-                                        <MudAvatar Size="Size.Large">
+                                        <MudAvatar Size="@(AppStateStatic.IsMobile ? Size.Medium : Size.Large)">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.webp"></MudImage>
                                         </MudAvatar>
                                     </MudLink>
                                 </CardHeaderAvatar>
                                 <CardHeaderContent>
-                                    <CustomChip Name="@item.name" TValue="string" ColorName="Color.Primary" Size="Size.Medium" NameHref="@($"/{Culture}/platform/{item.id}")"></CustomChip>
+                                    <CustomChip Name="@item.name" TValue="string" ColorName="Color.Primary" NameHref="@($"/{Culture}/platform/{item.id}")"
+                                                NameChipStyle="@(AppStateStatic.IsMobile ? "font-size: 12px;" : "")"></CustomChip>
                                 </CardHeaderContent>
                             </MudCardHeader>
                             <MudCardContent Class="py-1 px-2">
@@ -90,7 +91,7 @@ else
                                 {
                                     <p class="m-0" style="color: red">link</p>
                                 } *@
-                                        @*  @if (string.IsNullOrEmpty(item.description))
+                                @*  @if (string.IsNullOrEmpty(item.description))
                                 {
                                     <p class="m-0" style="color: red">description</p>
                                 } *@
