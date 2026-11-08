@@ -49,6 +49,14 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
 
             if (req.Url.AbsolutePath.Contains("job", StringComparison.OrdinalIgnoreCase))
             {
+                var secret = req.Headers.TryGetValues("X-Job-Secret", out var secrets) ? secrets.FirstOrDefault() : null;
+
+                if (secret.Empty() || !string.Equals(secret, ApiStartup.Configurations.JobSecret, StringComparison.OrdinalIgnoreCase))
+                {
+                    await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+                    return;
+                }
+
                 await next(context);
                 return;
             }
