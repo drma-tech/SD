@@ -9,11 +9,13 @@
             <MudList T="string" Dense="true" Gutters="false">
                 <MudListSubheader Gutters="false">
                     <MudText Color="Color.Secondary">
-                        Company
+                        Discover
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="About us" Href=@($"/{Culture}/company/about-us") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
-                <MudListItem Text="Website" Href="https://www.drma-tech.com" Target="_blank" rel="noopener" Class="py-0" />
+                <MudListItem Text="@Translations.Title.Platforms" Href=@($"/{Culture}/platforms") Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="@Translations.Title.Compare" Href=@($"/{Culture}/compare") Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="@Translations.Title.HelpCenter" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="@Translations.Title.FAQ" Href=@($"/{Culture}/help/faq") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
             </MudList>
         </MudItem>
         <MudItem xs="6" sm="3" md="2">
@@ -65,7 +67,7 @@
                 <MudListItem Href=@($"/{Culture}/help#get-the-app") Class="py-0">
                     <ChildContent>
                         <MudIcon Icon="@Icons.Material.Filled.Apps" Class="ma-0 me-1" Style="vertical-align: middle;" />
-                        More
+                        More platforms
                     </ChildContent>
                 </MudListItem>
             </MudList>
@@ -74,28 +76,13 @@
             <MudList T="string" Dense="true" Gutters="false">
                 <MudListSubheader Gutters="false">
                     <MudText Color="Color.Secondary">
-                        Community
+                        About
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Href="https://www.indieappcircle.com/apps/j5793pbdf72vpf1y4n8qs7p3k58grwqf?utm_source=badge&ref=88orLv" Target="_blank" rel="noopener" Class="py-0">
-                    <ChildContent>
-                        <MudImage Src="/logo/indieappcircle.png" Class="me-1" Style="width: 20px; vertical-align: top;" Alt="IndieAppCircle" />
-                        IndieAppCircle
-                    </ChildContent>
-                </MudListItem>
-            </MudList>
-        </MudItem>
-        <MudItem xs="6" sm="3" md="2">
-            <MudList T="string" Dense="true" Gutters="false">
-                <MudListSubheader Gutters="false">
-                    <MudText Color="Color.Secondary">
-                        Support
-                    </MudText>
-                </MudListSubheader>
-                <MudListItem Text="@Translations.Title.HelpCenter" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="About us" Href=@($"/{Culture}/company/about-us") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
+                <MudListItem Text="Website" Href="https://www.drma-tech.com" Target="_blank" rel="noopener" Class="py-0" />
+                <MudListItem Text="IndieAppCircle" Href="https://www.indieappcircle.com/apps/j5793pbdf72vpf1y4n8qs7p3k58grwqf?utm_source=badge&ref=88orLv" Target="_blank" rel="noopener" Class="py-0" />
                 <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Class="py-0" rel="nofollow" />
-                <MudListItem Text="@Translations.Title.FAQ" Href=@($"/{Culture}/help/faq") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
-                <MudListItem Text="@Translations.Title.Compare" Href=@($"/{Culture}/compare") Class="py-0" Disabled="_blockedActions" />
             </MudList>
         </MudItem>
         <MudItem xs="6" sm="3" md="2">
