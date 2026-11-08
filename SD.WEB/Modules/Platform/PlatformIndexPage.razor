@@ -54,14 +54,14 @@ else
                             <MudCardHeader Style="padding: 8px;">
                                 <CardHeaderAvatar>
                                     <MudLink Href="@($"/{Culture}/platform/{item.id}")">
-                                        <MudAvatar Size="@(AppStateStatic.IsMobile ? Size.Medium : Size.Large)">
+                                        <MudAvatar Size="Size.Medium">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.webp"></MudImage>
                                         </MudAvatar>
                                     </MudLink>
                                 </CardHeaderAvatar>
                                 <CardHeaderContent>
                                     <CustomChip Name="@item.name" TValue="string" ColorName="Color.Primary" NameHref="@($"/{Culture}/platform/{item.id}")"
-                                                NameChipStyle="@(AppStateStatic.IsMobile ? "font-size: 12px;" : "")"></CustomChip>
+                                                NameChipStyle="font-size: 12px;"></CustomChip>
                                 </CardHeaderContent>
                             </MudCardHeader>
                             <MudCardContent Class="py-1 px-2">
