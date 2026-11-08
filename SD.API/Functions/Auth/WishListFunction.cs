@@ -15,7 +15,7 @@ public class WishListFunction(CosmosMainRepository repo)
 
         var doc = await repo.ReadItemAsync<WishList>(new MainIdentity(MainType.WishList, userId), cancellationToken);
 
-        return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.OneDay, isPublic: false, cancellationToken);
     }
 
     [Function("WishListAdd")]

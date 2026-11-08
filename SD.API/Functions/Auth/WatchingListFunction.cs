@@ -15,7 +15,7 @@ public class WatchingListFunction(CosmosMainRepository repo)
 
         var doc = await repo.ReadItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, userId), cancellationToken);
 
-        return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.OneDay, isPublic: false, cancellationToken);
     }
 
     [Function("WatchingListAdd")]

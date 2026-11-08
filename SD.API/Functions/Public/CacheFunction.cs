@@ -54,7 +54,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.HalfDay, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.HalfDay, isPublic: true, cancellationToken);
     }
 
     [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
@@ -90,7 +90,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.SixHours, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.SixHours, isPublic: true, cancellationToken);
     }
 
     [Function("ImdbPopularMovies")]
@@ -132,7 +132,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.TwoDays, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.TwoDays, isPublic: true, cancellationToken);
     }
 
     [Function("ImdbPopularTVs")]
@@ -174,7 +174,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, TtlCache.TwoDays, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.TwoDays, isPublic: true, cancellationToken);
     }
 
     [Function("CacheMovieRatings")]
@@ -222,7 +222,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, ttl, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, ttl, cancellationToken);
+        return await req.CreateResponse(doc, ttl, isPublic: true, cancellationToken);
     }
 
     [Function("CacheShowRatings")]
@@ -270,7 +270,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, ttl, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, ttl, cancellationToken);
+        return await req.CreateResponse(doc, ttl, isPublic: true, cancellationToken);
     }
 
     [Function("CacheMovieReviews")]
@@ -309,7 +309,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         async (value, cancellationToken) => await SaveCache(value, cacheKey, ttl, cancellationToken),
         cancellationToken);
 
-        return await req.CreateResponse(doc, ttl, cancellationToken);
+        return await req.CreateResponse(doc, ttl, isPublic: true, cancellationToken);
     }
 
     [Function("CacheFranchise")]
@@ -327,50 +327,50 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
             await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
         }
 
-        return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
+        return await req.CreateResponse(doc, TtlCache.OneWeek, isPublic: true, cancellationToken);
     }
 
-    [Function("FranchiseSync")]
-    public async Task FranchiseSync(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/franchise/sync")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
-        var client = factory.CreateClient("tmdb");
+    //[Function("FranchiseSync")]
+    //public async Task FranchiseSync(
+    //    [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/franchise/sync")] HttpRequestData req, CancellationToken cancellationToken)
+    //{
+    //    var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
+    //    var client = factory.CreateClient("tmdb");
 
-        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            { "api_key", TmdbOptions.ApiKey },
-            { "language", "en-US" },
-            { "page", "1" },
-        };
+    //    var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    //    {
+    //        { "api_key", TmdbOptions.ApiKey },
+    //        { "language", "en-US" },
+    //        { "page", "1" },
+    //    };
 
-        var data = new FranchiseData();
+    //    var data = new FranchiseData();
 
-        var currentPage = 1;
-        int? totalPages = null;
+    //    var currentPage = 1;
+    //    int? totalPages = null;
 
-        do
-        {
-            parameter["page"] = currentPage.ToString(CultureInfo.InvariantCulture);
+    //    do
+    //    {
+    //        parameter["page"] = currentPage.ToString(CultureInfo.InvariantCulture);
 
-            var listUrl = $"{TmdbOptions.BaseUriNew}list/{((int)EnumLists.CertifiedStreamingDiscoveryMovies).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
-            var result = await client.GetdTmdbList<CustomListNew>(listUrl, tmdbReadToken, cancellationToken);
+    //        var listUrl = $"{TmdbOptions.BaseUriNew}list/{((int)EnumLists.CertifiedStreamingDiscoveryMovies).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
+    //        var result = await client.GetdTmdbList<CustomListNew>(listUrl, tmdbReadToken, cancellationToken);
 
-            totalPages ??= result?.total_pages;
+    //        totalPages ??= result?.total_pages;
 
-            foreach (var tmdbId in result?.results.Select(x => x.id) ?? [])
-            {
-                await PopulateFranchiseItem(client, tmdbId.ToString(CultureInfo.InvariantCulture), data, parameter, cancellationToken);
-            }
+    //        foreach (var tmdbId in result?.results.Select(x => x.id) ?? [])
+    //        {
+    //            await PopulateFranchiseItem(client, tmdbId.ToString(CultureInfo.InvariantCulture), data, parameter, cancellationToken);
+    //        }
 
-            currentPage++;
-        }
-        while (currentPage <= totalPages);
+    //        currentPage++;
+    //    }
+    //    while (currentPage <= totalPages);
 
-        data.FranchiseItems = data.FranchiseItems.OrderByDescending(x => x.LastReleaseDate).ToHashSet();
+    //    data.FranchiseItems = data.FranchiseItems.OrderByDescending(x => x.LastReleaseDate).ToHashSet();
 
-        await cacheRepo.UpsertItemAsync(new FranchiseCache("franchise", data));
-    }
+    //    await cacheRepo.UpsertItemAsync(new FranchiseCache("franchise", data));
+    //}
 
     private static async Task PopulateFranchiseItem(HttpClient client, string? tmdbId, FranchiseData? data, IDictionary<string, string> parameter, CancellationToken cancellationToken)
     {
