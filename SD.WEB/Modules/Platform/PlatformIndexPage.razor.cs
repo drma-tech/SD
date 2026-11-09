@@ -120,7 +120,11 @@ namespace SD.WEB.Modules.Platform
 
         private async Task ShareClick(ProviderModel provider)
         {
-            await JsRuntime.Utils().Share(provider.name, provider.description, $"/{Culture}/platform/{provider.id}", CancellationToken.None);
+            try
+            {
+                await JsRuntime.Utils().Share(provider.name, provider.description, $"/{Culture}/platform/{provider.id}", Cts.Token);
+            }
+            catch (Exception ex) { await ProcessException(ex); }
         }
     }
 }

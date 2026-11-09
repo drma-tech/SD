@@ -96,47 +96,54 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
     public async Task OpenExternalWebsite(string? url)
     {
-        if (url.Empty()) return;
-
-        var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
-
-        MarkupString ptMessage = new($@"
-        <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            <p>Você está saindo do {AppInfo.Title} e abrindo um site externo:</p>
-            <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                {encodedUrl}
-            </div>
-        </div>");
-
-        MarkupString esMessage = new($@"
-        <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            <p>Está saliendo de {AppInfo.Title} y abriendo un sitio web externo:</p>
-            <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                {encodedUrl}
-            </div>
-        </div>");
-
-        MarkupString enMessage = new($@"
-        <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            <p>You are leaving {AppInfo.Title} and opening an external website:</p>
-            <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                {encodedUrl}
-            </div>
-        </div>");
-
-        var language = await AppStateStatic.GetAppLanguage(JsRuntime, Cts.Token);
-        var message = language switch
+        try
         {
-            AppLanguage.pt => ptMessage,
-            AppLanguage.es => esMessage,
-            _ => enMessage,
-        };
-
-        bool? result = await DialogService.ShowMessageBoxAsync(Translations.Notification.ExternalWebsiteNotice, message, yesText: Translations.Button.ContinueWebsite, cancelText: Translations.Button.Cancel);
-
-        if (result == true)
+    if (url.Empty()) return;
+    
+            var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
+    
+            MarkupString ptMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>Você está saindo do {AppInfo.Title} e abrindo um site externo:</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+    
+            MarkupString esMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>Está saliendo de {AppInfo.Title} y abriendo un sitio web externo:</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+    
+            MarkupString enMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>You are leaving {AppInfo.Title} and opening an external website:</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+    
+            var language = await AppStateStatic.GetAppLanguage(JsRuntime, Cts.Token);
+            var message = language switch
+            {
+                AppLanguage.pt => ptMessage,
+                AppLanguage.es => esMessage,
+                _ => enMessage,
+            };
+    
+            bool? result = await DialogService.ShowMessageBoxAsync(Translations.Notification.ExternalWebsiteNotice, message, yesText: Translations.Button.ContinueWebsite, cancelText: Translations.Button.Cancel);
+    
+            if (result == true)
+            {
+                await JsRuntime.Window().InvokeVoidAsync("open", Cts.Token, $"{url}?ref={AppInfo.Domain}.com", "_blank");
+            }
+        }
+        catch (Exception ex)
         {
-            await JsRuntime.Window().InvokeVoidAsync("open", Cts.Token, $"{url}?ref={AppInfo.Domain}.com", "_blank");
+            await ProcessException(ex);
         }
     }
 
