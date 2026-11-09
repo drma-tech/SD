@@ -1,6 +1,7 @@
 ﻿@using Microsoft.JSInterop
 @inject NavigationManager Navigation
 @inject IJSRuntime JsRuntime
+@inject ILogger<NotAuthorizeComponent> Logger
 
 @implements IDisposable
 
@@ -49,7 +50,14 @@
 
     private async Task Login()
     {
-        await JsRuntime.Clerk().SignInAsync(CancellationToken.None);
+        try
+        {
+            await JsRuntime.Clerk().SignInAsync(CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to start sign-in.");
+        }
     }
 
     public void Dispose()

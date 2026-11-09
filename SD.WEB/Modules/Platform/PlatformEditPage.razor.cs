@@ -26,10 +26,12 @@ namespace SD.WEB.Modules.Platform
 
         protected async Task SaveSession()
         {
-            if (AllProviders != null)
+            try
             {
-                await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, Cts.Token);
+                if (AllProviders != null)
+                    await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, Cts.Token);
             }
+            catch (Exception ex) { await ProcessException(ex); }
         }
 
         protected async Task SyncProvidersOnClick()

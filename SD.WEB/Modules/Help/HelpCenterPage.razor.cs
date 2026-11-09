@@ -76,12 +76,14 @@ namespace SD.WEB.Modules.Help
 
         private async Task FeedbackClick()
         {
-            await JsRuntime.Window().InvokeVoidAsync("eval", Cts.Token, "uj && uj.open();");
+            try { await JsRuntime.Window().InvokeVoidAsync("eval", Cts.Token, "uj && uj.open();"); }
+            catch (Exception ex) { await ProcessException(ex); }
         }
 
         private async Task ShowCacheClick()
         {
-            await JsRuntime.Utils().ShowCache(Cts.Token);
+            try { await JsRuntime.Utils().ShowCache(Cts.Token); }
+            catch (Exception ex) { await ProcessException(ex); }
         }
 
         private void ShowConsole()
@@ -91,7 +93,8 @@ namespace SD.WEB.Modules.Help
 
         private async Task ClearCacheClick()
         {
-            await JsRuntime.Utils().ClearAllStorage();
+            try { await JsRuntime.Utils().ClearAllStorage(); }
+            catch (Exception ex) { await ProcessException(ex); }
         }
 
         private void AppLanguageClick(AppLanguage lang)
@@ -101,20 +104,28 @@ namespace SD.WEB.Modules.Help
 
         private async Task Logout()
         {
-            await JsRuntime.Clerk().SignOutAsync(Cts.Token);
+            try { await JsRuntime.Clerk().SignOutAsync(Cts.Token); }
+            catch (Exception ex) { await ProcessException(ex); }
         }
+
+        private Task EnableBeta() => IsBetaValueChanged(true);
+
+        private Task DisableBeta() => IsBetaValueChanged(false);
 
         private async Task IsBetaValueChanged(bool value)
         {
-            if (value)
+            try
             {
-                var confirmed = await DialogService.ShowMessageBoxAsync(AppInfo.Title, "Are you sure you want to switch to the beta version? Some system features or features of the app may be unstable.", Translations.Button.Ok, Translations.Button.Cancel) ?? false;
+                if (value)
+                {
+                    var confirmed = await DialogService.ShowMessageBoxAsync(AppInfo.Title, "Are you sure you want to switch to the beta version? Some system features or features of the app may be unstable.", Translations.Button.Ok, Translations.Button.Cancel) ?? false;
+                    if (!confirmed) return;
+                }
 
-                if (!confirmed) return;
+                await JsRuntime.Utils().SetStorage("beta", value, JavascriptContext.Default.Boolean, Cts.Token);
+                Navigation.NavigateTo($"/{Culture}/help", forceLoad: true);
             }
-
-            await JsRuntime.Utils().SetStorage("beta", value, JavascriptContext.Default.Boolean, Cts.Token);
-            Navigation.NavigateTo($"/{Culture}/help", forceLoad: true);
+            catch (Exception ex) { await ProcessException(ex); }
         }
     }
 }
