@@ -76,14 +76,26 @@ namespace SD.WEB.Modules.Help
 
         private async Task FeedbackClick()
         {
-            try { await JsRuntime.Window().InvokeVoidAsync("eval", Cts.Token, "uj && uj.open();"); }
-            catch (Exception ex) { await ProcessException(ex); }
+            try
+            {
+                await JsRuntime.Window().InvokeVoidAsync("eval", Cts.Token, "uj && uj.open();");
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         private async Task ShowCacheClick()
         {
-            try { await JsRuntime.Utils().ShowCache(Cts.Token); }
-            catch (Exception ex) { await ProcessException(ex); }
+            try
+            {
+                await JsRuntime.Utils().ShowCache(Cts.Token);
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         private void ShowConsole()
@@ -93,8 +105,14 @@ namespace SD.WEB.Modules.Help
 
         private async Task ClearCacheClick()
         {
-            try { await JsRuntime.Utils().ClearAllStorage(); }
-            catch (Exception ex) { await ProcessException(ex); }
+            try
+            {
+                await JsRuntime.Utils().ClearAllStorage();
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         private void AppLanguageClick(AppLanguage lang)
@@ -104,8 +122,14 @@ namespace SD.WEB.Modules.Help
 
         private async Task Logout()
         {
-            try { await JsRuntime.Clerk().SignOutAsync(Cts.Token); }
-            catch (Exception ex) { await ProcessException(ex); }
+            try
+            {
+                await JsRuntime.Clerk().SignOutAsync(Cts.Token);
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         private Task EnableBeta() => IsBetaValueChanged(true);
@@ -125,7 +149,10 @@ namespace SD.WEB.Modules.Help
                 await JsRuntime.Utils().SetStorage("beta", value, JavascriptContext.Default.Boolean, Cts.Token);
                 Navigation.NavigateTo($"/{Culture}/help", forceLoad: true);
             }
-            catch (Exception ex) { await ProcessException(ex); }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
     }
 }

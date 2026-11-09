@@ -31,7 +31,10 @@ namespace SD.WEB.Modules.Platform
                 if (AllProviders != null)
                     await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, Cts.Token);
             }
-            catch (Exception ex) { await ProcessException(ex); }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         protected async Task SyncProvidersOnClick()

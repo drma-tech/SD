@@ -124,7 +124,10 @@ namespace SD.WEB.Modules.Platform
             {
                 await JsRuntime.Utils().Share(provider.name, provider.description, $"/{Culture}/platform/{provider.id}", Cts.Token);
             }
-            catch (Exception ex) { await ProcessException(ex); }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
     }
 }

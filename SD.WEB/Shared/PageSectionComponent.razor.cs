@@ -66,7 +66,7 @@ namespace SD.WEB.Shared
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to share page section.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 

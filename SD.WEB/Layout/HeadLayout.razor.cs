@@ -64,7 +64,7 @@ namespace SD.WEB.Layout
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to process the Stripe checkout result.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 
@@ -72,14 +72,14 @@ namespace SD.WEB.Layout
         {
             try
             {
-    //_openMenu = false;
+                //_openMenu = false;
                 //Navigation.NavigateTo($"/{Culture}/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri.Split('#')[0])}");
                 _openMenu = false;
                 await JsRuntime.Clerk().SignInAsync(Cts.Token);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to execute Login.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 
@@ -87,12 +87,12 @@ namespace SD.WEB.Layout
         {
             try
             {
-    _openMenu = false;
+                _openMenu = false;
                 await JsRuntime.Clerk().SignOutAsync(Cts.Token);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to execute Logout.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 
@@ -100,12 +100,12 @@ namespace SD.WEB.Layout
         {
             try
             {
-    _openMenu = false;
+                _openMenu = false;
                 await DialogService.SettingsPopup();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to execute OpenConfigurations.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 
@@ -113,12 +113,12 @@ namespace SD.WEB.Layout
         {
             try
             {
-    _openMenu = false;
+                _openMenu = false;
                 await JsRuntime.Clerk().AccountPopup(Cts.Token);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to execute MyAccount.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 
@@ -143,12 +143,12 @@ namespace SD.WEB.Layout
         {
             try
             {
-    _openMenu = false;
+                _openMenu = false;
                 await DialogService.SubscriptionPopup();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to execute OpenSubscription.");
+                ex.ProcessException(Snackbar, Logger);
             }
         }
 

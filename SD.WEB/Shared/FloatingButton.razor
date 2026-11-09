@@ -1,5 +1,6 @@
 ﻿@using Microsoft.JSInterop
 @inject IJSRuntime JsRuntime
+@inject ISnackbar Snackbar
 @inject ILogger<FloatingButton> Logger
 
 <div style="@($"position: fixed; bottom: 16px; {Side.ToString()}: {(Position * 16) + (Position * 40) - 40}px; z-index: 100;")">
@@ -23,7 +24,7 @@
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Failed to navigate back.");
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 
