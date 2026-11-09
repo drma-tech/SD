@@ -73,29 +73,36 @@ namespace SD.WEB.Modules.Search
 
         private async Task LoadItems(int? newKeyword = null)
         {
-            await State.StartLoading.Invoke(null);
-            Items.Clear();
+            try
+            {
+                await State.StartLoading.Invoke(null);
+                Items.Clear();
 
-            if (AppStateStatic.Index == 0)
-            {
-                await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
-            }
-            else if (AppStateStatic.Index == 1)
-            {
-                if (newKeyword != null) AppStateStatic.Keyword = newKeyword;
-                ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
-                await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
-            }
-            else if (AppStateStatic.Index == 2)
-            {
-                await TmdbDiscoveryApi.GetList(Items, [State], AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
-            }
+                if (AppStateStatic.Index == 0)
+                {
+                    await TmdbSearch.GetList(Items, [State], type: null, ParametersQuery, cancellationToken: Cts.Token);
+                }
+                else if (AppStateStatic.Index == 1)
+                {
+                    if (newKeyword != null) AppStateStatic.Keyword = newKeyword;
+                    ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
+                    await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
+                }
+                else if (AppStateStatic.Index == 2)
+                {
+                    await TmdbDiscoveryApi.GetList(Items, [State], AppStateStatic.Type, ParametersAdvanced, cancellationToken: Cts.Token);
+                }
 
-            await State.FinishLoading.Invoke(Items);
+                await State.FinishLoading.Invoke(Items);
 
-            if (Items.Empty())
+                if (Items.Empty())
+                {
+                    await ShowWarning(Translations.Module.Landing.SearchReturnedNothing);
+                }
+            }
+            catch (Exception ex)
             {
-                await ShowWarning(Translations.Module.Landing.SearchReturnedNothing);
+                await ProcessException(ex);
             }
         }
 
@@ -130,23 +137,37 @@ namespace SD.WEB.Modules.Search
 
         private async Task SearchKeyWords()
         {
-            AppStateStatic.Keywords = [];
-            _currentPage = 1;
-            var parameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" } };
+            try
+            {
+                AppStateStatic.Keywords = [];
+                _currentPage = 1;
+                var parameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" } };
 
-            var (list, lastPage) = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
-            AppStateStatic.Keywords = list;
+                var (list, lastPage) = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
+                AppStateStatic.Keywords = list;
 
-            DisableLoadMore = lastPage || AppStateStatic.Keywords.Count >= 100;
+                DisableLoadMore = lastPage || AppStateStatic.Keywords.Count >= 100;
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
 
         private async Task LoadMore()
         {
-            var parameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
+            try
+            {
+                var parameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
 
-            var (list, lastPage) = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
-            AppStateStatic.Keywords = list;
-            DisableLoadMore = lastPage || AppStateStatic.Keywords.Count >= 100;
+                var (list, lastPage) = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, Cts.Token);
+                AppStateStatic.Keywords = list;
+                DisableLoadMore = lastPage || AppStateStatic.Keywords.Count >= 100;
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(ex);
+            }
         }
     }
 }
