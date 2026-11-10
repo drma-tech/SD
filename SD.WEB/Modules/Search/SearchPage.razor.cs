@@ -52,7 +52,7 @@ namespace SD.WEB.Modules.Search
             }
             else if (AppStateStatic.Index == 1)
             {
-                ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
+                ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("No keyword was provided.");
             }
             else if (AppStateStatic.Index == 2)
             {
@@ -85,7 +85,7 @@ namespace SD.WEB.Modules.Search
                 else if (AppStateStatic.Index == 1)
                 {
                     if (newKeyword != null) AppStateStatic.Keyword = newKeyword;
-                    ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("keyword not present");
+                    ParametersKeyword["with_keywords"] = AppStateStatic.Keyword?.ToString(CultureInfo.InvariantCulture) ?? throw new NotificationException("No keyword was provided.");
                     await TmdbDiscoveryApi.GetList(Items, [State], type: null, ParametersKeyword, cancellationToken: Cts.Token);
                 }
                 else if (AppStateStatic.Index == 2)

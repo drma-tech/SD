@@ -5,8 +5,8 @@ import { storage, notification, interop } from "./utils.js";
 export const apple = {
     openCheckout(productId) {
         if (window.appConfig?.isMobileApp !== true) {
-            notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
-            Sentry?.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
+            notification.showError("It looks like you're accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
+            Sentry?.captureMessage("It looks like you're accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
             return;
         }
 
@@ -14,22 +14,22 @@ export const apple = {
             productId: productId,
             callback: function (data) {
                 if (!data) {
-                    notification.showError("No data returned from purchase");
-                    Sentry?.captureMessage("No data returned from purchase", "error");
+                    notification.showError("No purchase information was returned.");
+                    Sentry?.captureMessage("No purchase information was returned.", "error");
                     return;
                 }
 
                 if (!data.isSuccess) {
-                    notification.showError("Purchase failed or canceled");
-                    Sentry?.captureMessage("Purchase failed or canceled", "error");
+                    notification.showError("The purchase failed or was canceled.");
+                    Sentry?.captureMessage("The purchase failed or was canceled.", "error");
                     return;
                 }
 
                 const receiptData = data.receiptData;
 
                 if (!receiptData) {
-                    notification.showError("Receipt not found");
-                    Sentry?.captureMessage("Receipt not found", "error");
+                    notification.showError("No purchase receipt was returned.");
+                    Sentry?.captureMessage("No purchase receipt was returned.", "error");
                     return;
                 }
 
@@ -43,8 +43,8 @@ export const apple = {
     },
     getReceiptData() {
         if (window.appConfig?.isMobileApp !== true) {
-            notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
-            Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
+            notification.showError("It looks like you're accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
+            Sentry.captureMessage("It looks like you're accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
             return;
         }
 
@@ -63,8 +63,8 @@ export const google = {
     openCheckout(productId, type) {
         try {
             if (window.appConfig?.isMobileApp !== true) {
-                notification.showError("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
-                Sentry.captureMessage("It looks like you're accessing accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
+                notification.showError("It looks like you're accessing this from a browser, but this feature is only available in the app. Please open the app to continue.");
+                Sentry.captureMessage("It looks like you're accessing this from a browser, but this feature is only available in the app. Please open the app to continue.", "error");
                 return;
             }
 

@@ -77,7 +77,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         catch (CosmosException ex)
         {
             req?.LogError(ex);
-            await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
+            await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "The function invocation failed.");
         }
         catch (NotificationException ex)
         {

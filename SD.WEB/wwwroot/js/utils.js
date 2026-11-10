@@ -115,8 +115,8 @@ export const notification = {
                 <div style="font-size:2.2rem; margin-bottom:0.5rem;">⚠️</div>
                 <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">This device cannot run this app</h2>
                 <p style="font-size:1rem; line-height:1.5; margin-bottom:1rem;">
-                    Your current environment does not support the required WebAssembly features needed to run this application.
-                    Please update your browser, operating system, or try a different device.
+                    Your current environment doesn't support the WebAssembly features this app requires.
+                    Please update your browser or operating system, or try a different device.
                 </p>
                 <div style="text-align:left; font-size:1rem; color:#444;">
                     <div style="margin:0.8rem 0; display:flex; align-items:center;">
@@ -218,13 +218,13 @@ export const environment = {
         }
     },
     getBrowserName() {
-        return window.browser?.getBrowserName() ?? "no bowser loaded";
+        return window.browser?.getBrowserName() ?? "No browser information available";
     },
     getBrowserVersion() {
-        return window.browser?.getBrowserVersion() ?? "no bowser loaded";
+        return window.browser?.getBrowserVersion() ?? "No browser information available";
     },
     getOperatingSystem() {
-        return window.browser?.getOSName() ?? "no bowser loaded";
+        return window.browser?.getOSName() ?? "No browser information available";
     },
     inspectAdElement(el) {
         // If the div is completely hidden, it's AdBlock.
