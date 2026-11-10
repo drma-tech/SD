@@ -118,63 +118,6 @@ else //webapp
     </div>
 }
 
-@if (ShowOtherApps)
-{
-    <MudText Typo="Typo.h6" Color="Color.Info" Align="Align.Center" Class="@CssHelper.Build().Small("my")">
-        @Translations.Notification.CheckOurApps
-    </MudText>
-
-    <div class="@CssHelper.Build().Raw("store-grid").Small("mb")">
-        @foreach (var product in AppInfo.Products)
-        {
-            if (product.Live)
-            {
-                <MudButton Href="@product.Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                    <div>
-                        <MudImage Src="@product.Logo" Style="max-width: 35px; vertical-align: middle;" Alt="@product.Title"></MudImage>
-                        <MudText Typo="Typo.subtitle1">
-                            @product.Title
-                        </MudText>
-                    </div>
-                    <MudText Typo="Typo.caption">
-                        @product.SubTitle
-                    </MudText>
-                </MudButton>
-            }
-            else
-            {
-                <MudBadge Content="@("Beta")" Overlap="true" Color="Color.Warning">
-                    <MudButton Href="@product.Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <div>
-                            <MudImage Src="@product.Logo" Style="max-width: 35px; vertical-align: middle;" Alt="@product.Title"></MudImage>
-                            <MudText Typo="Typo.subtitle1">
-                                @product.Title
-                            </MudText>
-                        </div>
-                        <MudText Typo="Typo.caption">
-                            @product.SubTitle
-                        </MudText>
-                    </MudButton>
-                </MudBadge>
-            }
-        }
-    </div>
-}
-
-@if (ShowOtherApps)
-{
-    <MudDivider Class="@CssHelper.Build().Medium("my")"></MudDivider>
-    <MudButton Disabled="CloseDisabled" Size="Size.Medium" Variant="Variant.Filled" FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseClick" Class="@CssHelper.Build().Small("mb")">
-        @Translations.Button.Close
-        @if (CloseDisabled)
-        {
-            <MudProgressCircular Value="10 - CloseCountdown" Max="10" Size="Size.Small" Color="Color.Warning" Class="ms-3">
-                @CloseCountdown
-            </MudProgressCircular>
-        }
-    </MudButton>
-}
-
 <style>
     .store-grid {
         display: grid;
@@ -187,7 +130,6 @@ else //webapp
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     [Parameter] public RenderFragment? CustomHeader { get; set; }
-    [Parameter] public bool ShowOtherApps { get; set; } = true;
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public Color ActionColor { get; set; } = Color.Primary;
 

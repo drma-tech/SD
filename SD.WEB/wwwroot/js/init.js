@@ -5,7 +5,7 @@ if (window.appConfig?.isBot === false && window.appConfig?.disableServiceWorker 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register("service-worker.js", { updateViaCache: 'none' }).catch((err) => {
             notification.showError(
-                "Offline mode couldn't be enabled. This may be due to a slow connection. Try refreshing the page or reopening the app."
+                "Offline mode couldn't be enabled. Check your connection, then refresh the page or close and reopen the app."
             );
         });
     }

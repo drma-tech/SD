@@ -55,9 +55,9 @@ namespace SD.WEB.Layout
                     var success = await PaymentPublicApi.StripeValidateSession(stripe_session_id, Cts.Token);
 
                     if (success)
-                        await ShowSuccess("Subscription successful!");
+                        await ShowSuccess("Your subscription is now active.");
                     else
-                        await ShowError("Something didn’t go as expected. If your payment wasn’t completed, please try again. You can also contact support for assistance.");
+                        await ShowError("We couldn't confirm your payment. If you were charged, please contact support before trying again.");
                 }
 
                 await base.OnAfterRenderAsync(firstRender);

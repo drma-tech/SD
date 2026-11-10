@@ -70,15 +70,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore our other amazing apps:.
-        /// </summary>
-        internal static string CheckOurApps {
-            get {
-                return ResourceManager.GetString("CheckOurApps", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to External Website Notice.
         /// </summary>
         internal static string ExternalWebsiteNotice {

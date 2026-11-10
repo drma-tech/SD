@@ -142,7 +142,7 @@ namespace SD.WEB.Modules.Help
             {
                 if (value)
                 {
-                    var confirmed = await DialogService.ShowMessageBoxAsync(AppInfo.Title, "Are you sure you want to switch to the beta version? Some system features or features of the app may be unstable.", Translations.Button.Ok, Translations.Button.Cancel) ?? false;
+                    var confirmed = await DialogService.ShowMessageBoxAsync(AppInfo.Title, "Are you sure you want to switch to the beta version? Some system features may be unstable.", Translations.Button.Ok, Translations.Button.Cancel) ?? false;
                     if (!confirmed) return;
                 }
 

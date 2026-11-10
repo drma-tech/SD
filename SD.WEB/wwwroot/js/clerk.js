@@ -86,14 +86,14 @@ function loadClerkScript() {
             const error = new Error("Failed to load ClerkJS.");
             error.name = "ClerkScriptLoadError";
             try {
-                Sentry.withScope((scope) => {
+                Sentry?.withScope((scope) => {
                     scope.setContext("clerk_script_load", {
                         scriptUrl: script.src,
                         pageOrigin: window.location.origin,
                         online: navigator.onLine,
                         publishableKeyConfigured: Boolean(publishableKey),
                     });
-                    Sentry.captureException(error);
+                    Sentry?.captureException(error);
                 });
             } catch {
                 // ignore
@@ -218,7 +218,7 @@ export const authentication = {
             const clerk = await ensureAuthReady();
             clerk.openSignIn({ withSignUp: true });
         } catch (error) {
-            Sentry.captureException(error);
+            Sentry?.captureException(error);
             throw error.message;
         }
     },
@@ -227,7 +227,7 @@ export const authentication = {
             const clerk = await ensureAuthReady();
             await clerk.signOut();
         } catch (error) {
-            Sentry.captureException(error);
+            Sentry?.captureException(error);
             throw error.message;
         }
     },
@@ -236,7 +236,7 @@ export const authentication = {
             const clerk = await ensureAuthReady();
             clerk.openUserProfile();
         } catch (error) {
-            Sentry.captureException(error);
+            Sentry?.captureException(error);
             throw error.message;
         }
     }

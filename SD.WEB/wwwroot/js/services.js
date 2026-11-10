@@ -103,7 +103,7 @@ export const services = {
 
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-            Sentry.captureException(error);
+            Sentry?.captureException(error);
             notification.showError(error.message);
         }
     },
