@@ -197,7 +197,7 @@ function setupAuthListener(clerk) {
 
         setTimeout(async () => {
             if (user && token) {
-                    await identifyUserJot(token);
+                await identifyUserJot(token);
             } else if (!user && window.uj?.logout) {
                 try {
                     await window.uj.logout();

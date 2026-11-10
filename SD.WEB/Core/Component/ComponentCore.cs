@@ -98,10 +98,10 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
     {
         try
         {
-    if (url.Empty()) return;
-    
+            if (url.Empty()) return;
+
             var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
-    
+
             MarkupString ptMessage = new($@"
             <div style='text-align:left; line-height:1.5; font-size:14px;'>
                 <p>Você está saindo do {AppInfo.Title} e abrindo um site externo:</p>
@@ -109,7 +109,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
                     {encodedUrl}
                 </div>
             </div>");
-    
+
             MarkupString esMessage = new($@"
             <div style='text-align:left; line-height:1.5; font-size:14px;'>
                 <p>Está saliendo de {AppInfo.Title} y abriendo un sitio web externo:</p>
@@ -117,7 +117,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
                     {encodedUrl}
                 </div>
             </div>");
-    
+
             MarkupString enMessage = new($@"
             <div style='text-align:left; line-height:1.5; font-size:14px;'>
                 <p>You are leaving {AppInfo.Title} and opening an external website:</p>
@@ -125,7 +125,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
                     {encodedUrl}
                 </div>
             </div>");
-    
+
             var language = await AppStateStatic.GetAppLanguage(JsRuntime, Cts.Token);
             var message = language switch
             {
@@ -133,9 +133,9 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
                 AppLanguage.es => esMessage,
                 _ => enMessage,
             };
-    
+
             bool? result = await DialogService.ShowMessageBoxAsync(Translations.Notification.ExternalWebsiteNotice, message, yesText: Translations.Button.ContinueWebsite, cancelText: Translations.Button.Cancel);
-    
+
             if (result == true)
             {
                 await JsRuntime.Window().InvokeVoidAsync("open", Cts.Token, $"{url}?ref={AppInfo.Domain}.com", "_blank");

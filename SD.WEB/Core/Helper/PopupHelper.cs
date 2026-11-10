@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using SD.WEB.Modules.Auth;
 using SD.WEB.Modules.Collections;
 using SD.WEB.Modules.Help;
 using SD.WEB.Modules.Media;
