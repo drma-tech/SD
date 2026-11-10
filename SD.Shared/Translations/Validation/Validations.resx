@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DomainDeactivated" xml:space="preserve">
-    <value>Please update your app via the store (Windows, Android, Apple, etc.). If you are using a browser, please access the site without the "www".</value>
+    <value>Please update the app from your platform's app store (Microsoft Store, Google Play, or the App Store). If you're using a browser, open the website without the "www" prefix.</value>
   </data>
   <data name="MaintenanceMode" xml:space="preserve">
-    <value>We are currently undergoing maintenance. Please try again in a few minutes.</value>
+    <value>We're performing maintenance right now. Please try again in a few minutes.</value>
   </data>
   <data name="OutdatedVersion" xml:space="preserve">
-    <value>An outdated version has been detected ({0}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it.</value>
+    <value>An outdated version has been detected ({0}). Please update to the latest version to continue using the app. If you can't update, clear your browser or app cache and try again.</value>
   </data>
 </root>

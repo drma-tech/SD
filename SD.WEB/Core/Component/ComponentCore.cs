@@ -126,11 +126,47 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
                 </div>
             </div>");
 
+            MarkupString zhMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>您即将离开 {AppInfo.Title} 并打开一个外部网站：</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+
+            MarkupString frMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>Vous allez quitter {AppInfo.Title} et ouvrir un site web externe :</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+
+            MarkupString itMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>Stai per uscire da {AppInfo.Title} e aprire un sito web esterno:</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+
+            MarkupString deMessage = new($@"
+            <div style='text-align:left; line-height:1.5; font-size:14px;'>
+                <p>Sie verlassen {AppInfo.Title} und öffnen eine externe Website:</p>
+                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                    {encodedUrl}
+                </div>
+            </div>");
+
             var language = await AppStateStatic.GetAppLanguage(JsRuntime, Cts.Token);
             var message = language switch
             {
                 AppLanguage.pt => ptMessage,
                 AppLanguage.es => esMessage,
+                AppLanguage.zh => zhMessage,
+                AppLanguage.fr => frMessage,
+                AppLanguage.it => itMessage,
+                AppLanguage.de => deMessage,
                 _ => enMessage,
             };
 

@@ -48,13 +48,13 @@
                     if (Platform == SD.Shared.Enums.Platform.windows)
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                            The Microsoft subscription option isn’t available yet. Stay tuned for updates!
+                            Microsoft subscriptions are not available yet. Stay tuned for updates.
                         </MudAlert>
                     }
                     else
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                            The Microsoft subscription option is only available in the Windows application.
+                            Microsoft subscriptions are only available in the Windows app.
                         </MudAlert>
                     }
                 }
@@ -63,7 +63,7 @@
                     if (Platform == SD.Shared.Enums.Platform.ios)
                     {
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="@CssHelper.Build().Small("mb")">
-                            Apple subscription is still in testing. If you run into any issues, please reach out via feedback or email. We’re happy to help.
+                            Apple subscriptions are currently in testing. If you encounter any issues, please contact us through the in-app feedback form or by email. We’re happy to help.
                         </MudAlert>
 
                         <SubscriptionPlansComponent Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlansComponent>
@@ -71,7 +71,7 @@
                     else
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                            The Apple subscription option is only available on iOS devices.
+                            Apple subscriptions are only available on iOS devices.
                         </MudAlert>
                     }
                 }
@@ -80,13 +80,13 @@
                     if (Platform == SD.Shared.Enums.Platform.play)
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                            The Google subscription option isn’t available yet. Stay tuned for updates!
+                            Google Play subscriptions are not available yet. Stay tuned for updates.
                         </MudAlert>
                     }
                     else
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                            The Google subscription option is only available on Android devices.
+                            Google Play subscriptions are only available on Android devices.
                         </MudAlert>
                     }
                 }
@@ -99,7 +99,7 @@
                     @if (Platform == SD.Shared.Enums.Platform.amazon)
                     {
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-                            @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in Amazon devices.")
+                            @($"Unfortunately, due to legal and policy restrictions, our services are not available on Amazon devices.")
                         </MudAlert>
                     }
                     else if (CurrentCountry.NotEmpty() && _StripeBlockedCountries.ContainsKey(CurrentCountry.ToUpper()))
