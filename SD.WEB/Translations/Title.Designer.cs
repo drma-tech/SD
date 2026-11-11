@@ -61,15 +61,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover Movies and TV Shows Across Streaming Platforms.
-        /// </summary>
-        internal static string AppSubtitle {
-            get {
-                return ResourceManager.GetString("AppSubtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Top Awards of {0}.
         /// </summary>
         internal static string AwardsOfTheYear {

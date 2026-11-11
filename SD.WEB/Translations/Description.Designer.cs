@@ -61,15 +61,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Track your streaming platforms, manage your watch progress, and discover what to watch next with your favorite platforms, curated lists, and award winners..
-        /// </summary>
-        internal static string AppDescription {
-            get {
-                return ResourceManager.GetString("AppDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Explore films and series that won the year’s top awards. Discover major categories, winners, and celebrated titles recognized by critics and audiences..
         /// </summary>
         internal static string AwardsYear {
@@ -106,7 +97,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover the most anticipated movies of {0}, featuring upcoming blockbusters, fan favorites, and highly anticipated releases hitting theaters and streaming..
+        ///   Looks up a localized string similar to Discover the most anticipated movies of {0}, featuring upcoming blockbusters, fan favorites, and exciting new releases coming to theaters and streaming platforms..
         /// </summary>
         internal static string ExpectedMovies {
             get {
@@ -133,7 +124,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get detailed guides, troubleshooting tips, FAQs, and contact support for {0}. Solve issues and discover features easily..
+        ///   Looks up a localized string similar to Find helpful guides, troubleshooting tips, and answers to frequently asked questions, or contact {0} support. Get help resolving issues and making the most of the app..
         /// </summary>
         internal static string HelpCenter {
             get {
@@ -142,7 +133,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get the latest news about {0} and pop culture updates. Stay up to date with everything happening in the world of entertainment..
+        ///   Looks up a localized string similar to Get the latest {0} news and pop culture updates. Stay informed about everything happening in the entertainment world..
         /// </summary>
         internal static string News {
             get {
@@ -160,7 +151,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore streaming services offering movies, TV shows, and documentaries. Discover the platforms available in your region ({0})..
+        ///   Looks up a localized string similar to Explore streaming services available in your region ({0}) and discover where to find movies, TV shows, and documentaries..
         /// </summary>
         internal static string Platforms {
             get {

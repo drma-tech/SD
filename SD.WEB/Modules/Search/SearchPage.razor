@@ -7,7 +7,7 @@
 @inject WishListApi WishApi
 @inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
-<HeadComponent Title="@Translations.Title.AppSubtitle" Description="@Translations.Description.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
+<HeadComponent Title="@AppInfo.GetCurrentProduct().Title" Description="@AppInfo.GetCurrentProduct().Description" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
 
 <PageSectionComponent Title="@Translations.Module.Landing.Search" CustomBodyClass="@CssHelper.Build().Medium("mb")">
     <BodyFragment>
