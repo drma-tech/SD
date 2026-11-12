@@ -115,7 +115,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover Movies and TV Shows on Streaming Platforms.
+        ///   Looks up a localized string similar to Discover Movies and TV Shows Across Streaming Platforms.
         /// </summary>
         public static string streamingdiscovery {
             get {
@@ -124,7 +124,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Track your streaming services, keep track of what you&apos;ve watched, and discover what to watch next with curated lists, award winners, and critics&apos; picks..
+        ///   Looks up a localized string similar to Discover movies and TV shows, explore streaming availability by region, compare ratings, browse trailers and curated collections, and manage your watchlist..
         /// </summary>
         public static string streamingdiscovery_desc {
             get {
