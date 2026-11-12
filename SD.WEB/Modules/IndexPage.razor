@@ -14,7 +14,7 @@
 @inject WishListApi WishApi
 @inject TmdbListApi TmdbListApi
 
-<HeadComponent Title="@AppInfo.GetCurrentProduct().SubTitle" FixedTitle="true" Description="@AppInfo.GetCurrentProduct().Description" Url=@($"/{Culture}") Index="@Culture.NotEmpty()" Shared="true"></HeadComponent>
+<HeadComponent Title="Streaming Discovery: Discover Movies, TV Shows & Streaming" FixedTitle="true" Description="@AppInfo.GetCurrentProduct().Description" Url=@($"/{Culture}") Index="@Culture.NotEmpty()" Shared="true"></HeadComponent>
 
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.GetCurrentProduct().SubTitle"></PageSectionComponent>
 
