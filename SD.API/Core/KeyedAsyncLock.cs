@@ -45,12 +45,19 @@ namespace SD.API.Core
                 {
                     // Azure Functions can run on multiple instances, so the local lock does not prevent another instance from creating the same item.
 
-                    value = await getPersistent(cancellationToken);
+                    for (int attempt = 0; attempt < 3; attempt++)
+                    {
+                        await Task.Delay(50 * (attempt + 1), cancellationToken); // 50, 100, 150ms
 
-                    if (value == null) throw;
+                        value = await getPersistent(cancellationToken);
+                        if (value != null)
+                        {
+                            await saveCache(value, cancellationToken);
+                            return value;
+                        }
+                    }
 
-                    await saveCache(value, cancellationToken);
-                    return value;
+                    throw;
                 }
 
                 await saveCache(value, cancellationToken);
