@@ -141,8 +141,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo)
 
     private static async Task SyncClerkAccountDeletionAsync(string userId, bool isPremium)
     {
-        var secretKey = ApiStartup.Configurations.ClerkAuth?.SecretKey
-            ?? throw new InvalidOperationException("Clerk SecretKey is not configured");
+        var secretKey = ApiStartup.Configurations.ClerkAuth?.SecretKey ?? throw new InvalidOperationException("Clerk SecretKey is not configured");
 
         var clerk = new ClerkBackendApi(bearerAuth: secretKey);
 
@@ -150,7 +149,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo)
             userId: userId,
             requestBody: new UpdateUserRequestBody
             {
-                DeleteSelfEnabled = !isPremium
+                DeleteSelfEnabled = !isPremium,
             });
     }
 }
