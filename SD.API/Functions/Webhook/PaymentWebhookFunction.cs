@@ -1,3 +1,5 @@
+using Clerk.BackendAPI;
+using Clerk.BackendAPI.Models.Operations;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
@@ -57,6 +59,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo)
         client.Events.Add(new Event("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Cycle = {sub.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {sub.ExpiresDate}", ip));
 
         await repo.UpsertItemAsync(client);
+        await SyncClerkAccountDeletionAsync(client.UserId ?? throw new UnhandledException("Apple subscription user id is missing"), client.GetActiveSubscription() is not null);
     }
 
     [Function("PostStripeWebhook")]
@@ -98,6 +101,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo)
             principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
 
             await repo.UpsertItemAsync(principal);
+            await SyncClerkAccountDeletionAsync(userId, principal.GetActiveSubscription() is not null);
         }
         else if (string.Equals(stripeEvent.Type, "customer.deleted", StringComparison.OrdinalIgnoreCase))
         {
@@ -133,5 +137,20 @@ public class PaymentWebhookFunction(CosmosMainRepository repo)
         }
 
         return await req.CreateResponse(HttpStatusCode.OK, "webhook received", cancellationToken);
+    }
+
+    private static async Task SyncClerkAccountDeletionAsync(string userId, bool isPremium)
+    {
+        var secretKey = ApiStartup.Configurations.ClerkAuth?.SecretKey
+            ?? throw new InvalidOperationException("Clerk SecretKey is not configured");
+
+        var clerk = new ClerkBackendApi(bearerAuth: secretKey);
+
+        await clerk.Users.UpdateAsync(
+            userId: userId,
+            requestBody: new UpdateUserRequestBody
+            {
+                DeleteSelfEnabled = !isPremium
+            });
     }
 }
