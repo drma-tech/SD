@@ -56,14 +56,14 @@ export const services = {
 
         const browserLang = navigator.language || navigator.userLanguage;
 
-        window.uj ||= new Proxy(
+        window.uj = window.uj || new Proxy(
             {},
             {
                 get: (_, property) =>
                     property == "then"
                         ? 0
                         : (...args) => {
-                            (window.$ujq ||= []).push([property, ...args]);
+                            (window.$ujq = window.$ujq || []).push([property, ...args]);
                         }
             }
         );
