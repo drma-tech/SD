@@ -278,6 +278,11 @@ body .pwa-updater[b-pwa-updater] {
             margin: 0;
         }
 
+/* temporary - until mudblazor fixes */
+.mud-dialog {
+    position: relative;
+}
+
 /* ADSENSE */
 
 .adsbygoogle.custom-ad {
