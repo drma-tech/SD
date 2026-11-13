@@ -79,8 +79,10 @@ namespace SD.WEB.Modules.Auth
             Navigation.NavigateTo($"/{Culture}/profile");
         }
 
-        private async Task Logout()
+        private async Task CancelAndLogout()
         {
+            await PrincipalApi.RemoveClerk(Cts.Token);
+
             await JsRuntime.Clerk().SignOutAsync(Cts.Token);
 
             Navigation.NavigateTo($"/{Culture}");

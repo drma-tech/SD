@@ -92,6 +92,15 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
         await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true);
     }
+
+    [Function("PrincipalRemoveClerk")]
+    public async Task PrincipalRemoveClerk(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove/clerk")] HttpRequestData req)
+    {
+        var userId = await req.GetUserIdAsync();
+
+        await PrincipalHelper.DeleteClerkUser(userId);
+    }
 }
 
 public static class PrincipalHelper
@@ -109,8 +118,13 @@ public static class PrincipalHelper
 
         if (deleteClerk)
         {
-            var sdk = new ClerkBackendApi(bearerAuth: ApiStartup.Configurations.ClerkAuth!.SecretKey);
-            await sdk.Users.DeleteAsync(userId);
+            await DeleteClerkUser(userId);
         }
+    }
+
+    public static async Task DeleteClerkUser(string userId)
+    {
+        var sdk = new ClerkBackendApi(bearerAuth: ApiStartup.Configurations.ClerkAuth!.SecretKey);
+        await sdk.Users.DeleteAsync(userId);
     }
 }
