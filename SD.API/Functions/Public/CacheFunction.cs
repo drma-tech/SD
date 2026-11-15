@@ -11,6 +11,7 @@ using SD.Shared.Models.Popular;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 using System.Globalization;
+using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -22,8 +23,11 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheNews([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters()["mode"];
-        var category = req.GetQueryParameters()["category"];
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
+        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        var category = NormalizeNewsCategory(req.GetQueryParameters()["category"]);
+        if (category == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+
         var cacheKey = $"news_{mode}_{category}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -60,11 +64,34 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
     private static partial Regex IsPopular();
 
+    [GeneratedRegex("^tt\\d+$", RegexOptions.CultureInvariant)]
+    private static partial Regex IsImdbId();
+
+    private static string? NormalizeMode(string? value) => value?.ToLowerInvariant() switch
+    {
+        "compact" => "compact",
+        "full" => "full",
+        _ => null,
+    };
+
+    private static string? NormalizeNewsCategory(string? value) => value?.ToLowerInvariant() switch
+    {
+        "movie" => "movie",
+        "tv" => "tv",
+        _ => null,
+    };
+
+    private static bool IsValidImdbId(string? value) => value != null && IsImdbId().IsMatch(value);
+
+    private static bool IsValidTmdbId(string? value) =>
+        int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var id) && id > 0;
+
     [Function("CacheTrailers")]
     public async Task<HttpResponseData?> CacheTrailers(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters()["mode"];
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
+        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
         var cacheKey = $"trailers_{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -97,7 +124,8 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularMovies(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters()["mode"];
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
+        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
         var cacheKey = $"popular-movies-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -139,7 +167,8 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularTVs(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tv")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters()["mode"];
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
+        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
         var cacheKey = $"popular-tv-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -184,6 +213,13 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var id = req.GetQueryParameters()["id"];
         var tmdbId = req.GetQueryParameters()["tmdb_id"];
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
+        if ((!string.IsNullOrWhiteSpace(id) && !IsValidImdbId(id))
+            || (!string.IsNullOrWhiteSpace(tmdbId) && !IsValidTmdbId(tmdbId))
+            || (string.IsNullOrWhiteSpace(id) && string.IsNullOrWhiteSpace(tmdbId)))
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
         var ttl = TtlCache.OneDay;
 
         _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
@@ -230,8 +266,13 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var id = req.GetQueryParameters()["id"];
-        var tmdbId = req.GetQueryParameters()["tmdb_id"] ?? throw new NotificationException("tmdb_id is required");
+        var tmdbId = req.GetQueryParameters()["tmdb_id"];
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
+        if (!IsValidTmdbId(tmdbId) || (!string.IsNullOrWhiteSpace(id) && !IsValidImdbId(id)))
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
         var ttl = TtlCache.OneDay;
 
         _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
@@ -278,6 +319,8 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var id = req.GetQueryParameters()["id"];
+        if (!IsValidImdbId(id)) return req.CreateResponse(HttpStatusCode.BadRequest);
+
         var ttl = TtlCache.OneWeek;
 
         _ = DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
