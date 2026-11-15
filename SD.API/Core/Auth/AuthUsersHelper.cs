@@ -13,7 +13,7 @@ public static class AuthUsersHelper
 
         var id = principal?.Claims.FirstOrDefault(w => string.Equals(w.Type, "user_id", StringComparison.OrdinalIgnoreCase))?.Value;
 
-        return id ?? throw new UnhandledException("unauthenticated user");
+        return id ?? throw new UnauthorizedAccessException("unauthenticated user");
     }
 
     public static async Task<string> GetUserEmailAsync(this HttpRequestData req)
@@ -22,7 +22,7 @@ public static class AuthUsersHelper
 
         var email = principal?.Claims.FirstOrDefault(w => string.Equals(w.Type, "email", StringComparison.OrdinalIgnoreCase))?.Value;
 
-        return email ?? throw new UnhandledException("unauthenticated user");
+        return email ?? throw new UnauthorizedAccessException("unauthenticated user");
     }
 
     public static string? GetUserIP(this HttpRequestData req, bool includePort)

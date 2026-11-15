@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Clerk.BackendAPI.Helpers.Jwks;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using SD.API.Core.Auth;
@@ -73,6 +74,14 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
             }
 
             await next(context);
+        }
+        catch (TokenVerificationException)
+        {
+            await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
         }
         catch (CosmosException ex)
         {
