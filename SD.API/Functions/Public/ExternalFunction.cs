@@ -12,6 +12,12 @@ public class ExternalFunction(IHttpClientFactory factory)
     {
         var url = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
 
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
+            !string.Equals(uri.Host, "api.themoviedb.org", StringComparison.OrdinalIgnoreCase))
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
         var client = factory.CreateClient("tmdb");
 
         using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
