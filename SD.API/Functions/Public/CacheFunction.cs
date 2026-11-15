@@ -21,16 +21,15 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
     private static partial Regex IsPopular();
 
-    private static bool IsValidImdbId(string? value) => InputValidationHelper.MatchesPattern(value, @"^tt\d+$");
-
-    private static bool IsValidTmdbId(string? value) => InputValidationHelper.IsPositiveInteger(value);
-
     [Function("CacheNews")]
     public async Task<HttpResponseData?> CacheNews([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = InputValidationHelper.GetAllowedValueOrThrow(req.GetQueryParameters()["mode"], "mode", ["compact", "full"]);
-        var category = InputValidationHelper.GetAllowedValueOrThrow(req.GetQueryParameters()["category"], "category", ["movie", "tv"]);
+        var query = req.GetQueryParameters(
+            new("mode", AllowedValues: ["compact", "full"], Required: true),
+            new("category", AllowedValues: ["movie", "tv"], Required: true));
+        var mode = query["mode"]!;
+        var category = query["category"]!;
 
         var cacheKey = $"news_{mode}_{category}";
 
@@ -69,7 +68,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheTrailers(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = InputValidationHelper.GetAllowedValueOrThrow(req.GetQueryParameters()["mode"], "mode", ["compact", "full"]);
+        var mode = req.GetQueryParameters(new("mode", AllowedValues: ["compact", "full"], Required: true))["mode"]!;
         var cacheKey = $"trailers_{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -102,7 +101,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularMovies(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = InputValidationHelper.GetAllowedValueOrThrow(req.GetQueryParameters()["mode"], "mode", ["compact", "full"]);
+        var mode = req.GetQueryParameters(new("mode", AllowedValues: ["compact", "full"], Required: true))["mode"]!;
         var cacheKey = $"popular-movies-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -144,7 +143,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularTVs(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tv")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = InputValidationHelper.GetAllowedValueOrThrow(req.GetQueryParameters()["mode"], "mode", ["compact", "full"]);
+        var mode = req.GetQueryParameters(new("mode", AllowedValues: ["compact", "full"], Required: true))["mode"]!;
         var cacheKey = $"popular-tv-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -186,11 +185,12 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheMovieRatings(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/movie")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var id = req.GetQueryParameters()["id"];
-        var tmdbId = req.GetQueryParameters()["tmdb_id"];
-        var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-        if (id.NotEmpty() && !IsValidImdbId(id)) throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
-        if (tmdbId.NotEmpty() && !IsValidTmdbId(tmdbId)) throw new NotificationException("Invalid query parameter 'tmdb_id'. Expected a positive integer.");
+        var query = req.GetQueryParameters(
+            new("id", Pattern: @"^tt\d+$"),
+            new("tmdb_id", PositiveInteger: true));
+        var id = query["id"];
+        var tmdbId = query["tmdb_id"];
+        var tmdbRating = query["tmdb_rating"];
         if (id.Empty() && tmdbId.Empty()) throw new NotificationException("Missing required query parameters. Provide either 'id' (IMDb ID) or 'tmdb_id' (positive integer).");
 
         var ttl = TtlCache.OneDay;
@@ -238,12 +238,12 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheShowRatings(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var id = req.GetQueryParameters()["id"];
-        var tmdbId = req.GetQueryParameters()["tmdb_id"];
-        var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-        if (tmdbId.Empty()) throw new NotificationException("Missing required query parameter 'tmdb_id'.");
-        if (!IsValidTmdbId(tmdbId)) throw new NotificationException("Invalid query parameter 'tmdb_id'. Expected a positive integer.");
-        if (id.NotEmpty() && !IsValidImdbId(id)) throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
+        var query = req.GetQueryParameters(
+            new("id", Pattern: @"^tt\d+$"),
+            new("tmdb_id", PositiveInteger: true, Required: true));
+        var id = query["id"];
+        var tmdbId = query["tmdb_id"]!;
+        var tmdbRating = query["tmdb_rating"];
 
         var ttl = TtlCache.OneDay;
 
@@ -290,9 +290,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheMovieReviews(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var id = req.GetQueryParameters()["id"];
-        if (id.Empty()) throw new NotificationException("Missing required query parameter 'id'.");
-        if (!IsValidImdbId(id)) throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
+        var id = req.GetQueryParameters(new("id", Pattern: @"^tt\d+$", Required: true))["id"]!;
 
         var ttl = TtlCache.OneWeek;
 

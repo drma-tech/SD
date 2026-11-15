@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Net;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace SD.API.Core;
@@ -106,13 +107,47 @@ public static class HttpRequestDataExtensions
         return response;
     }
 
-    public static StringDictionary GetQueryParameters(this HttpRequestData req)
+    public static StringDictionary GetQueryParameters(this HttpRequestData req, params QueryParameterValidation[] validations)
     {
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
         var dictionary = new StringDictionary();
         foreach (var key in valueCollection.AllKeys.Where(p => p.NotEmpty()))
             dictionary.Add(key!.ToLowerInvariant(), valueCollection[key]);
+
+        foreach (var validation in validations)
+        {
+            var value = dictionary[validation.Name];
+
+            if (value.Empty())
+            {
+                if (validation.Required)
+                    throw new NotificationException($"Missing required query parameter '{validation.Name}'.");
+
+                continue;
+            }
+
+            if (validation.AllowedValues != null)
+            {
+                var allowedValue = validation.AllowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase));
+
+                if (allowedValue == null)
+                    throw new NotificationException($"Invalid query parameter '{validation.Name}'. Allowed values are {string.Join(", ", validation.AllowedValues.Select(x => $"'{x}'"))}.");
+
+                dictionary[validation.Name] = allowedValue;
+                value = allowedValue;
+            }
+
+            if (validation.Pattern != null && !Regex.IsMatch(value, validation.Pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
+                throw new NotificationException($"Invalid query parameter '{validation.Name}'. Expected format: {validation.Pattern}.");
+
+            if (validation.PositiveInteger && (!int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) || number <= 0))
+                throw new NotificationException($"Invalid query parameter '{validation.Name}'. Expected a positive integer.");
+
+            if ((validation.MinimumLength.HasValue && value.Length < validation.MinimumLength.Value)
+                || (validation.MaximumLength.HasValue && value.Length > validation.MaximumLength.Value))
+                throw new NotificationException($"Invalid query parameter '{validation.Name}'. Expected a length between {validation.MinimumLength ?? 0} and {validation.MaximumLength?.ToString(CultureInfo.InvariantCulture) ?? "unlimited"} characters.");
+        }
 
         return dictionary;
     }
@@ -193,3 +228,12 @@ public struct Method
 
     public const string Delete = "DELETE";
 }
+
+public sealed record QueryParameterValidation(
+    string Name,
+    string? Pattern = null,
+    string[]? AllowedValues = null,
+    bool PositiveInteger = false,
+    bool Required = false,
+    int? MinimumLength = null,
+    int? MaximumLength = null);
