@@ -21,8 +21,8 @@ public class LoginFunction(CosmosMainRepository repo)
     public async Task LoginAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "login/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var platform = req.GetQueryParameters()["platform"] ?? "error";
-        var country = req.GetQueryParameters()["country"] ?? "error";
+        var platform = req.GetQueryParameter("platform");
+        var country = req.GetQueryParameter("country");
         var ip = req.GetUserIP(includePort: true);
         var userId = await req.GetUserIdAsync();
         var login = await repo.ReadItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId), cancellationToken);

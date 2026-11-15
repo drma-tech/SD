@@ -29,8 +29,8 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
         var userId = await req.GetUserIdAsync();
         var email = await req.GetUserEmailAsync();
         var body = await req.GetBody<AuthPrincipal>(cancellationToken);
-        var platform = req.GetQueryParameters()["platform"];
-        var country = req.GetQueryParameters()["country"];
+        var platform = req.GetQueryParameter("platform");
+        var country = req.GetQueryParameter("country");
 
         await req.ValidateUser(body.UserId, cancellationToken);
 
@@ -76,8 +76,8 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
 
-        var app = req.GetQueryParameters()["app"];
-        var msg = req.GetQueryParameters()["msg"];
+        var app = req.GetQueryParameter("app");
+        var msg = req.GetQueryParameter("msg");
 
         principal.Events.Add(new Event(app, msg, ip));
 

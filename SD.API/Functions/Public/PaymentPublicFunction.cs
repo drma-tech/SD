@@ -12,7 +12,7 @@ public class PaymentPublicFunction
     public static PaymentConfigurations PaymentConfigurations(
        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/payment/configurations")] HttpRequestData req)
     {
-        var valid = Enum.TryParse(req.GetQueryParameters()["provider"], out PaymentProvider provider);
+        var valid = Enum.TryParse(req.GetQueryParameter("provider"), out PaymentProvider provider);
         if (!valid) throw new UnhandledException("Invalid payment provider.");
 
         if (provider == PaymentProvider.Apple)

@@ -11,7 +11,7 @@ public class ExternalFunction(IHttpClientFactory factory)
     public async Task<HttpResponseData> External(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/external")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var url = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
+        var url = req.GetQueryParameter("url")?.ConvertFromBase64ToString();
 
         var allowedDomains = new[] { "api.themoviedb.org" };
 

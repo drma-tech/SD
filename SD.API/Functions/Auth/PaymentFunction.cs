@@ -124,7 +124,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     {
         var userId = await req.GetUserIdAsync();
         var ip = req.GetUserIP(includePort: true);
-        var url = req.GetQueryParameters()["url"];
+        var url = req.GetQueryParameter("url");
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
@@ -183,7 +183,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     public async Task<string> StripeGePortalLink(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/portal-link")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var url = req.GetQueryParameters()["url"];
+        var url = req.GetQueryParameter("url");
         var userId = await req.GetUserIdAsync();
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 

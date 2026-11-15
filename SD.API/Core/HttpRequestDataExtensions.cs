@@ -107,20 +107,10 @@ public static class HttpRequestDataExtensions
         return response;
     }
 
-    public static StringDictionary GetQueryParameters(this HttpRequestData req)
-    {
-        var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
-
-        var dictionary = new StringDictionary();
-        foreach (var key in valueCollection.AllKeys.Where(p => p.NotEmpty()))
-            dictionary.Add(key!.ToLowerInvariant(), valueCollection[key]);
-
-        return dictionary;
-    }
-
     public static string? GetQueryParameter(this HttpRequestData req, string name, string? pattern = null, string[]? allowedValues = null, bool positiveInteger = false, bool required = true)
     {
-        var value = req.GetQueryParameters()[name];
+        var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+        var value = valueCollection[name];
 
         if (value.Empty())
         {
@@ -132,11 +122,11 @@ public static class HttpRequestDataExtensions
 
         if (allowedValues != null)
         {
-            value = allowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase)) ?? 
+            value = allowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase)) ??
                 throw new NotificationException($"Invalid query parameter '{name}'. Allowed values are {string.Join(", ", allowedValues.Select(x => $"'{x}'"))}.");
         }
 
-        if (pattern != null && !Regex.IsMatch(value, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
+        if (pattern.NotEmpty() && !Regex.IsMatch(value, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
             throw new NotificationException($"Invalid query parameter '{name}'. Expected format: {pattern}.");
 
         if (positiveInteger && (!int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) || number <= 0))
@@ -156,7 +146,7 @@ public static class HttpRequestDataExtensions
 
         var log = new LogModel
         {
-            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
+            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameter(key!)}")),
             AppVersion = version,
             Ip = req.GetUserIP(includePort: false),
         };
@@ -174,7 +164,7 @@ public static class HttpRequestDataExtensions
         var log = new LogModel
         {
             Message = message,
-            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
+            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameter(key!)}")),
             AppVersion = version,
             Ip = req.GetUserIP(includePort: false),
         };
