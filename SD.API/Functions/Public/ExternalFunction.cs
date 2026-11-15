@@ -12,8 +12,10 @@ public class ExternalFunction(IHttpClientFactory factory)
     {
         var url = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
 
+        var allowedDomains = new[] { "api.themoviedb.org" };
+
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
-            !string.Equals(uri.Host, "api.themoviedb.org", StringComparison.OrdinalIgnoreCase))
+            !allowedDomains.Any(domain => string.Equals(uri.Host, domain, StringComparison.OrdinalIgnoreCase)))
         {
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
