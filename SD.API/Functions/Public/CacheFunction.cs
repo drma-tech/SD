@@ -25,11 +25,8 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheNews([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
-        var query = req.GetQueryParameters(
-            new("mode", AllowedValues: ["compact", "full"], Required: true),
-            new("category", AllowedValues: ["movie", "tv"], Required: true));
-        var mode = query["mode"]!;
-        var category = query["category"]!;
+        var mode = req.GetQueryParameter("mode", allowedValues: ["compact", "full"], required: true)!;
+        var category = req.GetQueryParameter("category", allowedValues: ["movie", "tv"], required: true)!;
 
         var cacheKey = $"news_{mode}_{category}";
 
@@ -68,7 +65,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheTrailers(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters(new("mode", AllowedValues: ["compact", "full"], Required: true))["mode"]!;
+        var mode = req.GetQueryParameter("mode", allowedValues: ["compact", "full"], required: true)!;
         var cacheKey = $"trailers_{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -101,7 +98,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularMovies(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters(new("mode", AllowedValues: ["compact", "full"], Required: true))["mode"]!;
+        var mode = req.GetQueryParameter("mode", allowedValues: ["compact", "full"], required: true)!;
         var cacheKey = $"popular-movies-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -143,7 +140,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularTVs(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tv")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = req.GetQueryParameters(new("mode", AllowedValues: ["compact", "full"], Required: true))["mode"]!;
+        var mode = req.GetQueryParameter("mode", allowedValues: ["compact", "full"], required: true)!;
         var cacheKey = $"popular-tv-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -185,12 +182,9 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheMovieRatings(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/movie")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var query = req.GetQueryParameters(
-            new("id", Pattern: @"^tt\d+$"),
-            new("tmdb_id", PositiveInteger: true));
-        var id = query["id"];
-        var tmdbId = query["tmdb_id"];
-        var tmdbRating = query["tmdb_rating"];
+        var id = req.GetQueryParameter("id", pattern: @"^tt\d+$");
+        var tmdbId = req.GetQueryParameter("tmdb_id", positiveInteger: true);
+        var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
         if (id.Empty() && tmdbId.Empty()) throw new NotificationException("Missing required query parameters. Provide either 'id' (IMDb ID) or 'tmdb_id' (positive integer).");
 
         var ttl = TtlCache.OneDay;
@@ -238,12 +232,9 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheShowRatings(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var query = req.GetQueryParameters(
-            new("id", Pattern: @"^tt\d+$"),
-            new("tmdb_id", PositiveInteger: true, Required: true));
-        var id = query["id"];
-        var tmdbId = query["tmdb_id"]!;
-        var tmdbRating = query["tmdb_rating"];
+        var id = req.GetQueryParameter("id", pattern: @"^tt\d+$");
+        var tmdbId = req.GetQueryParameter("tmdb_id", positiveInteger: true, required: true)!;
+        var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
 
         var ttl = TtlCache.OneDay;
 
@@ -290,7 +281,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> CacheMovieReviews(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var id = req.GetQueryParameters(new("id", Pattern: @"^tt\d+$", Required: true))["id"]!;
+        var id = req.GetQueryParameter("id", pattern: @"^tt\d+$", required: true)!;
 
         var ttl = TtlCache.OneWeek;
 

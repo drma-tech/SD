@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
 using SD.API.Core.Models;
@@ -107,7 +107,7 @@ public static class HttpRequestDataExtensions
         return response;
     }
 
-    public static StringDictionary GetQueryParameters(this HttpRequestData req, params QueryParameterValidation[] validations)
+    public static StringDictionary GetQueryParameters(this HttpRequestData req)
     {
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
@@ -115,41 +115,38 @@ public static class HttpRequestDataExtensions
         foreach (var key in valueCollection.AllKeys.Where(p => p.NotEmpty()))
             dictionary.Add(key!.ToLowerInvariant(), valueCollection[key]);
 
-        foreach (var validation in validations)
+        return dictionary;
+    }
+
+    public static string? GetQueryParameter(this HttpRequestData req, string name, string? pattern = null, string[]? allowedValues = null, bool positiveInteger = false, bool required = false)
+    {
+        var value = req.GetQueryParameters()[name];
+
+        if (value.Empty())
         {
-            var value = dictionary[validation.Name];
+            if (required)
+                throw new NotificationException($"Missing required query parameter '{name}'.");
 
-            if (value.Empty())
-            {
-                if (validation.Required)
-                    throw new NotificationException($"Missing required query parameter '{validation.Name}'.");
-
-                continue;
-            }
-
-            if (validation.AllowedValues != null)
-            {
-                var allowedValue = validation.AllowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase));
-
-                if (allowedValue == null)
-                    throw new NotificationException($"Invalid query parameter '{validation.Name}'. Allowed values are {string.Join(", ", validation.AllowedValues.Select(x => $"'{x}'"))}.");
-
-                dictionary[validation.Name] = allowedValue;
-                value = allowedValue;
-            }
-
-            if (validation.Pattern != null && !Regex.IsMatch(value, validation.Pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
-                throw new NotificationException($"Invalid query parameter '{validation.Name}'. Expected format: {validation.Pattern}.");
-
-            if (validation.PositiveInteger && (!int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) || number <= 0))
-                throw new NotificationException($"Invalid query parameter '{validation.Name}'. Expected a positive integer.");
-
-            if ((validation.MinimumLength.HasValue && value.Length < validation.MinimumLength.Value)
-                || (validation.MaximumLength.HasValue && value.Length > validation.MaximumLength.Value))
-                throw new NotificationException($"Invalid query parameter '{validation.Name}'. Expected a length between {validation.MinimumLength ?? 0} and {validation.MaximumLength?.ToString(CultureInfo.InvariantCulture) ?? "unlimited"} characters.");
+            return null;
         }
 
-        return dictionary;
+        if (allowedValues != null)
+        {
+            var allowedValue = allowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase));
+
+            if (allowedValue == null)
+                throw new NotificationException($"Invalid query parameter '{name}'. Allowed values are {string.Join(", ", allowedValues.Select(x => $"'{x}'"))}.");
+
+            value = allowedValue;
+        }
+
+        if (pattern != null && !Regex.IsMatch(value, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
+            throw new NotificationException($"Invalid query parameter '{name}'. Expected format: {pattern}.");
+
+        if (positiveInteger && (!int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) || number <= 0))
+            throw new NotificationException($"Invalid query parameter '{name}'. Expected a positive integer.");
+
+        return value;
     }
 
     public static void LogError(this HttpRequestData req, Exception? ex)
