@@ -1,12 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Hosting;
 using SD.API.Core.Auth;
 using SD.API.Core.Models;
 using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using Stripe.Checkout;
 using System.Globalization;
-using Microsoft.Extensions.Hosting;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -49,7 +49,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             var purchase = result.latest_receipt_info[^1];
 
             var originalTransactionId = purchase.original_transaction_id ?? throw new UnhandledException("original_transaction_id missing");
-            var existingSubscriptions = await repo.Query<AuthPrincipal>(MainType.Principal, 
+            var existingSubscriptions = await repo.Query<AuthPrincipal>(MainType.Principal,
                 x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), transform: null, cancellationToken);
 
             if (existingSubscriptions.Any(x => !string.Equals(x.UserId, client.UserId, StringComparison.Ordinal)))
@@ -125,10 +125,6 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var userId = await req.GetUserIdAsync();
         var ip = req.GetUserIP(includePort: true);
         var url = req.GetQueryParameter("url");
-        if (!Uri.TryCreate(url, UriKind.Absolute, out var returnUri)
-            || !string.Equals(returnUri.Host, req.Url.Host, StringComparison.OrdinalIgnoreCase)
-            || (!returnUri.IsLoopback && returnUri.Scheme != Uri.UriSchemeHttps))
-            throw new NotificationException("Invalid return URL.");
 
         AccountCycle? cycle = null;
         if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceMonth, StringComparison.OrdinalIgnoreCase))
@@ -189,10 +185,6 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/portal-link")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var url = req.GetQueryParameter("url");
-        if (!Uri.TryCreate(url, UriKind.Absolute, out var returnUri)
-            || !string.Equals(returnUri.Host, req.Url.Host, StringComparison.OrdinalIgnoreCase)
-            || (!returnUri.IsLoopback && returnUri.Scheme != Uri.UriSchemeHttps))
-            throw new NotificationException("Invalid return URL.");
 
         var userId = await req.GetUserIdAsync();
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
