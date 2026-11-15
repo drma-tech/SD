@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
+using System.Net;
 
 namespace SD.API.Functions.Public;
 
@@ -14,8 +15,7 @@ public class ExternalFunction(IHttpClientFactory factory)
 
         var allowedDomains = new[] { "api.themoviedb.org" };
 
-        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
-            !allowedDomains.Any(domain => string.Equals(uri.Host, domain, StringComparison.OrdinalIgnoreCase)))
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || !allowedDomains.Any(domain => string.Equals(uri.Host, domain, StringComparison.OrdinalIgnoreCase)))
         {
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
