@@ -16,7 +16,7 @@ public static class InputValidationHelper
     /// </summary>
     public static bool MatchesPattern(string? value, string pattern, RegexOptions options = RegexOptions.CultureInvariant)
     {
-        return !string.IsNullOrEmpty(value) && Regex.IsMatch(value, pattern, options, RegexTimeout);
+        return value.NotEmpty() && Regex.IsMatch(value, pattern, options, RegexTimeout);
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ public static class InputValidationHelper
     /// </summary>
     public static string? NormalizeAllowedValue(string? value, IEnumerable<string> allowedValues, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
     {
-        if (string.IsNullOrWhiteSpace(value)) return null;
+        if (value.Empty()) return null;
 
         foreach (var allowedValue in allowedValues)
         {
@@ -42,7 +42,7 @@ public static class InputValidationHelper
     /// </summary>
     public static bool IsPositiveInteger(string? value)
     {
-        return int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) && number > 0;
+        return value.NotEmpty() && int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) && number > 0;
     }
 
     /// <summary>
