@@ -20,20 +20,19 @@ public static class InputValidationHelper
     }
 
     /// <summary>
-    /// Returns the canonical allowed value when the input matches one of the supplied values.
-    /// Returns null when the input is null, empty, or not allowed.
+    /// Returns the canonical allowed value or throws a notification exception when the value is invalid.
     /// </summary>
-    public static string? NormalizeAllowedValue(string? value, IEnumerable<string> allowedValues, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+    public static string GetAllowedValueOrThrow(string? value, string parameterName, IEnumerable<string> allowedValues, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
     {
-        if (value.Empty()) return null;
+        var values = allowedValues.ToArray();
 
-        foreach (var allowedValue in allowedValues)
+        foreach (var allowedValue in values)
         {
             if (string.Equals(value, allowedValue, comparison))
                 return allowedValue;
         }
 
-        return null;
+        throw new NotificationException($"Invalid query parameter '{parameterName}'. Allowed values are {string.Join(", ", values.Select(x => $"'{x}'"))}.");
     }
 
     /// <summary>
