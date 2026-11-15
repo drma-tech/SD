@@ -75,12 +75,13 @@ public static class AuthUsersHelper
             {
                 var token = authHeader.Substring("Bearer ".Length);
 
+                string[] authorizedParties = string.Equals(Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT"), "Development", StringComparison.OrdinalIgnoreCase)
+                    ? ["https://localhost:7272", "https://streamingdiscovery.com"]
+                    : ["https://streamingdiscovery.com"];
+
                 var options = new VerifyTokenOptions(
                     secretKey: ApiStartup.Configurations.ClerkAuth?.SecretKey,
-                    authorizedParties: [
-                        "https://localhost:7272",
-                        "https://streamingdiscovery.com",
-                    ],
+                    authorizedParties: authorizedParties,
                     clockSkewInMs: 10_000
                 );
 
