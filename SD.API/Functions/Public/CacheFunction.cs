@@ -10,7 +10,6 @@ using SD.Shared.Models.News;
 using SD.Shared.Models.Popular;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
-using SD.Shared.Core.Helper;
 using System.Globalization;
 using System.Net;
 using System.Text.Json;
@@ -20,14 +19,23 @@ namespace SD.API.Functions;
 
 public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache cache, IHttpClientFactory factory)
 {
+    [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
+    private static partial Regex IsPopular();
+
+    private static string? NormalizeMode(string? value) => InputValidationHelper.NormalizeAllowedValue(value, ["compact", "full"]);
+
+    private static string? NormalizeNewsCategory(string? value) => InputValidationHelper.NormalizeAllowedValue(value, ["movie", "tv"]);
+
+    private static bool IsValidImdbId(string? value) => InputValidationHelper.MatchesPattern(value, @"^tt\d+$");
+
+    private static bool IsValidTmdbId(string? value) => InputValidationHelper.IsPositiveInteger(value);
+
     [Function("CacheNews")]
     public async Task<HttpResponseData?> CacheNews([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
-        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
-        var category = NormalizeNewsCategory(req.GetQueryParameters()["category"]);
-        if (category == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]) ?? throw new UnhandledException("Invalid mode");
+        var category = NormalizeNewsCategory(req.GetQueryParameters()["category"]) ?? throw new UnhandledException("Invalid category");
 
         var cacheKey = $"news_{mode}_{category}";
 
@@ -62,27 +70,11 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         return await req.CreateResponse(doc, TtlCache.HalfDay, isPublic: true, cancellationToken);
     }
 
-    [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
-    private static partial Regex IsPopular();
-
-    private static string? NormalizeMode(string? value) =>
-        InputValidationHelper.NormalizeAllowedValue(value, ["compact", "full"]);
-
-    private static string? NormalizeNewsCategory(string? value) =>
-        InputValidationHelper.NormalizeAllowedValue(value, ["movie", "tv"]);
-
-    private static bool IsValidImdbId(string? value) =>
-        InputValidationHelper.MatchesPattern(value, @"^tt\d+$");
-
-    private static bool IsValidTmdbId(string? value) =>
-        InputValidationHelper.IsPositiveInteger(value);
-
     [Function("CacheTrailers")]
     public async Task<HttpResponseData?> CacheTrailers(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
-        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]) ?? throw new UnhandledException("Invalid mode");
         var cacheKey = $"trailers_{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -115,8 +107,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularMovies(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
-        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]) ?? throw new UnhandledException("Invalid mode");
         var cacheKey = $"popular-movies-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -158,8 +149,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     public async Task<HttpResponseData?> ImdbPopularTVs(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tv")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var mode = NormalizeMode(req.GetQueryParameters()["mode"]);
-        if (mode == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        var mode = NormalizeMode(req.GetQueryParameters()["mode"]) ?? throw new UnhandledException("Invalid mode");
         var cacheKey = $"popular-tv-{mode}";
 
         var doc = await KeyedAsyncLock.GetOrCreateAsync(
@@ -204,9 +194,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var id = req.GetQueryParameters()["id"];
         var tmdbId = req.GetQueryParameters()["tmdb_id"];
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-        if ((!string.IsNullOrWhiteSpace(id) && !IsValidImdbId(id))
-            || (!string.IsNullOrWhiteSpace(tmdbId) && !IsValidTmdbId(tmdbId))
-            || (string.IsNullOrWhiteSpace(id) && string.IsNullOrWhiteSpace(tmdbId)))
+        if ((!string.IsNullOrWhiteSpace(id) && !IsValidImdbId(id)) || (!string.IsNullOrWhiteSpace(tmdbId) && !IsValidTmdbId(tmdbId)) || (string.IsNullOrWhiteSpace(id) && string.IsNullOrWhiteSpace(tmdbId)))
         {
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
