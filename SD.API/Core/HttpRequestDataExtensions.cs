@@ -118,7 +118,7 @@ public static class HttpRequestDataExtensions
         return dictionary;
     }
 
-    public static string? GetQueryParameter(this HttpRequestData req, string name, string? pattern = null, string[]? allowedValues = null, bool positiveInteger = false, bool required = false)
+    public static string? GetQueryParameter(this HttpRequestData req, string name, string? pattern = null, string[]? allowedValues = null, bool positiveInteger = false, bool required = true)
     {
         var value = req.GetQueryParameters()[name];
 
@@ -132,12 +132,8 @@ public static class HttpRequestDataExtensions
 
         if (allowedValues != null)
         {
-            var allowedValue = allowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase));
-
-            if (allowedValue == null)
+            value = allowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase)) ?? 
                 throw new NotificationException($"Invalid query parameter '{name}'. Allowed values are {string.Join(", ", allowedValues.Select(x => $"'{x}'"))}.");
-
-            value = allowedValue;
         }
 
         if (pattern != null && !Regex.IsMatch(value, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
@@ -225,12 +221,3 @@ public struct Method
 
     public const string Delete = "DELETE";
 }
-
-public sealed record QueryParameterValidation(
-    string Name,
-    string? Pattern = null,
-    string[]? AllowedValues = null,
-    bool PositiveInteger = false,
-    bool Required = false,
-    int? MinimumLength = null,
-    int? MaximumLength = null);
