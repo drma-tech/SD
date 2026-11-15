@@ -94,11 +94,17 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         }
     }
 
+    protected static bool IsSafeExternalUrl(string? url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+               (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
     public async Task OpenExternalWebsite(string? url)
     {
         try
         {
-            if (url.Empty()) return;
+            if (!IsSafeExternalUrl(url)) return;
 
             var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
 
