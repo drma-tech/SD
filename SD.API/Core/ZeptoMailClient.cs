@@ -66,7 +66,7 @@ namespace SD.API.Core
                     product_subtitle = appSubtitle,
                     domain,
                     year,
-                    user_name = name,
+                    user_name = HtmlEncoder.Default.Encode(name),
                     franchises,
                     series,
                 },
@@ -106,7 +106,7 @@ namespace SD.API.Core
                     product_subtitle = appSubtitle,
                     domain,
                     year,
-                    user_name = name,
+                    user_name = HtmlEncoder.Default.Encode(name),
                 },
                 client_reference = user_id,
             };
