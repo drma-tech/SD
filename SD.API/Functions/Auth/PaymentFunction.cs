@@ -49,11 +49,8 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             var purchase = result.latest_receipt_info[^1];
 
             var originalTransactionId = purchase.original_transaction_id ?? throw new UnhandledException("original_transaction_id missing");
-            var existingSubscriptions = await repo.Query<AuthPrincipal>(
-                MainType.Principal,
-                x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId),
-                transform: null,
-                cancellationToken);
+            var existingSubscriptions = await repo.Query<AuthPrincipal>(MainType.Principal, 
+                x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), transform: null, cancellationToken);
 
             if (existingSubscriptions.Any(x => !string.Equals(x.UserId, client.UserId, StringComparison.Ordinal)))
             {
@@ -85,7 +82,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     {
         var http = factory.CreateClient("apple");
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{endpoint}verifyReceipt");
-        var payload = JsonSerializer.Serialize(new Dictionary<string, object?>
+        var payload = JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
             ["receipt-data"] = receipt,
             ["password"] = ApiStartup.Configurations.Apple?.SharedSecret,
