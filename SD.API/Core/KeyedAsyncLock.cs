@@ -11,7 +11,7 @@ namespace SD.API.Core
             public int RefCount { get; set; }
         }
 
-        private static readonly object SyncRoot = new();
+        private static readonly Lock SyncRoot = new();
         private static readonly Dictionary<string, LockEntry> Locks = new(StringComparer.OrdinalIgnoreCase);
 
         public static async Task<T?> GetOrCreateAsync<T>(string key,
