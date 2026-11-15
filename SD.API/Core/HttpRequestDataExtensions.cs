@@ -146,7 +146,7 @@ public static class HttpRequestDataExtensions
 
         var log = new LogModel
         {
-            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameter(key!)}")),
+            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameter(key!, required: false)}")),
             AppVersion = version,
             Ip = req.GetUserIP(includePort: false),
         };
@@ -164,7 +164,7 @@ public static class HttpRequestDataExtensions
         var log = new LogModel
         {
             Message = message,
-            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameter(key!)}")),
+            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameter(key!, required: false)}")),
             AppVersion = version,
             Ip = req.GetUserIP(includePort: false),
         };

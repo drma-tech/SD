@@ -184,12 +184,12 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     {
         var id = req.GetQueryParameter("id", pattern: @"^tt\d+$", required: false);
         var tmdbId = req.GetQueryParameter("tmdb_id", positiveInteger: true, required: false);
-        var tmdbRating = req.GetQueryParameter("tmdb_rating");
+        var tmdbRating = req.GetQueryParameter("tmdb_rating", required: false);
         if (id.Empty() && tmdbId.Empty()) throw new NotificationException("Missing required query parameters. Provide either 'id' (IMDb ID) or 'tmdb_id' (positive integer).");
 
         var ttl = TtlCache.OneDay;
 
-        _ = DateTime.TryParseExact(req.GetQueryParameter("release_date"), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        _ = DateTime.TryParseExact(req.GetQueryParameter("release_date", required: false), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
         if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
@@ -234,11 +234,11 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     {
         var id = req.GetQueryParameter("id", pattern: @"^tt\d+$", required: false);
         var tmdbId = req.GetQueryParameter("tmdb_id", positiveInteger: true, required: true)!;
-        var tmdbRating = req.GetQueryParameter("tmdb_rating");
+        var tmdbRating = req.GetQueryParameter("tmdb_rating", required: false);
 
         var ttl = TtlCache.OneDay;
 
-        _ = DateTime.TryParseExact(req.GetQueryParameter("release_date"), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        _ = DateTime.TryParseExact(req.GetQueryParameter("release_date", required: false), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
         if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
@@ -285,7 +285,7 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
         var ttl = TtlCache.OneWeek;
 
-        _ = DateTime.TryParseExact(req.GetQueryParameter("release_date"), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        _ = DateTime.TryParseExact(req.GetQueryParameter("release_date", required: false), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
         if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
