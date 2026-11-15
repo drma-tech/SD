@@ -125,6 +125,18 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var userId = await req.GetUserIdAsync();
         var ip = req.GetUserIP(includePort: true);
         var url = req.GetQueryParameter("url");
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var returnUri)
+            || !string.Equals(returnUri.Host, req.Url.Host, StringComparison.OrdinalIgnoreCase)
+            || (!returnUri.IsLoopback && returnUri.Scheme != Uri.UriSchemeHttps))
+            throw new NotificationException("Invalid return URL.");
+
+        AccountCycle? cycle = null;
+        if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceMonth, StringComparison.OrdinalIgnoreCase))
+            cycle = AccountCycle.Monthly;
+        else if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceYear, StringComparison.OrdinalIgnoreCase))
+            cycle = AccountCycle.Yearly;
+
+        if (cycle is null) throw new NotificationException("Invalid Stripe price.");
 
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
@@ -155,13 +167,6 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var service = new SessionService();
         Session session = await service.CreateAsync(options, cancellationToken: cancellationToken);
 
-        AccountCycle? cycle = null;
-
-        if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceMonth, StringComparison.OrdinalIgnoreCase))
-            cycle = AccountCycle.Monthly;
-        else if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceYear, StringComparison.OrdinalIgnoreCase))
-            cycle = AccountCycle.Yearly;
-
         var sub = new AuthSubscription()
         {
             Provider = PaymentProvider.Stripe,
@@ -184,6 +189,11 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/portal-link")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var url = req.GetQueryParameter("url");
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var returnUri)
+            || !string.Equals(returnUri.Host, req.Url.Host, StringComparison.OrdinalIgnoreCase)
+            || (!returnUri.IsLoopback && returnUri.Scheme != Uri.UriSchemeHttps))
+            throw new NotificationException("Invalid return URL.");
+
         var userId = await req.GetUserIdAsync();
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
