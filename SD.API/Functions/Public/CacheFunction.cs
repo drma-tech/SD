@@ -10,6 +10,7 @@ using SD.Shared.Models.News;
 using SD.Shared.Models.Popular;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
+using SD.Shared.Core.Helper;
 using System.Globalization;
 using System.Net;
 using System.Text.Json;
@@ -64,27 +65,17 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
     [GeneratedRegex("^(?:10[1-9]|1[1-9]\\d|[2-9]\\d{2,})K\\b|^\\d+(?:\\.\\d+)?M\\b", RegexOptions.Compiled, 1000)]
     private static partial Regex IsPopular();
 
-    [GeneratedRegex("^tt\\d+$", RegexOptions.CultureInvariant)]
-    private static partial Regex IsImdbId();
+    private static string? NormalizeMode(string? value) =>
+        InputValidationHelper.NormalizeAllowedValue(value, ["compact", "full"]);
 
-    private static string? NormalizeMode(string? value) => value?.ToLowerInvariant() switch
-    {
-        "compact" => "compact",
-        "full" => "full",
-        _ => null,
-    };
+    private static string? NormalizeNewsCategory(string? value) =>
+        InputValidationHelper.NormalizeAllowedValue(value, ["movie", "tv"]);
 
-    private static string? NormalizeNewsCategory(string? value) => value?.ToLowerInvariant() switch
-    {
-        "movie" => "movie",
-        "tv" => "tv",
-        _ => null,
-    };
-
-    private static bool IsValidImdbId(string? value) => value != null && IsImdbId().IsMatch(value);
+    private static bool IsValidImdbId(string? value) =>
+        InputValidationHelper.MatchesPattern(value, @"^tt\d+$");
 
     private static bool IsValidTmdbId(string? value) =>
-        int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var id) && id > 0;
+        InputValidationHelper.IsPositiveInteger(value);
 
     [Function("CacheTrailers")]
     public async Task<HttpResponseData?> CacheTrailers(
