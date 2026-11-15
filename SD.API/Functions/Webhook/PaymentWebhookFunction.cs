@@ -7,10 +7,11 @@ using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.Extensions.Hosting;
 
 namespace SD.API.Functions.Webhook;
 
-public class PaymentWebhookFunction(CosmosMainRepository repo)
+public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment hostEnvironment)
 {
     private const string APP_CODE = "sd";
     private const string APP = "app";
@@ -24,11 +25,13 @@ public class PaymentWebhookFunction(CosmosMainRepository repo)
 
         if (!body.TryGetValue("signedPayload", out var signedPayload)) throw new UnhandledException("signedPayload null");
 
-        var notification = AppleJwtDecoder.DecodeServerNotification(signedPayload, ApiStartup.Configurations.Apple!);
+        var expectedEnvironment = hostEnvironment.IsProduction() ? "Production" : "Sandbox";
+        var appleConfig = ApiStartup.Configurations.Apple ?? throw new UnhandledException("Apple configuration missing");
+        var notification = AppleJwtDecoder.DecodeServerNotification(signedPayload, appleConfig, expectedEnvironment);
 
         var info = notification.Data;
 
-        var transaction = AppleJwtDecoder.DecodeTransaction(info.SignedTransactionInfo);
+        var transaction = AppleJwtDecoder.DecodeTransaction(info.SignedTransactionInfo, info.BundleId, info.Environment);
 
         var originalTransactionId = transaction.OriginalTransactionId;
 

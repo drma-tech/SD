@@ -6,13 +6,14 @@ using SD.Shared.Core.Types;
 using SD.Shared.Models.Auth;
 using Stripe.Checkout;
 using System.Globalization;
+using Microsoft.Extensions.Hosting;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
 namespace SD.API.Functions.Auth;
 
-public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory factory)
+public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory factory, IHostEnvironment hostEnvironment)
 {
     private const string APP_CODE = "sd";
     private const string APP = "app";
@@ -36,7 +37,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 
             var result = await VerifyReceipt(ApiStartup.Configurations.Apple?.Endpoint, receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
-            if (result.status == 21007)
+            if (result.status == 21007 && !hostEnvironment.IsProduction())
             {
                 //when tested with TestFlight
                 result = await VerifyReceipt("https://sandbox.itunes.apple.com/", receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
@@ -47,14 +48,25 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
             var purchase = result.latest_receipt_info[^1];
 
-            //todo: Check whether the original_transaction_id already exists in the database (to avoid false receipt).
+            var originalTransactionId = purchase.original_transaction_id ?? throw new UnhandledException("original_transaction_id missing");
+            var existingSubscriptions = await repo.Query<AuthPrincipal>(
+                MainType.Principal,
+                x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId),
+                transform: null,
+                cancellationToken);
+
+            if (existingSubscriptions.Any(x => !string.Equals(x.UserId, client.UserId, StringComparison.Ordinal)))
+            {
+                throw new NotificationException("This Apple subscription is already linked to another account.");
+            }
+
             var sub = new AuthSubscription
             {
                 Provider = PaymentProvider.Apple,
                 Product = AccountProduct.Premium,
                 Cycle = purchase.product_id!.Contains("yearly", StringComparison.OrdinalIgnoreCase) ? AccountCycle.Yearly : AccountCycle.Monthly,
                 SessionId = receipt, //save receipt before cause it may fail
-                SubscriptionId = purchase.original_transaction_id,
+                SubscriptionId = originalTransactionId,
                 ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture)),
             };
 
@@ -73,7 +85,13 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
     {
         var http = factory.CreateClient("apple");
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{endpoint}verifyReceipt");
-        request.Content = new StringContent($$"""{"receipt-data":"{{receipt}}","password":"{{ApiStartup.Configurations.Apple?.SharedSecret}}","exclude-old-transactions":true}""", Encoding.UTF8, "application/json");
+        var payload = JsonSerializer.Serialize(new Dictionary<string, object?>
+        {
+            ["receipt-data"] = receipt,
+            ["password"] = ApiStartup.Configurations.Apple?.SharedSecret,
+            ["exclude-old-transactions"] = true,
+        });
+        request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
         var response = await http.SendAsync(request, cancellationToken);
         return await response.Content.ReadFromJsonAsync<AppleResponseReceipt>(cancellationToken);
     }
