@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace SD.API.Core
@@ -27,7 +28,7 @@ namespace SD.API.Core
                     product_subtitle = appSubtitle,
                     domain,
                     year,
-                    user_name = name,
+                    user_name = HtmlEncoder.Default.Encode(name),
                 },
                 client_reference = user_id,
             };
