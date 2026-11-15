@@ -193,14 +193,9 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var id = req.GetQueryParameters()["id"];
         var tmdbId = req.GetQueryParameters()["tmdb_id"];
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-        if (id.NotEmpty() && !IsValidImdbId(id))
-            throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
-
-        if (tmdbId.NotEmpty() && !IsValidTmdbId(tmdbId))
-            throw new NotificationException("Invalid query parameter 'tmdb_id'. Expected a positive integer.");
-
-        if (id.Empty() && tmdbId.Empty())
-            throw new NotificationException("Missing required query parameters. Provide either 'id' (IMDb ID) or 'tmdb_id' (positive integer).");
+        if (id.NotEmpty() && !IsValidImdbId(id)) throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
+        if (tmdbId.NotEmpty() && !IsValidTmdbId(tmdbId)) throw new NotificationException("Invalid query parameter 'tmdb_id'. Expected a positive integer.");
+        if (id.Empty() && tmdbId.Empty()) throw new NotificationException("Missing required query parameters. Provide either 'id' (IMDb ID) or 'tmdb_id' (positive integer).");
 
         var ttl = TtlCache.OneDay;
 
@@ -250,14 +245,9 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         var id = req.GetQueryParameters()["id"];
         var tmdbId = req.GetQueryParameters()["tmdb_id"];
         var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-        if (tmdbId.Empty())
-            throw new NotificationException("Missing required query parameter 'tmdb_id'.");
-
-        if (!IsValidTmdbId(tmdbId))
-            throw new NotificationException("Invalid query parameter 'tmdb_id'. Expected a positive integer.");
-
-        if (id.NotEmpty() && !IsValidImdbId(id))
-            throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
+        if (tmdbId.Empty()) throw new NotificationException("Missing required query parameter 'tmdb_id'.");
+        if (!IsValidTmdbId(tmdbId)) throw new NotificationException("Invalid query parameter 'tmdb_id'. Expected a positive integer.");
+        if (id.NotEmpty() && !IsValidImdbId(id)) throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
 
         var ttl = TtlCache.OneDay;
 
@@ -305,11 +295,8 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var id = req.GetQueryParameters()["id"];
-        if (id.Empty())
-            throw new NotificationException("Missing required query parameter 'id'.");
-
-        if (!IsValidImdbId(id))
-            throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
+        if (id.Empty()) throw new NotificationException("Missing required query parameter 'id'.");
+        if (!IsValidImdbId(id)) throw new NotificationException("Invalid query parameter 'id'. Expected an IMDb ID in the format 'tt1234567'.");
 
         var ttl = TtlCache.OneWeek;
 
