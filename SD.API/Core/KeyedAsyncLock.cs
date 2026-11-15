@@ -1,12 +1,18 @@
 ﻿using Microsoft.Azure.Cosmos;
-using System.Collections.Concurrent;
 using System.Net;
 
 namespace SD.API.Core
 {
     public static class KeyedAsyncLock
     {
-        private static readonly ConcurrentDictionary<string, SemaphoreSlim> Locks = new(StringComparer.OrdinalIgnoreCase);
+        private sealed class LockEntry
+        {
+            public SemaphoreSlim Semaphore { get; } = new(1, 1);
+            public int RefCount { get; set; }
+        }
+
+        private static readonly object SyncRoot = new();
+        private static readonly Dictionary<string, LockEntry> Locks = new(StringComparer.OrdinalIgnoreCase);
 
         public static async Task<T?> GetOrCreateAsync<T>(string key,
             Func<CancellationToken, Task<T?>> getCache,
@@ -19,12 +25,27 @@ namespace SD.API.Core
 
             if (value != null) return value;
 
-            var semaphore = Locks.GetOrAdd(key, _ => new SemaphoreSlim(1, 1));
+            LockEntry entry;
 
-            await semaphore.WaitAsync(cancellationToken);
+            lock (SyncRoot)
+            {
+                if (!Locks.TryGetValue(key, out entry!))
+                {
+                    entry = new LockEntry();
+                    Locks.Add(key, entry);
+                }
+
+                // Count both active holders and waiters before leaving the dictionary lock.
+                entry.RefCount++;
+            }
+
+            var lockAcquired = false;
 
             try
             {
+                await entry.Semaphore.WaitAsync(cancellationToken);
+                lockAcquired = true;
+
                 value = await getCache(cancellationToken);
 
                 if (value != null) return value;
@@ -66,7 +87,21 @@ namespace SD.API.Core
             }
             finally
             {
-                semaphore.Release();
+                if (lockAcquired)
+                {
+                    entry.Semaphore.Release();
+                }
+
+                lock (SyncRoot)
+                {
+                    entry.RefCount--;
+
+                    if (entry.RefCount == 0)
+                    {
+                        Locks.Remove(key);
+                        entry.Semaphore.Dispose();
+                    }
+                }
             }
         }
     }

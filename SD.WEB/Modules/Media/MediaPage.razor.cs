@@ -44,6 +44,7 @@ namespace SD.WEB.Modules.Media
 
         protected override async Task LoadParameterDataAsync()
         {
+            // TODO: Parallelize independent media detail, external ID, ratings, and recommendations requests where their dependencies allow it.
             try
             {
                 await State.StartLoading.Invoke(null);

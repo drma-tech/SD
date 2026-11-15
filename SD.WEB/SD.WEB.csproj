@@ -159,6 +159,7 @@
 	</ItemGroup>
 	<PropertyGroup>
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>
+		<!-- TODO: Investigate whether globalization data can be reduced without breaking static page generation. -->
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 	</PropertyGroup>
