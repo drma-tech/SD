@@ -2,7 +2,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
 using SD.API.Core.Models;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.Net;
 using System.Text.Json;
@@ -112,27 +111,31 @@ public static class HttpRequestDataExtensions
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
         var value = valueCollection[name];
 
+        value.ValidateParameter(name, pattern, allowedValues, positiveInteger, required);
+
+        return value;
+    }
+
+    public static void ValidateParameter(this string? value, string name, string? pattern = null, string[]? allowedValues = null, bool positiveInteger = false, bool required = true)
+    {
         if (value.Empty())
         {
             if (required)
-                throw new NotificationException($"Missing required query parameter '{name}'.");
-
-            return null;
+                throw new NotificationException($"Missing required parameter '{name}'.");
+            return;
         }
 
         if (allowedValues != null)
         {
             value = allowedValues.FirstOrDefault(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase)) ??
-                throw new NotificationException($"Invalid query parameter '{name}'. Allowed values are {string.Join(", ", allowedValues.Select(x => $"'{x}'"))}.");
+                throw new NotificationException($"Invalid parameter '{name}'. Allowed values are {string.Join(", ", allowedValues.Select(x => $"'{x}'"))}.");
         }
 
         if (pattern.NotEmpty() && !Regex.IsMatch(value, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1)))
-            throw new NotificationException($"Invalid query parameter '{name}'. Expected format: {pattern}.");
+            throw new NotificationException($"Invalid parameter '{name}'. Expected format: {pattern}.");
 
         if (positiveInteger && (!int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var number) || number <= 0))
-            throw new NotificationException($"Invalid query parameter '{name}'. Expected a positive integer.");
-
-        return value;
+            throw new NotificationException($"Invalid parameter '{name}'. Expected a positive integer.");
     }
 
     public static void LogError(this HttpRequestData req, Exception? ex)

@@ -100,6 +100,8 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         var userId = await req.GetUserIdAsync();
         var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("principal null");
 
+        if (!principal.StripeCustomerId.Empty()) throw new UnhandledException("Stripe customer already exists");
+
         var customer = await new Stripe.CustomerService().CreateAsync(new Stripe.CustomerCreateOptions
         {
             Name = principal.DisplayName,
@@ -129,7 +131,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         AccountCycle? cycle = null;
         if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceMonth, StringComparison.OrdinalIgnoreCase))
             cycle = AccountCycle.Monthly;
-        else if (string.Equals(priceId, ApiStartup.Configurations.Stripe!.Premium!.PriceYear, StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(priceId, ApiStartup.Configurations.Stripe.Premium.PriceYear, StringComparison.OrdinalIgnoreCase))
             cycle = AccountCycle.Yearly;
 
         if (cycle is null) throw new NotificationException("Invalid Stripe price.");
