@@ -6,7 +6,7 @@ export const apple = {
     openCheckout(productId) {
         if (window.appConfig?.isMobileApp !== true) {
             notification.showError("This feature is only available in the mobile app. Open the app to continue.");
-            Sentry?.captureMessage("This feature is only available in the mobile app. Open the app to continue.", "error");
+            Sentry.captureMessage("This feature is only available in the mobile app. Open the app to continue.", "error");
             return;
         }
 
@@ -15,13 +15,13 @@ export const apple = {
             callback: function (data) {
                 if (!data) {
                     notification.showError("The purchase provider returned no data.");
-                    Sentry?.captureMessage("The purchase provider returned no data.", "error");
+                    Sentry.captureMessage("The purchase provider returned no data.", "error");
                     return;
                 }
 
                 if (!data.isSuccess) {
                     notification.showError("The purchase failed or was canceled.");
-                    Sentry?.captureMessage("The purchase failed or was canceled.", "error");
+                    Sentry.captureMessage("The purchase failed or was canceled.", "error");
                     return;
                 }
 
@@ -29,7 +29,7 @@ export const apple = {
 
                 if (!receiptData) {
                     notification.showError("The purchase receipt could not be found.");
-                    Sentry?.captureMessage("The purchase receipt could not be found.", "error");
+                    Sentry.captureMessage("The purchase receipt could not be found.", "error");
                     return;
                 }
 
@@ -44,7 +44,7 @@ export const apple = {
     getReceiptData() {
         if (window.appConfig?.isMobileApp !== true) {
             notification.showError("This feature is only available in the mobile app. Open the app to continue.");
-            Sentry?.captureMessage("This feature is only available in the mobile app. Open the app to continue.", "error");
+            Sentry.captureMessage("This feature is only available in the mobile app. Open the app to continue.", "error");
             return;
         }
 
@@ -64,7 +64,7 @@ export const google = {
         try {
             if (window.appConfig?.isMobileApp !== true) {
                 notification.showError("This feature is only available in the mobile app. Open the app to continue.");
-                Sentry?.captureMessage("This feature is only available in the mobile app. Open the app to continue.", "error");
+                Sentry.captureMessage("This feature is only available in the mobile app. Open the app to continue.", "error");
                 return;
             }
 
@@ -83,7 +83,7 @@ export const google = {
             });
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
-            Sentry?.captureException(e);
+            Sentry.captureException(e);
         }
     },
 };
@@ -100,7 +100,7 @@ export const stripe = {
 
                 if (!token) {
                     notification.showError("Could not retrieve your authentication token. Please try again.");
-                    Sentry?.captureMessage("Could not retrieve your authentication token. Please try again.", "error");
+                    Sentry.captureMessage("Could not retrieve your authentication token. Please try again.", "error");
                     return;
                 }
 
@@ -121,7 +121,7 @@ export const stripe = {
             if (!response.ok) {
                 const error = await response.text();
                 notification.showError(error);
-                Sentry?.captureMessage(error, "error");
+                Sentry.captureMessage(error, "error");
                 return;
             }
 
@@ -130,7 +130,7 @@ export const stripe = {
             window.location.href = checkoutUrl;
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
-            Sentry?.captureException(e);
+            Sentry.captureException(e);
         }
     },
 };
