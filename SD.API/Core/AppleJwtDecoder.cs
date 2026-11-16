@@ -10,6 +10,8 @@ namespace SD.API.Core
     public static class AppleJwtDecoder
     {
         private const string AppleRootCaG3Sha256 = "63343ABFB89A6A03EBB57E9B3F5FA7BE7C4F5C756F3017B3A8C488C3653E9179";
+        private const string AppleReceiptSigningOid = "1.2.840.113635.100.6.11.1";
+        private const string AppleWwdrIntermediateOid = "1.2.840.113635.100.6.2.1";
 
         public static AppleNotification DecodeServerNotification(string signedPayload, Apple config, string expectedEnvironment)
         {
@@ -56,7 +58,14 @@ namespace SD.API.Core
             try
             {
                 var leaf = certificates[0];
+                var intermediate = certificates[1];
                 var root = certificates[^1];
+
+                if (!HasCertificateExtension(leaf, AppleReceiptSigningOid))
+                    throw new UnhandledException("Apple leaf certificate is not authorized for App Store receipt signing");
+
+                if (!HasCertificateExtension(intermediate, AppleWwdrIntermediateOid))
+                    throw new UnhandledException("Apple intermediate certificate is not an Apple WWDR certificate");
 
                 if (!string.Equals(root.GetCertHashString(HashAlgorithmName.SHA256), AppleRootCaG3Sha256, StringComparison.OrdinalIgnoreCase))
                     throw new UnhandledException("Certificate chain is not rooted in Apple Root CA G3");
@@ -65,7 +74,7 @@ namespace SD.API.Core
                 chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
                 chain.ChainPolicy.CustomTrustStore.Add(root);
                 chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
-                chain.ChainPolicy.ExtraStore.Add(certificates[1]);
+                chain.ChainPolicy.ExtraStore.Add(intermediate);
 
                 if (!chain.Build(leaf))
                     throw new UnhandledException("Invalid Apple certificate chain");
@@ -91,6 +100,13 @@ namespace SD.API.Core
                     certificate.Dispose();
                 }
             }
+        }
+
+        private static bool HasCertificateExtension(X509Certificate2 certificate, string oid)
+        {
+            return certificate.Extensions
+                .Cast<X509Extension>()
+                .Any(extension => string.Equals(extension.Oid?.Value, oid, StringComparison.Ordinal));
         }
 
         private static byte[] Base64UrlDecode(string input)
