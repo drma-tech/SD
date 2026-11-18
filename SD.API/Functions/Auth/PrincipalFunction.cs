@@ -81,6 +81,11 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
         principal.Events.Add(new Event(app, msg, ip));
 
+        if (principal.Events.Count > 10)
+        {
+            SentrySdk.CaptureMessage("Too many events for principal. Investigation needed.");
+        }
+
         return await repo.UpsertItemAsync(principal);
     }
 
