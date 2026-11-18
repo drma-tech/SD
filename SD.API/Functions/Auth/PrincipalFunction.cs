@@ -34,7 +34,7 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
         await req.ValidateUser(body.UserId, cancellationToken);
 
-        var ip = req.GetUserIP(includePort: false) ?? throw new UnhandledException("Failed to retrieve IP");
+        var ip = req.GetUserIP(includePort: false) ?? throw new InvestigationException("Failed to retrieve IP");
 
         foreach (var item in body.Events.Where(w => w.Ip.Empty()))
         {
@@ -74,7 +74,7 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
         var userId = await req.GetUserIdAsync();
         var ip = req.GetUserIP(includePort: true);
 
-        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
+        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException("Client null");
 
         var app = req.GetQueryParameter("app", required: false);
         var msg = req.GetQueryParameter("msg", required: false);
@@ -107,7 +107,7 @@ public static class PrincipalHelper
 {
     public static async Task DeleteUser(CosmosMainRepository repo, string? userId, bool deleteClerk)
     {
-        if (userId.Empty()) throw new UnhandledException("UserId is empty");
+        if (userId.Empty()) throw new InvestigationException("UserId is empty");
 
         // TODO: Audit all user-linked data before treating this as complete account erasure. This currently deletes principal, login, provider, watching-list, and wish-list records plus the Clerk user; review billing/transaction records, diagnostics, support records, backups, and third-party processors. Preserve only data with a documented legal basis and retention period.
         await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId));

@@ -16,7 +16,7 @@ namespace SD.API.Core
         public static AppleNotification DecodeServerNotification(string signedPayload, Apple config, string expectedEnvironment)
         {
             var payloadJson = ValidateAndReadJwt(signedPayload);
-            var notification = JsonSerializer.Deserialize<AppleNotification>(payloadJson) ?? throw new UnhandledException("Invalid AppleNotification JSON");
+            var notification = JsonSerializer.Deserialize<AppleNotification>(payloadJson) ?? throw new InvestigationException("Invalid AppleNotification JSON");
 
             ValidateApp(notification.Data.BundleId, notification.Data.Environment, config.BundleId, expectedEnvironment);
 
@@ -26,7 +26,7 @@ namespace SD.API.Core
         public static AppleTransactionInfo DecodeTransaction(string signedTransactionInfo, string bundleId, string environment)
         {
             var payloadJson = ValidateAndReadJwt(signedTransactionInfo);
-            var transaction = JsonSerializer.Deserialize<AppleTransactionInfo>(payloadJson) ?? throw new UnhandledException("Invalid AppleTransactionInfo JSON");
+            var transaction = JsonSerializer.Deserialize<AppleTransactionInfo>(payloadJson) ?? throw new InvestigationException("Invalid AppleTransactionInfo JSON");
 
             ValidateApp(transaction.BundleId, transaction.Environment, bundleId, environment);
 
@@ -36,22 +36,22 @@ namespace SD.API.Core
         private static void ValidateApp(string actualBundleId, string actualEnvironment, string? expectedBundleId, string expectedEnvironment)
         {
             if (!string.Equals(actualBundleId, expectedBundleId, StringComparison.OrdinalIgnoreCase))
-                throw new UnhandledException("Invalid Apple bundle ID");
+                throw new InvestigationException("Invalid Apple bundle ID");
 
             if (!string.Equals(actualEnvironment, expectedEnvironment, StringComparison.OrdinalIgnoreCase))
-                throw new UnhandledException("Invalid Apple environment");
+                throw new InvestigationException("Invalid Apple environment");
         }
 
         private static string ValidateAndReadJwt(string jwt)
         {
             var token = new JwtSecurityToken(jwt);
 
-            if (!token.Header.TryGetValue("x5c", out var x5cObj)) throw new UnhandledException("x5c missing");
+            if (!token.Header.TryGetValue("x5c", out var x5cObj)) throw new InvestigationException("x5c missing");
             if (!string.Equals(token.Header.Alg, "ES256", StringComparison.Ordinal))
-                throw new UnhandledException("Invalid JWT algorithm");
+                throw new InvestigationException("Invalid JWT algorithm");
 
-            var x5cList = (x5cObj as IEnumerable<object>)?.Select(x => x.ToString()).ToList() ?? throw new UnhandledException("Invalid x5c");
-            if (x5cList.Count != 3) throw new UnhandledException("Invalid Apple certificate chain");
+            var x5cList = (x5cObj as IEnumerable<object>)?.Select(x => x.ToString()).ToList() ?? throw new InvestigationException("Invalid x5c");
+            if (x5cList.Count != 3) throw new InvestigationException("Invalid Apple certificate chain");
 
             var certificates = x5cList.Select(x => X509CertificateLoader.LoadCertificate(Convert.FromBase64String(x!))).ToList();
 
@@ -62,13 +62,13 @@ namespace SD.API.Core
                 var root = certificates[^1];
 
                 if (!HasCertificateExtension(leaf, AppleReceiptSigningOid))
-                    throw new UnhandledException("Apple leaf certificate is not authorized for App Store receipt signing");
+                    throw new InvestigationException("Apple leaf certificate is not authorized for App Store receipt signing");
 
                 if (!HasCertificateExtension(intermediate, AppleWwdrIntermediateOid))
-                    throw new UnhandledException("Apple intermediate certificate is not an Apple WWDR certificate");
+                    throw new InvestigationException("Apple intermediate certificate is not an Apple WWDR certificate");
 
                 if (!string.Equals(root.GetCertHashString(HashAlgorithmName.SHA256), AppleRootCaG3Sha256, StringComparison.OrdinalIgnoreCase))
-                    throw new UnhandledException("Certificate chain is not rooted in Apple Root CA G3");
+                    throw new InvestigationException("Certificate chain is not rooted in Apple Root CA G3");
 
                 using var chain = new X509Chain();
                 chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
@@ -77,18 +77,18 @@ namespace SD.API.Core
                 chain.ChainPolicy.ExtraStore.Add(intermediate);
 
                 if (!chain.Build(leaf))
-                    throw new UnhandledException("Invalid Apple certificate chain");
+                    throw new InvestigationException("Invalid Apple certificate chain");
 
-                using var ecdsa = leaf.GetECDsaPublicKey() ?? throw new UnhandledException("Not an ES256 certificate");
+                using var ecdsa = leaf.GetECDsaPublicKey() ?? throw new InvestigationException("Not an ES256 certificate");
 
                 var parts = jwt.Split('.');
-                if (parts.Length != 3) throw new UnhandledException("Invalid JWT");
+                if (parts.Length != 3) throw new InvestigationException("Invalid JWT");
 
                 var message = Encoding.UTF8.GetBytes(parts[0] + "." + parts[1]);
                 var signature = Base64UrlDecode(parts[2]);
 
                 if (!ecdsa.VerifyData(message, signature, HashAlgorithmName.SHA256))
-                    throw new UnhandledException("Invalid signature");
+                    throw new InvestigationException("Invalid signature");
 
                 var payload = Base64UrlDecode(parts[1]);
                 return Encoding.UTF8.GetString(payload);

@@ -7,7 +7,7 @@ public static class CosmosDocumentHelper
 {
     public static string? RemovePrefix(this string? id)
     {
-        if (id.Empty()) throw new UnhandledException("id is required");
+        if (id.Empty()) throw new InvestigationException("doc id is required");
 
         var index = id.LastIndexOf(':');
 

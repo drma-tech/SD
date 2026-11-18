@@ -94,7 +94,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     if (isLocal)
     {
         webUri = new Uri(baseAddress);
-        apiUri = new Uri(configuration["ApiBaseAddress"] ?? throw new UnhandledException("BaseUrl not defined"));
+        apiUri = new Uri(configuration["ApiBaseAddress"] ?? throw new InvestigationException("BaseUrl not defined"));
     }
     else
     {

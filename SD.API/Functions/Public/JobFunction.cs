@@ -123,7 +123,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
                 if (newMovies.Count != 0 || newSeasons.Count != 0)
                 {
                     var userId = doc.Identity.RawId;
-                    var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
+                    var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException("AuthPrincipal null");
 
                     var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.ApiKey!);
                     if (principal.Email.NotEmpty())
@@ -145,7 +145,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
         foreach (var doc in docs)
         {
             var userId = doc.Identity.RawId;
-            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
+            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException("AuthPrincipal null");
 
             if (principal.GetActiveSubscription() != null) continue; //ignore premium users
 
@@ -170,12 +170,12 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
         foreach (var doc in docs)
         {
             var userId = doc.Identity.RawId;
-            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException("Client null");
+            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException("AuthPrincipal null");
 
             if (principal.GetActiveSubscription() != null) continue; //ignore premium users
             if (!doc.Notified)
             {
-                throw new UnhandledException($"User {userId} has not been notified before deletion.");
+                throw new InvestigationException($"User {userId} has not been notified before deletion.");
             }
 
             await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true);

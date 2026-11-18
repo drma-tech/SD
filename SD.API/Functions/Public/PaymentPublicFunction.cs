@@ -13,7 +13,7 @@ public class PaymentPublicFunction
        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/payment/configurations")] HttpRequestData req)
     {
         var valid = Enum.TryParse(req.GetQueryParameter("provider"), out PaymentProvider provider);
-        if (!valid) throw new UnhandledException("Invalid payment provider.");
+        if (!valid) throw new InvestigationException("Invalid payment provider.");
 
         if (provider == PaymentProvider.Apple)
         {
@@ -33,7 +33,7 @@ public class PaymentPublicFunction
             };
         }
 
-        throw new UnhandledException("The selected payment provider is not supported.");
+        throw new InvestigationException("The selected payment provider is not supported.");
     }
 
     [Function("StripeValidateSession")]
