@@ -81,13 +81,18 @@ namespace SD.WEB.Modules.Auth
 
         private async Task CancelAndLogout()
         {
-            await PrincipalApi.RemoveClerk(Cts.Token);
+            try
+            {
+                await PrincipalApi.RemoveClerk(Cts.Token);
+            }
+            finally
+            {
+                await JsRuntime.Clerk().SignOutAsync(Cts.Token);
 
-            await JsRuntime.Clerk().SignOutAsync(Cts.Token);
+                Navigation.NavigateTo($"/{Culture}");
 
-            Navigation.NavigateTo($"/{Culture}");
-
-            await JsRuntime.Utils().ClearAllStorage();
+                await JsRuntime.Utils().ClearAllStorage();
+            }
         }
     }
 }
