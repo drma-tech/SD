@@ -96,8 +96,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
     protected static bool IsSafeExternalUrl(string? url)
     {
-        return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
-               (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            && (string.Equals(uri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) || string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase));
     }
 
     public async Task OpenExternalWebsite(string? url)

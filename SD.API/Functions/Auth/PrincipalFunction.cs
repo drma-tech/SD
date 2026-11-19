@@ -125,6 +125,8 @@ public static class PrincipalHelper
         {
             await DeleteClerkUser(userId);
         }
+
+        //todo: delete stripe customer if exists
     }
 
     public static async Task DeleteClerkUser(string userId)
