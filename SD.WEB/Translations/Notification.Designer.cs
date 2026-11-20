@@ -88,7 +88,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This feature is under development..
+        ///   Looks up a localized string similar to This feature is currently under development..
         /// </summary>
         internal static string FeatureUnavailableMessage {
             get {
@@ -205,7 +205,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No data available.
+        ///   Looks up a localized string similar to No data to display.
         /// </summary>
         internal static string RenderControlNoData {
             get {
