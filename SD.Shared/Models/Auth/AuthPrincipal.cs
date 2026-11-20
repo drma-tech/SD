@@ -42,7 +42,7 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
 
     public void UpdateSubscription(AuthSubscription subscription, bool validateId = true)
     {
-        if (validateId && subscription.SubscriptionId.Empty()) throw new UnhandledException("subscription id is null");
+        if (validateId && subscription.SubscriptionId.Empty()) throw new InvestigationException("subscription id is null");
 
         var sub = Subscriptions.SingleOrDefault(sub => string.Equals(sub.SubscriptionId, subscription.SubscriptionId, StringComparison.Ordinal))
             ?? throw new NotificationException("Subscription not found.");
@@ -88,7 +88,7 @@ public class AuthSubscription : EqualityBase<AuthSubscription>
             PaymentProvider.Google => false,
             PaymentProvider.Apple => ExpiresDate.HasValue && ExpiresDate.Value.AddMinutes(5) > DateTimeOffset.UtcNow,
             PaymentProvider.Stripe => Active,
-            _ => throw new UnhandledException("invalid provider"),
+            _ => throw new InvestigationException("invalid provider"),
         };
     }
 

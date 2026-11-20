@@ -9,7 +9,7 @@
         <div style="text-align: center;" class="my-1">
             <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">@Translations.Button.RemoveAdvertising</MudLink>
         </div>
-        <div style="@($"height: 200px; text-align: center; align-content: center;")" class="@CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+        <div style="@($"height: 200px; text-align: center; align-content: center;")" class="@DivClass">
             Advertising
         </div>
     }
@@ -24,13 +24,13 @@
         @if (Network == AdNetwork.Adsense)
         {
             <div id="@_containerId" @key="@_containerId" style="text-align: center; align-content: center; max-height: 200px !important;"
-                 class="@CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+                 class="@DivClass">
             </div>
         }
         else if (Network == AdNetwork.Yandex)
         {
             <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")" @key="@_containerId" style="text-align: center; align-content: center; max-height: 200px !important;"
-                 class="@CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+                 class="@DivClass">
             </div>
         }
     }

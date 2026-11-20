@@ -96,8 +96,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
     protected static bool IsSafeExternalUrl(string? url)
     {
-        return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
-               (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            && (string.Equals(uri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) || string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase));
     }
 
     public async Task OpenExternalWebsite(string? url)
@@ -106,87 +106,39 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         {
             if (!IsSafeExternalUrl(url)) return;
 
-            var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
-
-            MarkupString ptMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>Você está saindo do {AppInfo.Title} e abrindo um site externo:</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            MarkupString esMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>Está saliendo de {AppInfo.Title} y abriendo un sitio web externo:</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            MarkupString enMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>You are leaving {AppInfo.Title} and opening an external website:</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            MarkupString zhMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>您即将离开 {AppInfo.Title} 并打开一个外部网站：</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            MarkupString frMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>Vous allez quitter {AppInfo.Title} et ouvrir un site web externe :</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            MarkupString itMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>Stai per uscire da {AppInfo.Title} e aprire un sito web esterno:</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            MarkupString deMessage = new($@"
-            <div style='text-align:left; line-height:1.5; font-size:14px;'>
-                <p>Sie verlassen {AppInfo.Title} und öffnen eine externe Website:</p>
-                <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
-                    {encodedUrl}
-                </div>
-            </div>");
-
-            var language = await AppStateStatic.GetAppLanguage(JsRuntime, Cts.Token);
-            var message = language switch
+            var parameters = new DialogParameters<ExternalWebsitePopup>
             {
-                AppLanguage.pt => ptMessage,
-                AppLanguage.es => esMessage,
-                AppLanguage.zh => zhMessage,
-                AppLanguage.fr => frMessage,
-                AppLanguage.it => itMessage,
-                AppLanguage.de => deMessage,
-                _ => enMessage,
+                { x => x.ExternalUrl, url! },
             };
 
-            bool? result = await DialogService.ShowMessageBoxAsync(Translations.Notification.ExternalWebsiteNotice, message, yesText: Translations.Button.ContinueWebsite, cancelText: Translations.Button.Cancel);
+            var dialog = await DialogService.ShowAsync<ExternalWebsitePopup>(
+                Translations.Notification.ExternalWebsiteTitle,
+                parameters,
+                PopupHelper.Options(MaxWidth.Small));
 
-            if (result == true)
+            var result = await dialog.Result;
+
+            if (result?.Data is true)
             {
-                await JsRuntime.Window().InvokeVoidAsync("open", Cts.Token, $"{url}?ref={AppInfo.Domain}.com", "_blank");
+                var targetUrl = AddReferralParameter(url!);
+                await JsRuntime.Window().InvokeVoidAsync("open", Cts.Token, targetUrl, "_blank");
             }
         }
         catch (Exception ex)
         {
             await ProcessException(ex);
         }
+    }
+
+    private static string AddReferralParameter(string url)
+    {
+        var uri = new UriBuilder(url);
+        var query = uri.Query.TrimStart('?');
+        var referral = $"ref={Uri.EscapeDataString($"{AppInfo.Domain}.com")}";
+
+        uri.Query = string.IsNullOrEmpty(query) ? referral : $"{query}&{referral}";
+
+        return uri.Uri.ToString();
     }
 
     #region notification module

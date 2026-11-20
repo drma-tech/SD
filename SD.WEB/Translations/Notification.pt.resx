@@ -120,7 +120,10 @@
   <data name="AdBlockerDetected" xml:space="preserve">
     <value>Bloqueador de anúncios detectado. Considere adicionar nosso aplicativo à lista de permissões para nos apoiar. Obrigado!</value>
   </data>
-  <data name="ExternalWebsiteNotice" xml:space="preserve">
+  <data name="ExternalWebsiteMessage" xml:space="preserve">
+    <value>Você está saindo de {0} e abrindo um site externo:</value>
+  </data>
+  <data name="ExternalWebsiteTitle" xml:space="preserve">
     <value>Aviso de site externo</value>
   </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">

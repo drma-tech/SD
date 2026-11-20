@@ -21,12 +21,12 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
     public async Task PostAppleWebhook(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/apple/webhook")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var body = await req.ReadFromJsonAsync<Dictionary<string, string>>(cancellationToken) ?? throw new UnhandledException("body null");
+        var body = await req.ReadFromJsonAsync<Dictionary<string, string>>(cancellationToken) ?? throw new InvestigationException("body null");
 
-        if (!body.TryGetValue("signedPayload", out var signedPayload)) throw new UnhandledException("signedPayload null");
+        if (!body.TryGetValue("signedPayload", out var signedPayload)) throw new InvestigationException("signedPayload null");
 
         var expectedEnvironment = hostEnvironment.IsProduction() ? "Production" : "Sandbox";
-        var appleConfig = ApiStartup.Configurations.Apple ?? throw new UnhandledException("Apple configuration missing");
+        var appleConfig = ApiStartup.Configurations.Apple ?? throw new InvestigationException("Apple configuration missing");
         var notification = AppleJwtDecoder.DecodeServerNotification(signedPayload, appleConfig, expectedEnvironment);
 
         var info = notification.Data;
@@ -37,7 +37,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
 
         var results = await repo.Query<AuthPrincipal>(MainType.Principal, x => x.Subscriptions.Any(p => p.SubscriptionId == originalTransactionId), transform: null, cancellationToken);
 
-        var client = results.LastOrDefault() ?? throw new UnhandledException($"client null - originalTransactionId:{originalTransactionId}");
+        var client = results.LastOrDefault() ?? throw new InvestigationException($"AuthPrincipal null - originalTransactionId:{originalTransactionId}");
         var sub = client.GetSubscription(originalTransactionId, PaymentProvider.Apple);
 
         if (string.Equals(notification.NotificationType, "REFUND", StringComparison.OrdinalIgnoreCase) || string.Equals(notification.NotificationType, "REVOKE", StringComparison.OrdinalIgnoreCase))
@@ -53,7 +53,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
             }
         }
 
-        var product = transaction.ProductId ?? throw new UnhandledException("product not available");
+        var product = transaction.ProductId ?? throw new InvestigationException("product not available");
         sub.Cycle = product.Contains("yearly", StringComparison.OrdinalIgnoreCase) ? AccountCycle.Yearly : AccountCycle.Monthly;
 
         client.UpdateSubscription(sub);
@@ -62,7 +62,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
         client.Events.Add(new Event("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Cycle = {sub.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {sub.ExpiresDate}", ip));
 
         await repo.UpsertItemAsync(client);
-        await SyncClerkAccountDeletionAsync(client.UserId ?? throw new UnhandledException("Apple subscription user id is missing"), client.GetActiveSubscription() is not null);
+        await SyncClerkAccountDeletionAsync(client.UserId ?? throw new InvestigationException("Apple subscription user id is missing"), client.GetActiveSubscription() is not null);
     }
 
     [Function("PostStripeWebhook")]
@@ -72,20 +72,20 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
         var json = await new StreamReader(req.Body).ReadToEndAsync(cancellationToken);
 
         req.Headers.TryGetValues("Stripe-Signature", out var Signature);
-        if (string.IsNullOrEmpty(Signature?.First())) throw new UnhandledException("Stripe signature missing");
-        var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new UnhandledException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
+        if (string.IsNullOrEmpty(Signature?.First())) throw new InvestigationException("Stripe signature missing");
+        var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new InvestigationException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
 
         if (stripeEvent.Type.StartsWith("customer.subscription", StringComparison.OrdinalIgnoreCase)) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
         {
-            if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new UnhandledException("stripe subscription not available");
+            if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new InvestigationException("stripe subscription not available");
 
             if (!obj.Metadata.TryGetValue(APP, out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
 
             if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
-                throw new UnhandledException("userId metadata missing in session");
+                throw new InvestigationException("userId metadata missing in session");
 
-            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new UnhandledException($"stripe webhook - principal is null - subscriptionId:{obj.Id}");
+            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException($"stripe webhook - principal is null - subscriptionId:{obj.Id}");
             var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
 
             sub.Active = obj.Status is "active" or "trialing";
@@ -108,7 +108,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
         }
         else if (string.Equals(stripeEvent.Type, "customer.deleted", StringComparison.OrdinalIgnoreCase))
         {
-            if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new UnhandledException("stripe customer not available");
+            if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new InvestigationException("stripe customer not available");
 
             if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
@@ -127,7 +127,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
                     return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken);
                 }
 
-                throw new UnhandledException("stripe customer id not available");
+                throw new InvestigationException("stripe customer id not available");
             }
 
             var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);

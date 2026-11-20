@@ -23,6 +23,7 @@ namespace SD.WEB.Shared
         [Parameter][SupplyParameterFromQuery(Name = "country")] public string? Country { get; set; }
         [Parameter][EditorRequired] public AdSlot Slot { get; set; }
         [Parameter] public string[] IgnoreRoutes { get; set; } = ["auth", "legal"];
+        [Parameter] public string DivClass { get; set; } = CssHelper.Build().Medium("mb").Raw("adsbygoogle custom-ad");
 
         private static bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 

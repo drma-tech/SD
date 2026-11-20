@@ -79,9 +79,16 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         {
             await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
         }
-        catch (UnauthorizedAccessException)
+        catch (UnauthorizedAccessException ex)
         {
-            await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+            if (string.Equals(ex.Message, "forbidden", StringComparison.OrdinalIgnoreCase))
+            {
+                await context.SetHttpResponseStatusCode(HttpStatusCode.Forbidden, "Forbidden");
+            }
+            else
+            {
+                await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+            }
         }
         catch (CosmosException ex)
         {

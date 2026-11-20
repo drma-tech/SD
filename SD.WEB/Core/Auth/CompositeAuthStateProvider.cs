@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace SD.WEB.Core.Auth
 {
@@ -36,6 +37,23 @@ namespace SD.WEB.Core.Auth
 
                 var avatar = claims.SingleOrDefault(c => string.Equals(c.Type, "avatar", StringComparison.OrdinalIgnoreCase))?.Value;
                 claims.Add(new Claim("avatar", avatar ?? ""));
+
+                var metadata = claims.SingleOrDefault(c => string.Equals(c.Type, "metadata", StringComparison.OrdinalIgnoreCase))?.Value;
+
+                if (metadata is not null)
+                {
+                    using var document = JsonDocument.Parse(metadata);
+
+                    if (document.RootElement.TryGetProperty("role", out var role))
+                    {
+                        var roleValue = role.GetString();
+
+                        if (!string.IsNullOrWhiteSpace(roleValue))
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, roleValue));
+                        }
+                    }
+                }
 
                 _currentUser = new(new ClaimsIdentity(claims, "clerk"));
             }

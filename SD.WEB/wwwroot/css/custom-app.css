@@ -287,6 +287,11 @@ body .pwa-updater[b-pwa-updater] {
     border: 1px solid var(--mud-palette-lines-default);
 }
 
+/*neutralize adsense manipulation*/
+.mud-dialog-container {
+    bottom: 0;
+}
+
 /* SUPPORT */
 
 p a {

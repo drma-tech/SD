@@ -20,7 +20,7 @@ public static class ExternalApiHelper
 
         var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+        if (!response.IsSuccessStatusCode) throw new InvestigationException(response.ReasonPhrase);
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
@@ -39,7 +39,7 @@ public static class ExternalApiHelper
         if (!response.IsSuccessStatusCode)
         {
             var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
-            throw new UnhandledException(responseContent);
+            throw new InvestigationException(responseContent);
         }
     }
 
@@ -57,7 +57,7 @@ public static class ExternalApiHelper
         if (!response.IsSuccessStatusCode)
         {
             var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
-            throw new UnhandledException(responseContent);
+            throw new InvestigationException(responseContent);
         }
     }
 
@@ -78,7 +78,7 @@ public static class ExternalApiHelper
         {
             if (response.StatusCode == HttpStatusCode.TooManyRequests) return null;
 
-            throw new UnhandledException(response.ReasonPhrase);
+            throw new InvestigationException(response.ReasonPhrase);
         }
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
@@ -98,7 +98,7 @@ public static class ExternalApiHelper
 
         var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+        if (!response.IsSuccessStatusCode) throw new InvestigationException(response.ReasonPhrase);
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
@@ -115,7 +115,7 @@ public static class ExternalApiHelper
 
         var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+        if (!response.IsSuccessStatusCode) throw new InvestigationException(response.ReasonPhrase);
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
@@ -134,7 +134,7 @@ public static class ExternalApiHelper
 
         var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+        if (!response.IsSuccessStatusCode) throw new InvestigationException(response.ReasonPhrase);
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
@@ -153,7 +153,7 @@ public static class ExternalApiHelper
 
         var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+        if (!response.IsSuccessStatusCode) throw new InvestigationException(response.ReasonPhrase);
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
@@ -172,7 +172,7 @@ public static class ExternalApiHelper
 
         var response = await http.SendAsync(request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+        if (!response.IsSuccessStatusCode) throw new InvestigationException(response.ReasonPhrase);
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }

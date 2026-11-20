@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Globalization;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace SD.API.Core.Auth;
 
@@ -65,6 +66,16 @@ public static class AuthUsersHelper
         return CultureInfo.GetCultureInfo(language);
     }
 
+    public static async Task ValidateAdminAsync(this HttpRequestData req)
+    {
+        var principal = await req.ParseAndValidateJwtAsync() ?? throw new UnauthorizedAccessException("unauthorized");
+
+        if (!principal.IsInRole("administrator"))
+        {
+            throw new UnauthorizedAccessException("forbidden");
+        }
+    }
+
     private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req)
     {
         if (req.Headers.TryGetValues("X-Clerk-Token", out var headerClerk))
@@ -92,6 +103,23 @@ public static class AuthUsersHelper
                     new("user_id", result.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))?.Value ?? ""),
                     new("email", result.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Email, StringComparison.OrdinalIgnoreCase))?.Value ?? ""),
                 };
+
+                var metadata = result.Claims.FirstOrDefault(c => string.Equals(c.Type, "metadata", StringComparison.OrdinalIgnoreCase))?.Value;
+
+                if (metadata is not null)
+                {
+                    using var document = JsonDocument.Parse(metadata);
+
+                    if (document.RootElement.TryGetProperty("role", out var role))
+                    {
+                        var roleValue = role.GetString();
+
+                        if (!string.IsNullOrWhiteSpace(roleValue))
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, roleValue));
+                        }
+                    }
+                }
 
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "clerk"));
             }
