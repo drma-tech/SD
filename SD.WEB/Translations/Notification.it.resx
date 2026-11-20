@@ -120,7 +120,10 @@
   <data name="AdBlockerDetected" xml:space="preserve">
     <value>È stato rilevato un blocco degli annunci. Aggiungi la nostra app alla lista dei consentiti per supportarci. Grazie!</value>
   </data>
-  <data name="ExternalWebsiteNotice" xml:space="preserve">
+  <data name="ExternalWebsiteMessage" xml:space="preserve">
+    <value>Stai uscendo da {0} e aprendo un sito web esterno:</value>
+  </data>
+  <data name="ExternalWebsiteTitle" xml:space="preserve">
     <value>Avviso sul sito web esterno</value>
   </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
