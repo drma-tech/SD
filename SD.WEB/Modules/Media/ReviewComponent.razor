@@ -24,7 +24,7 @@
                              Style="@($"line-height: normal; {(AppStateStatic.IsMobile ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">
                         @item?.quote
                     </MudText>
-                    <MudLink Href="@(IsSafeExternalUrl(item?.reviewUrl) ? item?.reviewUrl : null)" Target="_blank" rel="nofollow, noopener" Color="Color.Info"
+                    <MudLink OnClick="@(() => OpenExternalWebsite(item?.reviewUrl))" rel="nofollow" Color="Color.Info"
                              Style="@((AppStateStatic.IsMobile ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
                         Read full review
                     </MudLink>

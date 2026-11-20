@@ -227,7 +227,7 @@
             <MudItem xs="12">
                 <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Info" Dense="true">
                     @Translations.Module.Media.JustWatchAttribution
-                    <MudLink Href="https://www.justwatch.com" Target="_blank" rel="noopener noreferrer">JustWatch</MudLink>.
+                    <MudLink OnClick="@(() => OpenExternalWebsite("https://www.justwatch.com"))">JustWatch</MudLink>.
                 </MudAlert>
             </MudItem>
         </MudGrid>

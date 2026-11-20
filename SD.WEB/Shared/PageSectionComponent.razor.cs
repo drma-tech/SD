@@ -12,6 +12,7 @@ namespace SD.WEB.Shared
         [Parameter] public string? Subtitle { get; set; }
         [Parameter] public string? Description { get; set; }
         [Parameter] public string? Link { get; set; }
+        [Parameter] public EventCallback LinkClick { get; set; }
         [Parameter] public bool ShowHeader { get; set; } = true;
         [Parameter] public bool ShowActions { get; set; } = true;
         [Parameter] public string? UrlShare { get; set; }
