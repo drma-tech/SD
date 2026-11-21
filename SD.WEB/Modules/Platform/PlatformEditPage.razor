@@ -28,21 +28,6 @@
              CommittedItemChanges="RowUpdated" EditDialogOptions="new DialogOptions(){ FullWidth=true}">
     <Columns>
         <TemplateColumn>
-            @*  <ClearFilterCommandTemplate>
-                <Button Color="Color.Secondary" Clicked="@context.Clicked" >
-                    <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
-                </Button>
-            </ClearFilterCommandTemplate> *@
-            @*   <NewCommandTemplate>
-                <Button Color="Color.Success" Clicked="@context.Clicked" >
-                    <Blazorise.Icon Name="FontAwesomeIcons.Plus"></Blazorise.Icon>
-                </Button>
-            </NewCommandTemplate> *@
-            @*  <EditCommandTemplate>
-                <Button Color="Color.Primary" Clicked="@context.Clicked"  Margin="Margin.Is1.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Edit"></Blazorise.Icon>
-                </Button>
-            </EditCommandTemplate> *@
             <CellTemplate>
                 <div style="width: 115px;">
                     <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
@@ -50,16 +35,6 @@
                                    Href="@($"https://www.google.com/search?q=streaming+{context.Item.name}")" />
                 </div>
             </CellTemplate>
-            @*  <SaveCommandTemplate>
-                <Button Color="Color.Primary" Clicked="@context.Clicked"  Margin="Margin.Is1.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon>
-                </Button>
-            </SaveCommandTemplate> *@
-            @*   <CancelCommandTemplate>
-                <Button Color="Color.Secondary" Clicked="@context.Clicked" Margin="Margin.Is1.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Ban"></Blazorise.Icon>
-                </Button>
-            </CancelCommandTemplate> *@
         </TemplateColumn>
         <TemplateColumn>
             <CellTemplate>

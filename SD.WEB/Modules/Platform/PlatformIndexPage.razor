@@ -85,26 +85,6 @@ else
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Primary" Href="@($"/{Culture}/platform/{item.id}")" />
                             </MudCardActions>
                         </MudCard>
-                        <AuthorizeView Roles="administrator" Context="ctx">
-                            <Authorized>
-                                @*  @if (string.IsNullOrEmpty(item.link))
-                                {
-                                    <p class="m-0" style="color: red">link</p>
-                                } *@
-                                @*  @if (string.IsNullOrEmpty(item.description))
-                                {
-                                    <p class="m-0" style="color: red">description</p>
-                                } *@
-                                @if (item.models.Empty())
-                                {
-                                    <p class="m-0" style="color: red">model</p>
-                                }
-                                @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
-                                {
-                                    <p class="m-0" style="color: red">plan</p>
-                                } *@
-                            </Authorized>
-                        </AuthorizeView>
                     </div>
                 }
             </div>
