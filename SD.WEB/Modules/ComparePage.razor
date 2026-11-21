@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/compare"
 @inherits PageCore<ComparePage>
 
-<HeadComponent Title="@Translations.Title.Compare2" Description="@Translations.Description.Compare" Url=@($"/{Culture}/compare") Index="true"></HeadComponent>
+<HeadComponent Title="@Translations.Title.Compare2" FixedTitle="true" Description="@Translations.Description.Compare" Url=@($"/{Culture}/compare") Index="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@Translations.Title.Compare2" Description="@Translations.Description.Compare" CustomBodyClass="mb-12"></PageSectionComponent>
 
 @if (Language == AppLanguage.pt)

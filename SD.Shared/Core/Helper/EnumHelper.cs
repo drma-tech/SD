@@ -34,4 +34,19 @@ public static class EnumHelper
 
         throw new ArgumentException($"Invalid value: {value}", nameof(value));
     }
+
+    public static T? ParseToEnumNullable<T>(this string? value, T? fallback = null) where T : struct, Enum
+    {
+        if (Enum.TryParse<T>(value, ignoreCase: true, out var result) && Enum.IsDefined(result))
+        {
+            return result;
+        }
+
+        if (fallback.HasValue)
+        {
+            return fallback.Value;
+        }
+
+        return null;
+    }
 }

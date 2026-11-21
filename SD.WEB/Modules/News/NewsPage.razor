@@ -4,43 +4,51 @@
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<HeadComponent Title="@($"{Translations.Title.News} ({MediaType.GetFieldSettings().Name})")"
-               Description="@Translations.Description.News.CustomFormat(MediaType.GetFieldSettings().Name)" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.News} ({MediaType.GetFieldSettings().Name})")"
-                      Description="@Translations.Description.News.CustomFormat(MediaType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/news/{category}")" />
+<HeadComponent Title="@($"{Translations.Title.News} ({EnumType?.GetFieldSettings().Name})")"
+               Description="@Translations.Description.News.CustomFormat(EnumType?.GetFieldSettings().Name)" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
 
-<RenderControl State="State">
-    <div class="grid-relative-container-news">
-        @foreach (var item in NewsList?.Data?.Items ?? [])
-        {
-            <MudCard Style="position: relative;">
-                <MudCardMedia Image="@item.url_img" Height="300" />
-                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 8px; left: 8px; position: absolute; opacity: 0.75;">
-                    @item.date.Humanize()
-                </MudChip>
-                <MudButton Color="Color.Primary" OnClick="@(() => OpenExternalWebsite(item.link))"
-                           Style="top: 8px; right: 8px; position: absolute; opacity: 0.75;" Variant="Variant.Filled">
-                    @Translations.Button.ReadMore
-                </MudButton>
-                <MudCardContent Style="text-align: justify;" Class="pa-2">
-                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Align="Align.Center" Style="line-height: 1.5">
-                        @item.title
-                    </MudText>
-                    @* <div class="mt-2">
+@if (EnumType == null)
+{
+    <NotFoundComponent></NotFoundComponent>
+}
+else
+{
+    <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.News} ({EnumType?.GetFieldSettings().Name})")"
+                          Description="@Translations.Description.News.CustomFormat(EnumType?.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/news/{category}")" />
+
+    <RenderControl State="State">
+        <div class="grid-relative-container-news">
+            @foreach (var item in NewsList?.Data?.Items ?? [])
+            {
+                <MudCard Style="position: relative;">
+                    <MudCardMedia Image="@item.url_img" Height="300" />
+                    <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 8px; left: 8px; position: absolute; opacity: 0.75;">
+                        @item.date.Humanize()
+                    </MudChip>
+                    <MudButton Color="Color.Primary" OnClick="@(() => OpenExternalWebsite(item.link))"
+                               Style="top: 8px; right: 8px; position: absolute; opacity: 0.75;" Variant="Variant.Filled">
+                        @Translations.Button.ReadMore
+                    </MudButton>
+                    <MudCardContent Style="text-align: justify;" Class="pa-2">
+                        <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Align="Align.Center" Style="line-height: 1.5">
+                            @item.title
+                        </MudText>
+                        @* <div class="mt-2">
                         <MudText Typo="Typo.caption">@item.text</MudText>
                     </div> *@
-                </MudCardContent>
-            </MudCard>
-        }
-    </div>
-</RenderControl>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </div>
+    </RenderControl>
 
-<FloatingButton Template="Template.Back"></FloatingButton>
+    <FloatingButton Template="Template.Back"></FloatingButton>
+}
 
 @code {
     [Parameter] public required string category { get; set; }
 
-    public MediaType MediaType => category.ParseToEnum<MediaType>(MediaType.movie);
+    public MediaType? EnumType => category.ParseToEnumNullable<MediaType>();
 
     public RenderControlState<NewsCache?> State { get; set; } = new(null, obj => obj?.Data == null || obj.Data.Items.Empty());
     private NewsCache? NewsList { get; set; }

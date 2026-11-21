@@ -77,7 +77,7 @@ namespace SD.WEB.Shared
                     DisableLoadMore = lastPage2 || Items.Count >= 200;
                 }
 
-                if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", System.Globalization.CultureInfo.InvariantCulture)).ToHashSet();
+                if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", CultureInfo.InvariantCulture)).ToHashSet();
 
                 await ItemsChanged.InvokeAsync(Items);
             }
@@ -167,7 +167,7 @@ namespace SD.WEB.Shared
 
                 DisableLoadMore = lastPage || Items.Count >= 250;
 
-                if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", System.Globalization.CultureInfo.InvariantCulture)).ToHashSet();
+                if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",")[^1] ?? "0", CultureInfo.InvariantCulture)).ToHashSet();
 
                 await ItemsChanged.InvokeAsync(Items);
             }

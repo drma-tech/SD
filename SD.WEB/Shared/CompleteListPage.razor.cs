@@ -23,8 +23,8 @@ namespace SD.WEB.Shared
         public bool DetectRegions { get; set; }
 
         private EnumLists? List { get; set; }
-        private string Title => TitleHead ?? $"{List?.GetFieldSettings().Name?.CustomFormat(DateTime.Now.Year)}" ?? "Title Error";
-        private string Description => DescriptionHead ?? $"{List?.GetFieldSettings().Description?.CustomFormat(DateTime.Now.Year)}" ?? "Description Error";
+        private string Title => TitleHead.NotEmpty() ? TitleHead : $"{List?.GetFieldSettings().Name?.CustomFormat($"{DateTime.Now.Year} / {DateTime.Now.Year + 1}")}" ?? "Title Error";
+        private string Description => DescriptionHead.NotEmpty() ? DescriptionHead : $"{List?.GetFieldSettings().Description?.CustomFormat($"{DateTime.Now.Year} / {DateTime.Now.Year + 1}")}" ?? "Description Error";
 
         protected override void OnInitialized()
         {

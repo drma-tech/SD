@@ -6,28 +6,36 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<HeadComponent Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetFieldSettings().Name})")"
-               Description="@Translations.Description.PopularIndex.CustomFormat(PopularType.GetFieldSettings().Name)" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetFieldSettings().Name})")"
-                      Description="@Translations.Description.PopularIndex.CustomFormat(PopularType.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/popular/{Type}")" />
+<HeadComponent Title="@($"{Translations.Module.Media.Popular} ({EnumType?.GetFieldSettings().Name})")"
+               Description="@Translations.Description.PopularIndex.CustomFormat(EnumType?.GetFieldSettings().Name)" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
 
-@if (PopularType == PopularType.Movie)
+@if (EnumType == null)
 {
-    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.movie"
-                   FullPage="true" ShowHead="false" Culture="@Culture">
-    </MediaListFull>
+    <NotFoundComponent></NotFoundComponent>
 }
 else
 {
-    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.tv"
-                   FullPage="true" ShowHead="false" Culture="@Culture">
-    </MediaListFull>
+    <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Module.Media.Popular} ({EnumType.Value.GetFieldSettings().Name})")"
+                          Description="@Translations.Description.PopularIndex.CustomFormat(EnumType.Value.GetFieldSettings().Name)" UrlShare="@($"/{Culture}/popular/{Type}")" />
+
+    if (EnumType.Value == PopularType.Movie)
+    {
+        <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.movie"
+                       FullPage="true" ShowHead="false" Culture="@Culture">
+        </MediaListFull>
+    }
+    else
+    {
+        <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.tv"
+                       FullPage="true" ShowHead="false" Culture="@Culture">
+        </MediaListFull>
+    }
 }
 
 @code {
     [Parameter] public string? Type { get; set; }
 
-    public PopularType PopularType => Type.ParseToEnum<PopularType>(PopularType.Movie);
+    public PopularType? EnumType => Type.ParseToEnumNullable<PopularType>();
 
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
