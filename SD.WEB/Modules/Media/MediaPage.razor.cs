@@ -15,7 +15,7 @@ namespace SD.WEB.Modules.Media
 
         public string? TmdbId => id;
 
-        public MediaType? Type => type switch
+        public MediaType? TypeEnum => type switch
         {
             "movie" => MediaType.movie,
             "tv" => MediaType.tv,
@@ -38,7 +38,7 @@ namespace SD.WEB.Modules.Media
             return [
                 Culture,
                 TmdbId,
-                Type.ToString(),
+                TypeEnum.ToString(),
             ];
         }
 
@@ -50,7 +50,7 @@ namespace SD.WEB.Modules.Media
                 await State.StartLoading.Invoke(null);
 
                 var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, Cts.Token)).GetFieldSettings(translate: false).Name ?? "en-US";
-                Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, state: null, Cts.Token);
+                Media = await TmdbApi.GetMediaDetail(TmdbId, TypeEnum!.Value, lang, state: null, Cts.Token);
                 Media?.Videos = Media.Videos.Reverse();
 
                 await State.FinishLoading.Invoke(Media);
@@ -60,7 +60,7 @@ namespace SD.WEB.Modules.Media
                 if (Media != null && !string.Equals(Media.original_language, "en", StringComparison.OrdinalIgnoreCase))
                 {
                     //title must be in English
-                    var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", state: null, Cts.Token);
+                    var enMedia = await TmdbApi.GetMediaDetail(TmdbId, TypeEnum!.Value, "en-US", state: null, Cts.Token);
                     EnglishTitle = enMedia?.title;
                 }
 
@@ -75,7 +75,7 @@ namespace SD.WEB.Modules.Media
 
             try
             {
-                ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, Cts.Token);
+                ImdbId = await ExternalIdApi.GetImdbId(TypeEnum, TmdbId, Cts.Token);
 
                 if (Media?.MediaType == MediaType.movie)
                 {
@@ -93,7 +93,7 @@ namespace SD.WEB.Modules.Media
 
             try
             {
-                Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId, RecommendationsState, Cts.Token);
+                Recommendations = await TmdbRecommendationsApi.GetList(TypeEnum, TmdbId, RecommendationsState, Cts.Token);
             }
             catch (Exception ex)
             {
@@ -235,7 +235,7 @@ namespace SD.WEB.Modules.Media
                     item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, "", StringComparison.OrdinalIgnoreCase), collectionItemsCount, items);
                 }
 
-                Watching = await WatchingApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct, Cts.Token);
+                Watching = await WatchingApi.Add(TypeEnum, Watching, item, AppStateStatic.ActiveProduct, Cts.Token);
             }
             catch (Exception ex)
             {

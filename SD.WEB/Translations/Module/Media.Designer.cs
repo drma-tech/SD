@@ -196,7 +196,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stay updated with the latest releases on {0}, including newly launched movies and shows hitting the market..
+        ///   Looks up a localized string similar to Stay up to date with the latest releases on {0}, including new movies and TV shows..
         /// </summary>
         internal static string NewsDesc {
             get {
@@ -205,7 +205,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overview not available in your language.
+        ///   Looks up a localized string similar to No overview is available in your selected language..
         /// </summary>
         internal static string NoPlot {
             get {
@@ -232,7 +232,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This platform is not for watching movies or series..
+        ///   Looks up a localized string similar to This platform is for managing your streaming services, not for watching movies or TV shows..
         /// </summary>
         internal static string PlatformForManaging {
             get {
@@ -250,7 +250,7 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore the most popular movies and TV shows on {0}, ranked by audience interest and trending buzz this week..
+        ///   Looks up a localized string similar to Explore the most popular movies and TV shows on {0}, based on audience interest and current trends..
         /// </summary>
         internal static string PopularDesc {
             get {

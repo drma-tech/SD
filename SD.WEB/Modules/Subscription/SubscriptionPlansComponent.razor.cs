@@ -36,42 +36,10 @@ namespace SD.WEB.Modules.Subscription
 
                 if (AppStateStatic.IsAuthenticated)
                 {
-                    var priceId = Config?.GetPriceId(AccountProduct.Premium, Cycle);
-
-                    if (priceId.Empty())
+                    bool flowControl = await ProcessAuthenticated();
+                    if (!flowControl)
                     {
-                        await ShowWarning($"Price not available for {AccountProduct.Premium.GetFieldSettings().Name}");
-                        _processing = false; StateHasChanged();
                         return;
-                    }
-
-                    if (Provider == PaymentProvider.Paddle)
-                    {
-                        await ShowWarning($"Provider not available: {Provider.GetFieldSettings().Name}");
-                        _processing = false; StateHasChanged();
-                    }
-                    else if (Provider == PaymentProvider.Apple)
-                    {
-                        await JsRuntime.Payments().AppleOpenCheckout(priceId, Cts.Token);
-                    }
-                    else if (Provider == PaymentProvider.Google)
-                    {
-                        await JsRuntime.Payments().GoogleOpenCheckout(priceId, "type", Cts.Token);
-                    }
-                    else if (Provider == PaymentProvider.Stripe)
-                    {
-                        if (Client != null && Client.StripeCustomerId.Empty())
-                        {
-                            Client = await PrincipalApi.StripeCustomer(Cts.Token);
-                        }
-
-                        //create session and redirect to checkout
-                        await JsRuntime.Payments().StripeOpenCheckout(priceId, Cts.Token);
-                    }
-                    else
-                    {
-                        await ShowWarning($"Provider not implemented: {Provider.GetFieldSettings().Name}");
-                        _processing = false; StateHasChanged();
                     }
                 }
                 else
@@ -90,6 +58,49 @@ namespace SD.WEB.Modules.Subscription
                 await Task.Delay(5000, Cts.Token);
                 _processing = false;
             }
+        }
+
+        private async Task<bool> ProcessAuthenticated()
+        {
+            var priceId = Config?.GetPriceId(AccountProduct.Premium, Cycle);
+
+            if (priceId.Empty())
+            {
+                await ShowWarning($"Price not available for {AccountProduct.Premium.GetFieldSettings().Name}");
+                _processing = false; StateHasChanged();
+                return false;
+            }
+
+            if (Provider == PaymentProvider.Paddle)
+            {
+                await ShowWarning($"Provider not available: {Provider.GetFieldSettings().Name}");
+                _processing = false; StateHasChanged();
+            }
+            else if (Provider == PaymentProvider.Apple)
+            {
+                await JsRuntime.Payments().AppleOpenCheckout(priceId, Cts.Token);
+            }
+            else if (Provider == PaymentProvider.Google)
+            {
+                await JsRuntime.Payments().GoogleOpenCheckout(priceId, "type", Cts.Token);
+            }
+            else if (Provider == PaymentProvider.Stripe)
+            {
+                if (Client != null && Client.StripeCustomerId.Empty())
+                {
+                    Client = await PrincipalApi.StripeCustomer(Cts.Token);
+                }
+
+                //create session and redirect to checkout
+                await JsRuntime.Payments().StripeOpenCheckout(priceId, Cts.Token);
+            }
+            else
+            {
+                await ShowWarning($"Provider not implemented: {Provider.GetFieldSettings().Name}");
+                _processing = false; StateHasChanged();
+            }
+
+            return true;
         }
     }
 }

@@ -19,8 +19,8 @@ namespace SD.WEB.Modules.Collections
 
         [Parameter] public bool Franchise { get; set; }
 
-        private RenderControlState<TmdbCollection?> State { get; } = new(null, obj => obj == null || obj.parts.Empty());
-        private TmdbCollection? Collection { get; set; }
+        private RenderControlState<TmdbSeasonFranchise?> State { get; } = new(null, obj => obj == null || obj.parts.Empty());
+        private TmdbSeasonFranchise? Collection { get; set; }
         private string Culture => Navigation.GetCulture();
 
         protected override void OnInitialized()
@@ -61,7 +61,7 @@ namespace SD.WEB.Modules.Collections
             {
                 var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv, lang, state: null, Cts.Token);
 
-                Collection = new TmdbCollection
+                Collection = new TmdbSeasonFranchise
                 {
                     id = int.Parse(show?.tmdb_id ?? "0", CultureInfo.InvariantCulture),
                     name = show?.title ?? "error",
@@ -113,7 +113,7 @@ namespace SD.WEB.Modules.Collections
                 new EventCallbackFactory().Create(this, async (ISet<string> list) => await SelectedItemsChanged(Type, Collection, CollectionId, list, Collection?.parts.Count ?? 0)));
         }
 
-        private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdbId, ISet<string> items, int collectionItemsCount)
+        private async Task SelectedItemsChanged(MediaType? type, TmdbSeasonFranchise? collection, string? tmdbId, ISet<string> items, int collectionItemsCount)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             ArgumentNullException.ThrowIfNull(collection);

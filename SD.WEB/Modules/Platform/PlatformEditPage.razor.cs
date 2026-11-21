@@ -58,11 +58,11 @@ namespace SD.WEB.Modules.Platform
                         };
 
                         using var http = new HttpClient();
-                        var movies = await http.GetFromJsonAsync(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, Cts.Token);
+                        var movies = await http.GetFromJsonAsync(TmdbOptions.BaseUri3 + "watch/providers/movie".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, Cts.Token);
                         movies?.results.RemoveAll(r => blocked_providers.Exists(k => r.provider_name.NotEmpty() && r.provider_name.Contains(k, StringComparison.InvariantCultureIgnoreCase)));
                         if (movies != null) AddProvider(result, movies.results, details, region, MediaType.movie);
 
-                        var tvs = await http.GetFromJsonAsync(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, Cts.Token);
+                        var tvs = await http.GetFromJsonAsync(TmdbOptions.BaseUri3 + "watch/providers/tv".ConfigureParameters(parameter), JavascriptContext.Default.TMDB_AllProviders, Cts.Token);
                         tvs?.results.RemoveAll(r => blocked_providers.Exists(k => r.provider_name.NotEmpty() && r.provider_name.Contains(k, StringComparison.InvariantCultureIgnoreCase)));
                         if (tvs != null) AddProvider(result, tvs.results, details, region, MediaType.tv);
                     }
@@ -172,9 +172,9 @@ namespace SD.WEB.Modules.Platform
             {
                 foreach (var sitetag in metaTags)
                 {
-                    if (sitetag.Attributes["name"] != null && sitetag.Attributes["content"] != null && sitetag.Attributes["name"].Value.Contains("description", StringComparison.OrdinalIgnoreCase))
+                    if (sitetag.Attributes["name"] != null && sitetag.Attributes["content"] != null && sitetag.Attributes["name"]!.Value!.Contains("description", StringComparison.OrdinalIgnoreCase))
                     {
-                        var content = sitetag.Attributes["content"].Value;
+                        var content = sitetag.Attributes["content"]!.Value;
 
                         if (string.IsNullOrEmpty(content)) return "The description is empty.";
 

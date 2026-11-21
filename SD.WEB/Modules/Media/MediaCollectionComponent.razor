@@ -54,7 +54,7 @@
     [Parameter] public WishList? Wish { get; set; }
     [Parameter] public string? TmdbId { get; set; }
 
-    private async Task CollectionClicked(Collection? item)
+    private async Task CollectionClicked(SeasonFranchise? item)
     {
         if (TmdbId == item?.id) return;
 
@@ -73,7 +73,7 @@
         Navigation.NavigateTo($"/{Culture}/media/{type}/{tmdb_id}");
     }
 
-    private async Task OpenPopupSeason(Collection? collection)
+    private async Task OpenPopupSeason(SeasonFranchise? collection)
     {
         await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
     }

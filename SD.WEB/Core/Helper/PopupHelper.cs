@@ -135,17 +135,17 @@ public static class PopupHelper
         await service.ShowAsync<PlatformPopup>(provider?.name, parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task SelectItemsCollection(this IDialogService service, ICollection<Collection> items, ISet<string> selectedItems,
+    public static async Task SelectItemsCollection(this IDialogService service, ICollection<SeasonFranchise> items, ISet<string> selectedItems,
         EventCallback<ISet<string>> itemsChanged)
     {
-        var parameters = new DialogParameters<SelectItemsCollection>
+        var parameters = new DialogParameters<SelectItemsSeasonFrainchise>
         {
             { x => x.ItemsCollection, items },
             { x => x.SelectedItems, selectedItems },
             { x => x.SelectedItemsChanged, itemsChanged },
         };
 
-        await service.ShowAsync<SelectItemsCollection>(Translations.Module.Profile.WhatHaveYouWatched, parameters, Options(MaxWidth.Small));
+        await service.ShowAsync<SelectItemsSeasonFrainchise>(Translations.Module.Profile.WhatHaveYouWatched, parameters, Options(MaxWidth.Small));
     }
 
     public static async Task SeasonPopup(this IDialogService service, string? showTitle, string? showSeasonName, string? tmdbId, int? seasonNumber)

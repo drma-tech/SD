@@ -25,7 +25,7 @@ namespace SD.WEB.Core.Context
     [JsonSerializable(typeof(MetaCriticCache))]
     [JsonSerializable(typeof(FranchiseCache))]
     [JsonSerializable(typeof(MostPopularDataCache))]
-    [JsonSerializable(typeof(CustomListNew))]
+    [JsonSerializable(typeof(CustomList))]
     internal sealed partial class ApiContext : JsonSerializerContext
     {
     }

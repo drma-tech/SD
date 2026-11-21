@@ -53,7 +53,7 @@ else
     {
         return new Dictionary<string, string> {
             { "sort_by", "popularity.desc" },
-            { "watch_region", RegionEnum.ToString().ToLower() },
+            { "watch_region", RegionEnum?.ToString().ToLower() ?? Country.US.ToString().ToLower() },
             { "with_watch_monetization_types", "ads|free" },
             { "vote_average.gte", "6.5" },
             { TypeEnum == MediaType.movie ? "primary_release_date.gte" : "first_air_date.gte", "1980-01-01" }

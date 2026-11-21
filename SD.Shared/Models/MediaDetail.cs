@@ -21,7 +21,7 @@ public class MediaDetail : EqualityBase<MediaDetail>
 
     public IEnumerable<Video> Videos { get; set; } = [];
     public IEnumerable<string> Genres { get; set; } = [];
-    public ICollection<Collection> Collection { get; set; } = [];
+    public ICollection<SeasonFranchise> Collection { get; set; } = [];
 
     public MediaType MediaType { get; set; }
 
@@ -36,7 +36,7 @@ public class Video
     public string? type { get; set; }
 }
 
-public class Collection
+public class SeasonFranchise
 {
     public string? id { get; set; }
     public int? SeasonNumber { get; set; }

@@ -37,7 +37,7 @@
                     @Translations.Button.AddWishlist
                 </MudButton>
             }
-            @if (Watching?.Contains(Type, Watching.GetItem(Type, TmdbId ?? "")) ?? false)
+            @if (Watching?.Contains(TypeEnum, Watching.GetItem(TypeEnum, TmdbId ?? "")) ?? false)
             {
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2">
                     @Translations.Button.Unfollow
@@ -57,13 +57,13 @@
     <ChildContent>
         <PageSectionComponent Title="@Translations.Module.Media.TabAbout" Color="Color.Secondary">
             <BodyFragment>
-                <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
+                <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="TypeEnum"
                             State="RatingsState" RatingsCache="_ratingsCache"></MediaAboutComponent>
             </BodyFragment>
         </PageSectionComponent>
         <PageSectionComponent Title="@($"{Translations.Module.Media.WhereToWatch} ({Region?.GetFieldSettings().Name})")" Color="Color.Secondary">
             <BodyFragment>
-                <MediaWhereToWatchComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatchComponent>
+                <MediaWhereToWatchComponent TmdbId="@TmdbId" Type="@TypeEnum" ReleaseDate="@Media?.release_date"></MediaWhereToWatchComponent>
             </BodyFragment>
         </PageSectionComponent>
 
@@ -72,13 +72,13 @@
         <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.Module.Media.TabCollection1 : Translations.Module.Media.TabCollection2)" Color="Color.Secondary"
                               Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
-                <MediaCollectionComponent Culture="@Culture" Type="@Type" Media="@Media" Wish="@Wish" TmdbId="@TmdbId"></MediaCollectionComponent>
+                <MediaCollectionComponent Culture="@Culture" Type="@TypeEnum" Media="@Media" Wish="@Wish" TmdbId="@TmdbId"></MediaCollectionComponent>
             </BodyFragment>
         </PageSectionComponent>
 
         <PageSectionComponent Title="@Translations.Module.Landing.Keywords" Color="Color.Secondary">
             <BodyFragment>
-                <KeywordsComponent Culture="@Culture" TmdbId="@TmdbId" Type="@Type"></KeywordsComponent>
+                <KeywordsComponent Culture="@Culture" TmdbId="@TmdbId" Type="@TypeEnum"></KeywordsComponent>
             </BodyFragment>
         </PageSectionComponent>
 
@@ -125,7 +125,7 @@
 
         <PageSectionComponent Title="@Translations.Module.Media.TabCredits" Color="Color.Secondary">
             <BodyFragment>
-                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchingList="Watching" WishList="Wish" Culture="@Culture">
+                <CreditsComponent TmdbId="@TmdbId" Type="@TypeEnum" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                 </CreditsComponent>
             </BodyFragment>
         </PageSectionComponent>
@@ -135,7 +135,7 @@
                 @if (ImdbId.NotEmpty())
                 {
                     <ReviewComponent ImdbId="@ImdbId" EnglishTitle="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
-                                     Type="@Type" ReleaseDate="@Media?.release_date">
+                                     Type="@TypeEnum" ReleaseDate="@Media?.release_date">
                     </ReviewComponent>
                 }
             </BodyFragment>

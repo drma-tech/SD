@@ -14,11 +14,11 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
     [Function("ClearExpectedMovies")]
     public async Task ClearExpectedMovies([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/clear-expected-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var cacheKey = $"{TmdbOptions.BaseUriNew}list/{(int)EnumLists.ExpectedMovieOfYear}";
+        var cacheKey = $"{TmdbOptions.BaseUri4}list/{(int)EnumLists.ExpectedMovieOfYear}";
         var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
         var client = factory.CreateClient("tmdb");
 
-        var result = await client.GetdTmdbList<CustomListNew>(cacheKey, tmdbWriteToken, cancellationToken);
+        var result = await client.GetdTmdbList<CustomList>(cacheKey, tmdbWriteToken, cancellationToken);
 
         foreach (var item in result?.results ?? [])
         {
@@ -70,11 +70,11 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 
             foreach (var movie in doc.Movies.ToList())
             {
-                var uri = TmdbOptions.BaseUri + "collection/" + movie.id!.ConfigureParameters(parameters);
+                var uri = TmdbOptions.BaseUri3 + "collection/" + movie.id!.ConfigureParameters(parameters);
 
                 try
                 {
-                    var collection = await client.GetJsonFromApi<TmdbCollection>(uri, cancellationToken);
+                    var collection = await client.GetJsonFromApi<TmdbSeasonFranchise>(uri, cancellationToken);
 
                     if (collection!.parts.Count > movie.maxItems) //there is new movie in the franchise, update it
                     {
@@ -101,7 +101,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 
             foreach (var show in doc.Shows)
             {
-                var uri = TmdbOptions.BaseUri + "tv/" + show.id!.ConfigureParameters(parameters);
+                var uri = TmdbOptions.BaseUri3 + "tv/" + show.id!.ConfigureParameters(parameters);
                 var media = await client.GetJsonFromApi<TVDetail>(uri, cancellationToken);
 
                 if (media!.seasons.Count > show.maxItems) //there is new season in the show, update it

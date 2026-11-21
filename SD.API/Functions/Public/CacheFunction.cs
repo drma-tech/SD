@@ -382,13 +382,13 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         if (data == null) return;
         if (tmdbId.Empty()) return;
 
-        var movieUrl = $"{TmdbOptions.BaseUri}movie/{tmdbId.ConfigureParameters(parameter)}";
+        var movieUrl = $"{TmdbOptions.BaseUri3}movie/{tmdbId.ConfigureParameters(parameter)}";
         var movie = await client.GetJsonFromApi<MovieDetail>(movieUrl, cancellationToken);
 
         if (movie?.belongs_to_collection != null)
         {
-            var collectionUrl = $"{TmdbOptions.BaseUri}collection/{movie?.belongs_to_collection.id.ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
-            var collection = await client.GetJsonFromApi<TmdbCollection>(collectionUrl, cancellationToken) ?? throw new NotificationException("Failed to retrieve collection data");
+            var collectionUrl = $"{TmdbOptions.BaseUri3}collection/{movie?.belongs_to_collection.id.ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
+            var collection = await client.GetJsonFromApi<TmdbSeasonFranchise>(collectionUrl, cancellationToken) ?? throw new NotificationException("Failed to retrieve collection data");
 
             data.FranchiseItems.Add(new FranchiseItem
             {
