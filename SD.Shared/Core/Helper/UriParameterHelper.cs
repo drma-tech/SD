@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace SD.Shared.Core.Helper;
+namespace SD.Common.Core.Helper;
 
 public static class UriParameterHelper
 {

@@ -1,4 +1,4 @@
-﻿using SD.Shared.Models.Auth;
+﻿using SD.Common.Models.Auth;
 using SD.WEB.Api.Core;
 
 namespace SD.WEB.Api.Modules.Cosmos.Authenticated

@@ -45,7 +45,7 @@
                 </MudGrid>
                 @if (Provider == PaymentProvider.Microsoft)
                 {
-                    if (Platform == SD.Shared.Enums.Platform.windows)
+                    if (Platform == SD.Common.Enums.Platform.windows)
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
                             Microsoft subscriptions are not available yet. Stay tuned for updates.
@@ -60,7 +60,7 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    if (Platform == SD.Shared.Enums.Platform.ios)
+                    if (Platform == SD.Common.Enums.Platform.ios)
                     {
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="@CssHelper.Build().Small("mb")">
                             Apple subscriptions are currently in testing. If you encounter any issues, please contact us through the in-app feedback form or by email. We’re happy to help.
@@ -77,7 +77,7 @@
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
-                    if (Platform == SD.Shared.Enums.Platform.play)
+                    if (Platform == SD.Common.Enums.Platform.play)
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
                             Google Play subscriptions are not available yet. Stay tuned for updates.
@@ -96,7 +96,7 @@
                 }
                 else if (Provider == PaymentProvider.Stripe)
                 {
-                    @if (Platform == SD.Shared.Enums.Platform.amazon)
+                    @if (Platform == SD.Common.Enums.Platform.amazon)
                     {
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
                             @($"Unfortunately, due to legal and policy restrictions, our services are not available on Amazon devices.")

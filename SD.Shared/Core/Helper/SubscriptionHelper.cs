@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core.Helper;
+﻿namespace SD.Common.Core.Helper;
 
 //todo: this validations need to be called also from api
 public static class SubscriptionHelper

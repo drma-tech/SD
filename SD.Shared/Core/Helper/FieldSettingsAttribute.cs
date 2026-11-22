@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core.Helper;
+﻿namespace SD.Common.Core.Helper;
 
 [AttributeUsage(AttributeTargets.Field)]
 public class FieldSettingsAttribute(string name) : Attribute

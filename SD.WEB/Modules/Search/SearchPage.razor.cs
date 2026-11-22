@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using SD.Common.Core.Helper;
+using SD.Common.Enums;
+using SD.Common.Models;
 using System.Globalization;
 
 namespace SD.WEB.Modules.Search

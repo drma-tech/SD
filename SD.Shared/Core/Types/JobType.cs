@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core.Types
+﻿namespace SD.Common.Core.Types
 {
     public enum JobType
     {

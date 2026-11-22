@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Enums;
+﻿namespace SD.Common.Enums;
 
 /// <summary>
 ///     https://developer.themoviedb.org/reference/watch-providers-available-regions

@@ -1,10 +1,10 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.Shared.Models.Subscription;
+using SD.Common.Models.Subscription;
 using Stripe.Checkout;
 using System.Net;
 
-namespace SD.API.Functions.Public;
+namespace SD.API.Functions.Anonymous;
 
 public class PaymentPublicFunction
 {

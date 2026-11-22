@@ -2,12 +2,12 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Functions.Auth;
-using SD.Shared.Core.Types;
-using SD.Shared.Models.Auth;
-using SD.Shared.Models.List.Tmdb;
+using SD.Common.Core.Types;
+using SD.Common.Models.Auth;
+using SD.Common.Models.List.Tmdb;
 using System.Globalization;
 
-namespace SD.API.Functions.Public;
+namespace SD.API.Functions.Anonymous;
 
 public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 {

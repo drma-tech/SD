@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core.Helper
+﻿namespace SD.Common.Core.Helper
 {
     public sealed class EnumFieldObject<T>(string name, T value) where T : Enum
     {

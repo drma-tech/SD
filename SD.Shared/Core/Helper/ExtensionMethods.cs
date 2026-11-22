@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace SD.Shared.Core.Helper;
+namespace SD.Common.Core.Helper;
 
 public static class ExtensionMethods
 {

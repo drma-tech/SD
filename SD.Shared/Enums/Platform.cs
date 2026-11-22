@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Enums
+﻿namespace SD.Common.Enums
 {
     [Flags]
     public enum Platform

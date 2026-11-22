@@ -38,7 +38,7 @@
 		<PackageReference Include="Toolbelt.Blazor.PWA.Updater" Version="3.2.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\SD.Shared\SD.Shared.csproj" />
+		<ProjectReference Include="..\SD.Shared\SD.Common.csproj" />
 		<TrimmerRootAssembly Include="SD.WEB" />
 		<TrimmerRootAssembly Include="SD.Shared" />
 	</ItemGroup>

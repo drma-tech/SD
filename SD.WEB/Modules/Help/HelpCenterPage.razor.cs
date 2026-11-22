@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Help
 {
     public partial class HelpCenterPage
     {
-        private SD.Shared.Enums.Platform? CurrentPlatform;
+        private Common.Enums.Platform? CurrentPlatform;
         private bool DarkMode;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

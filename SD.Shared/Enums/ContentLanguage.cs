@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Enums;
+﻿namespace SD.Common.Enums;
 
 /// <summary>
 ///     https://developers.themoviedb.org/3/configuration/get-primary-translations

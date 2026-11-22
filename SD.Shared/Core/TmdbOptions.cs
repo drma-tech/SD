@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core;
+﻿namespace SD.Common.Core;
 
 /// <summary>
 /// this API is free, so it's not a big problem to expose this data///

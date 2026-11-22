@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.Franchise;
+﻿namespace SD.Common.Models.Franchise;
 
 public class FranchiseCache(string id, FranchiseData data) : CacheDocumentData<FranchiseData>(new CacheIdentity(id), data, TtlCache.NeverExpire);
 

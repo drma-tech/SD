@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SD.Shared.Models.List;
+namespace SD.Common.Models.List;
 
 public class Audience
 {

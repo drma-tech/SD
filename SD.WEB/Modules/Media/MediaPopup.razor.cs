@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using SD.Shared.Models.List;
+using SD.Common.Models.List;
 using System.Globalization;
 
 namespace SD.WEB.Modules.Media

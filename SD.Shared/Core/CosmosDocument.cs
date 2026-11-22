@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core;
+﻿namespace SD.Common.Core;
 
 using Json = System.Text.Json.Serialization;
 using Nsoft = Newtonsoft.Json;

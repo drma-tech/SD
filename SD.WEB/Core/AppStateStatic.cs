@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using SD.Shared.Models.Auth;
-using SD.Shared.Models.List.Tmdb;
+using SD.Common.Models.Auth;
+using SD.Common.Models.List.Tmdb;
 using System.Security.Claims;
 
 namespace SD.WEB.Core;

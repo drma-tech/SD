@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using SD.Shared.Models.Auth;
+using SD.Common.Models.Auth;
 
 namespace SD.WEB.Modules.Subscription
 {
@@ -12,7 +12,7 @@ namespace SD.WEB.Modules.Subscription
         private List<PaymentProvider> Providers { get; set; } = [];
 
         private AccountCycle Cycle { get; set; } = AccountCycle.Yearly;
-        private SD.Shared.Enums.Platform? Platform { get; set; }
+        private Common.Enums.Platform? Platform { get; set; }
         private PaymentProvider Provider { get; set; } = PaymentProvider.Stripe;
         private string? CurrentCountry { get; set; }
         private bool BlockedCountry { get; set; }
@@ -67,7 +67,7 @@ namespace SD.WEB.Modules.Subscription
 
             Platform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);
 
-            if (Platform == SD.Shared.Enums.Platform.ios)
+            if (Platform == Common.Enums.Platform.ios)
             {
                 var isMobileApp = await JsRuntime.Utils().GetStorage("is-mobile-app", JavascriptContext.Default.Boolean, Cts.Token);
 

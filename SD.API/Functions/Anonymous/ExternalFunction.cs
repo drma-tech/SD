@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
 using System.Net;
 
-namespace SD.API.Functions.Public;
+namespace SD.API.Functions.Anonymous;
 
 public class ExternalFunction(IHttpClientFactory factory)
 {

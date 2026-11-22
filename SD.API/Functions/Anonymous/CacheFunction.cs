@@ -2,19 +2,19 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using SD.API.Core.Scraping;
-using SD.Shared.Models.Franchise;
-using SD.Shared.Models.List;
-using SD.Shared.Models.List.Imdb;
-using SD.Shared.Models.List.Tmdb;
-using SD.Shared.Models.News;
-using SD.Shared.Models.Popular;
-using SD.Shared.Models.Reviews;
-using SD.Shared.Models.Trailers;
+using SD.Common.Models.Franchise;
+using SD.Common.Models.List;
+using SD.Common.Models.List.Imdb;
+using SD.Common.Models.List.Tmdb;
+using SD.Common.Models.News;
+using SD.Common.Models.Popular;
+using SD.Common.Models.Reviews;
+using SD.Common.Models.Trailers;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace SD.API.Functions;
+namespace SD.API.Functions.Anonymous;
 
 public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache cache, IHttpClientFactory factory)
 {

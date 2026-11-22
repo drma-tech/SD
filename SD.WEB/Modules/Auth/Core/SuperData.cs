@@ -1,4 +1,4 @@
-﻿using SD.Shared.Models.Auth;
+using SD.Common.Models.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {

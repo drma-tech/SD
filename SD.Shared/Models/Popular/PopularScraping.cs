@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.Popular
+﻿namespace SD.Common.Models.Popular
 {
     public class ProductionCompany
     {

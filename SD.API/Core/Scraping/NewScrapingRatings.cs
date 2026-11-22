@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.Functions.Worker.Http;
-using SD.Shared.Models.List;
+using SD.Common.Models.List;
 using System.Globalization;
 
 namespace SD.API.Core.Scraping
@@ -105,7 +105,7 @@ namespace SD.API.Core.Scraping
                 if (!canProcess) return;
 
                 var client = factory.CreateClient("rapidapi");
-                var result = await client.GetMoviesRatings2<Shared.Models.List.MoviesRatings2.Root>(ratings.imdbId, cancellationToken);
+                var result = await client.GetMoviesRatings2<Common.Models.List.MoviesRatings2.Root>(ratings.imdbId, cancellationToken);
 
                 ratings.imdb ??= result?.ratings?.imdb?.score?.ToString(CultureInfo.InvariantCulture);
                 ratings.imdbLink ??= result?.ratings?.imdb?.url;

@@ -1,9 +1,9 @@
-﻿using SD.Shared.Models.Franchise;
-using SD.Shared.Models.List;
-using SD.Shared.Models.List.Imdb;
-using SD.Shared.Models.News;
-using SD.Shared.Models.Reviews;
-using SD.Shared.Models.Trailers;
+﻿using SD.Common.Models.Franchise;
+using SD.Common.Models.List;
+using SD.Common.Models.List.Imdb;
+using SD.Common.Models.News;
+using SD.Common.Models.Reviews;
+using SD.Common.Models.Trailers;
 using SD.WEB.Api.Core;
 using System.Globalization;
 

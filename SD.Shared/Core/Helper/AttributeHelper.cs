@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 
-namespace SD.Shared.Core.Helper
+namespace SD.Common.Core.Helper
 {
     public static class AttributeHelper
     {

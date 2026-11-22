@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
-using SD.Shared.Core.Types;
+using SD.Common.Core.Types;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SD.Shared.Models.Auth;
+namespace SD.Common.Models.Auth;
 
 public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.Principal, id))
 {

@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.Subscription;
+namespace SD.Common.Models.Subscription;
 
 public class PaymentConfigurations
 {

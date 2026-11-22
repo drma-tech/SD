@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.News;
+namespace SD.Common.Models.News;
 
 public class NewsCache(string id, NewsModel data) : CacheDocumentData<NewsModel>(new CacheIdentity(id), data, TtlCache.HalfDay)
 {

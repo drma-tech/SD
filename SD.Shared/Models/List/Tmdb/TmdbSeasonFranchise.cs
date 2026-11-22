@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SD.Shared.Models.List.Tmdb;
+namespace SD.Common.Models.List.Tmdb;
 
 public class Part
 {

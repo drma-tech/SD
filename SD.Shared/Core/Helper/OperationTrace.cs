@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 
-namespace SD.Shared.Core.Helper
+namespace SD.Common.Core.Helper
 {
     public sealed class OperationTrace
     {

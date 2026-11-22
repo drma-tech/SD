@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.List.Imdb;
+﻿namespace SD.Common.Models.List.Imdb;
 
 public class MostPopularDataCache(string id, MostPopularData data) : CacheDocumentData<MostPopularData>(new CacheIdentity(id), data, TtlCache.TwoDays)
 {

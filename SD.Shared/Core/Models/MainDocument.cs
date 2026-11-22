@@ -1,6 +1,6 @@
-﻿using SD.Shared.Core.Types;
+﻿using SD.Common.Core.Types;
 
-namespace SD.Shared.Core.Models;
+namespace SD.Common.Core.Models;
 
 public readonly record struct MainIdentity(MainType Type, string? DocId) : ICosmosIdentity
 {

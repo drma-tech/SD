@@ -152,9 +152,9 @@
         <MudGrid Spacing="@CssHelper.SpaceSmall">
             @foreach (var store in AppInfo.Stores)
             {
-                if (CurrentPlatform == SD.Shared.Enums.Platform.ios)
+                if (CurrentPlatform == SD.Common.Enums.Platform.ios)
                 {
-                    if (store.Platform == SD.Shared.Enums.Platform.play)
+                    if (store.Platform == SD.Common.Enums.Platform.play)
                     {
                         continue;
                     }

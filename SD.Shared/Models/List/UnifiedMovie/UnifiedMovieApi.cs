@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.List.UnifiedMovie
+﻿namespace SD.Common.Models.List.UnifiedMovie
 {
     public class Data
     {

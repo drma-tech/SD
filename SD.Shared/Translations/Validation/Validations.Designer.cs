@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SD.Shared.Translations.Validation {
+namespace SD.Common.Translations.Validation {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SD.Shared.Translations.Validation {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Translations.Validation.Validations", typeof(Validations).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Common.Translations.Validation.Validations", typeof(Validations).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace SD.Shared.Translations.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please update your app via the store (Windows, Android, Apple, etc.). If you are using a browser, please access the site without the &quot;www&quot;..
+        ///   Looks up a localized string similar to Please update the app from your platform&apos;s app store (Microsoft Store, Google Play, or the App Store). If you&apos;re using a browser, open the website without the &quot;www&quot; prefix..
         /// </summary>
         public static string DomainDeactivated {
             get {
@@ -70,7 +70,7 @@ namespace SD.Shared.Translations.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We are currently undergoing maintenance. Please try again in a few minutes..
+        ///   Looks up a localized string similar to We&apos;re performing maintenance right now. Please try again in a few minutes..
         /// </summary>
         public static string MaintenanceMode {
             get {
@@ -79,7 +79,7 @@ namespace SD.Shared.Translations.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An outdated version has been detected ({0}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it..
+        ///   Looks up a localized string similar to An outdated version has been detected ({0}). Please update to the latest version to continue using the app. If you can&apos;t update, clear your browser or app cache and try again..
         /// </summary>
         public static string OutdatedVersion {
             get {

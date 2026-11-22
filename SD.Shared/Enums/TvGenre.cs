@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Enums;
+﻿namespace SD.Common.Enums;
 
 public enum TvGenre
 {

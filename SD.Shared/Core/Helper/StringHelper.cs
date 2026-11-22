@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SD.Shared.Core.Helper;
+namespace SD.Common.Core.Helper;
 
 public static partial class StringHelper
 {

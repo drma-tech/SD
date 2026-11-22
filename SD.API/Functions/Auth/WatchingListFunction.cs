@@ -1,7 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Auth;
-using SD.Shared.Core.Types;
+using SD.Common.Core.Types;
 
 namespace SD.API.Functions.Auth;
 

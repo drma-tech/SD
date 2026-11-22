@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.Trailers;
+namespace SD.Common.Models.Trailers;
 
 public class YoutubeCache(string id, TrailerModel data) : CacheDocumentData<TrailerModel>(new CacheIdentity(id), data, TtlCache.SixHours)
 {

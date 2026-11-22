@@ -1,4 +1,4 @@
-namespace SD.Shared.Core.Models;
+namespace SD.Common.Core.Models;
 
 using Json = System.Text.Json.Serialization;
 

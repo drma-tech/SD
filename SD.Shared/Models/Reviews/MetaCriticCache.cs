@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.Reviews;
+namespace SD.Common.Models.Reviews;
 
 public class MetaCriticCache(string id, ReviewModel data, TtlCache ttl) : CacheDocumentData<ReviewModel>(new CacheIdentity(id), data, ttl)
 {

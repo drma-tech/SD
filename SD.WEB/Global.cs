@@ -1,7 +1,7 @@
-﻿global using SD.Shared.Core;
-global using SD.Shared.Core.Helper;
-global using SD.Shared.Enums;
-global using SD.Shared.Models;
+﻿global using SD.Common.Core;
+global using SD.Common.Core.Helper;
+global using SD.Common.Enums;
+global using SD.Common.Models;
 
 global using SD.WEB.Api.Modules.External;
 global using SD.WEB.Api.Modules.Local;

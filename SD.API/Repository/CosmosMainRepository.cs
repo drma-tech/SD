@@ -2,7 +2,7 @@
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
-using SD.Shared.Core.Types;
+using SD.Common.Core.Types;
 using System.Linq.Expressions;
 
 namespace SD.API.Repository;

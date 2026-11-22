@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.List;
+﻿namespace SD.Common.Models.List;
 
 public class RatingsCache(string id, Ratings data, TtlCache ttl) : CacheDocumentData<Ratings>(new CacheIdentity($"rating_{id}"), data, ttl)
 {

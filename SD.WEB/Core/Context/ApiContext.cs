@@ -1,12 +1,12 @@
-﻿using SD.Shared.Models.Auth;
-using SD.Shared.Models.Franchise;
-using SD.Shared.Models.List;
-using SD.Shared.Models.List.Imdb;
-using SD.Shared.Models.List.Tmdb;
-using SD.Shared.Models.News;
-using SD.Shared.Models.Reviews;
-using SD.Shared.Models.Subscription;
-using SD.Shared.Models.Trailers;
+using SD.Common.Models.Auth;
+using SD.Common.Models.Franchise;
+using SD.Common.Models.List;
+using SD.Common.Models.List.Imdb;
+using SD.Common.Models.List.Tmdb;
+using SD.Common.Models.News;
+using SD.Common.Models.Reviews;
+using SD.Common.Models.Subscription;
+using SD.Common.Models.Trailers;
 using System.Text.Json.Serialization;
 
 namespace SD.WEB.Core.Context

@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.ZeptoMail
+﻿namespace SD.Common.Models.ZeptoMail
 {
     public class Bcc
     {

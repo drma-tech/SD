@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.Reviews;
+﻿namespace SD.Common.Models.Reviews;
 
 public class DataMC
 {

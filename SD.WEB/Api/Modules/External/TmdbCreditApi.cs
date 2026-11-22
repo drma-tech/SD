@@ -1,4 +1,4 @@
-﻿using SD.Shared.Models.List.Tmdb;
+﻿using SD.Common.Models.List.Tmdb;
 using SD.WEB.Api.Core;
 
 namespace SD.WEB.Api.Modules.External;

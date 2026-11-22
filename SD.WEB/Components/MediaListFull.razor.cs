@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using SD.Shared.Models.List.Tmdb;
+using SD.Common.Models.List.Tmdb;
 using System.Globalization;
 
 namespace SD.WEB.Components

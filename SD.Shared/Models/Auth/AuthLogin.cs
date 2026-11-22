@@ -1,6 +1,6 @@
-using SD.Shared.Core.Types;
+using SD.Common.Core.Types;
 
-namespace SD.Shared.Models.Auth;
+namespace SD.Common.Models.Auth;
 
 public class AuthLogin(string id) : MainDocument(new MainIdentity(MainType.Login, id))
 {

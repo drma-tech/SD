@@ -1,6 +1,6 @@
 using HtmlAgilityPack;
 using MudBlazor;
-using SD.Shared.Models.List.Tmdb;
+using SD.Common.Models.List.Tmdb;
 using System.Net.Http.Json;
 
 namespace SD.WEB.Modules.Platform

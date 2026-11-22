@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace SD.Shared.Core.Helper;
+namespace SD.Common.Core.Helper;
 
 public static class DataHelper
 {

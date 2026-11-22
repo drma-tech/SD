@@ -1,4 +1,4 @@
-﻿using SD.Shared.Models.List.Tmdb;
+﻿using SD.Common.Models.List.Tmdb;
 using System.Text.Json.Serialization;
 
 namespace SD.WEB.Core.Context

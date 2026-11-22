@@ -16,8 +16,8 @@ namespace SD.WEB.Modules.Platform
         public WishList? Wish { get; set; }
 
         public MyProviders? MyProviders { get; set; }
-        public SD.Shared.Enums.Platform? Platform { get; set; }
-        public SD.Shared.Enums.Country? SelectedRegion { get; set; }
+        public Common.Enums.Platform? Platform { get; set; }
+        public Country? SelectedRegion { get; set; }
 
         private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
         private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;

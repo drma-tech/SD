@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using SD.Shared.Models.List.Tmdb;
+using SD.Common.Models.List.Tmdb;
 
 namespace SD.WEB.Components
 {

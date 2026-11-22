@@ -26,7 +26,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
             if (ApiStartup.Configurations.IsMaintenanceMode)
             {
                 var culture = req.GetUserCulture();
-                var msg = Shared.Translations.Validation.Validations.ResourceManager.GetString(nameof(Shared.Translations.Validation.Validations.MaintenanceMode), culture);
+                var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.MaintenanceMode), culture);
                 await context.SetHttpResponseStatusCode(HttpStatusCode.ServiceUnavailable, msg!);
                 return;
             }
@@ -36,7 +36,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
             if (originalUrl?.Contains("www.", StringComparison.OrdinalIgnoreCase) == true)
             {
                 var culture = req.GetUserCulture();
-                var msg = Shared.Translations.Validation.Validations.ResourceManager.GetString(nameof(Shared.Translations.Validation.Validations.DomainDeactivated), culture);
+                var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.DomainDeactivated), culture);
 
                 await context.SetHttpResponseStatusCode(HttpStatusCode.Gone, msg!);
                 return;
@@ -67,7 +67,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
             if (HttpRequestDataExtensions.IsOutdated(version))
             {
                 var culture = req.GetUserCulture();
-                var msg = Shared.Translations.Validation.Validations.ResourceManager.GetString(nameof(Shared.Translations.Validation.Validations.OutdatedVersion), culture);
+                var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.OutdatedVersion), culture);
 
                 await context.SetHttpResponseStatusCode(HttpStatusCode.UpgradeRequired, string.Format(culture, msg!, version ?? "error"));
                 return;

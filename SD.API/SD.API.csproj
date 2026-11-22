@@ -29,7 +29,7 @@
 		<PackageReference Include="Svix" Version="2.11.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\SD.Shared\SD.Shared.csproj" />
+		<ProjectReference Include="..\SD.Shared\SD.Common.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="host.json">

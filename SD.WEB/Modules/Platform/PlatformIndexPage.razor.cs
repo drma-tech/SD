@@ -52,7 +52,7 @@ namespace SD.WEB.Modules.Platform
         protected override async Task LoadParameterDataAsync()
         {
             DeliveryModels = EnumHelper.GetList<DeliveryModel>();
-            MediaTypes = EnumHelper.GetList<MediaType>().Where(p => p.Value != SD.Shared.Enums.MediaType.person);
+            MediaTypes = EnumHelper.GetList<MediaType>().Where(p => p.Value != Common.Enums.MediaType.person);
 
             try
             {

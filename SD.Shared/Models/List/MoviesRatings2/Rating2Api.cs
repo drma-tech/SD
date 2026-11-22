@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.List.MoviesRatings2
+﻿namespace SD.Common.Models.List.MoviesRatings2
 {
     public class Imdb
     {

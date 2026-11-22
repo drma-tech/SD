@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SD.Shared.Translations.Enum {
+namespace SD.Common.Translations.Enum {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SD.Shared.Translations.Enum {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Translations.Enum.MovieGenre", typeof(MovieGenre).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Common.Translations.Enum.MovieGenre", typeof(MovieGenre).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

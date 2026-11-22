@@ -1,4 +1,4 @@
-﻿global using SD.Shared.Core;
-global using SD.Shared.Core.Helper;
-global using SD.Shared.Core.Models;
-global using SD.Shared.Enums;
+﻿global using SD.Common.Core;
+global using SD.Common.Core.Helper;
+global using SD.Common.Core.Models;
+global using SD.Common.Enums;

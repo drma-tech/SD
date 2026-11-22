@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core;
+﻿namespace SD.Common.Core;
 
 public enum EnumLists
 {

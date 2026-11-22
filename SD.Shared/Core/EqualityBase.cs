@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Core
+﻿namespace SD.Common.Core
 {
 #pragma warning disable S4035
     public abstract class EqualityBase<T> : IEquatable<T> where T : EqualityBase<T>

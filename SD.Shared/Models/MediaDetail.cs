@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models;
+﻿namespace SD.Common.Models;
 
 public class MediaDetail : EqualityBase<MediaDetail>
 {

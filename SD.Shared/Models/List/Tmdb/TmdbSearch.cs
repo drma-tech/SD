@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models.List.Tmdb;
+﻿namespace SD.Common.Models.List.Tmdb;
 
 public class KnownFor
 {

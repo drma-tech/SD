@@ -1,6 +1,6 @@
-﻿using SD.Shared.Core.Types;
+﻿using SD.Common.Core.Types;
 
-namespace SD.Shared.Models;
+namespace SD.Common.Models;
 
 public class WishList(string? id) : MainDocument(new MainIdentity(MainType.WishList, id))
 {
