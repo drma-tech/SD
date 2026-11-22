@@ -58,7 +58,7 @@ The solution is organized into three main projects:
 |---|---|
 | `SD.WEB` | Blazor WebAssembly frontend |
 | `SD.API` | Azure Functions backend |
-| `SD.Shared` | Shared models and contracts |
+| `SD.Common` | Shared models and contracts |
 
 The backend integrates with external services to retrieve content information, streaming availability, and other related data.
 

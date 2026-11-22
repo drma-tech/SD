@@ -38,9 +38,9 @@
 		<PackageReference Include="Toolbelt.Blazor.PWA.Updater" Version="3.2.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\SD.Shared\SD.Common.csproj" />
+		<ProjectReference Include="..\SD.Common\SD.Common.csproj" />
 		<TrimmerRootAssembly Include="SD.WEB" />
-		<TrimmerRootAssembly Include="SD.Shared" />
+		<TrimmerRootAssembly Include="SD.Common" />
 	</ItemGroup>
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
