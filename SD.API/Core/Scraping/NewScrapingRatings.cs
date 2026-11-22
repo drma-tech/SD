@@ -55,11 +55,7 @@ namespace SD.API.Core.Scraping
                 ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
                 ratings.letterboxdLink ??= result?.result?.links?.Letterboxd;
             }
-            catch (OperationCanceledException)
-            {
-                //do nothing
-            }
-            catch (ObjectDisposedException)
+            catch (Exception ex) when (ex is OperationCanceledException || ex is ObjectDisposedException)
             {
                 //do nothing
             }

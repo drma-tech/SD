@@ -17,59 +17,10 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
 
         try
         {
-            if (req is null)
+            bool validated = await ValidateRequest(context, next, req);
+
+            if (!validated)
             {
-                await next(context);
-                return;
-            }
-
-            if (ApiStartup.Configurations.IsMaintenanceMode)
-            {
-                var culture = req.GetUserCulture();
-                var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.MaintenanceMode), culture);
-                await context.SetHttpResponseStatusCode(HttpStatusCode.ServiceUnavailable, msg!);
-                return;
-            }
-
-            var originalUrl = req.Headers.TryGetValues("X-MS-Original-Url", out var urls) ? urls.FirstOrDefault() : null;
-
-            if (originalUrl?.Contains("www.", StringComparison.OrdinalIgnoreCase) == true)
-            {
-                var culture = req.GetUserCulture();
-                var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.DomainDeactivated), culture);
-
-                await context.SetHttpResponseStatusCode(HttpStatusCode.Gone, msg!);
-                return;
-            }
-
-            if (req.Url.AbsolutePath.Contains("webhook", StringComparison.OrdinalIgnoreCase))
-            {
-                await next(context);
-                return;
-            }
-
-            if (req.Url.AbsolutePath.Contains("job", StringComparison.OrdinalIgnoreCase))
-            {
-                var secret = req.Headers.TryGetValues("X-Job-Secret", out var secrets) ? secrets.FirstOrDefault() : null;
-
-                if (secret.Empty() || !string.Equals(secret, ApiStartup.Configurations.JobSecret, StringComparison.OrdinalIgnoreCase))
-                {
-                    await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
-                    return;
-                }
-
-                await next(context);
-                return;
-            }
-
-            var version = req.Headers.TryGetValues("X-App-Version", out var versions) ? versions.FirstOrDefault() : null;
-
-            if (HttpRequestDataExtensions.IsOutdated(version))
-            {
-                var culture = req.GetUserCulture();
-                var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.OutdatedVersion), culture);
-
-                await context.SetHttpResponseStatusCode(HttpStatusCode.UpgradeRequired, string.Format(culture, msg!, version ?? "error"));
                 return;
             }
 
@@ -105,24 +56,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         }
         catch (Exception ex)
         {
-            req?.LogError(ex);
-
-            if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "This request could not be processed.");
+            await ProcessException(context, req, ex);
         }
         finally
         {
@@ -132,5 +66,88 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
                 req?.LogWarning($"Executed in {sw.Elapsed}");
             }
         }
+    }
+
+    private static async Task ProcessException(FunctionContext context, Microsoft.Azure.Functions.Worker.Http.HttpRequestData? req, Exception ex)
+    {
+        req?.LogError(ex);
+
+        if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "This request could not be processed.");
+    }
+
+    private static async Task<bool> ValidateRequest(FunctionContext context, FunctionExecutionDelegate next, Microsoft.Azure.Functions.Worker.Http.HttpRequestData? req)
+    {
+        if (req is null)
+        {
+            await next(context);
+            return false;
+        }
+
+        if (ApiStartup.Configurations.IsMaintenanceMode)
+        {
+            var culture = req.GetUserCulture();
+            var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.MaintenanceMode), culture);
+            await context.SetHttpResponseStatusCode(HttpStatusCode.ServiceUnavailable, msg!);
+            return false;
+        }
+
+        var originalUrl = req.Headers.TryGetValues("X-MS-Original-Url", out var urls) ? urls.FirstOrDefault() : null;
+
+        if (originalUrl?.Contains("www.", StringComparison.OrdinalIgnoreCase) == true)
+        {
+            var culture = req.GetUserCulture();
+            var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.DomainDeactivated), culture);
+
+            await context.SetHttpResponseStatusCode(HttpStatusCode.Gone, msg!);
+            return false;
+        }
+
+        if (req.Url.AbsolutePath.Contains("webhook", StringComparison.OrdinalIgnoreCase))
+        {
+            await next(context);
+            return false;
+        }
+
+        if (req.Url.AbsolutePath.Contains("job", StringComparison.OrdinalIgnoreCase))
+        {
+            var secret = req.Headers.TryGetValues("X-Job-Secret", out var secrets) ? secrets.FirstOrDefault() : null;
+
+            if (secret.Empty() || !string.Equals(secret, ApiStartup.Configurations.JobSecret, StringComparison.OrdinalIgnoreCase))
+            {
+                await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+                return false;
+            }
+
+            await next(context);
+            return false;
+        }
+
+        var version = req.Headers.TryGetValues("X-App-Version", out var versions) ? versions.FirstOrDefault() : null;
+
+        if (HttpRequestDataExtensions.IsOutdated(version))
+        {
+            var culture = req.GetUserCulture();
+            var msg = Common.Translations.Validation.Validations.ResourceManager.GetString(nameof(Common.Translations.Validation.Validations.OutdatedVersion), culture);
+
+            await context.SetHttpResponseStatusCode(HttpStatusCode.UpgradeRequired, string.Format(culture, msg!, version ?? "error"));
+            return false;
+        }
+
+        return true;
     }
 }

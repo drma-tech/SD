@@ -59,7 +59,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
         client.UpdateSubscription(sub);
 
         var ip = req.GetUserIP(includePort: true);
-        client.Events.Add(new Event("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Cycle = {sub.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {sub.ExpiresDate}", ip));
+        client.Events.Add(new EventItem("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Cycle = {sub.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {sub.ExpiresDate}", ip));
 
         await repo.UpsertItemAsync(client);
         await SyncClerkAccountDeletionAsync(client.UserId ?? throw new InvestigationException("Apple subscription user id is missing"), client.GetActiveSubscription() is not null);
@@ -101,7 +101,7 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
 
             var ip = req.GetUserIP(includePort: true);
             var type = stripeEvent.Type.Split(".")[2];
-            principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
+            principal.Events.Add(new EventItem("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
 
             await repo.UpsertItemAsync(principal);
             await SyncClerkAccountDeletionAsync(userId, principal.GetActiveSubscription() is not null);

@@ -50,7 +50,7 @@ namespace SD.WEB.Modules.Auth
 
                 if (_terms1)
                 {
-                    AppStateStatic.Principal.Events.Add(new Event(AppInfo.Title, "Terms of use accepted.", ip: null));
+                    AppStateStatic.Principal.Events.Add(new EventItem(AppInfo.Title, "Terms of use accepted.", ip: null));
                 }
 
                 var platform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);

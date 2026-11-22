@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
+using SD.API.Core.Auth;
 using SD.API.Core.Scraping;
 using SD.Common.Models.Franchise;
 using SD.Common.Models.List;
@@ -335,47 +336,49 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         return await req.CreateResponse(doc, TtlCache.OneWeek, isPublic: true, cancellationToken);
     }
 
-    //[Function("FranchiseSync")]
-    //public async Task FranchiseSync(
-    //    [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/franchise/sync")] HttpRequestData req, CancellationToken cancellationToken)
-    //{
-    //    var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
-    //    var client = factory.CreateClient("tmdb");
+    [Function("FranchiseSync")]
+    public async Task FranchiseSync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/franchise/sync")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        await req.ValidateAdminAsync();
 
-    //    var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-    //    {
-    //        { "api_key", TmdbOptions.ApiKey },
-    //        { "language", "en-US" },
-    //        { "page", "1" },
-    //    };
+        var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
+        var client = factory.CreateClient("tmdb");
 
-    //    var data = new FranchiseData();
+        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "api_key", TmdbOptions.ApiKey },
+            { "language", "en-US" },
+            { "page", "1" },
+        };
 
-    //    var currentPage = 1;
-    //    int? totalPages = null;
+        var data = new FranchiseData();
 
-    //    do
-    //    {
-    //        parameter["page"] = currentPage.ToString(CultureInfo.InvariantCulture);
+        var currentPage = 1;
+        int? totalPages = null;
 
-    //        var listUrl = $"{TmdbOptions.BaseUriNew}list/{((int)EnumLists.CertifiedStreamingDiscoveryMovies).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
-    //        var result = await client.GetdTmdbList<CustomListNew>(listUrl, tmdbReadToken, cancellationToken);
+        do
+        {
+            parameter["page"] = currentPage.ToString(CultureInfo.InvariantCulture);
 
-    //        totalPages ??= result?.total_pages;
+            var listUrl = $"{TmdbOptions.BaseUri4}list/{((int)EnumLists.CertifiedStreamingDiscoveryMovies).ToString(CultureInfo.InvariantCulture).ConfigureParameters(parameter)}";
+            var result = await client.GetdTmdbList<CustomList>(listUrl, tmdbReadToken, cancellationToken);
 
-    //        foreach (var tmdbId in result?.results.Select(x => x.id) ?? [])
-    //        {
-    //            await PopulateFranchiseItem(client, tmdbId.ToString(CultureInfo.InvariantCulture), data, parameter, cancellationToken);
-    //        }
+            totalPages ??= result?.total_pages;
 
-    //        currentPage++;
-    //    }
-    //    while (currentPage <= totalPages);
+            foreach (var tmdbId in result?.results.Select(x => x.id) ?? [])
+            {
+                await PopulateFranchiseItem(client, tmdbId.ToString(CultureInfo.InvariantCulture), data, parameter, cancellationToken);
+            }
 
-    //    data.FranchiseItems = data.FranchiseItems.OrderByDescending(x => x.LastReleaseDate).ToHashSet();
+            currentPage++;
+        }
+        while (currentPage <= totalPages);
 
-    //    await cacheRepo.UpsertItemAsync(new FranchiseCache("franchise", data));
-    //}
+        data.FranchiseItems = data.FranchiseItems.OrderByDescending(x => x.LastReleaseDate).ToHashSet();
+
+        await cacheRepo.UpsertItemAsync(new FranchiseCache("franchise", data));
+    }
 
     private static async Task PopulateFranchiseItem(HttpClient client, string? tmdbId, FranchiseData? data, IDictionary<string, string> parameter, CancellationToken cancellationToken)
     {
@@ -408,13 +411,13 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
         {
             var rating = doc.Data;
 
-            var imdbOk = float.TryParse(rating.imdb?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var imdb);
-            var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var tmdb);
-            var metaOk = float.TryParse(rating.metacritic?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var meta);
-            var tracOk = float.TryParse(rating.trakt?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var trac);
-            var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var roto);
-            var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var fiaf);
-            var lettOk = float.TryParse(rating.letterboxd?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out var lett);
+            var imdbOk = GetRating(rating.imdb, out var imdb);
+            var tmdbOk = GetRating(rating.tmdb, out var tmdb);
+            var metaOk = GetRating(rating.metacritic, out var meta);
+            var tracOk = GetRating(rating.trakt, out var trac);
+            var rotoOk = GetRating(rating.rottenTomatoes, out var roto);
+            var fiafOk = GetRating(rating.filmAffinity, out var fiaf);
+            var lettOk = GetRating(rating.letterboxd, out var lett);
 
             var count = 0;
             var value = 7.95f;
@@ -429,38 +432,48 @@ public partial class CacheFunction(CosmosCacheRepository cacheRepo, IDistributed
 
             if (count >= 4) //if there is at least 4 green ratings
             {
-                var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
-                var client = factory.CreateClient("tmdb");
-                try
-                {
-                    await client.AddTmdbListItem(listId, int.Parse(tmdbId, CultureInfo.InvariantCulture), type, tmdbWriteToken, cancellationToken);
+                await CommitCertifiedSd(listId, tmdbId, type, factory, cancellationToken);
+            }
+        }
+    }
 
-                    if (type == MediaType.movie)
-                    {
-                        var cacheKey = "franchise";
+    private static bool GetRating(string? rating, out float result)
+    {
+        return float.TryParse(rating?.Replace(",", ".", StringComparison.OrdinalIgnoreCase), NumberStyles.Any, CultureInfo.InvariantCulture, out result);
+    }
 
-                        var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    private async Task CommitCertifiedSd(int listId, string tmdbId, MediaType type, IHttpClientFactory factory, CancellationToken cancellationToken)
+    {
+        var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
+        var client = factory.CreateClient("tmdb");
+        try
+        {
+            await client.AddTmdbListItem(listId, int.Parse(tmdbId, CultureInfo.InvariantCulture), type, tmdbWriteToken, cancellationToken);
+
+            if (type == MediaType.movie)
+            {
+                var cacheKey = "franchise";
+
+                var parameter = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                         {
                             { "api_key", TmdbOptions.ApiKey },
                             { "language", "en-US" },
                             { "page", "1" },
                         };
 
-                        var dataCache = await cacheRepo.ReadItemAsync<FranchiseCache>(new CacheIdentity(cacheKey), cancellationToken);
-                        var data = dataCache?.Data ?? throw new NotificationException("Failed to retrieve franchise data.");
+                var dataCache = await cacheRepo.ReadItemAsync<FranchiseCache>(new CacheIdentity(cacheKey), cancellationToken);
+                var data = dataCache?.Data ?? throw new NotificationException("Failed to retrieve franchise data.");
 
-                        await PopulateFranchiseItem(client, tmdbId, data, parameter, cancellationToken);
+                await PopulateFranchiseItem(client, tmdbId, data, parameter, cancellationToken);
 
-                        data.FranchiseItems = data.FranchiseItems.OrderByDescending(x => x.LastReleaseDate).ToHashSet();
+                data.FranchiseItems = data.FranchiseItems.OrderByDescending(x => x.LastReleaseDate).ToHashSet();
 
-                        await cacheRepo.UpsertItemAsync(new FranchiseCache("franchise", data));
-                    }
-                }
-                catch (Exception)
-                {
-                    //if the item is already in the list
-                }
+                await cacheRepo.UpsertItemAsync(new FranchiseCache("franchise", data));
             }
+        }
+        catch (Exception)
+        {
+            //if the item is already in the list
         }
     }
 

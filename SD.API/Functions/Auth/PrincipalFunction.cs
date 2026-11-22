@@ -79,7 +79,7 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
         var app = req.GetQueryParameter("app", required: false);
         var msg = req.GetQueryParameter("msg", required: false);
 
-        principal.Events.Add(new Event(app, msg, ip));
+        principal.Events.Add(new EventItem(app, msg, ip));
 
         if (principal.Events.Count > 10)
         {

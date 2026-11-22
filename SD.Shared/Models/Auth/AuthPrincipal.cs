@@ -13,7 +13,7 @@ public class AuthPrincipal(string? id) : MainDocument(new MainIdentity(MainType.
     public string? StripeCustomerId { get; set; }
 
     public ISet<AuthSubscription> Subscriptions { get; set; } = new HashSet<AuthSubscription>();
-    public ISet<Event> Events { get; set; } = new HashSet<Event>();
+    public ISet<EventItem> Events { get; set; } = new HashSet<EventItem>();
 
     public AuthSubscription? GetActiveSubscription()
     {
@@ -95,7 +95,7 @@ public class AuthSubscription : EqualityBase<AuthSubscription>
     protected override object?[] EqualityValues => [SubscriptionId, SessionId];
 }
 
-public class Event(string? origin, string? description, string? ip) : EqualityBase<Event>
+public class EventItem(string? origin, string? description, string? ip) : EqualityBase<EventItem>
 {
     public string? Origin { get; set; } = origin;
     public DateTimeOffset Date { get; set; } = DateTimeOffset.UtcNow;

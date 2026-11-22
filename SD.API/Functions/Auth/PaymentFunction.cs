@@ -70,7 +70,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
             client.AddSubscription(sub);
 
             //https://developer.apple.com/documentation/appstorereceipts/status
-            client.Events.Add(new Event("Apple", string.Create(CultureInfo.InvariantCulture, $"Subscription created with status = {result.status} and id = {purchase.original_transaction_id}"), ip));
+            client.Events.Add(new EventItem("Apple", string.Create(CultureInfo.InvariantCulture, $"Subscription created with status = {result.status} and id = {purchase.original_transaction_id}"), ip));
         }
         finally
         {
@@ -115,7 +115,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
         principal.StripeCustomerId = customer.Id;
 
         var ip = req.GetUserIP(includePort: true);
-        principal.Events.Add(new Event("Stripe", $"User registered with id:{customer.Id}", ip));
+        principal.Events.Add(new EventItem("Stripe", $"User registered with id:{customer.Id}", ip));
 
         return await repo.UpsertItemAsync(principal);
     }
@@ -175,7 +175,7 @@ public class PaymentFunction(CosmosMainRepository repo, IHttpClientFactory facto
 
         principal.AddSubscription(sub);
 
-        principal.Events.Add(new Event("Stripe", $"Session created with cycle = {cycle} and SessionId = {session.Id}", ip));
+        principal.Events.Add(new EventItem("Stripe", $"Session created with cycle = {cycle} and SessionId = {session.Id}", ip));
 
         await repo.UpsertItemAsync(principal);
 

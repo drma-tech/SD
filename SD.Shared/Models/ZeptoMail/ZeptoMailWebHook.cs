@@ -36,7 +36,7 @@
         public string? email_reference { get; set; }
         public IReadOnlyCollection<ReplyTo>? reply_to { get; set; }
         public From? from { get; set; }
-        public IReadOnlyCollection<To>? to { get; set; }
+        public IReadOnlyCollection<ToClass>? to { get; set; }
         public string? tag { get; set; }
         public DateTime? processed_time { get; set; }
     }
@@ -73,7 +73,7 @@
         public string? webhook_request_id { get; set; }
     }
 
-    public class To
+    public class ToClass
     {
         public EmailAddress? email_address { get; set; }
     }
