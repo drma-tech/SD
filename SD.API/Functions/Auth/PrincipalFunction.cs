@@ -118,7 +118,8 @@ public static class PrincipalHelper
 
         if (principal != null && principal.StripeCustomerId.NotEmpty())
         {
-            // TODO: Implement Stripe customer deletion logic
+            var service = new Stripe.CustomerService();
+            await service.DeleteAsync(principal.StripeCustomerId, cancellationToken: cancellationToken);
         }
 
         await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId));

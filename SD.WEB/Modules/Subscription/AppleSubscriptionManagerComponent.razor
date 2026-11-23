@@ -23,6 +23,9 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
+<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="@CssHelper.Build().Small("mb")" Href="https://apps.apple.com/account/subscriptions/" Target="_blank" Rel="nofollow, noopener">
+    Manage or cancel my subscription
+</MudButton>
 
 @code {
     [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
