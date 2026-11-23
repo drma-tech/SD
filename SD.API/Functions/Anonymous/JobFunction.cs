@@ -68,68 +68,81 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
 
             var moviesToRemove = new List<WatchingListItem>();
 
-            foreach (var movie in doc.Movies.ToList())
+            await ProcessMovies(client, parameters, doc, newMovies, moviesToRemove, cancellationToken);
+            await ProcessShows(client, parameters, doc, newSeasons, cancellationToken);
+            await ProcessDocs(doc, newMovies, newSeasons, cancellationToken);
+        }
+    }
+
+    private static async Task ProcessMovies(HttpClient client, Dictionary<string, string> parameters, WatchingList doc, List<string> newMovies, List<WatchingListItem> moviesToRemove, CancellationToken cancellationToken)
+    {
+        foreach (var movie in doc.Movies.ToList())
+        {
+            var uri = TmdbOptions.BaseUri3 + "collection/" + movie.id!.ConfigureParameters(parameters);
+
+            try
             {
-                var uri = TmdbOptions.BaseUri3 + "collection/" + movie.id!.ConfigureParameters(parameters);
+                var collection = await client.GetJsonFromApi<TmdbSeasonFranchise>(uri, cancellationToken);
 
-                try
+                if (collection!.parts.Count > movie.maxItems) //there is new movie in the franchise, update it
                 {
-                    var collection = await client.GetJsonFromApi<TmdbSeasonFranchise>(uri, cancellationToken);
-
-                    if (collection!.parts.Count > movie.maxItems) //there is new movie in the franchise, update it
-                    {
-                        movie.maxItems = collection.parts.Count;
-                        newMovies.Add(collection.name!);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.Contains("could not be found", StringComparison.OrdinalIgnoreCase))
-                    {
-                        moviesToRemove.Add(movie);
-                        continue;
-                    }
-
-                    throw;
+                    movie.maxItems = collection.parts.Count;
+                    newMovies.Add(collection.name!);
                 }
             }
-
-            foreach (var movie in moviesToRemove)
+            catch (Exception ex)
             {
-                doc.Movies.Remove(movie);
-            }
-
-            foreach (var show in doc.Shows)
-            {
-                var uri = TmdbOptions.BaseUri3 + "tv/" + show.id!.ConfigureParameters(parameters);
-                var media = await client.GetJsonFromApi<TVDetail>(uri, cancellationToken);
-
-                if (media!.seasons.Count > show.maxItems) //there is new season in the show, update it
+                if (ex.Message.Contains("could not be found", StringComparison.OrdinalIgnoreCase))
                 {
-                    show.maxItems = media.seasons.Count;
-                    newSeasons.Add(media.name!);
+                    moviesToRemove.Add(movie);
+                    continue;
                 }
-            }
 
-            if (doc.Movies.Empty() && doc.Shows.Empty()) //if empty, delete the document
-            {
-                await repo.DeleteItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, doc.Identity.RawId));
+                throw;
             }
-            else
-            {
-                doc.SyncDate = DateTime.UtcNow;
-                await repo.UpsertItemAsync(doc);
+        }
 
-                if (newMovies.Count != 0 || newSeasons.Count != 0)
+        foreach (var movie in moviesToRemove)
+        {
+            doc.Movies.Remove(movie);
+        }
+    }
+
+    private static async Task ProcessShows(HttpClient client, Dictionary<string, string> parameters, WatchingList doc, List<string> newSeasons, CancellationToken cancellationToken)
+    {
+        foreach (var show in doc.Shows)
+        {
+            var uri = TmdbOptions.BaseUri3 + "tv/" + show.id!.ConfigureParameters(parameters);
+            var media = await client.GetJsonFromApi<TVDetail>(uri, cancellationToken);
+
+            if (media!.seasons.Count > show.maxItems) //there is new season in the show, update it
+            {
+                show.maxItems = media.seasons.Count;
+                newSeasons.Add(media.name!);
+            }
+        }
+    }
+
+    private async Task ProcessDocs(WatchingList doc, List<string> newMovies, List<string> newSeasons, CancellationToken cancellationToken)
+    {
+        if (doc.Movies.Empty() && doc.Shows.Empty()) //if empty, delete the document
+        {
+            await repo.DeleteItemAsync<WatchingList>(new MainIdentity(MainType.WatchingList, doc.Identity.RawId));
+        }
+        else
+        {
+            doc.SyncDate = DateTime.UtcNow;
+            await repo.UpsertItemAsync(doc);
+
+            if (newMovies.Count != 0 || newSeasons.Count != 0)
+            {
+                var userId = doc.Identity.RawId;
+                var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException("AuthPrincipal null");
+
+                var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.ApiKey!);
+                if (principal.Email.NotEmpty())
                 {
-                    var userId = doc.Identity.RawId;
-                    var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException("AuthPrincipal null");
-
-                    var zepto = new ZeptoMailClient(factory, ApiStartup.Configurations.ZeptoMail!.ApiKey!);
-                    if (principal.Email.NotEmpty())
-                    {
-                        _ = zepto.SendFollowingTemplate(userId!, principal.Email, principal.DisplayName, franchises: newMovies.Count != 0 ? string.Join(", ", newMovies) : "No updates", series: newSeasons.Count != 0 ? string.Join(", ", newSeasons) : "No updates", cancellationToken);
-                    }
+                    _ = zepto.SendFollowingTemplate(userId!, principal.Email, principal.DisplayName, franchises: newMovies.Count != 0 ? string.Join(", ", newMovies) : "No updates", series: newSeasons.Count != 0 ? string.Join(", ", newSeasons) : "No updates", cancellationToken);
                 }
             }
         }

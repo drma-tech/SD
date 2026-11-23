@@ -14,11 +14,11 @@
         <CascadingAuthenticationState>
             @if (_showNotFound)
             {
-                <NotFoundComponent></NotFoundComponent>
+                <NotFoundComponent Title="_showNotFound"></NotFoundComponent>
             }
             else
             {
-                <Router AppAssembly="@typeof(App).Assembly">
+                <Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Modules.NotFoundPage)">
                     <Found Context="routeData">
                         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                             <NotAuthorized>
@@ -32,9 +32,6 @@
                         </AuthorizeRouteView>
                         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
                     </Found>
-                    <NotFound>
-                        <NotFoundComponent></NotFoundComponent>
-                    </NotFound>
                 </Router>
             }
         </CascadingAuthenticationState>

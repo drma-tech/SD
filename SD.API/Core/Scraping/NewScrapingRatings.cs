@@ -61,22 +61,7 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
-                if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
-
-                if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
-
-                req.LogError(ex);
-
-                if (ex.Message.Contains("Too Many Requests", StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new ApiRateLimitException(ex.Message);
-                }
+                ProcessException(req, ex);
             }
         }
 
@@ -131,22 +116,27 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
-                if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
+                ProcessException(req, ex);
+            }
+        }
 
-                if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
+        private static void ProcessException(HttpRequestData req, Exception ex)
+        {
+            if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
 
-                req.LogError(ex);
+            if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
 
-                if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new ApiRateLimitException(ex.Message);
-                }
+            req.LogError(ex);
+
+            if (ex.Message.Contains("Too Many Requests", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ApiRateLimitException(ex.Message);
             }
         }
     }

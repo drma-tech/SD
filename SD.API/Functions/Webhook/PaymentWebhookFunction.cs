@@ -2,12 +2,11 @@ using Clerk.BackendAPI;
 using Clerk.BackendAPI.Models.Operations;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Core.Auth;
+using Microsoft.Extensions.Hosting;
 using SD.Common.Core.Types;
 using SD.Common.Models.Auth;
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Hosting;
 
 namespace SD.API.Functions.Webhook;
 
@@ -77,69 +76,93 @@ public class PaymentWebhookFunction(CosmosMainRepository repo, IHostEnvironment 
 
         if (stripeEvent.Type.StartsWith("customer.subscription", StringComparison.OrdinalIgnoreCase)) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
         {
-            if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new InvestigationException("stripe subscription not available");
+            (bool success, HttpResponseData? value) = await ProcessCustomerSubscription(req, stripeEvent, cancellationToken);
 
-            if (!obj.Metadata.TryGetValue(APP, out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
-                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
-
-            if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
-                throw new InvestigationException("userId metadata missing in session");
-
-            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException($"stripe webhook - principal is null - subscriptionId:{obj.Id}");
-            var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
-
-            sub.Active = obj.Status is "active" or "trialing";
-
-            sub.Cycle = obj.Items.First().Price.Metadata["cycle"].ParseToEnum<AccountCycle>(AccountCycle.Monthly);
-
-            if (obj.CancelAt.HasValue)
+            if (!success)
             {
-                sub.ExpiresDate = new DateTimeOffset(obj.CancelAt.Value);
+                return value!;
             }
-
-            principal.UpdateSubscription(sub);
-
-            var ip = req.GetUserIP(includePort: true);
-            var type = stripeEvent.Type.Split(".")[2];
-            principal.Events.Add(new EventItem("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
-
-            await repo.UpsertItemAsync(principal);
-            await SyncClerkAccountDeletionAsync(userId, principal.GetActiveSubscription() is not null);
         }
         else if (string.Equals(stripeEvent.Type, "customer.deleted", StringComparison.OrdinalIgnoreCase))
         {
-            if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new InvestigationException("stripe customer not available");
+            (bool success, HttpResponseData? value) = await ProcessCustomerDeleted(req, stripeEvent, cancellationToken);
 
-            if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
-                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken);
-
-            if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
+            if (!success)
             {
-                //if no metadada, try to find the user with the StripeCustomerId
-                var list = await repo.Query<AuthPrincipal>(MainType.Principal, p => p.StripeCustomerId == obj.Id, transform: null, cancellationToken);
-
-                if (list.Count > 0)
-                {
-                    var item = list.First();
-                    item.StripeCustomerId = null;
-                    await repo.UpsertItemAsync(item);
-
-                    return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken);
-                }
-
-                throw new InvestigationException("stripe customer id not available");
-            }
-
-            var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
-
-            if (principal != null)
-            {
-                principal.StripeCustomerId = null;
-                await repo.UpsertItemAsync(principal);
+                return value!;
             }
         }
 
         return await req.CreateResponse(HttpStatusCode.OK, "webhook received", cancellationToken);
+    }
+
+    private async Task<(bool success, HttpResponseData? value)> ProcessCustomerSubscription(HttpRequestData req, Stripe.Event stripeEvent, CancellationToken cancellationToken)
+    {
+        if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new InvestigationException("stripe subscription not available");
+
+        if (!obj.Metadata.TryGetValue(APP, out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
+            return (success: false, value: await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken));
+
+        if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
+            throw new InvestigationException("userId metadata missing in session");
+
+        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken) ?? throw new InvestigationException($"stripe webhook - principal is null - subscriptionId:{obj.Id}");
+        var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
+
+        sub.Active = obj.Status is "active" or "trialing";
+
+        sub.Cycle = obj.Items.First().Price.Metadata["cycle"].ParseToEnum<AccountCycle>(AccountCycle.Monthly);
+
+        if (obj.CancelAt.HasValue)
+        {
+            sub.ExpiresDate = new DateTimeOffset(obj.CancelAt.Value);
+        }
+
+        principal.UpdateSubscription(sub);
+
+        var ip = req.GetUserIP(includePort: true);
+        var type = stripeEvent.Type.Split(".")[2];
+        principal.Events.Add(new EventItem("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
+
+        await repo.UpsertItemAsync(principal);
+        await SyncClerkAccountDeletionAsync(userId, principal.GetActiveSubscription() is not null);
+
+        return (success: true, value: null);
+    }
+
+    private async Task<(bool success, HttpResponseData? value)> ProcessCustomerDeleted(HttpRequestData req, Stripe.Event stripeEvent, CancellationToken cancellationToken)
+    {
+        if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new InvestigationException("stripe customer not available");
+
+        if (!obj.Metadata.TryGetValue("app", out var app) || !string.Equals(app, APP_CODE, StringComparison.OrdinalIgnoreCase))
+            return (success: false, value: await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}", cancellationToken));
+
+        if (!obj.Metadata.TryGetValue(USERID, out var userId) || userId.Empty())
+        {
+            //if no metadada, try to find the user with the StripeCustomerId
+            var list = await repo.Query<AuthPrincipal>(MainType.Principal, p => p.StripeCustomerId == obj.Id, transform: null, cancellationToken);
+
+            if (list.Count > 0)
+            {
+                var item = list.First();
+                item.StripeCustomerId = null;
+                await repo.UpsertItemAsync(item);
+
+                return (success: false, value: await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing", cancellationToken));
+            }
+
+            throw new InvestigationException("stripe customer id not available");
+        }
+
+        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
+
+        if (principal != null)
+        {
+            principal.StripeCustomerId = null;
+            await repo.UpsertItemAsync(principal);
+        }
+
+        return (success: true, value: null);
     }
 
     private static async Task SyncClerkAccountDeletionAsync(string userId, bool isPremium)

@@ -41,13 +41,16 @@
 
 <div class="container">
     <div>
-        <h1>404</h1>
-        <p>@Translations.Module.Auth.NothingThisAddress</p>
+        <h1>@Title</h1>
+        <p>@SubTitle</p>
         <a href=@($"/{Culture}")>Return to the homepage</a>
     </div>
 </div>
 
 @code {
+    [Parameter] public string? Title { get; set; } = "404";
+    [Parameter] public string? SubTitle { get; set; } = Translations.Module.Auth.NothingThisAddress;
+
     private string Culture => Navigation.GetCulture();
 
     protected override void OnInitialized()

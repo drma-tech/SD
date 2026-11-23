@@ -84,7 +84,7 @@ public static class AuthUsersHelper
 
             if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
             {
-                var token = authHeader.Substring("Bearer ".Length);
+                var token = authHeader["Bearer ".Length..];
 
                 string[] authorizedParties = string.Equals(Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT"), "Development", StringComparison.OrdinalIgnoreCase)
                     ? ["https://localhost:7272", "https://streamingdiscovery.com"]
