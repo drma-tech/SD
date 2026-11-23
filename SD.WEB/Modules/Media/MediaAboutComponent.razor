@@ -1,7 +1,10 @@
 ﻿@using SD.Common.Models.List
 @using System.Globalization
 
-@inherits ComponentCore<MediaAboutComponent>
+@inherits ComponentParameterCore<MediaAboutComponent>
+
+@inject CacheRatingsApi CacheRatingsApi
+@inject ExternalIdApi ExternalIdApi
 
 <MudStack Row="false" Breakpoint="Breakpoint.SmAndUp">
     <div Style="position: relative; min-width: 256px;">
@@ -26,30 +29,30 @@
         }
         <CustomChips Name="@Translations.Module.Media.Genres" Values="@Media?.Genres" ColorName="Color.Info" ColorValue="Color.Info"></CustomChips>
         <div>
-            <RenderControl State="State" LoadingHeight="40px" HideIfEmpty="true">
+            <RenderControl State="RatingsState" LoadingHeight="40px" HideIfEmpty="true" Context="ctx">
 
                 <CustomChip Name="@Translations.Module.Media.Ratings" TValue="string" ColorName="Color.Info"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.imdb" ColorValue="GetColorByRating(RatingsCache?.Data?.imdb)" Tooltip="IMDb" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.imdbLink))" Image="logo/imdb.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.imdb" ColorValue="GetColorByRating(ctx?.Data?.imdb)" Tooltip="IMDb" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.imdbLink))" Image="logo/imdb.png" ImageStyle="height: 20px;"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.tmdb" ColorValue="GetColorByRating(RatingsCache?.Data?.tmdb)" Tooltip="TMDB" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.tmdbLink))" Image="logo/tmdb.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.tmdb" ColorValue="GetColorByRating(ctx?.Data?.tmdb)" Tooltip="TMDB" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.tmdbLink))" Image="logo/tmdb.png" ImageStyle="height: 20px;"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.metacritic" ColorValue="GetColorByRating(RatingsCache?.Data?.metacritic)" Tooltip="Metacritic" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.metacriticLink))" Image="logo/metacritic.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.metacritic" ColorValue="GetColorByRating(ctx?.Data?.metacritic)" Tooltip="Metacritic" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.metacriticLink))" Image="logo/metacritic.png" ImageStyle="height: 20px;"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.trakt" ColorValue="GetColorByRating(RatingsCache?.Data?.trakt)" Tooltip="Trakt" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.traktLink))" Image="logo/trakt.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.trakt" ColorValue="GetColorByRating(ctx?.Data?.trakt)" Tooltip="Trakt" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.traktLink))" Image="logo/trakt.png" ImageStyle="height: 20px;"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.rottenTomatoes" ColorValue="GetColorByRating(RatingsCache?.Data?.rottenTomatoes)" Tooltip="Rotten Tomatoes" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.rottenTomatoesLink))" Image="logo/rotten-tomatoes.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.rottenTomatoes" ColorValue="GetColorByRating(ctx?.Data?.rottenTomatoes)" Tooltip="Rotten Tomatoes" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.rottenTomatoesLink))" Image="logo/rotten-tomatoes.png" ImageStyle="height: 20px;"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.filmAffinity" ColorValue="GetColorByRating(RatingsCache?.Data?.filmAffinity)" Tooltip="Film Affinity" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.filmAffinityLink))" Image="logo/film-affinity.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.filmAffinity" ColorValue="GetColorByRating(ctx?.Data?.filmAffinity)" Tooltip="Film Affinity" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.filmAffinityLink))" Image="logo/film-affinity.png" ImageStyle="height: 20px;"></CustomChip>
 
-                <CustomChip Value="@RatingsCache?.Data?.letterboxd" ColorValue="GetColorByRating(RatingsCache?.Data?.letterboxd)" Tooltip="Letterboxd" ValueChipClass="mx-0"
-                            ValueClick="@(()=>OpenExternalWebsite(RatingsCache?.Data?.letterboxdLink))" Image="logo/letterboxd.png" ImageStyle="height: 20px;"></CustomChip>
+                <CustomChip Value="@ctx?.Data?.letterboxd" ColorValue="GetColorByRating(ctx?.Data?.letterboxd)" Tooltip="Letterboxd" ValueChipClass="mx-0"
+                            ValueClick="@(()=>OpenExternalWebsite(ctx?.Data?.letterboxdLink))" Image="logo/letterboxd.png" ImageStyle="height: 20px;"></CustomChip>
                
             </RenderControl>
         </div>
@@ -84,8 +87,36 @@
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
 
-    [Parameter][EditorRequired] public RenderControlState<RatingsCache> State { get; set; }
-    [Parameter] public RatingsCache? RatingsCache { get; set; }
+    private RenderControlState<RatingsCache?> RatingsState { get; set; } = new(null, obj => obj?.Data == null);
+
+    protected override List<string?> GetParameterKey()
+    {
+        return [
+            TmdbId,
+            Type.ToString()
+        ];
+    }
+
+    protected override async Task LoadParameterDataAsync()
+    {
+        try
+        {
+            ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, Cts.Token);
+
+            if (Media?.MediaType == MediaType.movie)
+            {
+                await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
+            }
+            else
+            {
+                await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
+            }
+        }
+        catch (Exception ex)
+        {
+            await RatingsState.ShowError.Invoke(ex.Message);
+        }
+    }
 
     private Color GetColorByRating(string? rating)
     {
@@ -105,5 +136,4 @@
 
         return Color.Error;
     }
-
 }

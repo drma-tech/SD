@@ -47,8 +47,6 @@ namespace SD.WEB.Modules.Help
             {
                 if (AppStateStatic.Principal == null) return;
 
-                // TODO: Remove this active-subscription check. The deletion request must be accepted independently of subscription cancellation.
-                // TODO: Audit the full deletion lifecycle, including all first-party stores, authentication, third-party processors, billing records, logs, support data, and backups. Retain only records supported by a documented legal basis and retention period.
                 if (AppStateStatic.Principal.GetActiveSubscription() != null)
                 {
                     await DialogService.ShowMessageBoxAsync("You still have an active subscription", "Please cancel your subscription before deleting your profile.");

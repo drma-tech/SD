@@ -11,8 +11,7 @@
         <RenderControl State="State">
             <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="60px">
                 <MudTabPanel Tag="@Translations.Module.Media.TabAbout" Text="@Translations.Module.Media.TabAbout">
-                    <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
-                                State="RatingsState" RatingsCache="_ratingsCache"></MediaAboutComponent>
+                    <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"></MediaAboutComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.Module.Media.TabPlatforms" Text="@Translations.Module.Media.WhereToWatch">
                     <MediaWhereToWatchComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaWhereToWatchComponent>

@@ -45,7 +45,7 @@ public class UserWebhookFunction(CosmosMainRepository repo)
 
         if (string.Equals(obj?.type, "user.deleted", StringComparison.OrdinalIgnoreCase) && obj?.data?.deleted == true)
         {
-            await PrincipalHelper.DeleteUser(repo, obj.data.id, deleteClerk: false);
+            await PrincipalHelper.DeleteUser(repo, obj.data.id, deleteClerk: false, cancellationToken);
         }
 
         return await req.CreateResponse(HttpStatusCode.OK, "webhook received", cancellationToken);

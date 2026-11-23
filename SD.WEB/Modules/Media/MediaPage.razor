@@ -7,11 +7,8 @@
 @* @attribute [Authorize] *@
 
 @inject TmdbApi TmdbApi
-@inject CacheRatingsApi CacheRatingsApi
-@inject ExternalIdApi ExternalIdApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
-@inject TmdbRecommendationsApi TmdbRecommendationsApi
 @inject IpInfoApi IpInfoApi
 
 <HeadComponent Title="@Media?.title" Description="@Media?.plot" Url="@($"/{Culture}/media/{type}/{id}")" Index="false"></HeadComponent>
@@ -57,8 +54,7 @@
     <ChildContent>
         <PageSectionComponent Title="@Translations.Module.Media.TabAbout" Color="Color.Secondary">
             <BodyFragment>
-                <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="TypeEnum"
-                            State="RatingsState" RatingsCache="_ratingsCache"></MediaAboutComponent>
+                <MediaAboutComponent ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="TypeEnum"></MediaAboutComponent>
             </BodyFragment>
         </PageSectionComponent>
         <PageSectionComponent Title="@($"{Translations.Module.Media.WhereToWatch} ({Region?.GetFieldSettings().Name})")" Color="Color.Secondary">
@@ -84,14 +80,7 @@
 
         <PageSectionComponent Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
-                <RenderControl State="RecommendationsState" Context="ctx">
-                    <Slider List="Recommendations" Context="item">
-                        <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
-                            <NewPosterComponent MediaDetail="@item" Clicked="@OpenPopupMedia" WishList="Wish">
-                            </NewPosterComponent>
-                        </div>
-                    </Slider>
-                </RenderControl>
+                <RecommendationsComponent Culture="@Culture" TypeEnum="@TypeEnum" TmdbId="@TmdbId" Wish="@Wish"></RecommendationsComponent>
             </BodyFragment>
         </PageSectionComponent>
 

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using SD.Common.Models.List;
 using System.Globalization;
 
 namespace SD.WEB.Modules.Media
@@ -22,9 +21,6 @@ namespace SD.WEB.Modules.Media
         private MediaDetail? Media { get; set; }
         public string? ImdbId { get; set; }
         public string? EnglishTitle { get; set; }
-
-        public RenderControlState<RatingsCache?> RatingsState { get; set; } = new(null, obj => obj?.Data == null);
-        private RatingsCache? _ratingsCache;
 
         protected override void OnInitialized()
         {
@@ -74,15 +70,6 @@ namespace SD.WEB.Modules.Media
             EnglishTitle = EnglishTitle?.Replace("&", "", StringComparison.Ordinal);
 
             StateHasChanged();
-
-            if (Media?.MediaType == MediaType.movie)
-            {
-                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", CultureInfo.InvariantCulture), RatingsState, Cts.Token);
-            }
-            else
-            {
-                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", CultureInfo.InvariantCulture), RatingsState, Cts.Token);
-            }
         }
 
         private async Task Add()

@@ -91,11 +91,11 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
     [Function("PrincipalRemove")]
     public async Task PrincipalRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var userId = await req.GetUserIdAsync();
 
-        await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true);
+        await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true, cancellationToken);
     }
 
     [Function("PrincipalRemoveClerk")]
@@ -110,11 +110,17 @@ public class PrincipalFunction(CosmosMainRepository repo, IHttpClientFactory fac
 
 public static class PrincipalHelper
 {
-    public static async Task DeleteUser(CosmosMainRepository repo, string? userId, bool deleteClerk)
+    public static async Task DeleteUser(CosmosMainRepository repo, string? userId, bool deleteClerk, CancellationToken cancellationToken)
     {
         if (userId.Empty()) throw new InvestigationException("UserId is empty");
 
-        // TODO: Audit all user-linked data before treating this as complete account erasure. This currently deletes principal, login, provider, watching-list, and wish-list records plus the Clerk user; review billing/transaction records, diagnostics, support records, backups, and third-party processors. Preserve only data with a documented legal basis and retention period.
+        var principal = await repo.ReadItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId), cancellationToken);
+
+        if (principal != null && principal.StripeCustomerId.NotEmpty())
+        {
+            // TODO: Implement Stripe customer deletion logic
+        }
+
         await repo.DeleteItemAsync<AuthPrincipal>(new MainIdentity(MainType.Principal, userId));
         await repo.DeleteItemAsync<AuthLogin>(new MainIdentity(MainType.Login, userId));
         await repo.DeleteItemAsync<MyProviders>(new MainIdentity(MainType.MyProvider, userId));
@@ -125,8 +131,6 @@ public static class PrincipalHelper
         {
             await DeleteClerkUser(userId);
         }
-
-        //todo: delete stripe customer if exists
     }
 
     public static async Task DeleteClerkUser(string userId)

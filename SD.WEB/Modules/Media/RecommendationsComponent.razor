@@ -1,0 +1,46 @@
+﻿@inherits PageParameterCore<RecommendationsComponent>
+
+@inject TmdbRecommendationsApi TmdbRecommendationsApi
+
+<RenderControl State="RecommendationsState" Context="ctx">
+    <Slider List="Recommendations" Context="item">
+        <div style="@($"width: {(AppStateStatic.IsMobile ? "110" : "130")}px")">
+            <NewPosterComponent MediaDetail="@item" Clicked="@OpenPopupMedia" WishList="Wish">
+            </NewPosterComponent>
+        </div>
+    </Slider>
+</RenderControl>
+
+@code {
+    [Parameter] public MediaType? TypeEnum { get; set; }
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public WishList? Wish { get; set; }
+
+    private RenderControlState<ICollection<MediaDetail>> RecommendationsState { get; set; } = new([], lst => lst.Empty());
+    public IEnumerable<MediaDetail> Recommendations { get; set; } = [];
+
+    protected override List<string?> GetParameterKey()
+    {
+        return [
+            TmdbId,
+            TypeEnum.ToString()
+        ];
+    }
+
+    protected override async Task LoadParameterDataAsync()
+    {
+        try
+        {
+            Recommendations = await TmdbRecommendationsApi.GetList(TypeEnum, TmdbId, RecommendationsState, Cts.Token);
+        }
+        catch (Exception ex)
+        {
+            await RecommendationsState.ShowError.Invoke(ex.Message);
+        }
+    }
+
+    private void OpenPopupMedia(MediaDetail media)
+    {
+        Navigation.NavigateTo($"/{Culture}/media/{media.MediaType}/{media.tmdb_id}");
+    }
+}

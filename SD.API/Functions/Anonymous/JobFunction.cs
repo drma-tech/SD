@@ -193,7 +193,7 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
                 throw new InvestigationException($"User {userId} has not been notified before deletion.");
             }
 
-            await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true);
+            await PrincipalHelper.DeleteUser(repo, userId, deleteClerk: true, cancellationToken);
         }
     }
 }

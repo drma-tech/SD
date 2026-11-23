@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using SD.Common.Models.List;
 using System.Globalization;
 
 namespace SD.WEB.Modules.Media
@@ -27,11 +26,6 @@ namespace SD.WEB.Modules.Media
         public string? EnglishTitle { get; set; }
 
         private RenderControlState<MediaDetail?> State { get; set; } = new(null, obj => obj == null);
-        private RenderControlState<RatingsCache?> RatingsState { get; set; } = new(null, obj => obj?.Data == null);
-        private RatingsCache? _ratingsCache;
-
-        private RenderControlState<ICollection<MediaDetail>> RecommendationsState { get; set; } = new([], lst => lst.Empty());
-        public IEnumerable<MediaDetail> Recommendations { get; set; } = [];
 
         protected override List<string?> GetParameterKey()
         {
@@ -44,7 +38,6 @@ namespace SD.WEB.Modules.Media
 
         protected override async Task LoadParameterDataAsync()
         {
-            // TODO: Parallelize independent media detail, external ID, ratings, and recommendations requests where their dependencies allow it.
             try
             {
                 await State.StartLoading.Invoke(null);
@@ -72,33 +65,6 @@ namespace SD.WEB.Modules.Media
             {
                 await State.ShowError.Invoke(ex.Message);
             }
-
-            try
-            {
-                ImdbId = await ExternalIdApi.GetImdbId(TypeEnum, TmdbId, Cts.Token);
-
-                if (Media?.MediaType == MediaType.movie)
-                {
-                    _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
-                }
-                else
-                {
-                    _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating?.ToString("#.#", System.Globalization.CultureInfo.InvariantCulture), RatingsState, Cts.Token);
-                }
-            }
-            catch (Exception ex)
-            {
-                await RatingsState.ShowError.Invoke(ex.Message);
-            }
-
-            try
-            {
-                Recommendations = await TmdbRecommendationsApi.GetList(TypeEnum, TmdbId, RecommendationsState, Cts.Token);
-            }
-            catch (Exception ex)
-            {
-                await RecommendationsState.ShowError.Invoke(ex.Message);
-            }
         }
 
         protected override async Task<bool> LoadInteropDataAsync(Microsoft.JSInterop.IJSRuntime JsRuntime)
@@ -112,11 +78,6 @@ namespace SD.WEB.Modules.Media
         {
             Watching = await WatchingApi.Get(states: [], token);
             Wish = await WishApi.Get(states: [], token);
-        }
-
-        private void OpenPopupMedia(MediaDetail media)
-        {
-            Navigation.NavigateTo($"/{Culture}/media/{media.MediaType}/{media.tmdb_id}");
         }
 
         private async Task Add()
