@@ -28,20 +28,22 @@ public class JobFunction(IHttpClientFactory factory, CosmosMainRepository repo)
             {
                 var date = item.release_date.NotEmpty() ? DateTime.ParseExact(item.release_date, "yyyy-MM-dd", CultureInfo.CurrentCulture) : (DateTime?)null;
 
-                if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
-                {
-                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOfYear, item.id, type, tmdbWriteToken, cancellationToken);
-                }
+                await RemoveTmdbItem(tmdbWriteToken, client, item, type, date, cancellationToken);
             }
             else
             {
                 var date = item.first_air_date.NotEmpty() ? DateTime.ParseExact(item.first_air_date, "yyyy-MM-dd", CultureInfo.CurrentCulture) : (DateTime?)null;
 
-                if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
-                {
-                    await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOfYear, item.id, type, tmdbWriteToken, cancellationToken);
-                }
+                await RemoveTmdbItem(tmdbWriteToken, client, item, type, date, cancellationToken);
             }
+        }
+    }
+
+    private static async Task RemoveTmdbItem(string? tmdbWriteToken, HttpClient client, ResultCustomList item, MediaType type, DateTime? date, CancellationToken cancellationToken)
+    {
+        if (date < DateTime.UtcNow.AddDays(-14)) //delete items that are released for more than 2 weeks
+        {
+            await client.RemoveTmdbListItem((int)EnumLists.ExpectedMovieOfYear, item.id, type, tmdbWriteToken, cancellationToken);
         }
     }
 
