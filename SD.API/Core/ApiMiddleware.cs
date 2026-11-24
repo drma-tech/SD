@@ -68,28 +68,6 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         }
     }
 
-    private static async Task ProcessException(FunctionContext context, Microsoft.Azure.Functions.Worker.Http.HttpRequestData? req, Exception ex)
-    {
-        req?.LogError(ex);
-
-        if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "This request could not be processed.");
-    }
-
     private static async Task<bool> ValidateRequest(FunctionContext context, FunctionExecutionDelegate next, Microsoft.Azure.Functions.Worker.Http.HttpRequestData? req)
     {
         if (req is null)
@@ -149,5 +127,27 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         }
 
         return true;
+    }
+
+    private static async Task ProcessException(FunctionContext context, Microsoft.Azure.Functions.Worker.Http.HttpRequestData? req, Exception ex)
+    {
+        req?.LogError(ex);
+
+        if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "This request could not be processed.");
     }
 }

@@ -1,5 +1,8 @@
 namespace SD.Common.Models.List.Tmdb;
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
+#pragma warning disable S2094
+
 public class ProviderBase
 {
     public int display_priority { get; set; }
@@ -393,6 +396,9 @@ public class Results
     public ZA? ZA { get; set; }
     public ZM? ZM { get; set; }
 }
+
+#pragma warning restore S2094
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
 public class MediaProviders
 {
