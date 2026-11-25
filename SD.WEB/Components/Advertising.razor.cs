@@ -13,7 +13,7 @@ namespace SD.WEB.Components
     public enum AdSlot
     {
         Header,
-        //Middle,
+        Middle,
         Footer,
     }
 
@@ -62,7 +62,7 @@ namespace SD.WEB.Components
         private static readonly Dictionary<AdSlot, string> _adsenseSlots = new()
         {
             { AdSlot.Header, "7737592628" },
-            //{ AdSlot.Middle, "6324586995" },
+            { AdSlot.Middle, "6324586995" },
             { AdSlot.Footer, "4604311219" },
         };
 
@@ -71,7 +71,7 @@ namespace SD.WEB.Components
         private static readonly Dictionary<AdSlot, string> _yandexSlots = new()
         {
             { AdSlot.Header, "R-A-19337518-2" },
-            //{ AdSlot.Middle, "R-A-19337518-1" },
+            { AdSlot.Middle, "R-A-19337518-1" },
             { AdSlot.Footer, "R-A-19337518-3" },
         };
 
