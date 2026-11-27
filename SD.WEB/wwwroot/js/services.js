@@ -81,56 +81,30 @@ export const services = {
         script.src = "https://cdn.userjot.com/sdk/v3/uj.js";
         (document.head || document.body).appendChild(script);
     },
-    initAdSense(adClient, adSlot, containerId, lazyLoad = false) {
+    initAdSense(adClient, adSlot, containerId) {
         if (window.appConfig?.isBot === true) return;
         if (window.appConfig?.isLocalhost === true) return;
         if (window.appConfig?.isDev === true) return;
         if (window.appConfig?.blazorSupported !== true) return;
 
-        const container = document.getElementById(containerId);
-        if (!container || container.dataset.adRequested === "true") return;
-
-        const loadAd = () => {
-            if (!container.isConnected || container.dataset.adRequested === "true") return;
-
-            try {
-                container.dataset.adRequested = "true";
-
-                const ins = document.createElement("ins");
-                ins.className = "adsbygoogle custom-ad";
-                ins.setAttribute("data-ad-client", adClient);
-                ins.setAttribute("data-ad-slot", adSlot);
-                ins.setAttribute("data-ad-format", "auto");
-                ins.setAttribute("data-full-width-responsive", "false");
-                container.appendChild(ins);
-
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (error) {
-                delete container.dataset.adRequested;
-                window.Sentry?.captureException?.(error);
-                notification.showError(error.message);
-            }
-        };
-
-        if (!lazyLoad || !("IntersectionObserver" in window)) {
-            loadAd();
-            return;
-        }
-
         try {
-            const observer = new IntersectionObserver((entries) => {
-                if (entries.some(entry => entry.isIntersecting)) {
-                    observer.disconnect();
-                    loadAd();
-                }
-            }, {
-                rootMargin: "700px 0px"
-            });
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
-            observer.observe(container);
+            container.innerHTML = ""; // remove old ad
+
+            const ins = document.createElement("ins");
+            ins.className = "adsbygoogle custom-ad";
+            ins.setAttribute("data-ad-client", adClient);
+            ins.setAttribute("data-ad-slot", adSlot);
+            ins.setAttribute("data-ad-format", "auto");
+            ins.setAttribute('data-full-width-responsive', false);
+            container.appendChild(ins);
+
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-            window.Sentry?.captureException?.(error);
-            loadAd();
+            Sentry.captureException(error);
+            notification.showError(error.message);
         }
     },
     initYandex(id) {
