@@ -134,8 +134,15 @@ namespace SD.WEB.Components
 
                     if (Network == AdNetwork.Adsense)
                     {
-                        await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, Cts.Token);
-                        DetectAdBlockAsync(Cts.Token).FireAndForget();
+                        await JsRuntime.Services().InitAdSense(
+                            $"ca-pub-{AdClientId}",
+                            GetAdSenseId(Slot),
+                            _containerId,
+                            Slot == AdSlot.Footer,
+                            Cts.Token);
+
+                        if (Slot == AdSlot.Header)
+                            DetectAdBlockAsync(Cts.Token).FireAndForget();
                     }
                     else if (Network == AdNetwork.Yandex)
                     {
